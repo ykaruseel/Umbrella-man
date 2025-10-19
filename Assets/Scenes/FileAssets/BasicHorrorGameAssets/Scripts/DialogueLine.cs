@@ -1,6 +1,8 @@
 using UnityEngine;
 
+
 [System.Serializable] // Эта строчка важна, чтобы мы могли редактировать диалоги в инспекторе
+
 public class DialogueLine
 {
     public string speakerName; // Имя того, кто говорит
