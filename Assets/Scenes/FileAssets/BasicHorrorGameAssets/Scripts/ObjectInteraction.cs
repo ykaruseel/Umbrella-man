@@ -1,12 +1,18 @@
+// Assets/Scripts/ObjectInteraction.cs
 using System.Collections;
 using UnityEngine;
+using FMODUnity; // ← добавь
 
 public class ObjectInteraction : MonoBehaviour
 {
     public Camera playerCamera;
     public Transform holdPoint;
     public float interactionDistance = 3f;
-    public LayerMask interactionLayerMask; // Наш "пропуск" для луча
+    public LayerMask interactionLayerMask;
+
+    [Header("FMOD Events")]
+    [SerializeField] private EventReference pickupEvent;
+    [SerializeField] private EventReference dropEvent;
 
     private GameObject heldObject;
     private Rigidbody heldObjectRb;
@@ -39,9 +45,7 @@ public class ObjectInteraction : MonoBehaviour
             else if (heldObject != null)
             {
                 Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
-                
-                // --- ВОТ ИСПРАВЛЕНИЕ: Добавили наш "пропуск" (LayerMask) в этот луч ---
-                if (Physics.Raycast(ray, out RaycastHit placeHit, interactionDistance, interactionLayerMask)) 
+                if (Physics.Raycast(ray, out RaycastHit placeHit, interactionDistance, interactionLayerMask))
                 {
                     PlacementSpot spot = placeHit.collider.GetComponent<PlacementSpot>();
                     if (spot != null && spot.requiredItemID == heldItemID)
@@ -50,7 +54,7 @@ public class ObjectInteraction : MonoBehaviour
                         return;
                     }
                 }
-                
+
                 DropObject();
             }
         }
@@ -70,6 +74,9 @@ public class ObjectInteraction : MonoBehaviour
         spot.GetComponent<Collider>().enabled = false;
         heldObject = null;
         heldObjectRb = null;
+
+        // Проигрываем звук размещения (тот же drop)
+        RuntimeManager.PlayOneShot(dropEvent, transform.position);
     }
 
     void PickupObject(GameObject obj)
@@ -78,7 +85,7 @@ public class ObjectInteraction : MonoBehaviour
         heldObjectRb = heldObject.GetComponent<Rigidbody>();
         originalScale = heldObject.transform.localScale;
         originalLayer = heldObject.layer;
-        heldObject.layer = 2; // Слой "Ignore Raycast"
+        heldObject.layer = 2; // Ignore Raycast
 
         PlaceableItem placeable = heldObject.GetComponent<PlaceableItem>();
         if (placeable != null)
@@ -92,6 +99,9 @@ public class ObjectInteraction : MonoBehaviour
         heldObject.transform.SetParent(holdPoint);
         heldObject.transform.localPosition = Vector3.zero;
         heldObject.transform.localRotation = Quaternion.identity;
+
+        // Проигрываем случайный звук поднятия
+        RuntimeManager.PlayOneShot(pickupEvent, transform.position);
     }
 
     void DropObject()
@@ -108,6 +118,10 @@ public class ObjectInteraction : MonoBehaviour
         heldObject.transform.localScale = originalScale;
         heldObjectRb.useGravity = true;
         heldObjectRb.isKinematic = false;
+
+        // Проигрываем случайный звук выброса
+        RuntimeManager.PlayOneShot(dropEvent, transform.position);
+
         StartCoroutine(ReEnableCollisionAfterDelay(heldObject.GetComponent<Collider>(), 1f));
         heldObject = null;
         heldObjectRb = null;
@@ -119,13 +133,9 @@ public class ObjectInteraction : MonoBehaviour
         foreach (PlacementSpot spot in allSpots)
         {
             if (show && spot.requiredItemID == heldItemID)
-            {
                 spot.SetHighlight(true);
-            }
             else
-            {
                 spot.SetHighlight(false);
-            }
         }
     }
 
@@ -133,9 +143,8 @@ public class ObjectInteraction : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         if (objCollider != null)
-        {
             Physics.IgnoreCollision(objCollider, playerController, false);
-        }
         isInteracting = false;
     }
 }
+
