@@ -1,14 +1,14 @@
 // Assets/Scripts/ObjectInteraction.cs
 using System.Collections;
 using UnityEngine;
-using FMODUnity; // ← добавь
+using FMODUnity;
 
 public class ObjectInteraction : MonoBehaviour
 {
     public Camera playerCamera;
     public Transform holdPoint;
     public float interactionDistance = 3f;
-    public LayerMask interactionLayerMask;
+    public LayerMask interactionLayerMask; // <- Это поле больше не используется PlayerController'ом, но может быть нужно для чего-то еще
 
     [Header("FMOD Events")]
     [SerializeField] private EventReference pickupEvent;
@@ -27,43 +27,20 @@ public class ObjectInteraction : MonoBehaviour
         playerController = GetComponent<CharacterController>();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (heldObject == null && !isInteracting)
-            {
-                Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
-                if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactionLayerMask))
-                {
-                    if (hit.collider.CompareTag("Pickable"))
-                    {
-                        PickupObject(hit.collider.gameObject);
-                    }
-                }
-            }
-            else if (heldObject != null)
-            {
-                Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
-                if (Physics.Raycast(ray, out RaycastHit placeHit, interactionDistance, interactionLayerMask))
-                {
-                    PlacementSpot spot = placeHit.collider.GetComponent<PlacementSpot>();
-                    if (spot != null && spot.requiredItemID == heldItemID)
-                    {
-                        PlaceObject(spot);
-                        return;
-                    }
-                }
+    // <<< МЕТОД Update() ОТСЮДА УДАЛЕН. Вся логика в PlayerController.cs >>>
 
-                DropObject();
-            }
-        }
-    }
-
-    void PlaceObject(PlacementSpot spot)
+    // Методы сделаны публичными (public), чтобы PlayerController мог их вызывать
+    
+    public void PlaceObject(PlacementSpot spot)
     {
         UpdateHighlights(false);
-        heldItemID = null;
+        
+        // --- ДОБАВЛЕНО (Шаг 7) ---
+        // Сообщаем QuestManager ДО того, как очистим heldItemID
+        QuestManager.instance.UpdateQuestProgress(spot.requiredItemID, ObjectiveType.Place);
+        // -------------------------
+
+        heldItemID = null; 
         heldObject.layer = originalLayer;
         heldObject.transform.SetParent(null);
         heldObject.transform.position = spot.placementTransform.position;
@@ -75,11 +52,10 @@ public class ObjectInteraction : MonoBehaviour
         heldObject = null;
         heldObjectRb = null;
 
-        // Проигрываем звук размещения (тот же drop)
         RuntimeManager.PlayOneShot(dropEvent, transform.position);
     }
 
-    void PickupObject(GameObject obj)
+    public void PickupObject(GameObject obj)
     {
         heldObject = obj;
         heldObjectRb = heldObject.GetComponent<Rigidbody>();
@@ -100,11 +76,10 @@ public class ObjectInteraction : MonoBehaviour
         heldObject.transform.localPosition = Vector3.zero;
         heldObject.transform.localRotation = Quaternion.identity;
 
-        // Проигрываем случайный звук поднятия
         RuntimeManager.PlayOneShot(pickupEvent, transform.position);
     }
 
-    void DropObject()
+    public void DropObject()
     {
         if (heldItemID != null)
         {
@@ -119,13 +94,26 @@ public class ObjectInteraction : MonoBehaviour
         heldObjectRb.useGravity = true;
         heldObjectRb.isKinematic = false;
 
-        // Проигрываем случайный звук выброса
         RuntimeManager.PlayOneShot(dropEvent, transform.position);
 
         StartCoroutine(ReEnableCollisionAfterDelay(heldObject.GetComponent<Collider>(), 1f));
         heldObject = null;
         heldObjectRb = null;
     }
+
+    // --- ДОБАВЛЕНЫ НОВЫЕ МЕТОДЫ (Шаг 7) ---
+    // Проверяет, держим ли мы что-то в руках
+    public bool IsHoldingObject()
+    {
+        return heldObject != null;
+    }
+
+    // Позволяет PlayerController узнать ID предмета в руках
+    public string GetHeldItemID()
+    {
+        return heldItemID;
+    }
+    // -------------------------------------
 
     void UpdateHighlights(bool show)
     {

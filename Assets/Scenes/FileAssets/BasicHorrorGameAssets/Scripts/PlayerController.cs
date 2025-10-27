@@ -20,15 +20,21 @@ public class PlayerController : MonoBehaviour
     public float lookXLimit = 75f;
     public float cameraRotationSmooth = 5f;
 
+    // --- ДОБАВЛЕНО (Шаг 8): Настройки взаимодействия ---
+    [Header("Interaction Settings")]
+    public float interactionDistance = 3f;
+    [Tooltip("Выбери ВСЕ слои, с которыми можно взаимодействовать (напр. 'Default' и 'Interactable')")]
+    public LayerMask interactionLayerMask; 
+    // --------------------------------------------------
+
     [Header("FMOD Footsteps")]
     [SerializeField] private EventReference footstepEvent;
     [SerializeField] private float walkStepInterval = 0.5f;
     [SerializeField] private float runStepInterval = 0.3f;
 
     [Header("FMOD Ambient")]
-    [SerializeField] private EventReference ambientEvent; // ← добавь это
-
-    private FMOD.Studio.EventInstance ambientInstance;    // ← и это
+    [SerializeField] private EventReference ambientEvent;
+    private FMOD.Studio.EventInstance ambientInstance;
 
     private bool isWalking = false;
     private bool isFootstepCoroutineRunning = false;
@@ -45,22 +51,32 @@ public class PlayerController : MonoBehaviour
 
     private bool canMove = true;
 
+    // --- ДОБАВЛЕНО (Шаг 8): Ссылка на ObjectInteraction ---
+    private ObjectInteraction objectInteraction;
+    // ----------------------------------------------------
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        // === FMOD Ambient Start ===
         if (ambientEvent.IsNull == false)
         {
             ambientInstance = RuntimeManager.CreateInstance(ambientEvent);
-            ambientInstance.start(); // запускаем бесконечно играющий эмбиент
+            ambientInstance.start();
         }
+        
+        // --- ДОБАВЛЕНО (Шаг 8): Получаем компонент ---
+        objectInteraction = GetComponent<ObjectInteraction>();
+        if (objectInteraction == null)
+            Debug.LogError("На игроке отсутствует скрипт ObjectInteraction!");
+        // ---------------------------------------------
     }
 
     void Update()
     {
+        // ... (твой код движения, камеры, зума) ...
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
@@ -102,18 +118,7 @@ public class PlayerController : MonoBehaviour
         );
 
         // Footstep control
-        if ((curSpeedX != 0f || curSpeedY != 0f) && !isWalking && !isFootstepCoroutineRunning)
-        {
-            isWalking = true;
-            StartCoroutine(PlayFootstepSounds());
-        }
-        else if (curSpeedX == 0f && curSpeedY == 0f)
-        {
-            isWalking = false;
-        }
-
         bool isMoving = (curSpeedX != 0f || curSpeedY != 0f);
-
         if (isMoving && !isFootstepCoroutineRunning)
         {
             isWalking = true;
@@ -123,10 +128,63 @@ public class PlayerController : MonoBehaviour
         {
             isWalking = false;
         }
+
+        // --- ДОБАВЛЕНО (Шаг 8): Вызов новой функции ---
+        CheckInteractionInput();
+        // ----------------------------------------------
     }
+    
+    // --- ДОБАВЛЕН ЦЕЛЫЙ НОВЫЙ МЕТОД (Шаг 8) ---
+    void CheckInteractionInput()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            // Пускаем луч. ВАЖНО: Он использует interactionLayerMask из PlayerController!
+            Ray ray = playerCam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+            RaycastHit hit;
+            bool hitSomething = Physics.Raycast(ray, out hit, interactionDistance, interactionLayerMask);
+
+            // --- ЛОГИКА, ЕСЛИ МЫ ДЕРЖИМ ПРЕДМЕТ ---
+            if (objectInteraction.IsHoldingObject())
+            {
+                if (hitSomething)
+                {
+                    PlacementSpot spot = hit.collider.GetComponent<PlacementSpot>();
+                    if (spot != null && spot.requiredItemID == objectInteraction.GetHeldItemID())
+                    {
+                        objectInteraction.PlaceObject(spot); // Ставим предмет
+                        return;
+                    }
+                }
+                objectInteraction.DropObject(); // Если не попали в спот - бросаем
+            }
+            // --- ЛОГИКА, ЕСЛИ У НАС ПУСТЫЕ РУКИ ---
+            else
+            {
+                if (hitSomething)
+                {
+                    // 1. Проверяем 'Pickable' (предмет)
+                    if (hit.collider.CompareTag("Pickable"))
+                    {
+                        objectInteraction.PickupObject(hit.collider.gameObject);
+                    }
+                    // 2. Проверяем 'Interactable' (дверь, щиток)
+                    else
+                    {
+                        InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
+                        if (interactable != null)
+                        {
+                            interactable.Interact();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // ------------------------------------------------
+
     void OnDestroy()
     {
-        // Останавливаем корректно эмбиент при выходе из сцены
         if (ambientInstance.isValid())
         {
             ambientInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
@@ -137,21 +195,20 @@ public class PlayerController : MonoBehaviour
     private IEnumerator PlayFootstepSounds()
     {
         isFootstepCoroutineRunning = true;
-        float previousDelay = 0f;
+        // ... (твой код) ...
+         float previousDelay = 0f;
 
         while (isWalking)
         {
             bool isRunning = Input.GetKey(KeyCode.LeftShift);
             float delay = isRunning ? runStepInterval : walkStepInterval;
 
-            // если задержка изменилась, обновим сразу (моментально подхватит Shift)
             if (Mathf.Abs(delay - previousDelay) > 0.001f)
                 previousDelay = delay;
 
             RuntimeManager.PlayOneShot(footstepEvent, transform.position);
             yield return new WaitForSeconds(delay);
         }
-
         isFootstepCoroutineRunning = false;
     }
 }

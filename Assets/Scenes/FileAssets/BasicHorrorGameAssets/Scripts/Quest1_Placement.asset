@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd280b95f275a93458f279c854a818af, type: 3}
+  m_Name: Quest1_Placement
+  m_EditorClassIdentifier: 
+  questID: Quest1_Placement
+  questTitle: Put stuff in its place
+  questDescription: 
+  objectives:
+  - objectiveDescription: Put stuff in its place
+    objectiveType: 0
+    targetID: PlaceStuff
+    requiredAmount: 4
+    currentAmount: 1
+    isComplete: 0
+  isComplete: 0
+  nextQuest: {fileID: 11400000, guid: 5942758f8263a5c458f60dc3eb3b65a3, type: 2}
+  currentObjectiveIndex: 0
