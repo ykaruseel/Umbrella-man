@@ -1,14 +1,11 @@
-﻿// Assets/Scripts/PlayerController.cs
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using FMODUnity;
+using Unity.Cinemachine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Camera")]
-    public Camera playerCam;
-
     [Header("Movement Settings")]
     public float walkSpeed = 3f;
     public float runSpeed = 5f;
@@ -20,12 +17,11 @@ public class PlayerController : MonoBehaviour
     public float lookXLimit = 75f;
     public float cameraRotationSmooth = 5f;
 
-    // --- ДОБАВЛЕНО (Шаг 8): Настройки взаимодействия ---
     [Header("Interaction Settings")]
+    public Camera playerCam;
     public float interactionDistance = 3f;
-    [Tooltip("Выбери ВСЕ слои, с которыми можно взаимодействовать (напр. 'Default' и 'Interactable')")]
-    public LayerMask interactionLayerMask; 
-    // --------------------------------------------------
+    public LayerMask interactionLayerMask;
+
 
     [Header("FMOD Footsteps")]
     [SerializeField] private EventReference footstepEvent;
@@ -40,20 +36,20 @@ public class PlayerController : MonoBehaviour
     private bool isFootstepCoroutineRunning = false;
     private CharacterController characterController;
     private Vector3 moveDirection = Vector3.zero;
-    private float rotationX = 0;
-    private float rotationY = 0;
+    private float rotationX = 0f;
+    private float rotationY = 0f;
 
-    [Header("Camera Zoom Settings")]
-    public int ZoomFOV = 35;
-    public int initialFOV;
-    public float cameraZoomSmooth = 1;
-    private bool isZoomed = false;
+    [Header("Dialogue Zoom Settings")]
+    public CinemachineCamera virtualCam;   // виртуальная камера для зума
+    public float dialogueZoomFOV = 40f;
+    public float dialogueZoomSpeed = 2f;
 
     private bool canMove = true;
+    private bool dialogueZoom = false;
+    private float initialFOV;
 
-    // --- ДОБАВЛЕНО (Шаг 8): Ссылка на ObjectInteraction ---
+    // --- Ссылка на ObjectInteraction ---
     private ObjectInteraction objectInteraction;
-    // ----------------------------------------------------
 
     void Start()
     {
@@ -61,27 +57,36 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        objectInteraction = GetComponent<ObjectInteraction>();
+        if (objectInteraction == null)
+            Debug.LogError("На игроке отсутствует скрипт ObjectInteraction!");
+
         if (ambientEvent.IsNull == false)
         {
             ambientInstance = RuntimeManager.CreateInstance(ambientEvent);
             ambientInstance.start();
         }
-        
-        // --- ДОБАВЛЕНО (Шаг 8): Получаем компонент ---
-        objectInteraction = GetComponent<ObjectInteraction>();
-        if (objectInteraction == null)
-            Debug.LogError("На игроке отсутствует скрипт ObjectInteraction!");
-        // ---------------------------------------------
+
+        if (virtualCam != null)
+            initialFOV = virtualCam.Lens.FieldOfView;
     }
 
     void Update()
     {
-        // ... (твой код движения, камеры, зума) ...
+        HandleMovement();
+        HandleCameraRotation();
+        HandleDialogueZoom();
+        HandleFootsteps();
+        CheckInteractionInput(); // <-- Добавлено, чтобы работать с предметами
+    }
+
+    private void HandleMovement()
+    {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        float curSpeedX = canMove ? (Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
+        float curSpeedX = canMove ? (Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0f;
+        float curSpeedY = canMove ? (Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0f;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
@@ -94,31 +99,42 @@ public class PlayerController : MonoBehaviour
             moveDirection.y -= gravity * Time.deltaTime;
 
         characterController.Move(moveDirection * Time.deltaTime);
+    }
 
-        if (canMove)
-        {
-            rotationX -= Input.GetAxis("Mouse Y") * lookSpeed;
-            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-            rotationY += Input.GetAxis("Mouse X") * lookSpeed;
+    private void HandleCameraRotation()
+    {
+        if (!canMove) return;
 
-            Quaternion targetRotationX = Quaternion.Euler(rotationX, 0, 0);
-            Quaternion targetRotationY = Quaternion.Euler(0, rotationY, 0);
+        rotationX -= Input.GetAxis("Mouse Y") * lookSpeed;
+        rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+        rotationY += Input.GetAxis("Mouse X") * lookSpeed;
 
-            playerCam.transform.localRotation = Quaternion.Slerp(playerCam.transform.localRotation, targetRotationX, Time.deltaTime * cameraRotationSmooth);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotationY, Time.deltaTime * cameraRotationSmooth);
-        }
+        Quaternion targetRotationX = Quaternion.Euler(rotationX, 0, 0);
+        Quaternion targetRotationY = Quaternion.Euler(0, rotationY, 0);
 
-        if (Input.GetButtonDown("Fire2")) isZoomed = true;
-        if (Input.GetButtonUp("Fire2")) isZoomed = false;
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotationY, Time.deltaTime * cameraRotationSmooth);
 
-        playerCam.fieldOfView = Mathf.Lerp(
-            playerCam.fieldOfView,
-            isZoomed ? ZoomFOV : initialFOV,
-            Time.deltaTime * cameraZoomSmooth
+        if (virtualCam != null)
+            virtualCam.transform.localRotation = Quaternion.Slerp(virtualCam.transform.localRotation, targetRotationX, Time.deltaTime * cameraRotationSmooth);
+    }
+
+    private void HandleDialogueZoom()
+    {
+        if (virtualCam == null) return;
+
+        float targetFOV = dialogueZoom ? dialogueZoomFOV : initialFOV;
+
+        virtualCam.Lens.FieldOfView = Mathf.Lerp(
+            virtualCam.Lens.FieldOfView,
+            targetFOV,
+            Time.deltaTime * dialogueZoomSpeed
         );
+    }
 
-        // Footstep control
-        bool isMoving = (curSpeedX != 0f || curSpeedY != 0f);
+    private void HandleFootsteps()
+    {
+        bool isMoving = (Input.GetAxis("Vertical") != 0f || Input.GetAxis("Horizontal") != 0f) && canMove;
+
         if (isMoving && !isFootstepCoroutineRunning)
         {
             isWalking = true;
@@ -128,13 +144,49 @@ public class PlayerController : MonoBehaviour
         {
             isWalking = false;
         }
-
-        // --- ДОБАВЛЕНО (Шаг 8): Вызов новой функции ---
-        CheckInteractionInput();
-        // ----------------------------------------------
     }
-    
-    // --- ДОБАВЛЕН ЦЕЛЫЙ НОВЫЙ МЕТОД (Шаг 8) ---
+
+    private IEnumerator PlayFootstepSounds()
+    {
+        isFootstepCoroutineRunning = true;
+        float previousDelay = 0f;
+
+        while (isWalking)
+        {
+            bool isRunning = Input.GetKey(KeyCode.LeftShift);
+            float delay = isRunning ? runStepInterval : walkStepInterval;
+
+            if (Mathf.Abs(delay - previousDelay) > 0.001f)
+                previousDelay = delay;
+
+            RuntimeManager.PlayOneShot(footstepEvent, transform.position);
+            yield return new WaitForSeconds(delay);
+        }
+
+        isFootstepCoroutineRunning = false;
+    }
+
+    void OnDestroy()
+    {
+        if (ambientInstance.isValid())
+        {
+            ambientInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            ambientInstance.release();
+        }
+    }
+
+    // --- Методы для внешних систем ---
+    public void SetCanMove(bool value)
+    {
+        canMove = value;
+    }
+
+    public void SetDialogueZoom(bool value)
+    {
+        dialogueZoom = value;
+    }
+
+    // --- Механика взаимодействия с предметами ---
     void CheckInteractionInput()
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -143,6 +195,17 @@ public class PlayerController : MonoBehaviour
             Ray ray = playerCam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
             RaycastHit hit;
             bool hitSomething = Physics.Raycast(ray, out hit, interactionDistance, interactionLayerMask);
+
+            // ---- Вставляем Debug.Log ----
+            if (hitSomething)
+            {
+                Debug.Log($"Raycast Hit: {hit.collider.name}, Tag: {hit.collider.tag}, Layer: {hit.collider.gameObject.layer}");
+            }
+            else
+            {
+                Debug.Log("Raycast did NOT hit anything");
+            }
+            // -----------------------------
 
             // --- ЛОГИКА, ЕСЛИ МЫ ДЕРЖИМ ПРЕДМЕТ ---
             if (objectInteraction.IsHoldingObject())
@@ -181,34 +244,5 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    // ------------------------------------------------
 
-    void OnDestroy()
-    {
-        if (ambientInstance.isValid())
-        {
-            ambientInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            ambientInstance.release();
-        }
-    }
-
-    private IEnumerator PlayFootstepSounds()
-    {
-        isFootstepCoroutineRunning = true;
-        // ... (твой код) ...
-         float previousDelay = 0f;
-
-        while (isWalking)
-        {
-            bool isRunning = Input.GetKey(KeyCode.LeftShift);
-            float delay = isRunning ? runStepInterval : walkStepInterval;
-
-            if (Mathf.Abs(delay - previousDelay) > 0.001f)
-                previousDelay = delay;
-
-            RuntimeManager.PlayOneShot(footstepEvent, transform.position);
-            yield return new WaitForSeconds(delay);
-        }
-        isFootstepCoroutineRunning = false;
-    }
 }
