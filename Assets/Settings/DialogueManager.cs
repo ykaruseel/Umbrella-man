@@ -84,7 +84,7 @@ public class DialogueManager : MonoBehaviour
             StopCoroutine(typingCoroutine);
             typingCoroutine = null;
         }
-
+        
         IsDialogueActive = false;
         dialogueBox.SetActive(false); // Прячем окно диалога
     }
