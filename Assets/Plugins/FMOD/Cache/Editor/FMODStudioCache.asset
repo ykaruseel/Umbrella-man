@@ -1,5 +1,33 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7938278677619134801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/UM_music_theme/MusicSwitch
+  m_EditorClassIdentifier: 
+  Name: MusicSwitch
+  StudioPath: 
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 3599626145
+    data2: 804981421
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
+  - Value B
+  - Value C
+  - Value D
+  Exists: 1
 --- !u!114 &-4940084768312974374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27,6 +55,61 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 227
+--- !u!114 &-4424279157854719901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UM_music_theme
+  m_EditorClassIdentifier: 
+  Path: event:/UM_music_theme
+  Guid:
+    Data1: -1760517789
+    Data2: 1291410756
+    Data3: -1905415776
+    Data4: -1363321436
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -7938278677619134801}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 96000
+--- !u!114 &-1402897669585836431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/quest
+  m_EditorClassIdentifier: 
+  Path: event:/quest
+  Guid:
+    Data1: 982650717
+    Data2: 1320511343
+    Data3: 516923534
+    Data4: 1673419026
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47,12 +130,15 @@ MonoBehaviour:
   - {fileID: 8823139062609224079}
   - {fileID: -4940084768312974374}
   - {fileID: 8240195930974508339}
+  - {fileID: -1402897669585836431}
+  - {fileID: -4424279157854719901}
+  - {fileID: 3249106965749413924}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8700398147420201416}
   StringsBanks:
   - {fileID: 752984927737422183}
-  cacheTime: 638971859311235027
+  cacheTime: 638972431923615191
   cacheVersion: 131632
 --- !u!114 &752984927737422183
 MonoBehaviour:
@@ -69,11 +155,38 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638971859311235027
+  lastModified: 638972431923615191
   FileSizes:
   - Name: Desktop
-    Value: 948
+    Value: 1122
   Exists: 1
+--- !u!114 &3249106965749413924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/knocking
+  m_EditorClassIdentifier: 
+  Path: event:/knocking
+  Guid:
+    Data1: 26153199
+    Data2: 1088351809
+    Data3: -10705483
+    Data4: -1040821612
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &5650050608528233295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,10 +281,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638971859311235027
+  lastModified: 638972431923595121
   FileSizes:
   - Name: Desktop
-    Value: 1462016
+    Value: 2906240
   Exists: 1
 --- !u!114 &8823139062609224079
 MonoBehaviour:
