@@ -5,7 +5,7 @@
 			<value>quest</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{35a80e89-568f-4a4b-b70d-281ae4eabf68}</destination>
@@ -90,7 +90,7 @@
 	<object class="MixerBusPanner" id="{a80a46ed-94e8-4ea8-bb33-23d1c82f7d5c}" />
 	<object class="MultiSound" id="{467e6615-6f0e-40ae-b2c9-b692b03e8d6e}">
 		<property name="length">
-			<value>2</value>
+			<value>4</value>
 		</property>
 		<property name="playlistMode">
 			<value>1</value>
@@ -102,6 +102,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{b19bb77b-b961-451b-b40c-2d7e31fe6e5b}">
+		<property name="volume">
+			<value>-5.5</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -118,7 +121,6 @@
 	<object class="MixerBusEffectChain" id="{a014a5d9-c2f2-4620-9a60-ec815c2bd174}">
 		<relationship name="effects">
 			<destination>{de7fb579-545d-4ceb-b8ab-9d15737074ab}</destination>
-			<destination>{88d0b975-8f17-4bce-9f9e-12db263db0d5}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9f98d6e7-f746-4b39-8a1c-e356f9c3a8e3}" />
@@ -145,6 +147,5 @@
 	</object>
 	<object class="MixerBusPanner" id="{f4be7898-feea-49d3-b0ce-817350fd65db}" />
 	<object class="MixerBusFader" id="{de7fb579-545d-4ceb-b8ab-9d15737074ab}" />
-	<object class="SpatialiserEffect" id="{88d0b975-8f17-4bce-9f9e-12db263db0d5}" />
 	<object class="MixerBusFader" id="{b8805c82-b14e-46ef-b1c9-001ad33db4ea}" />
 </objects>
