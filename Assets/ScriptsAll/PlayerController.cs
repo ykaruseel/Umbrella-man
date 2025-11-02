@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0f;
     private float rotationY = 0f;
+    
 
     [Header("Dialogue Zoom Settings")]
     public CinemachineCamera virtualCam;   // виртуальная камера для зума
@@ -187,62 +188,65 @@ public class PlayerController : MonoBehaviour
     }
 
     // --- Механика взаимодействия с предметами ---
-    void CheckInteractionInput()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            // Пускаем луч. ВАЖНО: Он использует interactionLayerMask из PlayerController!
-            Ray ray = playerCam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
-            RaycastHit hit;
-            bool hitSomething = Physics.Raycast(ray, out hit, interactionDistance, interactionLayerMask);
+    // Файл: PlayerController.cs
+// Вставь этот метод целиком (вместо старого)
 
-            // ---- Вставляем Debug.Log ----
+void CheckInteractionInput()
+{
+    if (Input.GetKeyDown(KeyCode.E))
+    {
+        // Пускаем луч
+        Ray ray = playerCam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+        RaycastHit hit;
+        bool hitSomething = Physics.Raycast(ray, out hit, interactionDistance, interactionLayerMask);
+
+        // --- ЛОГИКА, ЕСЛИ МЫ ДЕРЖIM ПРЕДМЕТ ---
+        if (objectInteraction.IsHoldingObject())
+        {
             if (hitSomething)
             {
-                Debug.Log($"Raycast Hit: {hit.collider.name}, Tag: {hit.collider.tag}, Layer: {hit.collider.gameObject.layer}");
-            }
-            else
-            {
-                Debug.Log("Raycast did NOT hit anything");
-            }
-            // -----------------------------
-
-            // --- ЛОГИКА, ЕСЛИ МЫ ДЕРЖИМ ПРЕДМЕТ ---
-            if (objectInteraction.IsHoldingObject())
-            {
-                if (hitSomething)
+                PlacementSpot spot = hit.collider.GetComponent<PlacementSpot>();
+                if (spot != null && spot.requiredItemID == objectInteraction.GetHeldItemID())
                 {
-                    PlacementSpot spot = hit.collider.GetComponent<PlacementSpot>();
-                    if (spot != null && spot.requiredItemID == objectInteraction.GetHeldItemID())
-                    {
-                        objectInteraction.PlaceObject(spot); // Ставим предмет
-                        return;
-                    }
+                    objectInteraction.PlaceObject(spot); 
+                    return;
                 }
-                objectInteraction.DropObject(); // Если не попали в спот - бросаем
             }
-            // --- ЛОГИКА, ЕСЛИ У НАС ПУСТЫЕ РУКИ ---
-            else
+            objectInteraction.DropObject(); 
+        }
+        // --- ЛОГИКА, ЕСЛИ У НАС ПУСТЫЕ РУКИ ---
+        else
+        {
+            if (hitSomething)
             {
-                if (hitSomething)
+                // 1. СНАЧАЛА проверяем ДИАЛОГ (ДВЕРЬ)
+                NPC_Dialogue npcDialogue = hit.collider.GetComponent<NPC_Dialogue>();
+                if (npcDialogue != null)
                 {
-                    // 1. Проверяем 'Pickable' (предмет)
-                    if (hit.collider.CompareTag("Pickable"))
-                    {
-                        objectInteraction.PickupObject(hit.collider.gameObject);
-                    }
-                    // 2. Проверяем 'Interactable' (дверь, щиток)
-                    else
-                    {
-                        InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
-                        if (interactable != null)
-                        {
-                            interactable.Interact();
-                        }
-                    }
+                    Debug.Log("Найден NPC_Dialogue, запускаю..."); 
+                    npcDialogue.TriggerDialogue(); // ...запускаем его...
+                    return; // ...и ВЫХОДИМ!
+                }
+        
+                // 2. ПОТОМ проверяем ПРЕДМЕТ ('Pickable')
+                if (hit.collider.CompareTag("Pickable")) 
+                {
+                    Debug.Log("Найден Pickable, подбираю...");
+                    objectInteraction.PickupObject(hit.collider.gameObject); 
+                    return; 
+                }
+        
+                // 3. В КОНЦЕ проверяем 'Interactable' (ЩИТОК)
+                InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
+                if (interactable != null) 
+                {
+                    Debug.Log("Найден InteractableObject, взаимодействую..."); 
+                    interactable.Interact(); 
+                    return; 
                 }
             }
         }
     }
+}
 
 }

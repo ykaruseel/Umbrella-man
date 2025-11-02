@@ -164,29 +164,41 @@ public class QuestManager : MonoBehaviour
          }
      }
 
-    void TriggerQuestEvent(string questID)
-    {
-        switch (questID)
-        {
-            case "Quest1_Placement":
-                if(!knockSound.IsNull) RuntimeManager.PlayOneShot(knockSound);
-                Debug.Log("Играет звук стука...");
-                break;
+     void TriggerQuestEvent(string questID)
+     {
+         switch (questID)
+         {
+             case "Quest1_Placement":
+                 // Играем звук стука
+                 if(!knockSound.IsNull) RuntimeManager.PlayOneShot(knockSound);
+                 Debug.Log("Играет звук стука...");
+                 break;
 
-            case "Quest2_Door":
-                if (lightController != null) StartCoroutine(lightController.FlickerSequence(StartQuest3));
-                else Debug.LogError("LightFlickerController не назначен!");
-                break;
+             case "Quest2_Door":
+                 Debug.Log("Попытка запустить мигание света..."); // Лог
 
-            case "Quest3_Panel":
-                Debug.Log("Запуск QTE...");
-                if (qteSystem != null)
-                {
-                    qteSystem.StartQTE(3f, KeyCode.E, OnQTESuccess, OnQTEFailure);
-                } else { Debug.LogError("QTESystem не назначен!"); }
-                break;
-        }
-    }
+                 if (lightController != null) 
+                 {
+                     // Передаем StartNextQuest (чтобы запустить Квест 3)
+                     StartCoroutine(lightController.FlickerSequence(StartNextQuest)); 
+                 }
+                 else 
+                 {
+                     Debug.LogError("LightFlickerController не назначен!");
+                     StartNextQuest(); 
+                 }
+                 break;
+
+             case "Quest3_Panel":
+                 // Запускаем QTE
+                 Debug.Log("Запуск QTE...");
+                 if (qteSystem != null)
+                 {
+                     qteSystem.StartQTE(3f, KeyCode.E, OnQTESuccess, OnQTEFailure);
+                 } else { Debug.LogError("QTESystem не назначен!"); }
+                 break;
+         }
+     }
     
     void StartQuest3() { }
 

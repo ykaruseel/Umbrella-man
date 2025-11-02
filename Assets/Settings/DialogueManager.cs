@@ -1,9 +1,9 @@
-using System.Collections; // Добавили для корутин
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-// --- ВЕРСИЯ ТОЛЬКО С ЭФФЕКТОМ ПЕЧАТИ ---
 public class DialogueManager : MonoBehaviour
 {
     // --- Переменные для UI диалога ---
@@ -13,105 +13,117 @@ public class DialogueManager : MonoBehaviour
 
     // --- Переменные для эффекта печати ---
     [Header("Typewriter Effect")]
-    public float typingSpeed = 0.05f; // Скорость печати
-    public Coroutine typingCoroutine; // Ссылка на процесс печати
-    private string currentSentence;   // Текущая печатаемая фраза
+    public float typingSpeed = 0.05f;
+    public Coroutine typingCoroutine;
+    private string currentSentence;
 
     // --- Системные переменные ---
-    public static bool IsDialogueActive = false; // Активен ли диалог сейчас?
-    private Queue<DialogueLine> sentences; // Очередь реплик
+    public static bool IsDialogueActive = false;
+    private Queue<DialogueLine> sentences;
+
+    // --- ДОБАВЛЕНО: Ссылка на Игрока ---
+    private PlayerController playerController; 
 
     void Start()
     {
         sentences = new Queue<DialogueLine>();
+        
+        // --- ДОБАВЛЕНО: Находим Игрока ---
+        playerController = FindObjectOfType<PlayerController>();
+        if (playerController == null)
+            Debug.LogError("DialogueManager не смог найти PlayerController!");
     }
 
-    // --- Функция начала диалога ---
     public void StartDialogue(DialogueLine[] lines)
     {
-        // Не начинаем новый диалог, если старый ещё активен
         if (IsDialogueActive) return;
 
-        IsDialogueActive = true;
-        dialogueBox.SetActive(true); // Показываем окно диалога
-        sentences.Clear(); // Чистим очередь от старых реплик
+        // --- ДОБАВЛЕНО: Блокируем игрока и зумим ---
+        if (playerController != null)
+        {
+            playerController.SetCanMove(false); // Запретить двигаться
+            playerController.SetDialogueZoom(true); // Включить зум
+        }
+        // --- КОНЕЦ ДОБАВЛЕННОГО ---
 
-        // Добавляем новые реплики в очередь
+        IsDialogueActive = true;
+        dialogueBox.SetActive(true);
+        sentences.Clear();
+
         foreach (DialogueLine line in lines)
         {
             sentences.Enqueue(line);
         }
-
-        // Показываем первую реплику (с эффектом печати)
         DisplayNextSentence();
     }
 
-    // --- Функция показа следующей реплики ---
     public void DisplayNextSentence()
     {
-        // Если реплик больше нет, завершаем диалог
         if (sentences.Count == 0)
         {
             EndDialogue();
             return;
         }
 
-        // Берём следующую реплику из очереди
         DialogueLine currentLine = sentences.Dequeue();
-        // Показываем имя говорящего
         speakerNameText.text = currentLine.speakerName;
-        // Запоминаем текст реплики (для эффекта печати и пропуска)
         currentSentence = currentLine.sentence;
 
-        // Останавливаем предыдущую печать, если она была
         if (typingCoroutine != null)
         {
             StopCoroutine(typingCoroutine);
         }
-        // Запускаем корутину для эффекта печати
         typingCoroutine = StartCoroutine(TypeSentence(currentSentence));
     }
 
-    // --- Функция завершения диалога ---
     public void EndDialogue()
     {
-        // Не завершаем, если диалог и так неактивен
         if (!IsDialogueActive) return;
 
-        // Останавливаем печать, если она шла
         if (typingCoroutine != null)
         {
             StopCoroutine(typingCoroutine);
             typingCoroutine = null;
         }
-        
+
+        // --- ДОБАВЛЕНО: Возвращаем управление и зум ---
+        if (playerController != null)
+        {
+            playerController.SetCanMove(true); // Разрешить двигаться
+            playerController.SetDialogueZoom(false); // Выключить зум
+        }
+        // --- КОНЕЦ ДОБАВЛЕННОГО ---
+
+        // --- ЭТО КОД ДЛЯ КВЕСТА 2 (Он должен быть здесь) ---
+        QuestManager qm = QuestManager.instance;
+        QuestObjective objective = qm?.currentQuest?.GetCurrentObjective();
+        if (objective != null && objective.targetID == "door" && objective.objectiveType == ObjectiveType.Interact && !objective.isComplete)
+        {
+            qm.UpdateQuestProgress("door", ObjectiveType.Interact);
+        }
+        // --- КОНЕЦ КОДА КВЕСТА ---
+
         IsDialogueActive = false;
-        dialogueBox.SetActive(false); // Прячем окно диалога
+        dialogueBox.SetActive(false); 
     }
 
-    // --- Корутина для эффекта печати ---
     IEnumerator TypeSentence(string sentence)
     {
-        dialogueText.text = ""; // Очищаем текст
-        // Печатаем по одной букве с задержкой
+        dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
-        typingCoroutine = null; // Печать завершена
+        typingCoroutine = null;
     }
 
-    // --- Функция для пропуска печати ---
     public void SkipTyping()
     {
-        // Если печать активна
         if (typingCoroutine != null)
         {
-            // Останавливаем её
             StopCoroutine(typingCoroutine);
             typingCoroutine = null;
-            // Показываем весь текст сразу
             dialogueText.text = currentSentence;
         }
     }
