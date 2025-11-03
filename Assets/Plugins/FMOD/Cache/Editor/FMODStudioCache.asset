@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8606886389135041407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/daniel_voice
+  m_EditorClassIdentifier: 
+  Path: event:/daniel_voice
+  Guid:
+    Data1: -1656578066
+    Data2: 1094193858
+    Data3: -1836718149
+    Data4: 2116357876
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &-7938278677619134801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,12 +160,14 @@ MonoBehaviour:
   - {fileID: -1402897669585836431}
   - {fileID: -4424279157854719901}
   - {fileID: 3249106965749413924}
+  - {fileID: 3937043500915486023}
+  - {fileID: -8606886389135041407}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8700398147420201416}
   StringsBanks:
   - {fileID: 752984927737422183}
-  cacheTime: 638973258744746721
+  cacheTime: 638977939607600877
   cacheVersion: 131632
 --- !u!114 &752984927737422183
 MonoBehaviour:
@@ -155,10 +184,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638973258744746721
+  lastModified: 638977939607600877
   FileSizes:
   - Name: Desktop
-    Value: 1122
+    Value: 1208
   Exists: 1
 --- !u!114 &3249106965749413924
 MonoBehaviour:
@@ -187,6 +216,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2520
+--- !u!114 &3937043500915486023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/lester_voice
+  m_EditorClassIdentifier: 
+  Path: event:/lester_voice
+  Guid:
+    Data1: 978691019
+    Data2: 1214468558
+    Data3: -2026549598
+    Data4: 1506929119
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &5650050608528233295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,10 +337,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638973258744711238
+  lastModified: 638977939607580654
   FileSizes:
   - Name: Desktop
-    Value: 2905408
+    Value: 3713984
   Exists: 1
 --- !u!114 &8823139062609224079
 MonoBehaviour:

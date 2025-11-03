@@ -1,146 +1,205 @@
-// Файл: LightFlickerController.cs
+// 📁 Assets/ScriptsAll/LightFlickerController.cs
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic; // Для List
+using System.Collections.Generic;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class LightFlickerController : MonoBehaviour
 {
+    [Header("Световые источники")]
     [Tooltip("Перетащи сюда все лампы, которые должны мигать")]
-    public List<Light> lightsToFlicker; 
-    
-    [Header("Настройки мигания")]
-    public float initialDelay = 1f;     // Начальная задержка между миганиями
-    public float minDelay = 0.1f;       // Минимальная задержка (макс. скорость)
-    public float acceleration = 0.05f;  // Насколько быстрее мигает с каждым циклом
-    public int stages = 3;              // Сколько этапов (1 лампа, несколько, все)
+    public List<Light> lightsToFlicker = new List<Light>();
 
-    private List<float> initialIntensities = new List<float>(); // Запомним начальную яркость
+    [Header("Настройки времени и частоты")]
+    [Tooltip("Общее время мигания (сек)")]
+    public float totalFlickerTime = 25f;
+    [Tooltip("Максимальная частота мигания (раз в сек)")]
+    public float maxFlickerFrequency = 6f;
+    [Tooltip("Минимальная доля яркости при затухании")]
+    public float minIntensityFactor = 0.2f;
+    [Tooltip("Кривая напряжения (скорость нарастания мигания)")]
+    public AnimationCurve tensionCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    [Header("Интенсивность пика света")]
+    [Tooltip("Во сколько раз ярче становится свет в пике мигания перед концом")]
+    public float maxLightMultiplier = 3f;
+
+    [Header("Постпроцесс")]
+    [Tooltip("Volume с постпроцессом (Chromatic, Vignette, Grain, LensDistortion)")]
+    public Volume globalVolume;
+    [Tooltip("Включить пульсацию эффектов во время мигания")]
+    public bool enableEffectPulse = true;
+    [Tooltip("Скорость пульсации эффектов")]
+    public float effectPulseSpeed = 1.5f;
+    [Tooltip("Максимум ХА")]
+    public float chromaticMax = 0.8f;
+    [Tooltip("Максимум виньетки")]
+    public float vignetteMax = 0.5f;
+    [Tooltip("Максимум шума")]
+    public float grainMax = 1f;
+    [Tooltip("Максимум дисторсии")]
+    public float lensDistortionMax = 0.4f;
+
+    private List<float> initialIntensities = new List<float>();
+    private ChromaticAberration chromatic;
+    private Vignette vignette;
+    private FilmGrain grain;
+    private LensDistortion lensDistortion;
+
+    private bool isSequenceRunning = false;
 
     void Start()
     {
-         // Запоминаем начальную яркость каждой лампы
-        foreach(Light l in lightsToFlicker)
+        foreach (Light l in lightsToFlicker)
+            initialIntensities.Add(l ? l.intensity : 0);
+
+        if (globalVolume != null)
         {
-            if(l != null)
-            {
-                initialIntensities.Add(l.intensity); // Запоминаем ИНТЕНСИВНОСТЬ
-            }
-            else
-            {
-                initialIntensities.Add(0); // Добавляем заглушку, если лампа null
-            }
+            globalVolume.profile.TryGet(out chromatic);
+            globalVolume.profile.TryGet(out vignette);
+            globalVolume.profile.TryGet(out grain);
+            globalVolume.profile.TryGet(out lensDistortion);
         }
     }
 
-    // Главная корутина, управляющая всей последовательностью мигания
-    // Вызывается из QuestManager
+    /// <summary>
+    /// Запуск последовательности мигания света.
+    /// </summary>
     public IEnumerator FlickerSequence(System.Action onCompleteCallback)
     {
-        if (lightsToFlicker.Count == 0) 
+        if (isSequenceRunning) yield break;
+        isSequenceRunning = true;
+
+        Debug.Log("🎬 Начинается сцена мигания света...");
+
+        float timer = 0f;
+
+        while (timer < totalFlickerTime)
         {
-            Debug.LogWarning("Нет ламп для мигания!");
-            onCompleteCallback?.Invoke(); // Все равно вызываем коллбэк
-            yield break;
-        }
-        
-        // Сначала выключаем все
-        foreach (Light l in lightsToFlicker) { if(l) l.enabled = false; }
-        yield return new WaitForSeconds(0.5f); // Пауза перед началом
+            float t = timer / totalFlickerTime;
+            float tension = tensionCurve.Evaluate(t);
+            float freq = Mathf.Lerp(1f, maxFlickerFrequency, tension);
+            float interval = 1f / freq;
 
-        float currentDelay = initialDelay;
-        int lightsPerStage = Mathf.CeilToInt((float)lightsToFlicker.Count / stages);
+            // Меняем свет
+            for (int i = 0; i < lightsToFlicker.Count; i++)
+            {
+                Light l = lightsToFlicker[i];
+                if (l == null) continue;
 
-        Debug.Log("Начинается последовательность мигания...");
+                float baseIntensity = initialIntensities[i];
+                l.intensity = baseIntensity * Random.Range(minIntensityFactor, 1f);
+                l.enabled = Random.value > 0.2f;
+            }
 
-        // Этап 1: Мигает одна лампа (первая в списке)
-        if (lightsToFlicker.Count > 0 && lightsToFlicker[0] != null)
-        {
-            Debug.Log("Этап 1: Мигает одна лампа");
-            yield return FlickerLights(new List<Light>() { lightsToFlicker[0] }, currentDelay, 5); // Мигнет 5 раз
-            currentDelay = Mathf.Max(minDelay, currentDelay - acceleration * 5);
-        }
+            // Пульсация постпроцессинга
+            if (enableEffectPulse && globalVolume != null)
+                PulsePostEffects(tension);
 
-        // Этап 2: Мигает несколько ламп
-        if (stages > 1 && lightsToFlicker.Count > 1)
-        {
-            Debug.Log("Этап 2: Мигает несколько ламп");
-            int count = Mathf.Min(lightsToFlicker.Count, lightsPerStage * (stages > 2 ? 1 : 2));
-            List<Light> stage2Lights = lightsToFlicker.GetRange(0, count);
-            yield return FlickerLights(stage2Lights, currentDelay, 8); // Мигнет 8 раз
-            currentDelay = Mathf.Max(minDelay, currentDelay - acceleration * 8);
-        }
-
-        // Этап 3: Мигают все лампы, ускоряясь
-        Debug.Log("Этап 3: Мигают все лампы, ускоряясь");
-        while (currentDelay > minDelay)
-        {
-            yield return FlickerLights(lightsToFlicker, currentDelay, 1); // Мигнет 1 раз
-            currentDelay = Mathf.Max(minDelay, currentDelay - acceleration);
+            yield return new WaitForSeconds(interval);
+            timer += interval;
         }
 
-        // Финальное быстрое мигание
-        Debug.Log("Финальное мигание");
-        yield return FlickerLights(lightsToFlicker, minDelay, 15); // Мигнет 15 раз очень быстро
+        Debug.Log("🎬 Мигание завершено.");
 
-        Debug.Log("Последовательность мигания завершена.");
-        // Восстанавливаем свет
+        // Проверяем состояние квеста (если панель не починена — смерть)
+        QuestManager qm = QuestManager.instance;
+        if (qm != null && qm.currentQuest != null)
+        {
+            QuestObjective obj = qm.currentQuest.GetCurrentObjective();
+            if (obj != null && obj.targetID.ToLower() == "panel" && !obj.isComplete)
+            {
+                Debug.Log("💀 Игрок не успел — скример и Game Over.");
+                qm.StartCoroutine(qm.TriggerUmbrellaManDeath());
+                yield break;
+            }
+        }
+
         TurnOnAllLights();
+        ResetPostEffects();
 
-        // Вызываем коллбэк (например, запуск Квеста 3)
+        isSequenceRunning = false;
         onCompleteCallback?.Invoke();
     }
 
-    // Вспомогательная корутина, которая заставляет мигать указанные лампы
-    IEnumerator FlickerLights(List<Light> lights, float delay, int count)
+    /// <summary>
+    /// Пульсирует интенсивность эффектов в зависимости от напряжения.
+    /// </summary>
+    private void PulsePostEffects(float tension)
     {
-        for (int i = 0; i < count; i++)
-        {
-            // Включаем
-            foreach (Light l in lights) { if(l) l.enabled = true; }
-            yield return new WaitForSeconds(delay / 2);
-            // Выключаем
-            foreach (Light l in lights) { if(l) l.enabled = false; }
-            yield return new WaitForSeconds(delay / 2);
-        }
+        float pulse = Mathf.Abs(Mathf.Sin(Time.time * effectPulseSpeed * Mathf.Lerp(1f, 3f, tension)));
+
+        if (chromatic != null)
+            chromatic.intensity.value = Mathf.Lerp(0f, chromaticMax, pulse);
+        if (vignette != null)
+            vignette.intensity.value = Mathf.Lerp(0f, vignetteMax, pulse);
+        if (grain != null)
+            grain.intensity.value = Mathf.Lerp(0f, grainMax, pulse);
+        if (lensDistortion != null)
+            lensDistortion.intensity.value = Mathf.Lerp(0f, lensDistortionMax, pulse);
     }
 
-     // --- Публичные методы для QuestManager ---
+    /// <summary>
+    /// Возвращает эффекты к нормальному состоянию.
+    /// </summary>
+    public void ResetPostEffects()
+    {
+        if (chromatic != null) chromatic.intensity.value = 0f;
+        if (vignette != null) vignette.intensity.value = 0f;
+        if (grain != null) grain.intensity.value = 0f;
+        if (lensDistortion != null) lensDistortion.intensity.value = 0f;
+    }
 
-     // Включить весь свет (восстановить)
-     public void TurnOnAllLights()
-     {
-         for (int i = 0; i < lightsToFlicker.Count; i++)
-         {
-             if(lightsToFlicker[i]) 
-             {
-                 lightsToFlicker[i].enabled = true;
-                 lightsToFlicker[i].intensity = initialIntensities[i]; // Восстанавливаем яркость
-             }
-         }
-         Debug.Log("Весь свет включен.");
-     }
+    /// <summary>
+    /// Включает все лампы с нормальной яркостью.
+    /// </summary>
+    public void TurnOnAllLights()
+    {
+        for (int i = 0; i < lightsToFlicker.Count; i++)
+        {
+            if (lightsToFlicker[i])
+            {
+                lightsToFlicker[i].enabled = true;
+                lightsToFlicker[i].intensity = initialIntensities[i];
+            }
+        }
+        ResetPostEffects();
+        Debug.Log("💡 Свет восстановлен.");
+    }
 
-     // Выключить весь свет (для успеха QTE)
-     public void TurnOffAllLights()
-     {
-         foreach (Light l in lightsToFlicker)
-         {
-             if(l) l.enabled = false;
-         }
-         Debug.Log("Весь свет выключен.");
-     }
+    /// <summary>
+    /// Полное отключение света.
+    /// </summary>
+    public void TurnOffAllLights()
+    {
+        foreach (Light l in lightsToFlicker)
+        {
+            if (l) l.enabled = false;
+        }
+        ResetPostEffects();
+        Debug.Log("💡 Свет полностью выключен.");
+    }
 
-     // Включить свет на максимум (для провала QTE)
-     public void MaxOutLights()
-     {
-          for (int i = 0; i < lightsToFlicker.Count; i++)
-         {
-             if(lightsToFlicker[i]) 
-             {
-                 lightsToFlicker[i].enabled = true;
-                 lightsToFlicker[i].intensity = initialIntensities[i] * 3; // Утроить яркость
-             }
-         }
-         Debug.Log("Свет на максимум!");
-     }
+    /// <summary>
+    /// Максимальная вспышка света (в пике скримера или провала QTE).
+    /// </summary>
+    public void MaxOutLights()
+    {
+        for (int i = 0; i < lightsToFlicker.Count; i++)
+        {
+            if (lightsToFlicker[i])
+            {
+                lightsToFlicker[i].enabled = true;
+                lightsToFlicker[i].intensity = initialIntensities[i] * maxLightMultiplier;
+            }
+        }
+
+        if (chromatic != null) chromatic.intensity.value = chromaticMax;
+        if (vignette != null) vignette.intensity.value = vignetteMax;
+        if (grain != null) grain.intensity.value = grainMax;
+        if (lensDistortion != null) lensDistortion.intensity.value = lensDistortionMax;
+
+        Debug.Log("⚡ Свет достиг максимума — пик ужаса.");
+    }
 }

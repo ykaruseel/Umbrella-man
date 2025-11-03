@@ -1,48 +1,48 @@
-// Файл: QuestManager.cs (ЧИСТАЯ ВЕРСИЯ)
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using FMODUnity; // Можешь закомментировать, если нет FMOD
+using FMODUnity;
 
 public class QuestManager : MonoBehaviour
 {
     public static QuestManager instance;
-    public QuestUI questUI; // Поле для "Лица" (QuestPanel)
+
+    [Header("Quest System")]
+    public QuestUI questUI;
     public Quest currentQuest;
     public Quest firstQuest;
 
-    [Header("Системные ссылки")]
+    [Header("Gameplay References")]
     public LightFlickerController lightController;
-    public QTESystem qteSystem;
     public PlayerController playerController;
+    public QTESystem qteSystem;
     public GameObject gameOverUI;
-    public EventReference knockSound;
-    
-    [Header("Заглушки")]
+
+    [Header("Umbrella Man")]
     public GameObject umbrellaManNear;
     public GameObject umbrellaManFar;
-    
+
+    [Header("FMOD Events")]
+    [SerializeField] private EventReference knockSound;
+    [SerializeField] private EventReference questCompleteSFX;
+    [SerializeField] private EventReference musicEvent;
+
+    private FMOD.Studio.EventInstance musicInstance;
+    private FMOD.Studio.PARAMETER_ID musicParamID;
+
     private Dictionary<string, bool> placedItems = new Dictionary<string, bool>();
 
     void Awake()
     {
-        // Настройка Singleton
         if (instance == null)
-        {
             instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return; // Важно: выходим, если мы дубликат
-        }
+        else { Destroy(gameObject); return; }
 
-        // "Костыль": если мы ЗАБЫЛИ перетащить QuestUI в инспектор, ищем его кодом
-        // Но это сработает, только если QuestPanel ВКЛЮЧЕНА при старте
         if (questUI == null)
         {
             questUI = FindObjectOfType<QuestUI>();
             if (questUI == null)
-                Debug.LogError("FATAL: QuestManager не смог найти QuestUI в сцене!");
+                Debug.LogError("QuestManager не нашёл QuestUI в сцене!");
         }
     }
 
@@ -52,177 +52,214 @@ public class QuestManager : MonoBehaviour
         if (umbrellaManFar) umbrellaManFar.SetActive(false);
         if (gameOverUI) gameOverUI.SetActive(false);
 
+        InitMusic();
+
         if (firstQuest != null)
-        {
             StartQuest(firstQuest);
-        } else {
+        else
             Debug.LogError("Первый квест не назначен в QuestManager!");
+    }
+
+    private void InitMusic()
+    {
+        if (!musicEvent.IsNull)
+        {
+            musicInstance = RuntimeManager.CreateInstance(musicEvent);
+            musicInstance.start();
+
+            FMOD.Studio.EventDescription desc;
+            musicInstance.getDescription(out desc);
+            FMOD.Studio.PARAMETER_DESCRIPTION paramDesc;
+            desc.getParameterDescriptionByName("MusicSwitch", out paramDesc);
+            musicParamID = paramDesc.id;
+
+            SetMusicSection(0f); // A
+            Debug.Log("🎵 Музыка: секция A");
         }
     }
 
     public void StartQuest(Quest questToStart)
     {
         if (questToStart == null) return;
-        if (questUI == null)
-        {
-            Debug.LogError("QuestManager не может запустить квест: ссылка на questUI ПУСТАЯ!");
-            return;
-        }
 
         currentQuest = questToStart;
         currentQuest.isComplete = false;
         currentQuest.currentObjectiveIndex = 0;
-        
-        foreach(var obj in currentQuest.objectives)
+
+        foreach (var obj in currentQuest.objectives)
         {
             obj.currentAmount = 0;
             obj.isComplete = false;
         }
 
         placedItems.Clear();
-
+        questUI.ShowQuestUpdate(currentQuest);
         Debug.Log("Начат квест: " + questToStart.questTitle);
-        questUI.ShowQuestUpdate(currentQuest); // <-- Здесь была ошибка NullReference
     }
 
-    // ИСПРАВЛЕННАЯ ВЕРСИЯ (только ОДНА)
-    public void UpdateQuestProgress(string itemID_or_TargetID, ObjectiveType type)
+    public void UpdateQuestProgress(string targetID, ObjectiveType type)
     {
         if (currentQuest == null || currentQuest.isComplete) return;
-
         QuestObjective objective = currentQuest.GetCurrentObjective();
         if (objective == null || objective.isComplete) return;
 
-        // --- ЛОГИКА ДЛЯ КВЕСТА 1 ("PlaceStuff 0/4") ---
+        // Квест 1: сбор предметов
         if (objective.objectiveType == ObjectiveType.Place && objective.targetID == "PlaceStuff")
         {
-            if (!placedItems.ContainsKey(itemID_or_TargetID))
+            if (!placedItems.ContainsKey(targetID))
             {
-                placedItems.Add(itemID_or_TargetID, true); 
-                objective.currentAmount = placedItems.Count; 
-                
-                Debug.Log($"Предмет {itemID_or_TargetID} поставлен. Прогресс: {objective.currentAmount}/{objective.requiredAmount}");
-                
-                questUI.ShowQuestUpdate(currentQuest); // <-- Здесь была ошибка NullReference
+                placedItems.Add(targetID, true);
+                objective.currentAmount = placedItems.Count;
+                questUI.ShowQuestUpdate(currentQuest);
 
                 if (objective.currentAmount >= objective.requiredAmount)
-                {
                     CompleteCurrentObjective();
-                }
             }
         }
-        // --- ЛОГИКА ДЛЯ КВЕСТА 2 и 3 ("Door", "Panel") ---
-        else if (objective.objectiveType == ObjectiveType.Interact && objective.targetID == itemID_or_TargetID)
+        // Квест 2–3: взаимодействие
+        else if (objective.objectiveType == ObjectiveType.Interact && objective.targetID == targetID)
         {
-             Debug.Log($"Взаимодействие с {itemID_or_TargetID} засчитано.");
-             CompleteCurrentObjective();
+            CompleteCurrentObjective();
         }
     }
 
     void CompleteCurrentObjective()
     {
-         if (currentQuest == null) return;
-         QuestObjective objective = currentQuest.GetCurrentObjective();
-         if(objective != null)
-         {
-            Debug.Log("Выполнена цель: " + objective.objectiveDescription);
+        QuestObjective objective = currentQuest.GetCurrentObjective();
+        if (objective != null)
+        {
+            objective.isComplete = true;
             currentQuest.CompleteObjective();
-         }
+        }
 
         if (currentQuest.CheckObjectives())
-        {
             CompleteQuest(currentQuest);
-        }
         else
-        {
-             questUI.ShowQuestUpdate(currentQuest);
-        }
+            questUI.ShowQuestUpdate(currentQuest);
     }
 
     void CompleteQuest(Quest completedQuest)
     {
-        Debug.Log("КВЕСТ ВЫПОЛНЕН: " + completedQuest.questTitle);
-        questUI.ShowQuestCompleted(completedQuest); 
+        questUI.ShowQuestCompleted(completedQuest);
+        if (!questCompleteSFX.IsNull)
+            RuntimeManager.PlayOneShot(questCompleteSFX);
 
         TriggerQuestEvent(completedQuest.questID);
 
         if (completedQuest.nextQuest != null)
-        {
-             Invoke("StartNextQuest", 4f);
-        }
+            Invoke(nameof(StartNextQuest), 4f);
         else
+            currentQuest = null;
+    }
+
+    void StartNextQuest()
+    {
+        if (currentQuest != null && currentQuest.nextQuest != null)
+            StartQuest(currentQuest.nextQuest);
+    }
+
+    void TriggerQuestEvent(string questID)
+    {
+        switch (questID)
         {
-             currentQuest = null;
+            case "Quest1_Placement":
+                if (!knockSound.IsNull)
+                    RuntimeManager.PlayOneShot(knockSound);
+                SetMusicSection(1f); // B
+                break;
+
+            case "Quest2_Door":
+                StartCoroutine(HandleLightAndMusicSequence());
+                break;
+
+            case "Quest3_Panel":
+                if (qteSystem != null)
+                    qteSystem.StartQTE(3f, KeyCode.E, OnQTESuccess, OnQTEFailure);
+                break;
         }
     }
 
-     void StartNextQuest()
-     {
-         if (currentQuest != null && currentQuest.nextQuest != null)
-         {
-             StartQuest(currentQuest.nextQuest);
-         }
-     }
-
-     void TriggerQuestEvent(string questID)
-     {
-         switch (questID)
-         {
-             case "Quest1_Placement":
-                 // Играем звук стука
-                 if(!knockSound.IsNull) RuntimeManager.PlayOneShot(knockSound);
-                 Debug.Log("Играет звук стука...");
-                 break;
-
-             case "Quest2_Door":
-                 Debug.Log("Попытка запустить мигание света..."); // Лог
-
-                 if (lightController != null) 
-                 {
-                     // Передаем StartNextQuest (чтобы запустить Квест 3)
-                     StartCoroutine(lightController.FlickerSequence(StartNextQuest)); 
-                 }
-                 else 
-                 {
-                     Debug.LogError("LightFlickerController не назначен!");
-                     StartNextQuest(); 
-                 }
-                 break;
-
-             case "Quest3_Panel":
-                 // Запускаем QTE
-                 Debug.Log("Запуск QTE...");
-                 if (qteSystem != null)
-                 {
-                     qteSystem.StartQTE(3f, KeyCode.E, OnQTESuccess, OnQTEFailure);
-                 } else { Debug.LogError("QTESystem не назначен!"); }
-                 break;
-         }
-     }
-    
-    void StartQuest3() { }
-
-    void OnQTESuccess()
+    // --- Мигание света + музыка ---
+    private IEnumerator HandleLightAndMusicSequence()
     {
-        Debug.Log("QTE Успех!");
-        if(lightController) lightController.TurnOffAllLights();
-        if(umbrellaManFar) umbrellaManFar.SetActive(true);
-        if(playerController) playerController.enabled = false; 
+        SetMusicSection(2f); // C
+        Debug.Log("🎵 Музыка: секция C — начало мигания");
+
+        if (lightController)
+            StartCoroutine(lightController.FlickerSequence(null));
+
+        // Секция C играет дольше — 8 секунд
+        yield return new WaitForSeconds(6f);
+
+        // Переключаемся на секцию D — пик напряжения
+        SetMusicSection(3f);
+        Debug.Log("🎵 Музыка: секция D — пик напряжения (ожидание)");
+
+        // Ждём 8 секунд на секции D перед появлением монстра
+        yield return new WaitForSeconds(12f);
+
+        // После этого появляется монстр и Game Over
+        StartCoroutine(TriggerUmbrellaManDeath());
     }
 
-    void OnQTEFailure()
+
+    // --- Скример и моментальный Game Over ---
+    public IEnumerator TriggerUmbrellaManDeath()
     {
-        Debug.Log("QTE Провал!");
-        if(lightController) lightController.MaxOutLights();
-        if(umbrellaManNear) StartCoroutine(ShowUmbrellaManNearBriefly(1f));
-        if(gameOverUI) gameOverUI.SetActive(true);
-        if(playerController) playerController.enabled = false;
+        Debug.Log("💀 Появляется человек с зонтом");
+
+        if (lightController) lightController.MaxOutLights();
+        yield return new WaitForSeconds(0.3f);
+
+        if (umbrellaManNear != null) umbrellaManNear.SetActive(true);
+
+        // Мгновенно включаем Game Over экран
+        if (gameOverUI != null)
+        {
+            gameOverUI.SetActive(true);
+            CanvasGroup cg = gameOverUI.GetComponent<CanvasGroup>();
+            if (cg == null) cg = gameOverUI.AddComponent<CanvasGroup>();
+            cg.alpha = 0f;
+
+            float t = 0f;
+            float duration = 1.5f;
+            while (t < duration)
+            {
+                cg.alpha = Mathf.Lerp(0f, 1f, t / duration);
+                t += Time.deltaTime;
+                yield return null;
+            }
+            cg.alpha = 1f;
+        }
+
+        // Свет полностью гаснет
+        if (lightController) lightController.TurnOffAllLights();
+        if (playerController) playerController.enabled = false;
+
+        // Через пару секунд — возвращаем музыку в секцию A
+        yield return new WaitForSeconds(2f);
+        SetMusicSection(0f);
+        Debug.Log("🎵 Музыка: секция A — после Game Over");
     }
 
-     System.Collections.IEnumerator ShowUmbrellaManNearBriefly(float duration)
-     {
-         umbrellaManNear.SetActive(true);
-         yield return new WaitForSeconds(duration);
-         umbrellaManNear.SetActive(false);
-     }
+    // --- QTE успех (на будущее) ---
+    public void OnQTESuccess()
+    {
+        Debug.Log("✅ QTE Успех — игрок спасся");
+        if (lightController) lightController.TurnOffAllLights();
+        if (umbrellaManFar) umbrellaManFar.SetActive(true);
+        if (playerController) playerController.LockMovementButAllowLook();
+    }
+
+    public void OnQTEFailure()
+    {
+        Debug.Log("❌ QTE Провал — скример");
+        StartCoroutine(TriggerUmbrellaManDeath());
+    }
+
+    private void SetMusicSection(float value)
+    {
+        if (musicInstance.isValid())
+            musicInstance.setParameterByID(musicParamID, value);
+    }
 }
