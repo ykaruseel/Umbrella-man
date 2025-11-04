@@ -162,12 +162,13 @@ MonoBehaviour:
   - {fileID: 3249106965749413924}
   - {fileID: 3937043500915486023}
   - {fileID: -8606886389135041407}
+  - {fileID: 7219568635252318342}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8700398147420201416}
   StringsBanks:
   - {fileID: 752984927737422183}
-  cacheTime: 638977939607600877
+  cacheTime: 638978446659928408
   cacheVersion: 131632
 --- !u!114 &752984927737422183
 MonoBehaviour:
@@ -184,10 +185,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638977939607600877
+  lastModified: 638978446659928408
   FileSizes:
   - Name: Desktop
-    Value: 1208
+    Value: 1248
   Exists: 1
 --- !u!114 &3249106965749413924
 MonoBehaviour:
@@ -271,6 +272,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &7219568635252318342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/jumpscare
+  m_EditorClassIdentifier: 
+  Path: event:/jumpscare
+  Guid:
+    Data1: -819297121
+    Data2: 1328302791
+    Data3: 1311895942
+    Data4: 571266060
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 5000
 --- !u!114 &8240195930974508339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,10 +365,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638977939607580654
+  lastModified: 638978446659903301
   FileSizes:
   - Name: Desktop
-    Value: 3713984
+    Value: 3776544
   Exists: 1
 --- !u!114 &8823139062609224079
 MonoBehaviour:

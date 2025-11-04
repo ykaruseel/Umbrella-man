@@ -1,3 +1,5 @@
+// Assets/Scripts/Quest/QuestManager.cs
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,10 +29,18 @@ public class QuestManager : MonoBehaviour
     [SerializeField] private EventReference questCompleteSFX;
     [SerializeField] private EventReference musicEvent;
 
+    [Header("FMOD Screamer")]
+    [SerializeField] private EventReference screamerSFX; // Назначь в инспекторе
+    [SerializeField] private bool allowScreamerReplay = false; // Почему: иногда скример нужен только 1 раз
+
     private FMOD.Studio.EventInstance musicInstance;
     private FMOD.Studio.PARAMETER_ID musicParamID;
 
     private Dictionary<string, bool> placedItems = new Dictionary<string, bool>();
+
+    // Гард от повторных смертей/скримеров
+    private bool umbrellaDeathTriggered = false;
+    private bool screamerPlayed = false;
 
     void Awake()
     {
@@ -58,6 +68,16 @@ public class QuestManager : MonoBehaviour
             StartQuest(firstQuest);
         else
             Debug.LogError("Первый квест не назначен в QuestManager!");
+    }
+
+    void OnDestroy()
+    {
+        // Почему: освобождение FMOD-ресурсов при выгрузке сцены
+        if (musicInstance.isValid())
+        {
+            musicInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            musicInstance.release();
+        }
     }
 
     private void InitMusic()
@@ -188,30 +208,38 @@ public class QuestManager : MonoBehaviour
         if (lightController)
             StartCoroutine(lightController.FlickerSequence(null));
 
-        // Секция C играет дольше — 8 секунд
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(5f);
 
-        // Переключаемся на секцию D — пик напряжения
-        SetMusicSection(3f);
+        SetMusicSection(3f); // D
         Debug.Log("🎵 Музыка: секция D — пик напряжения (ожидание)");
 
-        // Ждём 8 секунд на секции D перед появлением монстра
-        yield return new WaitForSeconds(12f);
+        yield return new WaitForSeconds(10f);
 
-        // После этого появляется монстр и Game Over
         StartCoroutine(TriggerUmbrellaManDeath());
     }
-
 
     // --- Скример и моментальный Game Over ---
     public IEnumerator TriggerUmbrellaManDeath()
     {
+        if (umbrellaDeathTriggered) yield break; // Почему: защита от дубля
+        umbrellaDeathTriggered = true;
+
         Debug.Log("💀 Появляется человек с зонтом");
 
         if (lightController) lightController.MaxOutLights();
         yield return new WaitForSeconds(0.3f);
 
-        if (umbrellaManNear != null) umbrellaManNear.SetActive(true);
+        if (umbrellaManNear != null)
+        {
+            umbrellaManNear.SetActive(true);
+            // Сразу запускаем 3D-скример на позиции манекена
+            PlayScreamer3D(umbrellaManNear.transform);
+        }
+        else
+        {
+            // Фолбэк: без позиционирования
+            PlayScreamer3D(null);
+        }
 
         // Мгновенно включаем Game Over экран
         if (gameOverUI != null)
@@ -222,7 +250,7 @@ public class QuestManager : MonoBehaviour
             cg.alpha = 0f;
 
             float t = 0f;
-            float duration = 1.5f;
+            const float duration = 1.5f;
             while (t < duration)
             {
                 cg.alpha = Mathf.Lerp(0f, 1f, t / duration);
@@ -232,12 +260,10 @@ public class QuestManager : MonoBehaviour
             cg.alpha = 1f;
         }
 
-        // Свет полностью гаснет
         if (lightController) lightController.TurnOffAllLights();
         if (playerController) playerController.enabled = false;
 
-        // Через пару секунд — возвращаем музыку в секцию A
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         SetMusicSection(0f);
         Debug.Log("🎵 Музыка: секция A — после Game Over");
     }
@@ -262,4 +288,28 @@ public class QuestManager : MonoBehaviour
         if (musicInstance.isValid())
             musicInstance.setParameterByID(musicParamID, value);
     }
+
+    private void PlayScreamer3D(Transform at)
+    {
+        if (screamerSFX.IsNull)
+        {
+            Debug.LogWarning("[QuestManager] Screamer SFX не назначен.");
+            return;
+        }
+
+        if (!allowScreamerReplay && screamerPlayed) return;
+
+        if (at != null && at.gameObject != null)
+        {
+            // Почему: звук «прилипает» к объекту и корректно позиционируется в 3D
+            RuntimeManager.PlayOneShotAttached(screamerSFX, at.gameObject);
+        }
+        else
+        {
+            RuntimeManager.PlayOneShot(screamerSFX);
+        }
+
+        screamerPlayed = true;
+    }
 }
+
