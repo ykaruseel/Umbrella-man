@@ -704,6 +704,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &723458829
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 55f09235c44564c919472922440b0f35,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -12.35
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 55f09235c44564c919472922440b0f35,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.482242
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 55f09235c44564c919472922440b0f35,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -18.14
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 55f09235c44564c919472922440b0f35,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 55f09235c44564c919472922440b0f35,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 55f09235c44564c919472922440b0f35,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 55f09235c44564c919472922440b0f35,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 55f09235c44564c919472922440b0f35,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 55f09235c44564c919472922440b0f35,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 55f09235c44564c919472922440b0f35,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 55f09235c44564c919472922440b0f35,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 052cc281a57242b41a4dd31aaa591f31, type: 2}
+    - target: {fileID: 919132149155446097, guid: 55f09235c44564c919472922440b0f35,
+        type: 3}
+      propertyPath: m_Name
+      value: kanapa
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 55f09235c44564c919472922440b0f35, type: 3}
 --- !u!1 &748041220
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,7 +812,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f651192e54830c940b1703cedb4bb14f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCam: {fileID: 1232787632}
   walkSpeed: 3
   runSpeed: 5
   jumpPower: 0
@@ -747,14 +819,30 @@ MonoBehaviour:
   lookSpeed: 2
   lookXLimit: 75
   cameraRotationSmooth: 5
-  woodFootstepSounds: []
-  tileFootstepSounds: []
-  carpetFootstepSounds: []
-  footstepAudioPosition: {fileID: 748041226}
-  audioSource: {fileID: 748041227}
-  ZoomFOV: 50
-  initialFOV: 80
-  cameraZoomSmooth: 1
+  playerCam: {fileID: 1232787632}
+  interactionDistance: 3
+  interactionLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  footstepEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  walkStepInterval: 0.5
+  runStepInterval: 0.3
+  ambientEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  virtualCam: {fileID: 0}
+  dialogueZoomFOV: 40
+  dialogueZoomSpeed: 2
 --- !u!143 &748041222
 CharacterController:
   m_ObjectHideFlags: 0
@@ -983,10 +1071,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 1232787632}
   holdPoint: {fileID: 1978179534}
-  pickupDistance: 3
-  pickupLayerMask:
+  interactionDistance: 3
+  interactionLayerMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 0
+  pickupEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  dropEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,9 +1167,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e837ec0187ce8814f9d0628dc8a84fa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogueUI: {fileID: 0}
   speakerNameText: {fileID: 557160726}
   dialogueText: {fileID: 1593530832}
-  dialogueBox: {fileID: 1737700173}
+  typingSpeed: 0.03
 --- !u!4 &988721908
 Transform:
   m_ObjectHideFlags: 0
@@ -1970,3 +2073,4 @@ SceneRoots:
   - {fileID: 1731813575}
   - {fileID: 286890616}
   - {fileID: 988721908}
+  - {fileID: 723458829}
