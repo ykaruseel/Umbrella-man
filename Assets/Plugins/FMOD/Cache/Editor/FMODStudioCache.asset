@@ -26,7 +26,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 2000
+  Length: 4250
 --- !u!114 &-7938278677619134801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,13 +163,43 @@ MonoBehaviour:
   - {fileID: 3937043500915486023}
   - {fileID: -8606886389135041407}
   - {fileID: 7219568635252318342}
+  - {fileID: 7986049578393855909}
+  - {fileID: 4973286940958925654}
+  - {fileID: 633512588349238002}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8700398147420201416}
   StringsBanks:
   - {fileID: 752984927737422183}
-  cacheTime: 638978634741760025
+  cacheTime: 638982965630137516
   cacheVersion: 131632
+--- !u!114 &633512588349238002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/light_on
+  m_EditorClassIdentifier: 
+  Path: event:/light_on
+  Guid:
+    Data1: -113876769
+    Data2: 1189421630
+    Data3: -1374099295
+    Data4: -87091086
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 614
 --- !u!114 &752984927737422183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,10 +215,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638978634741760025
+  lastModified: 638982965630137516
   FileSizes:
   - Name: Desktop
-    Value: 1248
+    Value: 1390
   Exists: 1
 --- !u!114 &3249106965749413924
 MonoBehaviour:
@@ -238,12 +268,39 @@ MonoBehaviour:
   Banks:
   - {fileID: 8700398147420201416}
   IsStream: 0
-  Is3D: 1
+  Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 2000
+  Length: 6000
+--- !u!114 &4973286940958925654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/light_off
+  m_EditorClassIdentifier: 
+  Path: event:/light_off
+  Guid:
+    Data1: -2038430794
+    Data2: 1120676929
+    Data3: 281023675
+    Data4: 1198192120
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 616
 --- !u!114 &5650050608528233295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,6 +356,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 5000
+--- !u!114 &7986049578393855909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/light_pulse
+  m_EditorClassIdentifier: 
+  Path: event:/light_pulse
+  Guid:
+    Data1: -17885544
+    Data2: 1159110524
+    Data3: -1140916298
+    Data4: 1231805708
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 16870
 --- !u!114 &8240195930974508339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,10 +449,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638978634741744773
+  lastModified: 638982965630112285
   FileSizes:
   - Name: Desktop
-    Value: 3776544
+    Value: 4467360
   Exists: 1
 --- !u!114 &8823139062609224079
 MonoBehaviour:
