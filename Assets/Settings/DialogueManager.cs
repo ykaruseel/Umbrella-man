@@ -1,130 +1,117 @@
-
-using System.Collections;
-using System.Collections.Generic;
+// 📁 Assets/ScriptsAll/DialogueManager.cs
 using UnityEngine;
 using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 
 public class DialogueManager : MonoBehaviour
 {
-    // --- Переменные для UI диалога ---
-    public TextMeshProUGUI speakerNameText;
-    public TextMeshProUGUI dialogueText;
-    public GameObject dialogueBox;
+    [Header("UI References")]
+    public GameObject dialogueUI;               // Панель диалога
+    public TextMeshProUGUI speakerNameText;     // Имя персонажа
+    public TextMeshProUGUI dialogueText;        // Реплика
+    public float typingSpeed = 0.03f;           // Скорость "печати" текста
 
-    // --- Переменные для эффекта печати ---
-    [Header("Typewriter Effect")]
-    public float typingSpeed = 0.05f;
-    public Coroutine typingCoroutine;
-    private string currentSentence;
+    private Queue<DialogueLine> sentences = new Queue<DialogueLine>();
+    private bool isTyping = false;
+    private string currentSentence = "";
+    private Coroutine typingCoroutine;
 
-    // --- Системные переменные ---
-    public static bool IsDialogueActive = false;
-    private Queue<DialogueLine> sentences;
+    private bool isDialogueActive = false;
 
-    // --- ДОБАВЛЕНО: Ссылка на Игрока ---
-    private PlayerController playerController; 
+    private PlayerController playerController;
 
     void Start()
     {
-        sentences = new Queue<DialogueLine>();
-        
-        // --- ДОБАВЛЕНО: Находим Игрока ---
+        if (dialogueUI) dialogueUI.SetActive(false);
         playerController = FindObjectOfType<PlayerController>();
-        if (playerController == null)
-            Debug.LogError("DialogueManager не смог найти PlayerController!");
     }
 
-    public void StartDialogue(DialogueLine[] lines)
+    // 🔹 Запуск диалога
+    public void StartDialogue(DialogueLine[] dialogueLines)
     {
-        if (IsDialogueActive) return;
-
-        // --- ДОБАВЛЕНО: Блокируем игрока и зумим ---
-        if (playerController != null)
+        if (dialogueLines == null || dialogueLines.Length == 0)
         {
-            playerController.SetCanMove(false); // Запретить двигаться
-            playerController.SetDialogueZoom(true); // Включить зум
+            Debug.LogWarning("DialogueManager: диалог пуст!");
+            return;
         }
-        // --- КОНЕЦ ДОБАВЛЕННОГО ---
 
-        IsDialogueActive = true;
-        dialogueBox.SetActive(true);
+        isDialogueActive = true;
         sentences.Clear();
 
-        foreach (DialogueLine line in lines)
-        {
+        foreach (DialogueLine line in dialogueLines)
             sentences.Enqueue(line);
-        }
+
+        if (dialogueUI != null)
+            dialogueUI.SetActive(true);
+
         DisplayNextSentence();
     }
 
+    // 🔹 Показ следующей реплики
     public void DisplayNextSentence()
     {
+        if (isTyping)
+        {
+            // Если игрок нажал E во время печати — досвечиваем текст
+            StopCoroutine(typingCoroutine);
+            dialogueText.text = currentSentence;
+            isTyping = false;
+            return;
+        }
+
         if (sentences.Count == 0)
         {
             EndDialogue();
             return;
         }
 
-        DialogueLine currentLine = sentences.Dequeue();
-        speakerNameText.text = currentLine.speakerName;
-        currentSentence = currentLine.sentence;
+        DialogueLine line = sentences.Dequeue();
+        currentSentence = line.sentence;
+        speakerNameText.text = line.speakerName;
 
         if (typingCoroutine != null)
-        {
             StopCoroutine(typingCoroutine);
-        }
+
         typingCoroutine = StartCoroutine(TypeSentence(currentSentence));
     }
 
-    public void EndDialogue()
+    // 🔹 Эффект печати текста
+    private IEnumerator TypeSentence(string sentence)
     {
-        if (!IsDialogueActive) return;
-
-        if (typingCoroutine != null)
-        {
-            StopCoroutine(typingCoroutine);
-            typingCoroutine = null;
-        }
-
-        // --- ДОБАВЛЕНО: Возвращаем управление и зум ---
-        if (playerController != null)
-        {
-            playerController.SetCanMove(true); // Разрешить двигаться
-            playerController.SetDialogueZoom(false); // Выключить зум
-        }
-        // --- КОНЕЦ ДОБАВЛЕННОГО ---
-
-        // --- ЭТО КОД ДЛЯ КВЕСТА 2 (Он должен быть здесь) ---
-        QuestManager qm = QuestManager.instance;
-        QuestObjective objective = qm?.currentQuest?.GetCurrentObjective();
-        if (objective != null && objective.targetID == "door" && objective.objectiveType == ObjectiveType.Interact && !objective.isComplete)
-        {
-            qm.UpdateQuestProgress("door", ObjectiveType.Interact);
-        }
-        // --- КОНЕЦ КОДА КВЕСТА ---
-
-        IsDialogueActive = false;
-        dialogueBox.SetActive(false); 
-    }
-
-    IEnumerator TypeSentence(string sentence)
-    {
+        isTyping = true;
         dialogueText.text = "";
+
         foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
-        typingCoroutine = null;
+
+        isTyping = false;
     }
 
-    public void SkipTyping()
+    // 🔹 Завершение диалога
+    public void EndDialogue()
     {
-        if (typingCoroutine != null)
+        isDialogueActive = false;
+
+        if (dialogueUI != null)
+            dialogueUI.SetActive(false);
+
+        // Возвращаем управление игроку, если оно было заблокировано
+        if (playerController != null)
         {
-            StopCoroutine(typingCoroutine);
-            typingCoroutine = null;
-            dialogueText.text = currentSentence;
+            playerController.SetCanMove(true);
+            playerController.SetDialogueZoom(false);
         }
+
+        Debug.Log("💬 Диалог завершён.");
+    }
+
+    // ✅ Возвращает состояние диалога (для NPC_Dialogue)
+    public bool IsDialogueActive()
+    {
+        return isDialogueActive;
     }
 }

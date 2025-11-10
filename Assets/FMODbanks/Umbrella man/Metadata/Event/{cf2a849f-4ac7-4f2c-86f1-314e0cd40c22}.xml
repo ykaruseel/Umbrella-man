@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="Event" id="{cf2a849f-4ac7-4f2c-86f1-314e0cd40c22}">
+		<property name="name">
+			<value>jumpscare</value>
+		</property>
+		<property name="outputFormat">
+			<value>1</value>
+		</property>
+		<relationship name="folder">
+			<destination>{35a80e89-568f-4a4b-b70d-281ae4eabf68}</destination>
+		</relationship>
+		<relationship name="mixer">
+			<destination>{62d6d375-938a-487e-a9c4-6bc2e9e228e9}</destination>
+		</relationship>
+		<relationship name="masterTrack">
+			<destination>{bfaaab40-7079-4cd6-93cb-0a577e3ea99c}</destination>
+		</relationship>
+		<relationship name="mixerInput">
+			<destination>{a5e1686e-e62a-42d4-9ac8-6b365694cba7}</destination>
+		</relationship>
+		<relationship name="automatableProperties">
+			<destination>{f16620fc-be25-4839-9909-01d14fb267ae}</destination>
+		</relationship>
+		<relationship name="markerTracks">
+			<destination>{17db94b0-e12e-48f3-b501-84e5622a70ac}</destination>
+		</relationship>
+		<relationship name="groupTracks">
+			<destination>{0ced5a79-6605-405f-9de1-1589795439a8}</destination>
+		</relationship>
+		<relationship name="timeline">
+			<destination>{e2e3effe-0fa8-4147-886a-73a46f1e8acb}</destination>
+		</relationship>
+		<relationship name="banks">
+			<destination>{afb022f4-9556-4177-acee-df8549b3cc4b}</destination>
+		</relationship>
+	</object>
+	<object class="EventMixer" id="{62d6d375-938a-487e-a9c4-6bc2e9e228e9}">
+		<relationship name="masterBus">
+			<destination>{8f280eb4-d4b1-41bb-b332-367dc4fbf1fc}</destination>
+		</relationship>
+	</object>
+	<object class="MasterTrack" id="{bfaaab40-7079-4cd6-93cb-0a577e3ea99c}">
+		<relationship name="mixerGroup">
+			<destination>{8f280eb4-d4b1-41bb-b332-367dc4fbf1fc}</destination>
+		</relationship>
+	</object>
+	<object class="MixerInput" id="{a5e1686e-e62a-42d4-9ac8-6b365694cba7}">
+		<relationship name="effectChain">
+			<destination>{96d7ef8c-ec63-4fb6-9db2-acf68646d74a}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{dc9eb5e9-9fb2-4d45-aceb-8f0495366c78}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{65e88003-463d-4792-8a0c-e9369ffcfc54}</destination>
+		</relationship>
+	</object>
+	<object class="EventAutomatableProperties" id="{f16620fc-be25-4839-9909-01d14fb267ae}" />
+	<object class="MarkerTrack" id="{17db94b0-e12e-48f3-b501-84e5622a70ac}" />
+	<object class="GroupTrack" id="{0ced5a79-6605-405f-9de1-1589795439a8}">
+		<relationship name="modules">
+			<destination>{76bb5697-ef84-4af0-af14-16cc4f354cf8}</destination>
+		</relationship>
+		<relationship name="mixerGroup">
+			<destination>{94a2f9fe-2922-4cfa-846f-2b745a26682c}</destination>
+		</relationship>
+	</object>
+	<object class="Timeline" id="{e2e3effe-0fa8-4147-886a-73a46f1e8acb}">
+		<relationship name="modules">
+			<destination>{76bb5697-ef84-4af0-af14-16cc4f354cf8}</destination>
+		</relationship>
+	</object>
+	<object class="EventMixerMaster" id="{8f280eb4-d4b1-41bb-b332-367dc4fbf1fc}">
+		<relationship name="effectChain">
+			<destination>{142b219a-853c-4ff2-b393-fe6628d685a9}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{d07a87fc-237c-46bc-b375-797f4cce3489}</destination>
+		</relationship>
+		<relationship name="mixer">
+			<destination>{62d6d375-938a-487e-a9c4-6bc2e9e228e9}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{96d7ef8c-ec63-4fb6-9db2-acf68646d74a}">
+		<relationship name="effects">
+			<destination>{837b43e5-cf47-4770-ab89-1bdd28f7bdee}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{dc9eb5e9-9fb2-4d45-aceb-8f0495366c78}" />
+	<object class="SingleSound" id="{76bb5697-ef84-4af0-af14-16cc4f354cf8}">
+		<property name="length">
+			<value>5</value>
+		</property>
+		<relationship name="audioFile">
+			<destination>{2caf6d1f-67d6-4e4f-af40-e080d396b4dc}</destination>
+		</relationship>
+	</object>
+	<object class="EventMixerGroup" id="{94a2f9fe-2922-4cfa-846f-2b745a26682c}">
+		<property name="volume">
+			<value>2</value>
+		</property>
+		<property name="name">
+			<value>Audio 1</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{4260b585-d7b5-48ec-8270-fa446007b73f}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{446e662e-45d4-4ff6-9583-ec5a854ca22e}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{8f280eb4-d4b1-41bb-b332-367dc4fbf1fc}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{142b219a-853c-4ff2-b393-fe6628d685a9}">
+		<relationship name="effects">
+			<destination>{bb82b050-95ca-4020-a473-f2b59ac27315}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{d07a87fc-237c-46bc-b375-797f4cce3489}" />
+	<object class="MixerBusFader" id="{837b43e5-cf47-4770-ab89-1bdd28f7bdee}" />
+	<object class="MixerBusEffectChain" id="{4260b585-d7b5-48ec-8270-fa446007b73f}">
+		<relationship name="effects">
+			<destination>{3c61cf80-fd5e-4bd1-be69-905ae91fd2ae}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{446e662e-45d4-4ff6-9583-ec5a854ca22e}" />
+	<object class="MixerBusFader" id="{bb82b050-95ca-4020-a473-f2b59ac27315}" />
+	<object class="MixerBusFader" id="{3c61cf80-fd5e-4bd1-be69-905ae91fd2ae}" />
+</objects>

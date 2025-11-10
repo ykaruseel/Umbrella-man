@@ -2,86 +2,72 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    [Header("References")]
-    public float interactDistance = 3f;
-    public KeyCode interactKey = KeyCode.E;
+    public float interactionDistance = 3f;
+    public LayerMask interactionLayerMask;
+    public Camera playerCamera;
 
-    private NPC_Dialogue currentNPC;
     private DialogueManager dialogueManager;
+    private PlayerController playerController;
 
     void Start()
     {
         dialogueManager = FindObjectOfType<DialogueManager>();
+        playerController = GetComponent<PlayerController>();
     }
 
     void Update()
     {
-        HandleRaycast();
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            HandleInteraction();
+        }
     }
 
-    private void HandleRaycast()
+    void HandleInteraction()
     {
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, interactDistance))
+        // Если диалог активен, не даём взаимодействовать
+        if (dialogueManager != null && IsDialogueActive(dialogueManager))
+            return;
+
+        Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+        if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactionLayerMask))
         {
-            NPC_Dialogue npc = hit.collider.GetComponent<NPC_Dialogue>();
-            if (npc != null)
+            // Проверяем, есть ли на объекте NPC_Dialogue
+            NPC_Dialogue npcDialogue = hit.collider.GetComponent<NPC_Dialogue>();
+            if (npcDialogue != null)
             {
-                if (currentNPC != npc)
-                {
-                    ClearCurrentPrompt();
-                    currentNPC = npc;
-                    if (currentNPC.interactionPrompt != null)
-                        currentNPC.interactionPrompt.SetActive(true);
-                }
-
-                if (Input.GetKeyDown(interactKey))
-                    InteractWithNPC(currentNPC);
-
+                npcDialogue.TriggerDialogue();
                 return;
             }
-        }
 
-        ClearCurrentPrompt();
-    }
-
-    private void InteractWithNPC(NPC_Dialogue npc)
-    {
-        if (dialogueManager == null || npc == null) return;
-
-        PlayerController playerController = GetComponent<PlayerController>();
-
-        if (!DialogueManager.IsDialogueActive)
-        {
-            dialogueManager.StartDialogue(npc.dialogueLines);
-
-            if (playerController != null)
+            // Проверяем, есть ли InteractableObject (например, щиток)
+            InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
+            if (interactable != null)
             {
-                playerController.SetCanMove(false);
-                playerController.SetDialogueZoom(true);
+                interactable.Interact();
+                return;
             }
-        }
-        else
-        {
-            if (dialogueManager.typingCoroutine != null)
-                dialogueManager.SkipTyping();
-            else
-            {
-                dialogueManager.DisplayNextSentence();
 
-                if (!DialogueManager.IsDialogueActive && playerController != null)
+            // Проверяем, можно ли поднять предмет
+            if (hit.collider.CompareTag("Pickable"))
+            {
+                ObjectInteraction objectInteraction = GetComponent<ObjectInteraction>();
+                if (objectInteraction != null)
                 {
-                    playerController.SetCanMove(true);
-                    playerController.SetDialogueZoom(false);
+                    objectInteraction.PickupObject(hit.collider.gameObject);
                 }
             }
         }
     }
 
-    private void ClearCurrentPrompt()
+    private bool IsDialogueActive(DialogueManager manager)
     {
-        if (currentNPC != null && currentNPC.interactionPrompt != null)
-            currentNPC.interactionPrompt.SetActive(false);
-
-        currentNPC = null;
+        // Проверяем, активен ли диалог
+        var field = typeof(DialogueManager).GetField("isDialogueActive", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        if (field != null)
+        {
+            return (bool)field.GetValue(manager);
+        }
+        return false;
     }
 }
