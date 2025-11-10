@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd280b95f275a93458f279c854a818af, type: 3}
-  m_Name: Quest2_Door
+  m_Name: Quest_RepairPanel
   m_EditorClassIdentifier: 
-  questID: door
-  questTitle: Who's there?
+  questID: Quest_RepairPanel
+  questTitle: Repair the panel
   questDescription: 
   objectives:
-  - objectiveDescription: Check the door
+  - objectiveDescription: 
     objectiveType: 1
-    targetID: Door
+    targetID: Panel
     requiredAmount: 0
     currentAmount: 0
-    isComplete: 1
-  isComplete: 1
+    isComplete: 0
+  isComplete: 0
   nextQuest: {fileID: 0}
-  currentObjectiveIndex: 1
+  currentObjectiveIndex: 0

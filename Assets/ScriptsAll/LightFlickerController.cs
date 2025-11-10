@@ -15,6 +15,7 @@ public class LightFlickerController : MonoBehaviour
     public int stages = 3;              // Сколько этапов (1 лампа, несколько, все)
 
     private List<float> initialIntensities = new List<float>(); // Запомним начальную яркость
+    private Coroutine pulsingCoroutine; // Для остановки пульсации
 
     void Start()
     {
@@ -142,5 +143,55 @@ public class LightFlickerController : MonoBehaviour
              }
          }
          Debug.Log("Свет на максимум!");
+     }
+     // --- НОВЫЕ МЕТОДЫ ДЛЯ ПОГОНИ ---
+
+// 1. Вызывается QuestManager'ом, чтобы запустить пульсацию ВСЕХ ламп
+     public void StartPulsingFlicker()
+     {
+         // Выключаем все лампы (если они горели ровно)
+         TurnOffAllLights();
+         // Запускаем корутину пульсации
+         pulsingCoroutine = StartCoroutine(PulsingFlicker());
+     }
+
+// 2. Вызывается QuestManager'ом, чтобы остановить пульсацию
+     public void StopPulsingFlicker()
+     {
+         if (pulsingCoroutine != null)
+         {
+             StopCoroutine(pulsingCoroutine);
+         }
+         // Восстанавливаем нормальный свет (перед QTE)
+         TurnOnAllLights();
+     }
+
+// Корутина "слабой пульсации" (как в PDF)
+     IEnumerator PulsingFlicker()
+     {
+         // Восстанавливаем яркость, но очень низкую
+         for (int i = 0; i < lightsToFlicker.Count; i++)
+         {
+             if(lightsToFlicker[i]) 
+             {
+                 lightsToFlicker[i].enabled = true;
+                 lightsToFlicker[i].intensity = initialIntensities[i] * 0.1f; // 10% яркости
+             }
+         }
+
+         float pulseSpeed = 2f; // Скорость пульсации
+
+         while(true)
+         {
+             // Плавно делаем от 10% до 30% яркости
+             float pulse = 0.1f + Mathf.PingPong(Time.time * pulseSpeed, 0.2f); // 0.1 -> 0.3 -> 0.1
+
+             for (int i = 0; i < lightsToFlicker.Count; i++)
+             {
+                 if(lightsToFlicker[i]) 
+                     lightsToFlicker[i].intensity = initialIntensities[i] * pulse;
+             }
+             yield return null;
+         }
      }
 }
