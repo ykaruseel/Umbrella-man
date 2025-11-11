@@ -5,7 +5,7 @@
 			<value>lester_voice</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{35a80e89-568f-4a4b-b70d-281ae4eabf68}</destination>
@@ -89,11 +89,11 @@
 	</object>
 	<object class="MixerBusPanner" id="{c090e05e-b89b-467d-b4d0-99d9102f3f3e}" />
 	<object class="MultiSound" id="{c1eab20c-b21c-4ee3-8035-adb4d55a877e}">
-		<property name="length">
-			<value>2</value>
-		</property>
-		<property name="looping">
+		<property name="isAsync">
 			<value>true</value>
+		</property>
+		<property name="length">
+			<value>6</value>
 		</property>
 		<property name="playlistMode">
 			<value>1</value>
@@ -128,7 +128,6 @@
 	<object class="MixerBusEffectChain" id="{81266fe9-7640-4781-90c0-d289259b9ac6}">
 		<relationship name="effects">
 			<destination>{7fb2f8b8-955c-4a52-af35-3676a6333779}</destination>
-			<destination>{45ba2622-045f-48a5-bd99-c06077302050}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{b8351b5f-ccdf-4e6b-9cd2-bb2c9f375e05}" />
@@ -175,6 +174,5 @@
 	</object>
 	<object class="MixerBusPanner" id="{cd53c8a3-8816-4cb2-a0b0-b9bdbcd9dfee}" />
 	<object class="MixerBusFader" id="{7fb2f8b8-955c-4a52-af35-3676a6333779}" />
-	<object class="SpatialiserEffect" id="{45ba2622-045f-48a5-bd99-c06077302050}" />
 	<object class="MixerBusFader" id="{5154d3a1-2d0e-411e-afb1-61e892925358}" />
 </objects>

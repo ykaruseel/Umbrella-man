@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8606886389135041407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/daniel_voice
+  m_EditorClassIdentifier: 
+  Path: event:/daniel_voice
+  Guid:
+    Data1: -1656578066
+    Data2: 1094193858
+    Data3: -1836718149
+    Data4: 2116357876
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 4250
 --- !u!114 &-7938278677619134801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,13 +160,46 @@ MonoBehaviour:
   - {fileID: -1402897669585836431}
   - {fileID: -4424279157854719901}
   - {fileID: 3249106965749413924}
+  - {fileID: 3937043500915486023}
+  - {fileID: -8606886389135041407}
+  - {fileID: 7219568635252318342}
+  - {fileID: 7986049578393855909}
+  - {fileID: 4973286940958925654}
+  - {fileID: 633512588349238002}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8700398147420201416}
   StringsBanks:
   - {fileID: 752984927737422183}
-  cacheTime: 638977006959823149
+  cacheTime: 638984611987968009
   cacheVersion: 131632
+--- !u!114 &633512588349238002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/light_on
+  m_EditorClassIdentifier: 
+  Path: event:/light_on
+  Guid:
+    Data1: -113876769
+    Data2: 1189421630
+    Data3: -1374099295
+    Data4: -87091086
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 614
 --- !u!114 &752984927737422183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,10 +215,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638972505766148099
+  lastModified: 638984611987968009
   FileSizes:
   - Name: Desktop
-    Value: 1122
+    Value: 1390
   Exists: 1
 --- !u!114 &3249106965749413924
 MonoBehaviour:
@@ -187,6 +247,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2520
+--- !u!114 &3937043500915486023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/lester_voice
+  m_EditorClassIdentifier: 
+  Path: event:/lester_voice
+  Guid:
+    Data1: 978691019
+    Data2: 1214468558
+    Data3: -2026549598
+    Data4: 1506929119
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 6000
+--- !u!114 &4973286940958925654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/light_off
+  m_EditorClassIdentifier: 
+  Path: event:/light_off
+  Guid:
+    Data1: -2038430794
+    Data2: 1120676929
+    Data3: 281023675
+    Data4: 1198192120
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 616
 --- !u!114 &5650050608528233295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +329,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &7219568635252318342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/jumpscare
+  m_EditorClassIdentifier: 
+  Path: event:/jumpscare
+  Guid:
+    Data1: -819297121
+    Data2: 1328302791
+    Data3: 1311895942
+    Data4: 571266060
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 5000
+--- !u!114 &7986049578393855909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/light_pulse
+  m_EditorClassIdentifier: 
+  Path: event:/light_pulse
+  Guid:
+    Data1: -17885544
+    Data2: 1159110524
+    Data3: -1140916298
+    Data4: 1231805708
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 16870
 --- !u!114 &8240195930974508339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,10 +449,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638977006959823149
+  lastModified: 638984611987968009
   FileSizes:
   - Name: Desktop
-    Value: 2905408
+    Value: 4467360
   Exists: 1
 --- !u!114 &8823139062609224079
 MonoBehaviour:
