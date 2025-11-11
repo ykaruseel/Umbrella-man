@@ -2659,10 +2659,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightsSequence:
-  - {fileID: 235009952}
   - {fileID: 884745873}
   - {fileID: 635959291}
-  - {fileID: 201059101}
+  - {fileID: 2031310956}
   flickerMinDelay: 0.2
   flickerMaxDelay: 0.8
 --- !u!4 &375994150
@@ -3469,7 +3468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 375994149}
-  lightIndex: 2
+  lightIndex: 1
 --- !u!135 &635959294
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4926,7 +4925,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 375994149}
-  lightIndex: 1
+  lightIndex: 0
 --- !u!135 &884745876
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -8908,6 +8907,8 @@ GameObject:
   - component: {fileID: 2031310957}
   - component: {fileID: 2031310956}
   - component: {fileID: 2031310955}
+  - component: {fileID: 2031310959}
+  - component: {fileID: 2031310958}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -9018,6 +9019,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1712083599}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &2031310958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031310954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16d35762090f8844b28dcd984d6ea65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 375994149}
+  lightIndex: 2
+--- !u!135 &2031310959
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031310954}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2033402614
 PrefabInstance:
   m_ObjectHideFlags: 0
