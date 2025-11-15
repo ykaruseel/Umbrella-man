@@ -241,22 +241,22 @@ public class QuestManager : MonoBehaviour
     IEnumerator ChaseSceneSequence()
     {
         Debug.Log("Последняя лампа погасла. Появление!");
-        
+
+        // 1. Показываем UmbrellaMan РЯДОМ (как в PDF)
         if(umbrellaManNear) 
-            umbrellaManNear.SetActive(true);
+            umbrellaManNear.SetActive(true); 
 
-        yield return new WaitForSeconds(2.0f); // Пауза 2 сек
+        // 2. Ждем 1-2 секунды (как в PDF)
+        yield return new WaitForSeconds(2.0f); 
 
-        // Запускаем квест "Почини свет"
+        // 3. Запускаем квест "Почини свет"
         StartQuest(quest_RepairPanel); 
 
-        // Запускаем погоню
-        if(umbrellaManNear) 
-            umbrellaManNear.GetComponent<UmbrellaMan_AI>().StartChase(playerController.transform);
-
-        // Запускаем "пульсацию" ВСЕХ ламп
+        // 4. Запускаем "пульсацию" ВСЕХ ламп (как в PDF)
         if(lightController) 
             lightController.StartPulsingFlicker();
+
+        // 5. МЫ УДАЛИЛИ ЗАПУСК ПОГОНИ (GetComponent<UmbrellaMan_AI>().StartChase)
     }
 
 
