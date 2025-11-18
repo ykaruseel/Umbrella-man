@@ -215,11 +215,15 @@ public class QuestManager : MonoBehaviour
                 Debug.Log("Нажат щиток. Запуск QTE...");
 
                 // Останавливаем погоню
-                if(umbrellaManNear && umbrellaManNear.activeInHierarchy) 
-                    umbrellaManNear.GetComponent<UmbrellaMan_AI>().StopChase();
-                
+                if (umbrellaManNear && umbrellaManNear.activeInHierarchy)
+                {
+                    var chase = umbrellaManNear.GetComponent<UmbrellaManChase>();
+                    if (chase != null)
+                        chase.StopChase();
+                }
+
                 // Останавливаем пульсацию света
-                if(lightController) 
+                if (lightController) 
                     lightController.StopPulsingFlicker();
 
                 // Запускаем QTE
@@ -242,22 +246,26 @@ public class QuestManager : MonoBehaviour
     {
         Debug.Log("Последняя лампа погасла. Появление!");
 
-        // 1. Показываем UmbrellaMan РЯДОМ (как в PDF)
-        if(umbrellaManNear) 
-            umbrellaManNear.SetActive(true); 
+        if (umbrellaManNear)
+            umbrellaManNear.SetActive(true);
 
-        // 2. Ждем 1-2 секунды (как в PDF)
-        yield return new WaitForSeconds(2.0f); 
+        // пауза, чтобы игрок увидел его
+        yield return new WaitForSeconds(2f);
 
-        // 3. Запускаем квест "Почини свет"
-        StartQuest(quest_RepairPanel); 
-
-        // 4. Запускаем "пульсацию" ВСЕХ ламп (как в PDF)
-        if(lightController) 
+        if (lightController)
             lightController.StartPulsingFlicker();
 
-        // 5. МЫ УДАЛИЛИ ЗАПУСК ПОГОНИ (GetComponent<UmbrellaMan_AI>().StartChase)
+        // ← вот это обязательно должно быть
+        if (umbrellaManNear)
+        {
+            var chase = umbrellaManNear.GetComponent<UmbrellaManChase>();
+            if (chase != null)
+                chase.StartChase();
+            else
+                Debug.LogWarning("На umbrellaManNear нет UmbrellaManChase!");
+        }
     }
+
 
 
     // --- НОВЫЕ КОНЦОВКИ QTE ---
