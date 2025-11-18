@@ -110,6 +110,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 96000
+--- !u!114 &-2001575873056593154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/QTE_complete
+  m_EditorClassIdentifier: 
+  Path: event:/QTE_complete
+  Guid:
+    Data1: -452212936
+    Data2: 1195038441
+    Data3: 1501870979
+    Data4: -1244899224
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1581
 --- !u!114 &-1402897669585836431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,9 +147,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/quest
+  m_Name: event:/Quest
   m_EditorClassIdentifier: 
-  Path: event:/quest
+  Path: event:/Quest
   Guid:
     Data1: 982650717
     Data2: 1320511343
@@ -166,12 +193,16 @@ MonoBehaviour:
   - {fileID: 7986049578393855909}
   - {fileID: 4973286940958925654}
   - {fileID: 633512588349238002}
+  - {fileID: 8310224072097018883}
+  - {fileID: 1512720396776843630}
+  - {fileID: -2001575873056593154}
+  - {fileID: 1975088972620090020}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8700398147420201416}
   StringsBanks:
   - {fileID: 752984927737422183}
-  cacheTime: 638990538819691251
+  cacheTime: 638989027628872187
   cacheVersion: 131632
 --- !u!114 &633512588349238002
 MonoBehaviour:
@@ -215,11 +246,65 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638990538819691251
+  lastModified: 638989027628872187
   FileSizes:
   - Name: Desktop
-    Value: 1390
+    Value: 1584
   Exists: 1
+--- !u!114 &1512720396776843630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UM_footsteps
+  m_EditorClassIdentifier: 
+  Path: event:/UM_footsteps
+  Guid:
+    Data1: 799443240
+    Data2: 1182879183
+    Data3: 1945114808
+    Data4: 1431666962
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
+--- !u!114 &1975088972620090020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/QTE_success
+  m_EditorClassIdentifier: 
+  Path: event:/QTE_success
+  Guid:
+    Data1: 1083465206
+    Data2: 1172304315
+    Data3: -22473282
+    Data4: -141364541
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 190
 --- !u!114 &3249106965749413924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,6 +519,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &8310224072097018883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/QTE_failure
+  m_EditorClassIdentifier: 
+  Path: event:/QTE_failure
+  Guid:
+    Data1: -1959875068
+    Data2: 1258997599
+    Data3: 566763660
+    Data4: 79594355
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 320
 --- !u!114 &8700398147420201416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,10 +561,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638990538819686153
+  lastModified: 638989027628842180
   FileSizes:
   - Name: Desktop
-    Value: 4467360
+    Value: 4956448
   Exists: 1
 --- !u!114 &8823139062609224079
 MonoBehaviour:

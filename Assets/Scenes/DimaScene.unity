@@ -670,12 +670,13 @@ MonoBehaviour:
   questUI: {fileID: 1074409326}
   currentQuest: {fileID: 0}
   firstQuest: {fileID: 11400000, guid: 50915153bc506ab4489d737f67ae2089, type: 2}
+  quest_FollowLight: {fileID: 0}
+  quest_RepairPanel: {fileID: 0}
+  followLightController: {fileID: 0}
   lightController: {fileID: 1174915702}
-  playerController: {fileID: 352363890}
   qteSystem: {fileID: 0}
+  playerController: {fileID: 352363890}
   gameOverUI: {fileID: 975848803}
-  umbrellaManNear: {fileID: 529874217}
-  umbrellaManFar: {fileID: 644324580}
   knockSound:
     Guid:
       Data1: 26153199
@@ -683,28 +684,15 @@ MonoBehaviour:
       Data3: -10705483
       Data4: -1040821612
     Path: event:/knocking
-  questCompleteSFX:
-    Guid:
-      Data1: 982650717
-      Data2: 1320511343
-      Data3: 516923534
-      Data4: 1673419026
-    Path: event:/quest
-  musicEvent:
+  questCompleteSound:
     Guid:
       Data1: 0
       Data2: 0
       Data3: 0
       Data4: 0
     Path: 
-  screamerSFX:
-    Guid:
-      Data1: -819297121
-      Data2: 1328302791
-      Data3: 1311895942
-      Data4: 571266060
-    Path: event:/jumpscare
-  allowScreamerReplay: 0
+  umbrellaManNear: {fileID: 529874217}
+  umbrellaManFar: {fileID: 644324580}
 --- !u!4 &177851295
 Transform:
   m_ObjectHideFlags: 0
@@ -4469,11 +4457,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventRef:
     Guid:
-      Data1: -1656578066
-      Data2: 1094193858
-      Data3: -1836718149
-      Data4: 2116357876
-    Path: event:/daniel_voice
+      Data1: 1083465206
+      Data2: 1172304315
+      Data3: -22473282
+      Data4: -141364541
+    Path: event:/QTE_success
   requiredTag: Player
   playOnce: 0
   logWarnings: 1
@@ -5810,41 +5798,10 @@ MonoBehaviour:
   - {fileID: 707402800}
   - {fileID: 255098668}
   - {fileID: 1182040495}
-  totalFlickerTime: 50
-  maxFlickerFrequency: 6
-  minIntensityFactor: 0.2
-  tensionCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  maxLightMultiplier: 15
-  globalVolume: {fileID: 1950617928}
-  enableEffectPulse: 1
-  effectPulseSpeed: 0.08
-  chromaticMax: 1
-  vignetteMax: 0.5
-  grainMax: 1
-  lensDistortionMax: 0.4
+  initialDelay: 1
+  minDelay: 0.1
+  acceleration: 0.05
+  stages: 3
 --- !u!4 &1174915703
 Transform:
   m_ObjectHideFlags: 0
@@ -8550,11 +8507,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventRef:
     Guid:
-      Data1: -113876769
-      Data2: 1189421630
-      Data3: -1374099295
-      Data4: -87091086
-    Path: event:/light_on
+      Data1: -452212936
+      Data2: 1195038441
+      Data3: 1501870979
+      Data4: -1244899224
+    Path: event:/QTE_complete
   requiredTag: Player
   playOnce: 0
   logWarnings: 1
@@ -9706,11 +9663,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventRef:
     Guid:
-      Data1: -2038430794
-      Data2: 1120676929
-      Data3: 281023675
-      Data4: 1198192120
-    Path: event:/light_off
+      Data1: -1959875068
+      Data2: 1258997599
+      Data3: 566763660
+      Data4: 79594355
+    Path: event:/QTE_failure
   requiredTag: Player
   playOnce: 0
   logWarnings: 1
@@ -10601,11 +10558,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventRef:
     Guid:
-      Data1: 978691019
-      Data2: 1214468558
-      Data3: -2026549598
-      Data4: 1506929119
-    Path: event:/lester_voice
+      Data1: 799443240
+      Data2: 1182879183
+      Data3: 1945114808
+      Data4: 1431666962
+    Path: event:/UM_footsteps
   requiredTag: Player
   playOnce: 0
   logWarnings: 1
