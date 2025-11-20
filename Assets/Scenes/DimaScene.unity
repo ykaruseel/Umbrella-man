@@ -3230,7 +3230,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 537666857}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ffe34882efa5424fbfc15b8474797f4, type: 3}
   m_Name: 
@@ -3238,8 +3238,12 @@ MonoBehaviour:
   enemy: {fileID: 293390288}
   mainVolume: {fileID: 1235558471}
   maxDistance: 20
-  maxAngle: 70
+  midDistance: 12
+  nearDistance: 6
+  maxAngle: 90
+  nearAngle: 30
   lerpSpeed: 3
+  pulseSpeed: 4
   occlusionMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -9403,7 +9407,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d0829db9e56ce1f4b8ce9a598004fd5a,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3402511947220803076, guid: d0829db9e56ce1f4b8ce9a598004fd5a,
         type: 3}
@@ -10395,7 +10399,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 2.4643698
-  m_Center: {x: 2.3560126, y: 0.39164525, z: 0.000000046687717}
+  m_Center: {x: 1.24, y: -1.08, z: 1.84}
 --- !u!114 &1748434105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12932,6 +12936,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2046365840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2046365842}
+  - component: {fileID: 2046365841}
+  m_Layer: 0
+  m_Name: EnemyLightDistortionController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2046365841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2046365840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3769e09a21a4af34eb850e959f1322f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 293390288}
+  effectRadius: 4
+  burstChance: 1
+  burstDuration: 0.2
+  offIntensityMultiplier: 0
+  sceneLights:
+  - {fileID: 1768648012}
+  - {fileID: 206339558}
+  - {fileID: 1810316354}
+  - {fileID: 1581089148}
+  - {fileID: 1748434106}
+  - {fileID: 939060574}
+  - {fileID: 2022302862}
+--- !u!4 &2046365842
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2046365840}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.573345, y: 1.6345208, z: -32.601006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2060865024 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: edbd8e08c9cc17343a70207d665b72e7,
@@ -13279,6 +13340,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 537666862}
+  - {fileID: 2046365842}
   - {fileID: 916473290}
   - {fileID: 1996434630}
   - {fileID: 2034020154}
