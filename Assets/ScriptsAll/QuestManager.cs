@@ -23,12 +23,15 @@ public class QuestManager : MonoBehaviour
     public GameObject gameOverUI;
     public EventReference knockSound;
     public EventReference questCompleteSound; // Звук завершения
-    
+    public EnemyLightDistortion enemyLightDistortion;
+
     [Header("Заглушки")]
     public GameObject umbrellaManNear;
     public GameObject umbrellaManFar;
     
     private Dictionary<string, bool> placedItems = new Dictionary<string, bool>();
+    [Header("FMOD")]
+    [SerializeField] private EventReference umbrellaAppearEvent;
 
     void Awake()
     {
@@ -247,15 +250,24 @@ public class QuestManager : MonoBehaviour
         Debug.Log("Последняя лампа погасла. Появление!");
 
         if (umbrellaManNear)
+        {
             umbrellaManNear.SetActive(true);
 
-        // пауза, чтобы игрок увидел его
+            // ▶ ЗВУК ПОЯВЛЕНИЯ
+            if (!umbrellaAppearEvent.IsNull)
+            {
+                RuntimeManager.PlayOneShot(umbrellaAppearEvent, umbrellaManNear.transform.position);
+            }
+            else
+            {
+                Debug.LogWarning("QuestManager: umbrellaAppearEvent nie jest przypisany w inspektorze.");
+            }
+        }
+
+        // даём игроку 2 секунды увидеть его
         yield return new WaitForSeconds(2f);
 
-        if (lightController)
-            lightController.StartPulsingFlicker();
-
-        // ← вот это обязательно должно быть
+        // запускаем погоню (как у тебя было)
         if (umbrellaManNear)
         {
             var chase = umbrellaManNear.GetComponent<UmbrellaManChase>();
@@ -264,6 +276,10 @@ public class QuestManager : MonoBehaviour
             else
                 Debug.LogWarning("На umbrellaManNear нет UmbrellaManChase!");
         }
+
+        // включаем пульсацию света, если привязан EnemyLightDistortion
+        if (enemyLightDistortion != null)
+            enemyLightDistortion.SetChaseActive(true);
     }
 
 

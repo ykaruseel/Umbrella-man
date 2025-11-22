@@ -114,12 +114,12 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
             else if (distance > nearDistance)
             {
                 // средняя зона – заметный эффект
-                distanceZoneMultiplier = 0.6f;
+                distanceZoneMultiplier = 0.4f;
             }
             else
             {
                 // близко – максимум
-                distanceZoneMultiplier = 1.5f;
+                distanceZoneMultiplier = 1f;
             }
 
             // --- 2. Фактор по углу (усиление, если смотришь в его сторону) ---
@@ -177,34 +177,38 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
         finalFactor = Mathf.Clamp01(finalFactor);
 
         // --- Применяем эффекты с мягкими максимумами ---
+        // --- Применяем эффекты с ещё более мягкими максимумами ---
         if (vignette != null)
         {
-            // максимум поменьше, чтобы всё ещё было видно
-            vignette.intensity.value = Mathf.Lerp(baseVignette, 0.5f, finalFactor);
-            vignette.smoothness.value = Mathf.Lerp(baseVignetteSmoothness, 0.75f, finalFactor);
+            // меньше затемнение по краям
+            vignette.intensity.value = Mathf.Lerp(baseVignette, 0.35f, finalFactor);
+            vignette.smoothness.value = Mathf.Lerp(baseVignetteSmoothness, 0.7f, finalFactor);
         }
 
         if (colorAdj != null)
         {
-            // экспозиция: обычная → немного темнее
-            colorAdj.postExposure.value = Mathf.Lerp(baseExposure, -0.7f, finalFactor);
-            // контраст: чуть усиливаем, но не до безумия
-            colorAdj.contrast.value = Mathf.Lerp(baseContrast, 12f, finalFactor);
+            // экспозиция: совсем немного темнее
+            colorAdj.postExposure.value = Mathf.Lerp(baseExposure, -0.3f, finalFactor);
+            // контраст: лёгкий, не убивает детали
+            colorAdj.contrast.value = Mathf.Lerp(baseContrast, 6f, finalFactor);
         }
 
         if (chromatic != null)
         {
-            chromatic.intensity.value = Mathf.Lerp(baseChromatic, 0.4f, finalFactor);
+            // хроматика ощутима, но не превращает всё в кашу
+            chromatic.intensity.value = Mathf.Lerp(baseChromatic, 0.25f, finalFactor);
         }
 
         if (lens != null)
         {
-            lens.intensity.value = Mathf.Lerp(baseLensIntensity, -0.25f, finalFactor);
+            // меньше "рыбьего глаза"
+            lens.intensity.value = Mathf.Lerp(baseLensIntensity, -0.12f, finalFactor);
         }
 
         if (grain != null)
         {
-            grain.intensity.value = Mathf.Lerp(baseGrainIntensity, 0.45f, finalFactor);
+            // шум помягче
+            grain.intensity.value = Mathf.Lerp(baseGrainIntensity, 0.3f, finalFactor);
         }
 
 #if UNITY_EDITOR
