@@ -201,65 +201,81 @@ public class PlayerController : MonoBehaviour
     // Файл: PlayerController.cs
     // Вставь этот метод целиком (вместо старого)
 
+    // --- Механика взаимодействия с предметами + блок E во время QTE ---
     void CheckInteractionInput()
     {
-        // --- ФИКС: если диалог активен, игнорируем взаимодействие (чтобы E не перезапускал его)
-        DialogueManager dm = FindObjectOfType<DialogueManager>();
+        // 1) Если активен диалог – игнорируем взаимодействия
+        DialogueManager dm = FindFirstObjectByType<DialogueManager>();
         if (dm != null && dm.IsDialogueActive())
             return;
 
-        if (Input.GetKeyDown(KeyCode.E))
+        // 2) Если активен QTE – тоже игнорируем E, чтобы не перезапускать щиток
+        RepairQTE qte = FindFirstObjectByType<RepairQTE>();
+        if (qte != null && qte.isQTEActive)
+            return;
+
+        // 3) Дальше реагируем только если реально нажали E
+        if (!Input.GetKeyDown(KeyCode.E))
+            return;
+
+        Ray ray = playerCam.ScreenPointToRay(
+            new Vector3(Screen.width / 2, Screen.height / 2)
+        );
+        RaycastHit hit;
+        bool hitSomething = Physics.Raycast(
+            ray, out hit, interactionDistance, interactionLayerMask
+        );
+
+        // --- Если что-то держим в руках ---
+        if (objectInteraction.IsHoldingObject())
         {
-            Ray ray = playerCam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
-            RaycastHit hit;
-            bool hitSomething = Physics.Raycast(ray, out hit, interactionDistance, interactionLayerMask);
-
-            if (objectInteraction.IsHoldingObject())
+            if (hitSomething)
             {
-                if (hitSomething)
+                PlacementSpot spot = hit.collider.GetComponent<PlacementSpot>();
+                if (spot != null && spot.requiredItemID == objectInteraction.GetHeldItemID())
                 {
-                    PlacementSpot spot = hit.collider.GetComponent<PlacementSpot>();
-                    if (spot != null && spot.requiredItemID == objectInteraction.GetHeldItemID())
-                    {
-                        objectInteraction.PlaceObject(spot);
-                        return;
-                    }
+                    // КЛАДЕМ предмет в нужное место
+                    objectInteraction.PlaceObject(spot);
+                    return;
                 }
-                objectInteraction.DropObject();
             }
-            else
+
+            // Иначе просто роняем
+            objectInteraction.DropObject();
+            return;
+        }
+
+        // --- Если ничего не держим, пробуем взаимодействовать с тем, во что попал луч ---
+        if (hitSomething)
+        {
+            // 1) Диалог с NPC
+            NPC_Dialogue npcDialogue = hit.collider.GetComponent<NPC_Dialogue>();
+            if (npcDialogue != null)
             {
-                if (hitSomething)
-                {
-                    // 1️⃣ Проверяем — есть ли NPC_Dialogue
-                    NPC_Dialogue npcDialogue = hit.collider.GetComponent<NPC_Dialogue>();
-                    if (npcDialogue != null)
-                    {
-                        Debug.Log("[PlayerController] Trigger NPC_Dialogue");
-                        npcDialogue.TriggerDialogue();
-                        return;
-                    }
+                Debug.Log("[PlayerController] Trigger NPC_Dialogue");
+                npcDialogue.TriggerDialogue();
+                return;
+            }
 
-                    // 2️⃣ Проверяем предмет
-                    if (hit.collider.CompareTag("Pickable"))
-                    {
-                        Debug.Log("[PlayerController] Pickup Pickable");
-                        objectInteraction.PickupObject(hit.collider.gameObject);
-                        return;
-                    }
+            // 2) Подбираемый предмет
+            if (hit.collider.CompareTag("Pickable"))
+            {
+                Debug.Log("[PlayerController] Pickup Pickable");
+                objectInteraction.PickupObject(hit.collider.gameObject);
+                return;
+            }
 
-                    // 3️⃣ Проверяем InteractableObject (щиток и т.д.)
-                    InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
-                    if (interactable != null)
-                    {
-                        Debug.Log("[PlayerController] Interact with InteractableObject");
-                        interactable.Interact();
-                        return;
-                    }
-                }
+            // 3) Прочие интерактивные объекты (щиток и т.п.)
+            InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
+            if (interactable != null)
+            {
+                Debug.Log("[PlayerController] Interact with " + hit.collider.name);
+                interactable.Interact();
+                return;
             }
         }
     }
+
     public void LockMovementButAllowLook()
     {
         canMove = false; // блокируем движение
