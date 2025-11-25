@@ -181,34 +181,34 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
         if (vignette != null)
         {
             // меньше затемнение по краям
-            vignette.intensity.value = Mathf.Lerp(baseVignette, 0.35f, finalFactor);
+            vignette.intensity.value = Mathf.Lerp(baseVignette, 0.7f, finalFactor);
             vignette.smoothness.value = Mathf.Lerp(baseVignetteSmoothness, 0.7f, finalFactor);
         }
 
         if (colorAdj != null)
         {
             // экспозиция: совсем немного темнее
-            colorAdj.postExposure.value = Mathf.Lerp(baseExposure, -0.3f, finalFactor);
+            colorAdj.postExposure.value = Mathf.Lerp(baseExposure, -2f, finalFactor);
             // контраст: лёгкий, не убивает детали
-            colorAdj.contrast.value = Mathf.Lerp(baseContrast, 6f, finalFactor);
+            colorAdj.contrast.value = Mathf.Lerp(baseContrast, 10f, finalFactor);
         }
 
         if (chromatic != null)
         {
             // хроматика ощутима, но не превращает всё в кашу
-            chromatic.intensity.value = Mathf.Lerp(baseChromatic, 0.25f, finalFactor);
+            chromatic.intensity.value = Mathf.Lerp(baseChromatic, 3f, finalFactor);
         }
 
         if (lens != null)
         {
             // меньше "рыбьего глаза"
-            lens.intensity.value = Mathf.Lerp(baseLensIntensity, -0.12f, finalFactor);
+            lens.intensity.value = Mathf.Lerp(baseLensIntensity, -2f, finalFactor);
         }
 
         if (grain != null)
         {
             // шум помягче
-            grain.intensity.value = Mathf.Lerp(baseGrainIntensity, 0.3f, finalFactor);
+            grain.intensity.value = Mathf.Lerp(baseGrainIntensity, 3f, finalFactor);
         }
 
 #if UNITY_EDITOR
