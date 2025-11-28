@@ -38,7 +38,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0f;
     private float rotationY = 0f;
-    
+    private Coroutine footstepCoroutine;
+
 
     [Header("Dialogue Zoom Settings")]
     public CinemachineCamera virtualCam;   // виртуальная камера для зума
@@ -78,8 +79,12 @@ public class PlayerController : MonoBehaviour
         DialogueManager dm = FindObjectOfType<DialogueManager>();
         if (dm != null && dm.IsDialogueActive())
         {
+            // ВАЖНО: останавливаем шаги, если вдруг шли
+            StopFootsteps();
+
             if (Input.GetKeyDown(KeyCode.E))
                 dm.DisplayNextSentence(); // листаем реплики
+
             return; // блокируем остальное управление
         }
 
@@ -89,7 +94,16 @@ public class PlayerController : MonoBehaviour
         HandleFootsteps();
         CheckInteractionInput();
     }
+    private void StopFootsteps()
+    {
+        isWalking = false;
 
+        if (footstepCoroutine != null)
+        {
+            StopCoroutine(footstepCoroutine);
+            footstepCoroutine = null;
+        }
+    }
 
     private void HandleMovement()
     {
@@ -146,20 +160,20 @@ public class PlayerController : MonoBehaviour
     {
         bool isMoving = (Input.GetAxis("Vertical") != 0f || Input.GetAxis("Horizontal") != 0f) && canMove;
 
-        if (isMoving && !isFootstepCoroutineRunning)
+        if (isMoving && footstepCoroutine == null)
         {
             isWalking = true;
-            StartCoroutine(PlayFootstepSounds());
+            footstepCoroutine = StartCoroutine(PlayFootstepSounds());
         }
-        else if (!isMoving)
+        else if (!isMoving && isWalking)
         {
-            isWalking = false;
+            // Перестали двигаться — останавливаем шаги
+            StopFootsteps();
         }
     }
 
     private IEnumerator PlayFootstepSounds()
     {
-        isFootstepCoroutineRunning = true;
         float previousDelay = 0f;
 
         while (isWalking)
@@ -174,8 +188,10 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
 
-        isFootstepCoroutineRunning = false;
+        // корутина закончилась
+        footstepCoroutine = null;
     }
+
 
     void OnDestroy()
     {
@@ -190,6 +206,9 @@ public class PlayerController : MonoBehaviour
     public void SetCanMove(bool value)
     {
         canMove = value;
+
+        if (!canMove)
+            StopFootsteps();
     }
 
     public void SetDialogueZoom(bool value)
