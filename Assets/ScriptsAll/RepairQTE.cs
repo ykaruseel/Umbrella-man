@@ -1,82 +1,45 @@
-// RepairQTE.cs
+// Файл: RepairQTE.cs (ФИНАЛЬНАЯ ИНТЕГРИРОВАННАЯ ВЕРСИЯ)
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
-using FMODUnity;
 
 public class RepairQTE : MonoBehaviour
 {
     [Header("UI References")]
     public GameObject qtePanel;
-    public List<TrackData> tracks;
+    public List<TrackData> tracks; 
 
     [Header("Game State")]
     public bool isQTEActive = false;
     private int currentTrackIndex = 0;
-    private PlayerController playerController;
-
-    [Header("Callbacks (опционально)")]
-    public System.Action onSuccess;
-    public System.Action onFail;
-
-    [Header("FMOD – звуки QTE")]
-    [SerializeField] private EventReference trackSuccessEvent;  // успех полоски (кроме финальной)
-    [SerializeField] private EventReference trackFailEvent;     // промах / сброс
-    [SerializeField] private EventReference qteSuccessEvent;    // полный успех QTE
-
-    [Header("Щиток – световой фидбек")]
-    public Light shieldLight;
-    [Tooltip("Интенсивность света на щитке в спокойном состоянии")]
-    public float shieldIdleIntensity = 0.05f;
-    [Tooltip("Яркость вспышки при успешной полоске")]
-    public float shieldSuccessIntensity = 2f;
-    [Tooltip("Яркость хаотичного мигания при фейле")]
-    public float shieldFailIntensity = 1.5f;
-    [Tooltip("Длительность вспышки при успехе (сек)")]
-    public float shieldSuccessDuration = 0.35f;
-    [Tooltip("Длительность мигания при фейле (сек)")]
-    public float shieldFailDuration = 0.6f;
-
-    private float shieldBaseIntensity;
-    private Coroutine shieldRoutine;
+    
+    // --- ССЫЛКИ НА МОЗГИ ---
+    public QuestManager questManager; 
+    private PlayerController playerController; 
 
     [System.Serializable]
     public class TrackData
     {
-        public RectTransform arrow;           // белая полоска (стрелка)
-        public RectTransform successZone;     // серая зона
-        public RectTransform trackBackground; // фон трека (Track_1/2/3)
-        public float speed = 300f;            // скорость движения стрелки
-
+        public RectTransform arrow;      
+        public RectTransform successZone;
+        public RectTransform trackBackground;
+        public float speed = 300f;       
         [HideInInspector] public float trackHeight;
-
-        [Header("Условие победы")]
-        public float minWinY = 45f;           // допустимое отклонение по Y (локально в треке)
+        public float minWinY = 0f;
     }
-
-    // ----------------- LIFECYCLE -----------------
 
     void Start()
     {
-        if (qtePanel != null)
-            qtePanel.SetActive(false);
+        qtePanel.SetActive(false);
+        // Находим игрока
+        playerController = FindObjectOfType<PlayerController>();
+        // Находим QuestManager
+        questManager = QuestManager.instance; 
 
-        playerController = FindFirstObjectByType<PlayerController>();
-
+        // Вычисляем высоту треков
         foreach (var track in tracks)
         {
-            if (track.trackBackground != null)
-                track.trackHeight = track.trackBackground.rect.height;
-            else if (track.arrow != null && track.arrow.parent is RectTransform rt)
-                track.trackHeight = rt.rect.height;
-            else
-                track.trackHeight = 200f;
-        }
-
-        // Щиток по умолчанию ВЫКЛЮЧЕН
-        if (shieldLight != null)
-        {
-            shieldBaseIntensity = shieldLight.intensity;
-            shieldLight.enabled = false;          // <- главное изменение
+            track.trackHeight = track.trackBackground.rect.height; 
         }
     }
 
@@ -84,289 +47,107 @@ public class RepairQTE : MonoBehaviour
     {
         if (!isQTEActive) return;
 
-        // двигаем стрелку активного трека
-        if (currentTrackIndex >= 0 && currentTrackIndex < tracks.Count)
-        {
-            MoveArrow(tracks[currentTrackIndex]);
-        }
+        MoveArrow(tracks[currentTrackIndex]);
 
-        // ввод QTE: ПРОБЕЛ
+        // ↓↓↓ ФИКС: СЛУШАЕМ ПРОБЕЛ (Space), чтобы избежать конфликта с E ↓↓↓
         if (Input.GetKeyDown(KeyCode.Space))
         {
             CheckHit();
         }
 
-        // отмена QTE
+        // Слушаем выход (Esc)
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            StopQTE(false);
+            StopQTE(false); // Отмена = Провал
         }
     }
 
-    // ----------------- ПУБЛИЧНЫЙ СТАРТ / СТОП -----------------
-
+    // --- ЛОГИКА ЗАПУСКА ---
     public void StartRepairQTE()
     {
-        if (qtePanel != null)
-            qtePanel.SetActive(true);
-
         isQTEActive = true;
         currentTrackIndex = 0;
+        qtePanel.SetActive(true);
 
+        // БЛОКИРУЕМ игрока и камеру
         if (playerController != null)
         {
             playerController.SetCanMove(false);
-            playerController.SetDialogueZoom(true);
-            Cursor.lockState = CursorLockMode.Locked;
+            playerController.SetDialogueZoom(true); 
+            Cursor.lockState = CursorLockMode.Locked; 
             Cursor.visible = false;
         }
-
-        foreach (var track in tracks)
-            ResetArrowOnTrack(track);
-
-        // Включаем лампу щитка ТОЛЬКО на время QTE
-        if (shieldLight != null)
-            shieldLight.enabled = true;
-
-        SetShieldIdle();
-
-        Debug.Log("RepairQTE: старт QTE, текущий трек = 1");
-    }
-    public void StopQTE(bool success)
-    {
-        isQTEActive = false;
-
-        if (qtePanel != null)
-            qtePanel.SetActive(false);
-
-        if (playerController != null)
+        
+        // Сброс стрелок
+        foreach(var track in tracks)
         {
-            playerController.SetCanMove(true);
-            playerController.SetDialogueZoom(false);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-
-        // Вместо SetShieldIdle() – полностью гасим лампу
-        TurnOffShieldLight();
-
-        if (success)
-        {
-            Debug.Log("RepairQTE: QTE успешно завершён");
-            onSuccess?.Invoke();
-        }
-        else
-        {
-            Debug.Log("RepairQTE: QTE провален / прерван");
-            onFail?.Invoke();
+            track.arrow.anchoredPosition = new Vector2(track.arrow.anchoredPosition.x, -track.trackHeight / 2);
         }
     }
-    void TurnOffShieldLight()
-    {
-        if (shieldLight == null) return;
-
-        if (shieldRoutine != null)
-        {
-            StopCoroutine(shieldRoutine);
-            shieldRoutine = null;
-        }
-
-        shieldLight.intensity = 0f;
-        shieldLight.enabled = false;
-    }
-
-    // ----------------- ДВИЖЕНИЕ СТРЕЛКИ -----------------
 
     void MoveArrow(TrackData track)
     {
-        if (track.arrow == null || track.trackBackground == null) return;
-
-        float h = track.trackHeight;
-        float pingPongValue = Mathf.PingPong(Time.time * track.speed, h);
-        float newY = pingPongValue - (h / 2f);
-
-        var pos = track.arrow.anchoredPosition;
-        pos.y = newY;
-        track.arrow.anchoredPosition = pos;
+        float pingPongValue = Mathf.PingPong(Time.time * track.speed, track.trackHeight);
+        float newY = pingPongValue - (track.trackHeight / 2);
+        track.arrow.anchoredPosition = new Vector2(track.arrow.anchoredPosition.x, newY);
     }
 
-    void ResetArrowOnTrack(TrackData track)
+    // --- ЛОГИКА ПРОВЕРКИ ---
+    void CheckHit() 
     {
-        if (track.arrow == null) return;
-
-        float h = track.trackHeight;
-        var pos = track.arrow.anchoredPosition;
-        pos.y = -h / 2f;
-        track.arrow.anchoredPosition = pos;
-    }
-
-    // ----------------- ПРОВЕРКА ПОПАДАНИЯ -----------------
-
-    void CheckHit()
-    {
-        if (currentTrackIndex < 0 || currentTrackIndex >= tracks.Count) return;
-
         TrackData currentTrack = tracks[currentTrackIndex];
 
-        if (currentTrack.arrow == null || currentTrack.successZone == null)
+        float arrowY = currentTrack.arrow.anchoredPosition.y;
+        float zoneY = currentTrack.successZone.anchoredPosition.y;
+        float zoneHalfHeight = currentTrack.successZone.rect.height / 2;
+
+        // Здесь ты можешь вставить Debug.Log для настройки координат
+        // Debug.Log($"ПРОВЕРКА TRACK {currentTrackIndex + 1}: Стрелка Y={arrowY:F1}, Зона Y={zoneY:F1}..."); 
+
+        if (Mathf.Abs(arrowY - zoneY) <= zoneHalfHeight) // УСЛОВИЕ УСПЕХА
         {
-            Debug.LogWarning("RepairQTE: не заданы arrow / successZone на треке " + (currentTrackIndex + 1));
-            return;
-        }
+            Debug.Log($"ПОПАЛ! (Track {currentTrackIndex + 1})");
+            currentTrackIndex++; 
 
-        RectTransform trackRoot = currentTrack.trackBackground;
-        if (trackRoot == null)
-        {
-            trackRoot = currentTrack.arrow.parent as RectTransform;
-        }
-
-        if (trackRoot == null)
-        {
-            Debug.LogWarning("RepairQTE: у трека нет общего RectTransform-родителя, сравнение по Y может быть некорректным.");
-        }
-
-        // Переводим обе точки в локальные координаты трека
-        Vector3 arrowLocal = trackRoot.InverseTransformPoint(currentTrack.arrow.position);
-        Vector3 zoneLocal = trackRoot.InverseTransformPoint(currentTrack.successZone.position);
-
-        float diff = Mathf.Abs(arrowLocal.y - zoneLocal.y);
-
-        Debug.Log(
-            $"ПРОВЕРКА TRACK {currentTrackIndex + 1}: " +
-            $"ArrowLocalY={arrowLocal.y:F1}, ZoneLocalY={zoneLocal.y:F1}, " +
-            $"Diff={diff:F1}, Allowed={currentTrack.minWinY:F1}"
-        );
-
-        if (diff <= currentTrack.minWinY)
-        {
-            // УСПЕХ ПОЛОСЫ
-            Debug.Log($"TRACK {currentTrackIndex + 1}: УСПЕХ");
-
-            // 👉 сразу играем звук успеха полоски
-            if (!trackSuccessEvent.IsNull)
-            {
-                Debug.Log("RepairQTE: Play trackSuccessEvent (any success)");
-                FMODUnity.RuntimeManager.PlayOneShot(trackSuccessEvent);
-            }
-            else
-            {
-                Debug.LogWarning("RepairQTE: trackSuccessEvent не назначен");
-            }
-
-            currentTrackIndex++;
-
-            // Финальный успех QTE
             if (currentTrackIndex >= tracks.Count)
             {
-                // звук полного успеха поверх (если нужно)
-                if (!qteSuccessEvent.IsNull)
-                {
-                    Debug.Log("RepairQTE: Play qteSuccessEvent");
-                    FMODUnity.RuntimeManager.PlayOneShot(qteSuccessEvent);
-                }
-
-                StartShieldSuccessFlash();
-                StopQTE(true);
-            }
-            else
-            {
-                StartShieldSuccessFlash();
-                Debug.Log($"Переход на трек {currentTrackIndex + 1}");
-                ResetArrowOnTrack(tracks[currentTrackIndex]);
+                StopQTE(true); // ПОБЕДА!
             }
         }
         else
         {
-            // ПРОМАХ / СБРОС
-            Debug.Log($"TRACK {currentTrackIndex + 1}: ПРОМАХ, возврат на первый трек");
+            // ПРОВАЛ! (Сброс на первый уровень)
+            Debug.Log("МИМО! Сброс.");
+            currentTrackIndex = 0; 
+        }
+    }
+    
+    // --- ЛОГИКА ОСТАНОВКИ (Запускаем финальный ивент) ---
+    void StopQTE(bool success)
+    {
+        isQTEActive = false;
+        qtePanel.SetActive(false);
 
-            if (!trackFailEvent.IsNull)
+        // Разблокируем камеру и зум (движение разблокируется в QuestManager)
+        if (playerController != null)
+        {
+            playerController.SetDialogueZoom(false);
+        }
+
+        if (questManager != null)
+        {
+            if (success)
             {
-                Debug.Log("RepairQTE: Play trackFailEvent");
-                RuntimeManager.PlayOneShot(trackFailEvent);
+                // Успех QTE -> ЗАПУСК ХОРОШЕЙ КОНЦОВКИ
+                questManager.OnQTESuccess(); 
             }
             else
             {
-                Debug.LogWarning("RepairQTE: trackFailEvent не назначен");
+                // Провал QTE -> ЗАПУСК ПЛОХОЙ КОНЦОВКИ
+                questManager.OnQTEFailure();
             }
-
-            StartShieldFailFlash();
-
-            currentTrackIndex = 0;
-            foreach (var track in tracks)
-                ResetArrowOnTrack(track);
         }
-    }
-
-    // ----------------- СВЕТ НА ЩИТКЕ -----------------
-
-    void SetShieldIdle()
-    {
-        if (shieldLight == null) return;
-
-        if (shieldRoutine != null)
-            StopCoroutine(shieldRoutine);
-
-        shieldLight.intensity = shieldIdleIntensity;
-    }
-
-    void StartShieldSuccessFlash()
-    {
-        if (shieldLight == null) return;
-
-        if (shieldRoutine != null)
-            StopCoroutine(shieldRoutine);
-
-        shieldRoutine = StartCoroutine(ShieldSuccessFlashCoroutine());
-    }
-
-    void StartShieldFailFlash()
-    {
-        if (shieldLight == null) return;
-
-        if (shieldRoutine != null)
-            StopCoroutine(shieldRoutine);
-
-        shieldRoutine = StartCoroutine(ShieldFailFlashCoroutine());
-    }
-
-    System.Collections.IEnumerator ShieldSuccessFlashCoroutine()
-    {
-        float t = 0f;
-
-        while (t < shieldSuccessDuration)
-        {
-            // плавное, но быстрое пульсирование по синусу
-            float phase = Mathf.Sin(t * Mathf.PI * 4f); // несколько пульсов
-            float k = Mathf.InverseLerp(-1f, 1f, phase); // 0..1
-            shieldLight.intensity = Mathf.Lerp(shieldIdleIntensity, shieldSuccessIntensity, k);
-
-            t += Time.deltaTime;
-            yield return null;
-        }
-
-        shieldLight.intensity = shieldIdleIntensity;
-        shieldRoutine = null;
-    }
-
-    System.Collections.IEnumerator ShieldFailFlashCoroutine()
-    {
-        float t = 0f;
-        bool state = false;
-
-        while (t < shieldFailDuration)
-        {
-            // более "рваное" мигание при фейле
-            state = !state;
-
-            shieldLight.intensity = state ? shieldFailIntensity : 0f;
-
-            float wait = Random.Range(0.05f, 0.12f);
-            t += wait;
-            yield return new WaitForSeconds(wait);
-        }
-
-        shieldLight.intensity = shieldIdleIntensity;
-        shieldRoutine = null;
+        
+        Debug.Log("QTE завершено.");
     }
 }

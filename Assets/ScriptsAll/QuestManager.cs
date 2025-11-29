@@ -285,7 +285,7 @@ public class QuestManager : MonoBehaviour
 
 
     // --- НОВЫЕ КОНЦОВКИ QTE ---
-    void OnQTESuccess()
+    public void OnQTESuccess()
     {
         Debug.Log("QTE Успех! (Финал 1)");
         
@@ -304,7 +304,7 @@ public class QuestManager : MonoBehaviour
         // (Тут можно показать UI "Конец прототипа")
     }
 
-    void OnQTEFailure()
+    public void OnQTEFailure()
     {
         Debug.Log("QTE Провал! (Финал 2)");
         
