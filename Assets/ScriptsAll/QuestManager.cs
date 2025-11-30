@@ -288,20 +288,24 @@ public class QuestManager : MonoBehaviour
     public void OnQTESuccess()
     {
         Debug.Log("QTE Успех! (Финал 1)");
-        
+
         if(umbrellaManNear) 
-            umbrellaManNear.SetActive(false); 
-        
+            umbrellaManNear.SetActive(false); // Прячем ближнюю фигуру
+
         if(lightController) 
-            lightController.TurnOffAllLights();
-            
+            lightController.TurnOffAllLights(); // Гасим свет
+
         if(umbrellaManFar) 
-            umbrellaManFar.SetActive(true);
-            
+            umbrellaManFar.SetActive(true); // Показываем дальнюю фигуру
+
         if(playerController) 
+        {
+            // HARD FREEZE (отключаем скрипт, чтобы не ходил)
             playerController.enabled = false; 
-        
-        // (Тут можно показать UI "Конец прототипа")
+
+            // ↓↓↓ ЗАПУСКАЕМ ПЛАВНЫЙ ПОВОРОТ КАМЕРЫ ↓↓↓
+            playerController.StartCinematicPan(umbrellaManFar.transform, 4.0f); // Поворачиваем за 4 секунды
+        }
     }
 
     public void OnQTEFailure()

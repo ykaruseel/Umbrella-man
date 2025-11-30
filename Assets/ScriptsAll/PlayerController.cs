@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public float lookSpeed = 2f;
     public float lookXLimit = 75f;
     public float cameraRotationSmooth = 5f;
+    public bool isCinematic = false;
 
     [Header("Interaction Settings")]
     public Camera playerCam;
@@ -114,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleCameraRotation()
     {
-        if (!canMove) return;
+        if (!canMove || isCinematic) return;
 
         rotationX -= Input.GetAxis("Mouse Y") * lookSpeed;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
@@ -280,6 +281,41 @@ public class PlayerController : MonoBehaviour
     {
         canMove = false; // блокируем движение
                          // но не трогаем камеру — игрок может осматриваться
+    }
+    public void StartCinematicPan(Transform target, float duration)
+    {
+        isCinematic = true; // Блокируем мышь
+        StartCoroutine(PanToTarget(target, duration));
+    }
+
+    private IEnumerator PanToTarget(Transform target, float duration)
+    {
+        if (virtualCam == null || target == null) yield break;
+
+        float time = 0;
+        Quaternion startRotation = virtualCam.transform.localRotation;
+
+        while (time < duration)
+        {
+            // Находим целевой поворот (чтобы смотреть на фигуру)
+            Vector3 direction = target.position - virtualCam.transform.position;
+            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+
+            // Плавно поворачиваем камеру
+            virtualCam.transform.rotation = Quaternion.Slerp(
+                startRotation, 
+                targetRotation, 
+                time / duration
+            );
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        // Финальная фиксация на цели
+        if (target != null)
+            virtualCam.transform.LookAt(target); 
+        // isCinematic остается true, т.к. игра завершена.
     }
 
 }
