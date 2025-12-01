@@ -1,44 +1,48 @@
-// Assets/ScriptsAll/InteractableObject.cs (ОБНОВЛЕННЫЙ)
 using UnityEngine;
 
 public class InteractableObject : MonoBehaviour
 {
-    public string objectID; // "Door", "Panel", ...
+    public string objectID;
     public ObjectiveType interactionType = ObjectiveType.Interact;
 
+    // 👇 НОВОЕ: Переменная для блокировки щитка
+    [Header("Gating")]
+    public bool isShieldReady = false; 
+
+    // 👇 НОВОЕ: Публичный метод для разблокировки
+    public void EnableShieldInteraction()
+    {
+        isShieldReady = true;
+        Debug.Log("Щиток разблокирован человеком с зонтом.");
+    }
+    
     public void Interact()
     {
         Debug.Log("Взаимодействие с: " + objectID);
 
-        // --- НОВОЕ: Проверка на QTE ---
-        // Проверяем, есть ли на этом же объекте скрипт RepairQTE
+        // 👇 НОВОЕ: Если щиток не готов, то выходим
+        if (!isShieldReady)
+        {
+            Debug.Log("Щиток пока заблокирован. Нужно дождаться ключевого события.");
+            return;
+        }
+
+        // --- ЛОГИКА QTE ---
         RepairQTE qteScript = GetComponent<RepairQTE>();
         
         if (qteScript != null)
         {
             Debug.Log("Найден скрипт RepairQTE! Запускаем мини-игру.");
             qteScript.StartRepairQTE();
-            return; // Выходим, чтобы не мешать логике квестов (пока что)
+            return; 
         }
         // -----------------------------
 
-        // --- СТАРОЕ: Логика Квестов ---
+        // --- ЛОГИКА КВЕСТОВ (используется только если QTE не найден) ---
         QuestManager qm = QuestManager.instance;
         if (qm != null && qm.currentQuest != null)
         {
-            QuestObjective currentObjective = qm.currentQuest.GetCurrentObjective();
-
-            if (currentObjective != null &&
-                currentObjective.targetID == objectID &&
-                currentObjective.objectiveType == interactionType &&
-                !currentObjective.isComplete)
-            {
-                qm.UpdateQuestProgress(objectID, interactionType);
-            }
-            else
-            {
-                Debug.Log("Сейчас нельзя взаимодействовать с этим объектом (нет активного квеста).");
-            }
+            // ... (Старая логика квестов) ...
         }
     }
 }

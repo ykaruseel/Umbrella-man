@@ -158,6 +158,7 @@ MonoBehaviour:
   lightController: {fileID: 47673007}
   qteSystem: {fileID: 0}
   playerController: {fileID: 332663620}
+  shieldInteractable: {fileID: 611034061}
   gameOverUI: {fileID: 849750173}
   knockSound:
     Guid:
@@ -3050,6 +3051,7 @@ MonoBehaviour:
   lookSpeed: 2
   lookXLimit: 75
   cameraRotationSmooth: 5
+  isCinematic: 0
   playerCam: {fileID: 308851623}
   interactionDistance: 3
   interactionLayerMask:
@@ -4604,6 +4606,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectID: Panel
   interactionType: 1
+  isShieldReady: 0
 --- !u!65 &611034066
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4691,6 +4694,7 @@ MonoBehaviour:
   shieldFailIntensity: 0.5
   shieldSuccessDuration: 0.3
   shieldFailDuration: 0.3
+  questManager: {fileID: 0}
 --- !u!1 &612807012
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,7 @@ public class QuestManager : MonoBehaviour
     public LightFlickerController lightController;
     public QTESystem qteSystem;
     public PlayerController playerController;
+    public InteractableObject shieldInteractable;
     public GameObject gameOverUI;
     public EventReference knockSound;
     public EventReference questCompleteSound; // Звук завершения
@@ -258,10 +259,13 @@ public class QuestManager : MonoBehaviour
             {
                 RuntimeManager.PlayOneShot(umbrellaAppearEvent, umbrellaManNear.transform.position);
             }
-            else
-            {
-                Debug.LogWarning("QuestManager: umbrellaAppearEvent nie jest przypisany w inspektorze.");
-            }
+        }
+        
+        // 👇 НОВОЕ: Разблокируем щиток СРАЗУ после появления "зонта"
+        if (shieldInteractable != null)
+        {
+            shieldInteractable.EnableShieldInteraction();
+            Debug.Log("Щиток разблокирован.");
         }
 
         // даём игроку 2 секунды увидеть его
