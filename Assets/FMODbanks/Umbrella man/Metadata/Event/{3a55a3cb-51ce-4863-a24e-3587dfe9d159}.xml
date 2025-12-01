@@ -5,7 +5,7 @@
 			<value>lester_voice</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{35a80e89-568f-4a4b-b70d-281ae4eabf68}</destination>
@@ -145,6 +145,7 @@
 	<object class="MixerBusEffectChain" id="{81266fe9-7640-4781-90c0-d289259b9ac6}">
 		<relationship name="effects">
 			<destination>{7fb2f8b8-955c-4a52-af35-3676a6333779}</destination>
+			<destination>{7136162e-7cf5-421d-bc5e-2b2a1d9c05a5}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{b8351b5f-ccdf-4e6b-9cd2-bb2c9f375e05}" />
@@ -191,5 +192,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{cd53c8a3-8816-4cb2-a0b0-b9bdbcd9dfee}" />
 	<object class="MixerBusFader" id="{7fb2f8b8-955c-4a52-af35-3676a6333779}" />
+	<object class="SpatialiserEffect" id="{7136162e-7cf5-421d-bc5e-2b2a1d9c05a5}" />
 	<object class="MixerBusFader" id="{5154d3a1-2d0e-411e-afb1-61e892925358}" />
 </objects>

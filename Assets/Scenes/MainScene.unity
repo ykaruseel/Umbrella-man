@@ -193,7 +193,7 @@ Transform:
   m_GameObject: {fileID: 22286780}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.083282, y: 2.445676, z: -8.349041}
+  m_LocalPosition: {x: -4.355, y: 1.0725204, z: -34.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3797,10 +3797,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e837ec0187ce8814f9d0628dc8a84fa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueUI: {fileID: 1075412032}
-  speakerNameText: {fileID: 1780808407}
+  dialoguePanel: {fileID: 1075412032}
+  nameText: {fileID: 1780808407}
   dialogueText: {fileID: 2075687784}
   typingSpeed: 0.03
+  danielVoiceEvent:
+    Guid:
+      Data1: -1656578066
+      Data2: 1094193858
+      Data3: -1836718149
+      Data4: 2116357876
+    Path: event:/daniel_voice
+  lesterVoiceEvent:
+    Guid:
+      Data1: 978691019
+      Data2: 1214468558
+      Data3: -2026549598
+      Data4: 1506929119
+    Path: event:/lester_voice
 --- !u!1001 &465081281
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7203,6 +7217,13 @@ MonoBehaviour:
   walkSpeed: 0.5
   catchDistance: 1.2
   heGotYouUI: {fileID: 849750173}
+  breathingLoopEvent:
+    Guid:
+      Data1: 1817469237
+      Data2: 1224241023
+      Data3: 1601546672
+      Data4: -89764475
+    Path: event:/UM_breath
 --- !u!195 &940501128
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -7297,7 +7318,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9ad7c13f877e02d428bdf309df7bc49c,
         type: 3}
       propertyPath: m_Name
-      value: Newteapot
+      value: teapot
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

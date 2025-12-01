@@ -5,7 +5,7 @@
 			<value>um_breath</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{35a80e89-568f-4a4b-b70d-281ae4eabf68}</destination>
@@ -133,6 +133,7 @@
 	<object class="MixerBusEffectChain" id="{c3d6899d-a402-49c4-853c-c63caad7b51b}">
 		<relationship name="effects">
 			<destination>{85955c7a-1253-49c8-9f3e-8cf0eb9aaac4}</destination>
+			<destination>{b5e753c0-ea6b-4c5d-a578-51aade8b9025}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{5147456d-8753-445f-8b6b-6997f08628a6}" />
@@ -144,5 +145,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{de20e30b-ac04-4c7a-9b38-fb2710daba4d}" />
 	<object class="MixerBusFader" id="{85955c7a-1253-49c8-9f3e-8cf0eb9aaac4}" />
+	<object class="SpatialiserEffect" id="{b5e753c0-ea6b-4c5d-a578-51aade8b9025}" />
 	<object class="MixerBusFader" id="{741f10fb-4549-4955-a595-1bef5de46d5b}" />
 </objects>

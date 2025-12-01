@@ -1,17 +1,27 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.AI;
+
+// FMOD
+using FMODUnity;
+using FMOD.Studio;
 
 public class UmbrellaManChase : MonoBehaviour
 {
     [Header("References")]
-    public Transform player;            // Player (объект с PlayerController)
+    public Transform player;            // Player (РѕР±СЉРµРєС‚ СЃ PlayerController)
 
     [Header("Chase Settings")]
     public float walkSpeed = 1.5f;
-    public float catchDistance = 1.0f;  // можно оставить как резерв
+    public float catchDistance = 1.0f;  // РјРѕР¶РЅРѕ РѕСЃС‚Р°РІРёС‚СЊ РєР°Рє СЂРµР·РµСЂРІ
 
     [Header("Game Over UI")]
-    public GameObject heGotYouUI;       // сюда перетащить объект с надписью "He got you" (панель/текст на Canvas)
+    public GameObject heGotYouUI;       // СЃСЋРґР° РїРµСЂРµС‚Р°С‰РёС‚СЊ РѕР±СЉРµРєС‚ СЃ РЅР°РґРїРёСЃСЊСЋ "He got you"
+
+    [Header("FMOD вЂ“ РґС‹С…Р°РЅРёРµ С‡РµР»РѕРІРµРєР° СЃ Р·РѕРЅС‚РѕРј")]
+    [Tooltip("FMOD Event, РІ РєРѕС‚РѕСЂРѕРј РєСЂСѓС‚РёС‚СЃСЏ РїРµС‚Р»СЏ РґС‹С…Р°РЅРёСЏ")]
+    [SerializeField] private EventReference breathingLoopEvent;
+
+    private EventInstance breathingInstance;   // СЌРєР·РµРјРїР»СЏСЂ РїРµС‚Р»Рё РґС‹С…Р°РЅРёСЏ
 
     private NavMeshAgent agent;
     private bool isChasing = false;
@@ -23,7 +33,7 @@ public class UmbrellaManChase : MonoBehaviour
 
         if (agent == null)
         {
-            Debug.LogError("[UmbrellaManChase] Нет NavMeshAgent на объекте!");
+            Debug.LogError("[UmbrellaManChase] РќРµС‚ NavMeshAgent РЅР° РѕР±СЉРµРєС‚Рµ!");
             return;
         }
 
@@ -36,17 +46,17 @@ public class UmbrellaManChase : MonoBehaviour
     {
         if (agent == null)
         {
-            Debug.LogError("[UmbrellaManChase] StartChase() — нет агента");
+            Debug.LogError("[UmbrellaManChase] StartChase() вЂ” РЅРµС‚ Р°РіРµРЅС‚Р°");
             return;
         }
 
         if (player == null)
         {
-            Debug.LogError("[UmbrellaManChase] StartChase() — не назначен player!");
+            Debug.LogError("[UmbrellaManChase] StartChase() вЂ” РЅРµ РЅР°Р·РЅР°С‡РµРЅ player!");
             return;
         }
 
-        // ставим агента на NavMesh
+        // СЃС‚Р°РІРёРј Р°РіРµРЅС‚Р° РЅР° NavMesh
         NavMeshHit hit;
         if (NavMesh.SamplePosition(transform.position, out hit, 2f, NavMesh.AllAreas))
         {
@@ -54,7 +64,7 @@ public class UmbrellaManChase : MonoBehaviour
         }
         else
         {
-            Debug.LogError("[UmbrellaManChase] Не удалось найти NavMesh рядом с позицией UmbrellaMan!");
+            Debug.LogError("[UmbrellaManChase] РќРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё NavMesh СЂСЏРґРѕРј СЃ РїРѕР·РёС†РёРµР№ UmbrellaMan!");
         }
 
         agent.enabled = true;
@@ -64,7 +74,9 @@ public class UmbrellaManChase : MonoBehaviour
         isChasing = true;
         hasCaughtPlayer = false;
 
-        Debug.Log("[UmbrellaManChase] Погоня ЗАПУЩЕНА");
+        StartBreathingLoop();   // в†ђ Р·Р°РїСѓСЃРєР°РµРј РґС‹С…Р°РЅРёРµ
+
+        Debug.Log("[UmbrellaManChase] РџРѕРіРѕРЅСЏ Р—РђРџРЈР©Р•РќРђ");
     }
 
     public void StopChase()
@@ -75,7 +87,9 @@ public class UmbrellaManChase : MonoBehaviour
         agent.isStopped = true;
         agent.enabled = false;
 
-        Debug.Log("[UmbrellaManChase] Погоня ОСТАНОВЛЕНА");
+        StopBreathingLoop();    // в†ђ РѕСЃС‚Р°РЅР°РІР»РёРІР°РµРј РґС‹С…Р°РЅРёРµ
+
+        Debug.Log("[UmbrellaManChase] РџРѕРіРѕРЅСЏ РћРЎРўРђРќРћР’Р›Р•РќРђ");
     }
 
     void Update()
@@ -85,7 +99,7 @@ public class UmbrellaManChase : MonoBehaviour
 
         agent.SetDestination(player.position);
 
-        // резервный вариант, если вдруг триггер не сработал
+        // СЂРµР·РµСЂРІРЅС‹Р№ РІР°СЂРёР°РЅС‚, РµСЃР»Рё РІРґСЂСѓРі С‚СЂРёРіРіРµСЂ РЅРµ СЃСЂР°Р±РѕС‚Р°Р»
         float distance = Vector3.Distance(transform.position, player.position);
         if (distance <= catchDistance)
         {
@@ -93,13 +107,13 @@ public class UmbrellaManChase : MonoBehaviour
         }
     }
 
-    // ЛОВИМ ИГРОКА ЧЕРЕЗ ТРИГГЕР
+    // Р›РћР’РРњ РР“Р РћРљРђ Р§Р•Р Р•Р— РўР РР“Р“Р•Р 
     private void OnTriggerEnter(Collider other)
     {
         if (!isChasing || hasCaughtPlayer) return;
 
-        // либо тот же объект, что в поле player,
-        // либо любой объект с PlayerController
+        // Р»РёР±Рѕ С‚РѕС‚ Р¶Рµ РѕР±СЉРµРєС‚, С‡С‚Рѕ РІ РїРѕР»Рµ player,
+        // Р»РёР±Рѕ Р»СЋР±РѕР№ РѕР±СЉРµРєС‚ СЃ PlayerController
         if (other.transform == player || other.GetComponent<PlayerController>() != null)
         {
             HandleCatch();
@@ -115,22 +129,24 @@ public class UmbrellaManChase : MonoBehaviour
         if (agent != null)
             agent.isStopped = true;
 
-        Debug.Log("[UmbrellaManChase] Игрок пойман (He got you)");
+        StopBreathingLoop();    // в†ђ РїСЂРё РїРѕРёРјРєРµ С‚РѕР¶Рµ РіР»СѓС€РёРј РґС‹С…Р°РЅРёРµ
 
-        // --- ПОКАЗЫВАЕМ "He got you" ---
+        Debug.Log("[UmbrellaManChase] РРіСЂРѕРє РїРѕР№РјР°РЅ (He got you)");
+
+        // --- РџРћРљРђР—Р«Р’РђР•Рњ "He got you" ---
         if (heGotYouUI != null)
         {
             heGotYouUI.SetActive(true);
         }
         else
         {
-            // запасной вариант — через QuestManager
+            // Р·Р°РїР°СЃРЅРѕР№ РІР°СЂРёР°РЅС‚ вЂ” С‡РµСЂРµР· QuestManager
             QuestManager qm = QuestManager.instance;
             if (qm != null && qm.gameOverUI != null)
                 qm.gameOverUI.SetActive(true);
         }
 
-        // Выключаем управление игроком
+        // Р’С‹РєР»СЋС‡Р°РµРј СѓРїСЂР°РІР»РµРЅРёРµ РёРіСЂРѕРєРѕРј
         if (player != null)
         {
             var pc = player.GetComponent<PlayerController>();
@@ -140,5 +156,56 @@ public class UmbrellaManChase : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    // --- FMOD: РґС‹С…Р°РЅРёРµ ---
+
+    private void StartBreathingLoop()
+    {
+        if (breathingLoopEvent.IsNull)
+        {
+            Debug.LogWarning("[UmbrellaManChase] breathingLoopEvent РЅРµ РЅР°Р·РЅР°С‡РµРЅ РІ РёРЅСЃРїРµРєС‚РѕСЂРµ");
+            return;
+        }
+
+        // РµСЃР»Рё СѓР¶Рµ СЃРѕР·РґР°РЅ Рё РёРіСЂР°РµС‚ вЂ” РЅРµ СЃРѕР·РґР°С‘Рј РІС‚РѕСЂРѕР№ СЂР°Р·
+        if (breathingInstance.isValid())
+        {
+            PLAYBACK_STATE state;
+            breathingInstance.getPlaybackState(out state);
+            if (state != PLAYBACK_STATE.STOPPED)
+                return;
+        }
+        else
+        {
+            breathingInstance = RuntimeManager.CreateInstance(breathingLoopEvent);
+            // РїСЂРёРІСЏР·С‹РІР°РµРј 3D-Р·РІСѓРє Рє РѕР±СЉРµРєС‚Сѓ UmbrellaMan
+            var rb = GetComponent<Rigidbody>();
+            RuntimeManager.AttachInstanceToGameObject(breathingInstance, transform, rb);
+        }
+
+        breathingInstance.start();
+        Debug.Log("[UmbrellaManChase] РЎС‚Р°СЂС‚ РїРµС‚Р»Рё РґС‹С…Р°РЅРёСЏ");
+    }
+
+    private void StopBreathingLoop()
+    {
+        if (!breathingInstance.isValid()) return;
+
+        breathingInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        breathingInstance.release();
+        breathingInstance.clearHandle();
+
+        Debug.Log("[UmbrellaManChase] РЎС‚РѕРї РїРµС‚Р»Рё РґС‹С…Р°РЅРёСЏ");
+    }
+
+    private void OnDestroy()
+    {
+        // РЅР° РІСЃСЏРєРёР№ СЃР»СѓС‡Р°Р№ С‡РёСЃС‚РёРј РёРЅСЃС‚Р°РЅСЃ РїСЂРё СѓРЅРёС‡С‚РѕР¶РµРЅРёРё РѕР±СЉРµРєС‚Р°
+        if (breathingInstance.isValid())
+        {
+            breathingInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            breathingInstance.release();
+        }
     }
 }
