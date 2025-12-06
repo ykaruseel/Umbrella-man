@@ -186,6 +186,13 @@ public class RepairQTE : MonoBehaviour
                 questManager.OnQTEFailure();
             }
         }
+        // --- NEW: STOP HEARTBEAT ON QTE END ---
+        UmbrellaManChase chase = FindFirstObjectByType<UmbrellaManChase>();
+        if (chase != null)
+        {
+            chase.StopHeartbeat();
+            Debug.Log("[RepairQTE] Остановили сердцебиение после QTE");
+        }
     }
 
     void TurnOffShieldLight()

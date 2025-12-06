@@ -3091,8 +3091,8 @@ MonoBehaviour:
       Data3: -1998764100
       Data4: 1591939557
     Path: event:/footsteps
-  walkStepInterval: 0.6
-  runStepInterval: 0.3
+  walkStepInterval: 0.7
+  runStepInterval: 0.4
   ambientEvent:
     Guid:
       Data1: -422220060
@@ -7569,6 +7569,24 @@ MonoBehaviour:
       Data3: 1601546672
       Data4: -89764475
     Path: event:/UM_breath
+  footstepEvent:
+    Guid:
+      Data1: 799443240
+      Data2: 1182879183
+      Data3: 1945114808
+      Data4: 1431666962
+    Path: event:/UM_footsteps
+  footstepInterval: 0.8
+  useRandomStepInterval: 0
+  minFootstepInterval: 0.45
+  maxFootstepInterval: 0.8
+  heartbeatEvent:
+    Guid:
+      Data1: 2110436768
+      Data2: 1181010380
+      Data3: 1651012777
+      Data4: 208974052
+    Path: event:/hearbeat
 --- !u!195 &940501128
 NavMeshAgent:
   m_ObjectHideFlags: 0
