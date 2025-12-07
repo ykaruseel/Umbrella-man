@@ -155,13 +155,19 @@ public class QuestManager : MonoBehaviour
     void CompleteQuest(Quest completedQuest)
     {
         Debug.Log("КВЕСТ ВЫПОЛНЕН: " + completedQuest.questTitle);
-        questUI.ShowQuestCompleted(completedQuest); 
+        questUI.ShowQuestCompleted(completedQuest);
 
-        // Проигрываем звук, ЕСЛИ это Квест 2 (Дверь)
-        if (completedQuest.questID == "Quest2_Door") 
+        if (completedQuest.questID == "Quest1_Placement" || completedQuest.questID == "Quest2_Door")
         {
             if (!questCompleteSound.IsNull)
-                RuntimeManager.PlayOneShot(questCompleteSound); 
+            {
+                Debug.Log("[QuestManager] Playing questCompleteSound for quest: " + completedQuest.questID);
+                RuntimeManager.PlayOneShot(questCompleteSound);
+            }
+            else
+            {
+                Debug.LogWarning("[QuestManager] questCompleteSound is null — assign it in the inspector.");
+            }
         }
 
         // Запускаем события (стук, мигание и т.д.)

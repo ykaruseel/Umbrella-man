@@ -1,41 +1,44 @@
-﻿using UnityEngine;
+﻿// EnemyLookDistortionSingleVolume.cs — softened postprocess strength and pulse
+using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 public class EnemyLookDistortionSingleVolume : MonoBehaviour
 {
     [Header("References")]
-    public Transform enemy;      // Человек с зонтом (root)
-    public Volume mainVolume;    // Твой основной Volume (всегда активен)
+    public Transform enemy;
+    public Volume mainVolume;
 
     [Header("Distance thresholds")]
-    public float maxDistance = 20f;   // дальше эффекта нет
-    public float midDistance = 12f;   // от mid до max – дальняя зона
-    public float nearDistance = 6f;   // ближняя зона
+    public float maxDistance = 20f;
+    public float midDistance = 12f;
+    public float nearDistance = 6f;
 
     [Header("Angle")]
     [Range(0f, 90f)]
-    public float maxAngle = 70f;      // максимум, где эффект ещё есть
+    public float maxAngle = 70f;
     [Range(0f, 45f)]
-    public float nearAngle = 30f;     // “почти прямо смотришь”
+    public float nearAngle = 30f;
 
     [Header("Behaviour")]
-    public float lerpSpeed = 3f;      // скорость плавного перехода
-    public float pulseSpeed = 4f;     // скорость пульсации на максимуме
+    public float lerpSpeed = 3f;
+    public float pulseSpeed = 3.0f;
 
     [Header("Occlusion")]
-    public LayerMask occlusionMask = ~0; // слои стен/мебели и т.п.
+    public LayerMask occlusionMask = ~0;
+
+    [Header("Tuning (reduce to weaken effects)")]
+    [Range(0f, 1f)] public float postProcessStrength = 0.6f; // overall multiplier - tweak this down to weaken effects
+    [Range(0f, 1f)] public float pulseAmplitude = 0.08f; // was ~0.15 - lower for less strong pulse
 
     private Camera cam;
 
-    // Эффекты
     Vignette vignette;
     ChromaticAberration chromatic;
     LensDistortion lens;
     FilmGrain grain;
     ColorAdjustments colorAdj;
 
-    // Базовые значения (как выглядит игра обычно)
     float baseVignette;
     float baseVignetteSmoothness;
     float baseExposure;
@@ -54,7 +57,7 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
 
         if (mainVolume == null)
         {
-            Debug.LogError("[EnemyLookDistortion] mainVolume nie jest przypisany!");
+            Debug.LogError("[EnemyLookDistortion] mainVolume not assigned!");
             enabled = false;
             return;
         }
@@ -79,14 +82,9 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
             baseContrast = colorAdj.contrast.value;
         }
 
-        if (chromatic != null)
-            baseChromatic = chromatic.intensity.value;
-
-        if (lens != null)
-            baseLensIntensity = lens.intensity.value;
-
-        if (grain != null)
-            baseGrainIntensity = grain.intensity.value;
+        if (chromatic != null) baseChromatic = chromatic.intensity.value;
+        if (lens != null) baseLensIntensity = lens.intensity.value;
+        if (grain != null) baseGrainIntensity = grain.intensity.value;
     }
 
     void Update()
@@ -104,28 +102,13 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
             Vector3 dirToEnemy = toEnemy.normalized;
             float angle = Vector3.Angle(cam.transform.forward, dirToEnemy);
 
-            // --- 1. Фактор по дистанции (работает даже спиной) ---
+            // distance zone multiplier (keep smaller to soften effect)
             float distanceZoneMultiplier;
-            if (distance > midDistance)
-            {
-                // дальняя зона – совсем слабый “фон”
-                distanceZoneMultiplier = 0.2f;
-            }
-            else if (distance > nearDistance)
-            {
-                // средняя зона – заметный эффект
-                distanceZoneMultiplier = 0.4f;
-            }
-            else
-            {
-                // близко – максимум
-                distanceZoneMultiplier = 1f;
-            }
+            if (distance > midDistance) distanceZoneMultiplier = 0.14f; // was 0.2
+            else if (distance > nearDistance) distanceZoneMultiplier = 0.28f; // was 0.4
+            else distanceZoneMultiplier = 0.7f; // was 1.0
 
-            // --- 2. Фактор по углу (усиление, если смотришь в его сторону) ---
-            float angleFactor = 0f;
-
-            // проверка перекрытия (чтоб через стену не работало)
+            // occlusion check
             bool blocked = false;
             if (Physics.Raycast(cam.transform.position, dirToEnemy, out RaycastHit hit, maxDistance, occlusionMask))
             {
@@ -135,27 +118,19 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
 
             if (!blocked)
             {
+                float angleFactor = 0f;
                 if (angle <= maxAngle)
                 {
-                    // внутри конуса зрения
                     float tAngle = Mathf.Clamp01(angle / maxAngle);
-                    angleFactor = 1f - tAngle; // 0..1 – чем ближе к центру, тем сильнее
+                    angleFactor = 1f - tAngle;
 
-                    // ближняя зона + почти прямо смотришь → для пульсации
                     if (distance <= nearDistance && angle <= nearAngle)
                         isNearZone = true;
                 }
                 else
                 {
-                    // ВНЕ конуса зрения (спиной), но ОЧЕНЬ близко → небольшой эффект присутствия
-                    if (distance <= nearDistance)
-                    {
-                        angleFactor = 0.3f; // “он за спиной”, но без жести
-                    }
-                    else
-                    {
-                        angleFactor = 0f; // далеко и ещё и не видно – ничего
-                    }
+                    if (distance <= nearDistance) angleFactor = 0.2f;
+                    else angleFactor = 0f;
                 }
 
                 visibilityFactor = distanceZoneMultiplier * angleFactor;
@@ -165,55 +140,38 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
         target = visibilityFactor;
         current = Mathf.Lerp(current, target, Time.deltaTime * lerpSpeed);
 
-        // --- Пульсация на максимуме (ближняя зона + почти прямо смотришь) ---
         float finalFactor = current;
+
         if (isNearZone && current > 0.5f)
         {
-            // мягкий пульс 0.85–1.05 вокруг current
-            float pulse = 0.9f + 0.15f * Mathf.Sin(Time.time * pulseSpeed);
+            float pulse = 1f + pulseAmplitude * Mathf.Sin(Time.time * pulseSpeed); // milder pulse
             finalFactor *= pulse;
         }
 
-        finalFactor = Mathf.Clamp01(finalFactor);
+        // overall strength multiplier (soften everything)
+        finalFactor = Mathf.Clamp01(finalFactor * postProcessStrength);
 
-        // --- Применяем эффекты с мягкими максимумами ---
-        // --- Применяем эффекты с ещё более мягкими максимумами ---
+        // Apply softened effects
         if (vignette != null)
         {
-            // меньше затемнение по краям
-            vignette.intensity.value = Mathf.Lerp(baseVignette, 0.7f, finalFactor);
-            vignette.smoothness.value = Mathf.Lerp(baseVignetteSmoothness, 0.7f, finalFactor);
+            vignette.intensity.value = Mathf.Lerp(baseVignette, baseVignette + 0.25f, finalFactor); // softer max increase
+            vignette.smoothness.value = Mathf.Lerp(baseVignetteSmoothness, 0.5f, finalFactor);
         }
 
         if (colorAdj != null)
         {
-            // экспозиция: совсем немного темнее
-            colorAdj.postExposure.value = Mathf.Lerp(baseExposure, -2f, finalFactor);
-            // контраст: лёгкий, не убивает детали
-            colorAdj.contrast.value = Mathf.Lerp(baseContrast, 10f, finalFactor);
+            colorAdj.postExposure.value = Mathf.Lerp(baseExposure, -0.5f, finalFactor); // less darkening (was -1)
+            colorAdj.contrast.value = Mathf.Lerp(baseContrast, 3f, finalFactor); // softer contrast (was 7)
         }
 
         if (chromatic != null)
-        {
-            // хроматика ощутима, но не превращает всё в кашу
-            chromatic.intensity.value = Mathf.Lerp(baseChromatic, 3f, finalFactor);
-        }
+            chromatic.intensity.value = Mathf.Lerp(baseChromatic, 1.5f, finalFactor); // softer chroma
 
         if (lens != null)
-        {
-            // меньше "рыбьего глаза"
-            lens.intensity.value = Mathf.Lerp(baseLensIntensity, -2f, finalFactor);
-        }
+            lens.intensity.value = Mathf.Lerp(baseLensIntensity, -0.5f, finalFactor);
 
         if (grain != null)
-        {
-            // шум помягче
-            grain.intensity.value = Mathf.Lerp(baseGrainIntensity, 3f, finalFactor);
-        }
-
-#if UNITY_EDITOR
-        Debug.DrawRay(cam.transform.position, cam.transform.forward * 3f, Color.cyan);
-#endif
+            grain.intensity.value = Mathf.Lerp(baseGrainIntensity, 1.5f, finalFactor);
     }
 }
 

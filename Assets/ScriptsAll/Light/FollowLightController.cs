@@ -1,85 +1,93 @@
-// FollowLightController.cs — simplified + per-lamp flicker coroutines + per-lamp delays support
+// FollowLightController.cs — fixed: all lamps steady ON at sequence start; only active lamp flickers.
+// Includes per-lamp delays, sound debounce and final sequence (no strobe).
 using UnityEngine;
 using System.Collections;
 using FMODUnity;
 
 public class FollowLightController : MonoBehaviour
 {
-    // Перетащи сюда лампы В ПРАВИЛЬНОМ ПОРЯДКЕ
     public Light[] lightsSequence;
 
-    // Глобальные дефолтные задержки между on/off (используются если per-lamp не заданы)
     public float flickerMinDelay = 0.2f;
     public float flickerMaxDelay = 0.8f;
 
-    // Опционально: задать индивидуальные интервалы для ламп. Длины массивов должны совпадать с lightsSequence.
-    // Если они пустые или длина не совпадает — используются глобальные значения.
     public float[] perLampMinDelay;
     public float[] perLampMaxDelay;
 
+    [Header("Final lamp timing (no strobe)")]
+    public float finalMinDelay = 0.08f;
+    public float finalMaxDelay = 0.25f;
+
     private int currentLightIndex = 0;
-
-    // теперь массив корутин — по одной на лампу
     private Coroutine[] flickerCoroutines;
-
-    // Ссылка на QuestManager
     private QuestManager questManager;
 
-    // Optional FMOD sounds (3D). Можно оставить пустыми.
     [Header("Optional FMOD one-shot sounds (3D)")]
     [SerializeField] public EventReference lightOnEvent;
     [SerializeField] public EventReference lightOffEvent;
 
+    [Header("Sound debounce (avoid annoying double clicks)")]
+    public float minSoundInterval = 0.18f;
+    public float[] perLampMinSoundInterval;
+    private float[] lastSoundTime;
+
     void Awake()
     {
         if (lightsSequence != null)
+        {
             flickerCoroutines = new Coroutine[lightsSequence.Length];
+            lastSoundTime = new float[lightsSequence.Length];
+            for (int i = 0; i < lastSoundTime.Length; i++) lastSoundTime[i] = -999f;
+        }
     }
 
-    // 1. Вызывается из QuestManager, чтобы НАЧАТЬ всю сцену
+    // START: все лампы включены ровно; только первая начнёт мигать
     public void StartSequence(QuestManager qm)
     {
-        questManager = qm; // Запоминаем ссылку на "мозг"
+        questManager = qm;
         currentLightIndex = 0;
 
-        // Выключаем все лампы (как в исходнике)
-        if (lightsSequence != null)
-        {
-            for (int i = 0; i < lightsSequence.Length; i++)
-            {
-                var l = lightsSequence[i];
-                if (l != null)
-                {
-                    l.enabled = false;
-                }
+        if (lightsSequence == null) return;
 
-                // очистим возможные корутины
-                if (flickerCoroutines != null && i < flickerCoroutines.Length)
-                {
-                    if (flickerCoroutines[i] != null)
-                    {
-                        StopCoroutine(flickerCoroutines[i]);
-                        flickerCoroutines[i] = null;
-                    }
-                }
+        // 1) Включаем ВСЕ лампы (steady ON)
+        for (int i = 0; i < lightsSequence.Length; i++)
+        {
+            var l = lightsSequence[i];
+            if (l != null)
+            {
+                l.enabled = true;
             }
+
+            // 2) останавливаем любые корутины и сбрасываем таймеры звуков
+            if (flickerCoroutines != null && i < flickerCoroutines.Length && flickerCoroutines[i] != null)
+            {
+                StopCoroutine(flickerCoroutines[i]);
+                flickerCoroutines[i] = null;
+            }
+
+            if (lastSoundTime != null && i < lastSoundTime.Length)
+                lastSoundTime[i] = -999f;
+
+            // 3) деактивируем триггеры, активируем только для pulsing lamp позже
+            var trig = l != null ? l.GetComponent<FollowLightTrigger>() : null;
+            if (trig != null)
+                trig.DeactivateTrigger();
         }
 
-        ActivateLight(currentLightIndex); // Активируем первую лампу
+        // Запускаем пульс только для первой лампы
+        ActivateLight(currentLightIndex);
     }
 
-    // 2. Активирует нужную лампу — только она начнёт резко мигать
+    // Activate flicker for a single lamp. Do NOT change other lamps' enabled state.
     void ActivateLight(int index)
     {
         if (lightsSequence == null) return;
         if (index < 0 || index >= lightsSequence.Length) return;
 
-        // не трогаем другие лампы кроме чистки их корутин/звуков
+        // stop other flicker coroutines but DO NOT modify their light.enabled values
         for (int i = 0; i < lightsSequence.Length; i++)
         {
             if (i == index) continue;
-
-            // стопим корутину других ламп (если они где-то запущены)
             if (flickerCoroutines != null && i < flickerCoroutines.Length && flickerCoroutines[i] != null)
             {
                 StopCoroutine(flickerCoroutines[i]);
@@ -90,16 +98,12 @@ public class FollowLightController : MonoBehaviour
         Light light = lightsSequence[index];
         if (light == null) return;
 
-        // Включаем ее триггер (если есть компонент)
+        // activate trigger for this lamp
         var trig = light.GetComponent<FollowLightTrigger>();
         if (trig != null)
             trig.ActivateTrigger();
 
-        // Чтобы первая итерация корутины гарантированно включила лампу (а не сразу выключила),
-        // установим перед стартом состояние в false.
-        light.enabled = false;
-
-        // Запускаем "ленивое" мигание (резко on/off)
+        // compute delays
         float min = flickerMinDelay;
         float max = flickerMaxDelay;
         if (perLampMinDelay != null && perLampMaxDelay != null &&
@@ -109,67 +113,64 @@ public class FollowLightController : MonoBehaviour
             max = perLampMaxDelay[index];
         }
 
-        // стартуем корутину для этой конкретной лампы (и сохраняем её в массив)
+        // Ensure flickerCoroutines array exists
         if (flickerCoroutines == null)
             flickerCoroutines = new Coroutine[lightsSequence.Length];
 
-        // остановим предыдущее, если вдруг
+        // Stop existing coroutine if any
         if (flickerCoroutines[index] != null)
         {
             StopCoroutine(flickerCoroutines[index]);
             flickerCoroutines[index] = null;
         }
 
+        // Start flicker coroutine. IMPORTANT: coroutine will toggle lamp but we ensure its first action
+        // will be to set lamp.enabled = true for visual continuity (so others don't go dark).
         flickerCoroutines[index] = StartCoroutine(FlickerLightCoroutine(index, light, min, max));
     }
 
-    // 3. Вызывается из FollowLightTrigger, когда игрок подошел
+    // Called by FollowLightTrigger when player approaches
     public void LightTriggered(int index)
     {
-        // Убеждаемся, что игрок подошел к ПРАВИЛЬНОЙ лампе
-        if (index != currentLightIndex) return;
         if (lightsSequence == null) return;
+        if (index != currentLightIndex) return;
         if (index < 0 || index >= lightsSequence.Length) return;
 
         Light light = lightsSequence[index];
 
-        // 1. Останавливаем мигание этой лампы
+        // stop flicker coroutine for this lamp
         if (flickerCoroutines != null && index < flickerCoroutines.Length && flickerCoroutines[index] != null)
         {
             StopCoroutine(flickerCoroutines[index]);
             flickerCoroutines[index] = null;
         }
 
-        // 2. Лампа горит ровно (как в PDF)
+        // set steady ON
         if (light != null)
             light.enabled = true;
 
-        // play on sound (optional)
+        // play on-sound with debounce
         if (light != null && !lightOnEvent.IsNull)
-            RuntimeManager.PlayOneShotAttached(lightOnEvent, light.gameObject);
+        {
+            if (CanPlaySoundForLamp(index))
+                RuntimeManager.PlayOneShotAttached(lightOnEvent, light.gameObject);
+        }
 
-        // 3. Выключаем ее триггер, чтобы не сработал 2-й раз
-        var trig = light.GetComponent<FollowLightTrigger>();
-        if (trig != null)
-            trig.DeactivateTrigger();
+        // deactivate trigger
+        var trig = light != null ? light.GetComponent<FollowLightTrigger>() : null;
+        if (trig != null) trig.DeactivateTrigger();
 
-        // 4. Проверяем, была ли это ПОСЛЕДНЯЯ лампа?
+        // advance or final
         if (index == lightsSequence.Length - 1)
         {
-            // --- ЭТО ПОСЛЕДНЯЯ ЛАМПА (Кульминация) ---
             StartCoroutine(FinalLightSequence(light));
         }
         else
         {
-            // --- Это НЕ последняя лампа ---
-            // Увеличиваем индекс
             currentLightIndex++;
-
-            // Делаем следующее мигание чуть быстрее (как в PDF)
             flickerMinDelay *= 0.9f;
             flickerMaxDelay *= 0.9f;
 
-            // Если используются per-lamp delays, применить те же коэффициенты к ним, чтобы сохранить поведение:
             if (perLampMinDelay != null && perLampMaxDelay != null &&
                 perLampMinDelay.Length == lightsSequence.Length && perLampMaxDelay.Length == lightsSequence.Length)
             {
@@ -177,101 +178,125 @@ public class FollowLightController : MonoBehaviour
                 perLampMaxDelay[index] *= 0.9f;
             }
 
-            // Активируем следующую лампу
-            ActivateLight(currentLightIndex);
+            // small delay before next lamp starts flickering to avoid immediate double-click feeling
+            StartCoroutine(DelayedActivateNext(currentLightIndex, 0.25f));
         }
     }
 
-    // Корутина "Ленивого" мигания (резко включ/выкл) — теперь принимает index и хранится в массиве
+    // Delayed activation so player has small breathing space
+    private IEnumerator DelayedActivateNext(int index, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ActivateLight(index);
+    }
+
+    // Flicker coroutine — toggles the lamp. First iteration ensures it's ON before toggling off,
+    // so other lamps never end up all off at start.
     IEnumerator FlickerLightCoroutine(int index, Light light, float min, float max)
     {
-        // safety: если light == null — сразу выход
         if (light == null) yield break;
+
+        // make sure lamp is visibly ON to start with, then wait one interval before toggling off,
+        // so initial state for other lamps remains ON.
+        light.enabled = true;
+        float firstWait = Random.Range(min, max);
+        yield return new WaitForSeconds(firstWait);
 
         while (true)
         {
-            // переключаем состояние
+            // toggle
             light.enabled = !light.enabled;
 
-            // play corresponding on/off sound (optional)
+            // play sound with debounce
             if (light.enabled)
             {
-                if (!lightOnEvent.IsNull)
+                if (!lightOnEvent.IsNull && CanPlaySoundForLamp(index))
                     RuntimeManager.PlayOneShotAttached(lightOnEvent, light.gameObject);
             }
             else
             {
-                if (!lightOffEvent.IsNull)
+                if (!lightOffEvent.IsNull && CanPlaySoundForLamp(index))
                     RuntimeManager.PlayOneShotAttached(lightOffEvent, light.gameObject);
             }
 
-            // ждём между переключениями
             float wait = Random.Range(min, max);
             yield return new WaitForSeconds(wait);
         }
     }
 
-    // Корутина для ПОСЛЕДНЕЙ лампы (мигает, затем гаснет)
+    // Final sequence: no fast strobe, controlled toggles, then final off and chase trigger
     IEnumerator FinalLightSequence(Light light)
     {
-        float strobeDelay = 0.1f;
-
-        // Быстрое мигание (стробоскоп)
-        for (int i = 0; i < 10; i++)
+        if (light == null)
         {
-            if (light != null)
-            {
-                light.enabled = !light.enabled;
-                // звуки
-                if (light.enabled)
-                {
-                    if (!lightOnEvent.IsNull)
-                        RuntimeManager.PlayOneShotAttached(lightOnEvent, light.gameObject);
-                }
-                else
-                {
-                    if (!lightOffEvent.IsNull)
-                        RuntimeManager.PlayOneShotAttached(lightOffEvent, light.gameObject);
-                }
-            }
-            yield return new WaitForSeconds(strobeDelay);
+            if (questManager != null) questManager.TriggerChaseScene();
+            yield break;
         }
 
-        // Мигание 1-3 (вкл-выкл)
-        if (light != null) { light.enabled = true; if (!lightOnEvent.IsNull) RuntimeManager.PlayOneShotAttached(lightOnEvent, light.gameObject); }
-        yield return new WaitForSeconds(0.5f);
-        if (light != null) { light.enabled = false; if (!lightOffEvent.IsNull) RuntimeManager.PlayOneShotAttached(lightOffEvent, light.gameObject); }
-        yield return new WaitForSeconds(0.2f);
-        if (light != null) { light.enabled = true; if (!lightOnEvent.IsNull) RuntimeManager.PlayOneShotAttached(lightOnEvent, light.gameObject); }
-        yield return new WaitForSeconds(0.3f);
-        if (light != null) { light.enabled = false; if (!lightOffEvent.IsNull) RuntimeManager.PlayOneShotAttached(lightOffEvent, light.gameObject); }
-        yield return new WaitForSeconds(0.1f);
-        if (light != null) { light.enabled = true; if (!lightOnEvent.IsNull) RuntimeManager.PlayOneShotAttached(lightOnEvent, light.gameObject); }
-        yield return new WaitForSeconds(0.2f);
+        int lastIndex = lightsSequence != null ? lightsSequence.Length - 1 : -1;
+        float min = finalMinDelay;
+        float max = finalMaxDelay;
+        if (lastIndex >= 0 && perLampMinDelay != null && perLampMaxDelay != null &&
+            perLampMinDelay.Length == lightsSequence.Length && perLampMaxDelay.Length == lightsSequence.Length)
+        {
+            min = perLampMinDelay[lastIndex];
+            max = perLampMaxDelay[lastIndex];
+        }
 
-        // Гаснет на 4-й раз
-        if (light != null)
-            light.enabled = false;
+        float wait1 = Mathf.Clamp(Random.Range(min, max) * 0.7f, 0.02f, 1f);
+        float wait2 = Mathf.Clamp(Random.Range(min, max) * 0.6f, 0.02f, 1f);
+        float wait3 = Mathf.Clamp(Random.Range(min, max) * 0.8f, 0.02f, 1f);
 
-        // Сообщаем QuestManager'у, что пора запускать Погоню
-        if (questManager != null)
-            questManager.TriggerChaseScene();
+        // sequence: on -> off -> on -> final off (sounds debounced)
+        light.enabled = true;
+        if (!lightOnEvent.IsNull && CanPlaySoundForLamp(lastIndex)) RuntimeManager.PlayOneShotAttached(lightOnEvent, light.gameObject);
+        yield return new WaitForSeconds(wait1);
+
+        light.enabled = false;
+        if (!lightOffEvent.IsNull && CanPlaySoundForLamp(lastIndex)) RuntimeManager.PlayOneShotAttached(lightOffEvent, light.gameObject);
+        yield return new WaitForSeconds(wait2);
+
+        light.enabled = true;
+        if (!lightOnEvent.IsNull && CanPlaySoundForLamp(lastIndex)) RuntimeManager.PlayOneShotAttached(lightOnEvent, light.gameObject);
+        yield return new WaitForSeconds(wait3);
+
+        light.enabled = false;
+        if (!lightOffEvent.IsNull && CanPlaySoundForLamp(lastIndex)) RuntimeManager.PlayOneShotAttached(lightOffEvent, light.gameObject);
+
+        if (questManager != null) questManager.TriggerChaseScene();
+    }
+
+    private bool CanPlaySoundForLamp(int index)
+    {
+        if (index < 0 || lastSoundTime == null || index >= lastSoundTime.Length)
+            return true;
+
+        float minInterval = minSoundInterval;
+        if (perLampMinSoundInterval != null && perLampMinSoundInterval.Length == lightsSequence.Length)
+            minInterval = perLampMinSoundInterval[index];
+
+        float since = Time.time - lastSoundTime[index];
+        if (since >= minInterval)
+        {
+            lastSoundTime[index] = Time.time;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private void OnDestroy()
     {
-        // cleanup coroutines
-        if (flickerCoroutines != null)
+        if (flickerCoroutines == null) return;
+        for (int i = 0; i < flickerCoroutines.Length; i++)
         {
-            for (int i = 0; i < flickerCoroutines.Length; i++)
+            if (flickerCoroutines[i] != null)
             {
-                if (flickerCoroutines[i] != null)
-                {
-                    StopCoroutine(flickerCoroutines[i]);
-                    flickerCoroutines[i] = null;
-                }
+                StopCoroutine(flickerCoroutines[i]);
+                flickerCoroutines[i] = null;
             }
         }
     }
 }
-
