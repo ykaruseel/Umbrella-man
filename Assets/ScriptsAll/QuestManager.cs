@@ -33,6 +33,9 @@ public class QuestManager : MonoBehaviour
     private Dictionary<string, bool> placedItems = new Dictionary<string, bool>();
     [Header("FMOD")]
     [SerializeField] private EventReference umbrellaAppearEvent;
+    
+    [Header("UI для завершения")]
+    public GameObject prototypeCompleteUI;
 
     void Awake()
     {
@@ -155,13 +158,19 @@ public class QuestManager : MonoBehaviour
     void CompleteQuest(Quest completedQuest)
     {
         Debug.Log("КВЕСТ ВЫПОЛНЕН: " + completedQuest.questTitle);
-        questUI.ShowQuestCompleted(completedQuest); 
+        questUI.ShowQuestCompleted(completedQuest);
 
-        // Проигрываем звук, ЕСЛИ это Квест 2 (Дверь)
-        if (completedQuest.questID == "Quest2_Door") 
+        if (completedQuest.questID == "Quest1_Placement" || completedQuest.questID == "Quest2_Door")
         {
             if (!questCompleteSound.IsNull)
-                RuntimeManager.PlayOneShot(questCompleteSound); 
+            {
+                Debug.Log("[QuestManager] Playing questCompleteSound for quest: " + completedQuest.questID);
+                RuntimeManager.PlayOneShot(questCompleteSound);
+            }
+            else
+            {
+                Debug.LogWarning("[QuestManager] questCompleteSound is null — assign it in the inspector.");
+            }
         }
 
         // Запускаем события (стук, мигание и т.д.)
@@ -310,6 +319,16 @@ public class QuestManager : MonoBehaviour
             // ↓↓↓ ЗАПУСКАЕМ ПЛАВНЫЙ ПОВОРОТ КАМЕРЫ ↓↓↓
             playerController.StartCinematicPan(umbrellaManFar.transform, 4.0f); // Поворачиваем за 4 секунды
         }
+
+        // ↓↓↓ НОВАЯ ЛОГИКА: ЗАПУСКАЕМ ЗАДЕРЖКУ (12 секунд) ↓↓↓
+        if (prototypeCompleteUI != null)
+        {
+            StartCoroutine(ShowCompletionScreenAfterDelay(6f)); 
+        }
+        else
+        {
+            Debug.LogError("Prototype Complete UI не назначен в QuestManager. Надпись не появится.");
+        }
     }
 
     public void OnQTEFailure()
@@ -331,5 +350,17 @@ public class QuestManager : MonoBehaviour
          umbrellaManNear.SetActive(true);
          yield return new WaitForSeconds(duration);
          umbrellaManNear.SetActive(false);
+     }
+     IEnumerator ShowCompletionScreenAfterDelay(float delay)
+     {
+         // Ждём указанное количество секунд
+         yield return new WaitForSeconds(delay); 
+
+         // Активируем надпись "Prototype complete"
+         if (prototypeCompleteUI != null)
+         {
+             prototypeCompleteUI.SetActive(true);
+             Debug.Log("Финальная надпись 'Prototype complete' активирована.");
+         }
      }
 }

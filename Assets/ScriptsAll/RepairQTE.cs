@@ -93,11 +93,13 @@ public class RepairQTE : MonoBehaviour
         }
     }
 
+    // В файле RepairQTE.cs
+
     void Update()
     {
         if (!isQTEActive) return;
 
-        // двигаем стрелку активного трека
+        // ↓↓↓ Твоя логика: двигаем стрелку активного трека ↓↓↓
         if (currentTrackIndex >= 0 && currentTrackIndex < tracks.Count)
         {
             MoveArrow(tracks[currentTrackIndex]);
@@ -109,10 +111,10 @@ public class RepairQTE : MonoBehaviour
             CheckHit();
         }
 
-        // отмена QTE
+        // ↓↓↓ ИСПРАВЛЕНИЕ ОШИБКИ ESC: Теперь вызываем CancelQTE() ↓↓↓
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            StopQTE(false); // Отмена = Провал
+            CancelQTE(); // FIX: Выходим без вызова финала поражения
         }
     }
 
@@ -185,6 +187,13 @@ public class RepairQTE : MonoBehaviour
                 // Провал QTE -> ЗАПУСК ПЛОХОЙ КОНЦОВКИ
                 questManager.OnQTEFailure();
             }
+        }
+        // --- NEW: STOP HEARTBEAT ON QTE END ---
+        UmbrellaManChase chase = FindFirstObjectByType<UmbrellaManChase>();
+        if (chase != null)
+        {
+            chase.StopHeartbeat();
+            Debug.Log("[RepairQTE] Остановили сердцебиение после QTE");
         }
     }
 
@@ -366,5 +375,23 @@ public class RepairQTE : MonoBehaviour
 
         shieldLight.intensity = shieldIdleIntensity;
         shieldRoutine = null;
+    }
+    // В файле RepairQTE.cs (НОВАЯ ФУНКЦИЯ)
+
+    void CancelQTE()
+    {
+        isQTEActive = false;
+        qtePanel.SetActive(false); // Скрываем QTE панель
+
+        // Присваиваем игроку обратно контроль движения и камеры
+        if (playerController != null)
+        {
+            playerController.SetCanMove(true); // Разблокируем движение!
+            playerController.SetDialogueZoom(false); // Выходим из зума
+            // Курсор остается заблокирован, так как мы вернулись к игре
+        }
+
+        // Мы НЕ вызываем OnQTEFailure, чтобы не появлялась надпись "He got you".
+        Debug.Log("QTE: Активирована Отмена. Игрок восстанавливает управление.");
     }
 }
