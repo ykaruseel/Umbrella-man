@@ -222,16 +222,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab6fc0a7703e3f4c8a314e4a85ca677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questUI: {fileID: 1690164013}
-  currentQuest: {fileID: 0}
   firstQuest: {fileID: 11400000, guid: 50915153bc506ab4489d737f67ae2089, type: 2}
-  quest_FollowLight: {fileID: 11400000, guid: 7dbf82eb6b09936469489fe87a12a6ae, type: 2}
-  quest_RepairPanel: {fileID: 11400000, guid: e7fb9e843b631154a829a980e630b7b0, type: 2}
-  followLightController: {fileID: 375994149}
-  lightController: {fileID: 47673007}
-  qteSystem: {fileID: 0}
-  playerController: {fileID: 332663620}
-  shieldInteractable: {fileID: 611034061}
+  currentQuest: {fileID: 0}
+  questUI: {fileID: 1690164013}
+  umbrellaManNear: {fileID: 1888251721}
+  umbrellaManFar: {fileID: 1136442007}
   gameOverUI: {fileID: 849750173}
   knockSound:
     Guid:
@@ -247,17 +242,12 @@ MonoBehaviour:
       Data3: 516923534
       Data4: 1673419026
     Path: event:/Quest
-  enemyLightDistortion: {fileID: 547571597}
-  umbrellaManNear: {fileID: 1888251721}
-  umbrellaManFar: {fileID: 1136442007}
-  umbrellaAppearEvent:
-    Guid:
-      Data1: -2088746596
-      Data2: 1183469415
-      Data3: 1052227243
-      Data4: -2048410900
-    Path: event:/UM_appear
+  followLightController: {fileID: 375994149}
+  chase: {fileID: 0}
+  repairQTE: {fileID: 0}
   prototypeCompleteUI: {fileID: 435839561}
+  prototypeCompleteDelay: 1.5
+  musicFadeBeforeKnockDuration: 2
 --- !u!4 &22286782
 Transform:
   m_ObjectHideFlags: 0
@@ -3168,6 +3158,7 @@ GameObject:
   - component: {fileID: 332663620}
   - component: {fileID: 332663619}
   - component: {fileID: 332663626}
+  - component: {fileID: 332663627}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -3385,6 +3376,27 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 119
   playerCamera: {fileID: 308851623}
+--- !u!114 &332663627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332663618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a8c2878d7767634fbc1d55a6c66c288, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicEvent:
+    Guid:
+      Data1: -1760517789
+      Data2: 1291410756
+      Data3: -1905415776
+      Data4: -1363321436
+    Path: event:/UM_music_theme
+  sectionParameterName: Value
+  defaultVolume: 1
 --- !u!1001 &343485364
 PrefabInstance:
   m_ObjectHideFlags: 0

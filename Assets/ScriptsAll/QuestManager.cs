@@ -1,56 +1,43 @@
-// Файл: QuestManager.cs (ПОЛНАЯ ЧИСТАЯ ВЕРСИЯ ДЛЯ ПОГОНИ)
 using UnityEngine;
-using System.Collections; // <-- ВОТ ИСПРАВЛЕНИЕ
+using System.Collections;
 using System.Collections.Generic;
-using FMODUnity; // Можешь закомментировать, если нет FMOD
+using FMODUnity;
+using FMOD.Studio;
 
 public class QuestManager : MonoBehaviour
 {
     public static QuestManager instance;
-    public QuestUI questUI; // Поле для "Лица" (QuestPanel)
-    public Quest currentQuest;
+
     public Quest firstQuest;
-    
-    [Header("Квесты по цепочке")]
-    public Quest quest_FollowLight; // Ассет "Иди за светом"
-    public Quest quest_RepairPanel; // Ассет "Почини свет"
-    public FollowLightController followLightController; 
-
-    [Header("Системные ссылки")]
-    public LightFlickerController lightController;
-    public QTESystem qteSystem;
-    public PlayerController playerController;
-    public InteractableObject shieldInteractable;
-    public GameObject gameOverUI;
-    public EventReference knockSound;
-    public EventReference questCompleteSound; // Звук завершения
-    public EnemyLightDistortion enemyLightDistortion;
-
-    [Header("Заглушки")]
+    public Quest currentQuest;
+    public QuestUI questUI;
     public GameObject umbrellaManNear;
     public GameObject umbrellaManFar;
-    
-    private Dictionary<string, bool> placedItems = new Dictionary<string, bool>();
-    [Header("FMOD")]
-    [SerializeField] private EventReference umbrellaAppearEvent;
-    
-    [Header("UI для завершения")]
+    public GameObject gameOverUI;
+    public EventReference knockSound;
+    public EventReference questCompleteSound;
+    public FollowLightController followLightController;
+    public UmbrellaManChase chase;
+    public RepairQTE repairQTE;
     public GameObject prototypeCompleteUI;
+    public float prototypeCompleteDelay = 1.5f;
+    public float musicFadeBeforeKnockDuration = 2f;
+
+    private Dictionary<string, bool> placedItems = new Dictionary<string, bool>();
 
     void Awake()
     {
-        // Настройка Singleton
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
-            return; 
+            return;
         }
 
-        // "Костыль": если мы ЗАБЫЛИ перетащить QuestUI
         if (questUI == null)
         {
             questUI = FindObjectOfType<QuestUI>();
@@ -68,8 +55,16 @@ public class QuestManager : MonoBehaviour
         if (firstQuest != null)
         {
             StartQuest(firstQuest);
-        } else {
+        } 
+        else 
+        {
             Debug.LogError("Первый квест не назначен в QuestManager!");
+        }
+
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.SetSection("A");
+            MusicManager.Instance.SetVolumeImmediate(1f);
         }
     }
 
@@ -85,14 +80,13 @@ public class QuestManager : MonoBehaviour
         currentQuest = questToStart;
         currentQuest.isComplete = false;
         currentQuest.currentObjectiveIndex = 0;
-        
+
         foreach(var obj in currentQuest.objectives)
         {
             obj.currentAmount = 0;
             obj.isComplete = false;
         }
 
-        // Очищаем placedItems ТОЛЬКО для квеста 1
         if(questToStart.questID == "Quest1_Placement")
             placedItems.Clear();
 
@@ -100,7 +94,6 @@ public class QuestManager : MonoBehaviour
         questUI.ShowQuestUpdate(currentQuest);
     }
 
-    // UpdateQuestProgress (для Квеста 1 и Щитка)
     public void UpdateQuestProgress(string itemID_or_TargetID, ObjectiveType type)
     {
         if (currentQuest == null || currentQuest.isComplete) return;
@@ -108,17 +101,14 @@ public class QuestManager : MonoBehaviour
         QuestObjective objective = currentQuest.GetCurrentObjective();
         if (objective == null || objective.isComplete) return;
 
-        // --- ЛОГИКА ДЛЯ КВЕСТА 1 ("PlaceStuff 0/4") ---
         if (objective.objectiveType == ObjectiveType.Place && objective.targetID == "PlaceStuff")
         {
             if (!placedItems.ContainsKey(itemID_or_TargetID))
             {
-                placedItems.Add(itemID_or_TargetID, true); 
-                objective.currentAmount = placedItems.Count; 
-                
+                placedItems.Add(itemID_or_TargetID, true);
+                objective.currentAmount = placedItems.Count;
                 Debug.Log($"Предмет {itemID_or_TargetID} поставлен. Прогресс: {objective.currentAmount}/{objective.requiredAmount}");
-                
-                questUI.ShowQuestUpdate(currentQuest); 
+                questUI.ShowQuestUpdate(currentQuest);
 
                 if (objective.currentAmount >= objective.requiredAmount)
                 {
@@ -126,23 +116,22 @@ public class QuestManager : MonoBehaviour
                 }
             }
         }
-        // --- ЛОГИКА ДЛЯ ДВЕРИ (Квест 2) и ЩИТКА (Квест "Repair") ---
         else if (objective.objectiveType == ObjectiveType.Interact && objective.targetID == itemID_or_TargetID)
         {
-             Debug.Log($"Взаимодействие с {itemID_or_TargetID} засчитано.");
-             CompleteCurrentObjective();
+            Debug.Log($"Взаимодействие с {itemID_or_TargetID} засчитано.");
+            CompleteCurrentObjective();
         }
     }
 
     void CompleteCurrentObjective()
     {
-         if (currentQuest == null) return;
-         QuestObjective objective = currentQuest.GetCurrentObjective();
-         if(objective != null)
-         {
+        if (currentQuest == null) return;
+        QuestObjective objective = currentQuest.GetCurrentObjective();
+        if(objective != null)
+        {
             Debug.Log("Выполнена цель: " + objective.objectiveDescription);
             currentQuest.CompleteObjective();
-         }
+        }
 
         if (currentQuest.CheckObjectives())
         {
@@ -150,11 +139,10 @@ public class QuestManager : MonoBehaviour
         }
         else
         {
-             questUI.ShowQuestUpdate(currentQuest);
+            questUI.ShowQuestUpdate(currentQuest);
         }
     }
 
-    // Завершает ВЕСЬ квест
     void CompleteQuest(Quest completedQuest)
     {
         Debug.Log("КВЕСТ ВЫПОЛНЕН: " + completedQuest.questTitle);
@@ -173,194 +161,121 @@ public class QuestManager : MonoBehaviour
             }
         }
 
-        // Запускаем события (стук, мигание и т.д.)
         TriggerQuestEvent(completedQuest.questID);
 
-        // Запускаем следующий квест
         if (completedQuest.nextQuest != null)
         {
-             // *ВАЖНО*: Не запускаем следующий квест по таймеру,
-             // если это Квест 2 (т.к. его запустит FollowLightController)
-             if(completedQuest.questID != "Quest2_Door")
-             {
-                Invoke("StartNextQuest", 4f);
-             }
-        }
-        else
-        {
-             currentQuest = null;
+            StartQuest(completedQuest.nextQuest);
         }
     }
 
-     void StartNextQuest()
-     {
-         if (currentQuest != null && currentQuest.nextQuest != null)
-         {
-             StartQuest(currentQuest.nextQuest);
-         }
-     }
+    IEnumerator PlayKnockAfterFade(float fadeDuration)
+    {
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.FadeToVolume(0f, fadeDuration);
+        }
+        yield return new WaitForSeconds(fadeDuration);
+        if (!knockSound.IsNull)
+        {
+            RuntimeManager.PlayOneShot(knockSound);
+        }
+    }
 
-    // --- НОВЫЙ TriggerQuestEvent ДЛЯ ПОГОНИ ---
-    void TriggerQuestEvent(string questID)
+    public void TriggerQuestEvent(string questID)
     {
         switch (questID)
         {
             case "Quest1_Placement":
-                // 1. Квест 1 закончен -> Стук
-                if(!knockSound.IsNull) RuntimeManager.PlayOneShot(knockSound);
-                Debug.Log("Играет звук стука...");
+                if (MusicManager.Instance != null)
+                {
+                    StartCoroutine(PlayKnockAfterFade(musicFadeBeforeKnockDuration));
+                }
+                else
+                {
+                    if(!knockSound.IsNull) RuntimeManager.PlayOneShot(knockSound);
+                }
                 break;
 
             case "Quest2_Door":
-                // 2. Диалог с дверью закончен -> Запуск "Иди за светом"
-                Debug.Log("Диалог с дверью закончен. Запуск Квеста 'Иди за светом'");
-                
-                StartQuest(quest_FollowLight); 
-                
-                if(followLightController)
+                if (followLightController != null)
+                {
                     followLightController.StartSequence(this);
-                else
-                    Debug.LogError("FollowLightController не назначен в QuestManager!");
+                    if (MusicManager.Instance != null) MusicManager.Instance.SetSection("C");
+                }
                 break;
 
-            case "Quest_RepairPanel": // <-- ИСПОЛЬЗУЙ ЭТОТ ID в ассете Квеста 3
-                // 4. Игрок нажал на щиток (после погони)
-                Debug.Log("Нажат щиток. Запуск QTE...");
+            case "Quest_FollowLight":
+                break;
 
-                // Останавливаем погоню
-                if (umbrellaManNear && umbrellaManNear.activeInHierarchy)
-                {
-                    var chase = umbrellaManNear.GetComponent<UmbrellaManChase>();
-                    if (chase != null)
-                        chase.StopChase();
-                }
+            case "Quest_RepairPanel":
+                if (MusicManager.Instance != null) MusicManager.Instance.StopMusicImmediate();
+                if (repairQTE != null) repairQTE.StartRepairQTE();
+                break;
 
-                // Останавливаем пульсацию света
-                if (lightController) 
-                    lightController.StopPulsingFlicker();
-
-                // Запускаем QTE
-                if (qteSystem != null)
-                {
-                    qteSystem.StartQTE(3f, KeyCode.E, OnQTESuccess, OnQTEFailure);
-                } else { Debug.LogError("QTESystem не назначен!"); }
+            default:
                 break;
         }
     }
     
-    // --- НОВЫЙ МЕТОД (Вызывается из FollowLightController) ---
-    // 3. Запускает сцену погони (после последней лампы)
     public void TriggerChaseScene()
+    {
+        StartChaseScene();
+    }
+
+    public void StartChaseScene()
     {
         StartCoroutine(ChaseSceneSequence());
     }
 
     IEnumerator ChaseSceneSequence()
     {
-        Debug.Log("Последняя лампа погасла. Появление!");
-
-        if (umbrellaManNear)
+        yield return new WaitForSeconds(0.1f);
+        if (MusicManager.Instance != null) MusicManager.Instance.SetSection("D");
+        if (chase != null)
         {
-            umbrellaManNear.SetActive(true);
-
-            // ▶ ЗВУК ПОЯВЛЕНИЯ
-            if (!umbrellaAppearEvent.IsNull)
-            {
-                RuntimeManager.PlayOneShot(umbrellaAppearEvent, umbrellaManNear.transform.position);
-            }
+            chase.StartChase();
         }
-        
-        // 👇 НОВОЕ: Разблокируем щиток СРАЗУ после появления "зонта"
-        if (shieldInteractable != null)
-        {
-            shieldInteractable.EnableShieldInteraction();
-            Debug.Log("Щиток разблокирован.");
-        }
-
-        // даём игроку 2 секунды увидеть его
-        yield return new WaitForSeconds(2f);
-
-        // запускаем погоню (как у тебя было)
-        if (umbrellaManNear)
-        {
-            var chase = umbrellaManNear.GetComponent<UmbrellaManChase>();
-            if (chase != null)
-                chase.StartChase();
-            else
-                Debug.LogWarning("На umbrellaManNear нет UmbrellaManChase!");
-        }
-
-        // включаем пульсацию света, если привязан EnemyLightDistortion
-        if (enemyLightDistortion != null)
-            enemyLightDistortion.SetChaseActive(true);
     }
 
-
-
-    // --- НОВЫЕ КОНЦОВКИ QTE ---
     public void OnQTESuccess()
     {
-        Debug.Log("QTE Успех! (Финал 1)");
-
-        if(umbrellaManNear) 
-            umbrellaManNear.SetActive(false); // Прячем ближнюю фигуру
-
-        if(lightController) 
-            lightController.TurnOffAllLights(); // Гасим свет
-
-        if(umbrellaManFar) 
-            umbrellaManFar.SetActive(true); // Показываем дальнюю фигуру
-
-        if(playerController) 
+        if (MusicManager.Instance != null) MusicManager.Instance.StopMusicImmediate();
+        Debug.Log("QTE SUCCESS");
+        if (repairQTE != null)
         {
-            // HARD FREEZE (отключаем скрипт, чтобы не ходил)
-            playerController.enabled = false; 
-
-            // ↓↓↓ ЗАПУСКАЕМ ПЛАВНЫЙ ПОВОРОТ КАМЕРЫ ↓↓↓
-            playerController.StartCinematicPan(umbrellaManFar.transform, 4.0f); // Поворачиваем за 4 секунды
+            repairQTE.isQTEActive = false;
         }
-
-        // ↓↓↓ НОВАЯ ЛОГИКА: ЗАПУСКАЕМ ЗАДЕРЖКУ (12 секунд) ↓↓↓
-        if (prototypeCompleteUI != null)
-        {
-            StartCoroutine(ShowCompletionScreenAfterDelay(6f)); 
-        }
-        else
-        {
-            Debug.LogError("Prototype Complete UI не назначен в QuestManager. Надпись не появится.");
-        }
+        StartCoroutine(ShowCompletionScreenAfterDelay(prototypeCompleteDelay));
     }
 
     public void OnQTEFailure()
     {
-        Debug.Log("QTE Провал! (Финал 2)");
-        
-        if(lightController) 
-            lightController.MaxOutLights();
-            
-        if(gameOverUI) 
-            gameOverUI.SetActive(true);
-            
-        if(playerController) 
-            playerController.enabled = false;
+        if (MusicManager.Instance != null) MusicManager.Instance.StopMusicImmediate();
+        Debug.Log("QTE FAILURE");
+        if (repairQTE != null)
+        {
+            repairQTE.isQTEActive = false;
+        }
+        StartCoroutine(ShowGameOverAfterDelay(0.5f));
     }
 
-     System.Collections.IEnumerator ShowUmbrellaManNearBriefly(float duration)
-     {
-         umbrellaManNear.SetActive(true);
-         yield return new WaitForSeconds(duration);
-         umbrellaManNear.SetActive(false);
-     }
-     IEnumerator ShowCompletionScreenAfterDelay(float delay)
-     {
-         // Ждём указанное количество секунд
-         yield return new WaitForSeconds(delay); 
+    IEnumerator ShowCompletionScreenAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (prototypeCompleteUI != null) prototypeCompleteUI.SetActive(true);
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.SetSection("A");
+            MusicManager.Instance.SetVolumeImmediate(1f);
+        }
+        yield return null;
+    }
 
-         // Активируем надпись "Prototype complete"
-         if (prototypeCompleteUI != null)
-         {
-             prototypeCompleteUI.SetActive(true);
-             Debug.Log("Финальная надпись 'Prototype complete' активирована.");
-         }
-     }
+    IEnumerator ShowGameOverAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (gameOverUI != null) gameOverUI.SetActive(true);
+        yield return null;
+    }
 }

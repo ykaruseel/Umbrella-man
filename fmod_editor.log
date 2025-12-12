@@ -4,10 +4,10 @@
 [LOG] SystemI::init                            : Initialize version=20230 (155271), maxchannels=256, flags=0x00020000
 [LOG] OutputWASAPI::init                       : Mix Format (WAVEFORMATEX): wFormatTag=0xFFFE, nChannels=2, nSamplesPerSec=48000, nAvgBytesPerSec=384000, nBlockAlign=8, wBitsPerSample=32, cbSize=22.
 [LOG] OutputWASAPI::init                       : Mix Format (WAVEFORMATEXTENSIBLE): wValidBitsPerSample=32, dwChannelMask=0x00000003, SubFormat=00000003-0000-0010-8000-00AA00389B71.
-[LOG] OutputWASAPI::init                       : Output buffer size: 4096 samples, latency: 0.00ms, period: 10.00ms, DSP buffer: 1024 * 4
+[LOG] OutputWASAPI::init                       : Output buffer size: 4096 samples, latency: 0.00ms, period: 12.00ms, DSP buffer: 1024 * 4
 [LOG] Thread::initThread                       : Init FMOD stream thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFB, Stack Size: 98304, Semaphore: No, Sleep Time: 10, Looping: Yes.
 [LOG] Thread::initThread                       : Init FMOD mixer thread. Affinity: 0x4000000000000001, Priority: 0xFFFF7FFA, Stack Size: 81920, Semaphore: No, Sleep Time: 0, Looping: Yes.
-[LOG] AsyncManager::init                       : manager 000002306A5F1E28 isAsync 0 updatePeriod 0.02
+[LOG] AsyncManager::init                       : manager 0000026FA0B89CA8 isAsync 0 updatePeriod 0.02
 [LOG] AsyncManager::init                       : done
 [LOG] PlaybackSystem::init                     : 
 [LOG] Thread::initThread                       : Init FMOD Studio sample load thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFD, Stack Size: 98304, Semaphore: No, Sleep Time: 1, Looping: No.
@@ -17,104 +17,4 @@
 [LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
 [LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
 [LOG] PlaybackSystem::acquireMasterBus         : Setting master channel group format to 6
-[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             : exinfo->length             = 5608608
-[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 48224
-[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000A7E154F388
-[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFE8A935C40
-[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFE8A935C00
-[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFE8A935D20
-[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFE8A935DE0
-[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000022EC7B73508
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
-[LOG] SystemI::createSoundInternal             : Sample 0/1: name='heartbeat', format=5, channels=2, frequency=48000, lengthbytes=187104, lengthpcm=754222, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.194427.
-[LOG] SoundI::release                          :  (0000022FDAB71818)
-[LOG] SoundI::release                          :     heartbeat (0000022EFC84E608)
-[LOG] SystemI::createSound                     : filename = Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] AsyncThread::add                         : add sound to async queue : soundi = 0000022EE9ADF158, queue head = 0000022EC802B818, queue count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000022EE9ADF158
-[LOG] SystemI::createSoundInternal             :     Create name='Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 5608608
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 48224
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000022FDE771C40
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='um_breath', format=5, channels=2, frequency=48000, lengthbytes=342368, lengthpcm=1675356, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.192291.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000022EE9ADF158
-[LOG] SoundI::release                          : um_breath (0000022EED8218F8)
-[LOG] SoundI::release                          :     um_breath (0000022EEBCD79D8)
-[LOG] SoundI::release                          :     um_breath (000002308F91F788)
-[LOG] SoundI::release                          :  (00000230BCDB21B8)
-[LOG] SoundI::release                          :     quest_complete_2 (0000022EFC850008)
-[LOG] SoundI::release                          :  (00000230BCC73D58)
-[LOG] SoundI::release                          :     quest_complete_1 (0000022EFC852228)
-[LOG] SoundI::release                          :  (0000022FDE5CF918)
-[LOG] SoundI::release                          :     light_turn_on1 (0000022EEBCDA278)
-[LOG] SoundI::release                          :  (0000022FDE5CFBF8)
-[LOG] SoundI::release                          :     light_turn_on2 (0000022EEBCD86D8)
-[LOG] SoundI::release                          :  (0000022FDE5CF638)
-[LOG] SoundI::release                          :     light_turn_on3 (0000022EEBCD9238)
-[LOG] SoundI::release                          :  (0000022FDE5CF7A8)
-[LOG] SoundI::release                          :     light_turn_on4 (0000022EEBCD6E78)
-[LOG] SoundI::release                          :  (0000022FB9E42A68)
-[LOG] SoundI::release                          :     light_turn_off1 (0000022EEBCD9098)
-[LOG] SoundI::release                          :  (0000022FB9E417B8)
-[LOG] SoundI::release                          :     light_turn_off2 (0000022EEBCDA0D8)
-[LOG] SoundI::release                          :  (0000022FB9E42058)
-[LOG] SoundI::release                          :     light_turn_off3 (0000022EEBCDA758)
-[LOG] SoundI::release                          :  (0000022FB9E42788)
-[LOG] SoundI::release                          :     light_turn_off4 (0000022EEBCD93D8)
-[LOG] SoundI::release                          :  (00000230BCDB2BC8)
-[LOG] SoundI::release                          :     UM_appeareance (0000022EEBCD74F8)
-[LOG] SoundI::release                          :  (0000022EED955E08)
-[LOG] SoundI::release                          :     footsteps1 (0000022EEBCD71B8)
-[LOG] SoundI::release                          :  (0000022EED9560E8)
-[LOG] SoundI::release                          :     footsteps2 (0000022EEBCD9F38)
-[LOG] SoundI::release                          :  (0000022EED9559B8)
-[LOG] SoundI::release                          :     footsteps3 (0000022EEBCDA418)
-[LOG] SoundI::release                          :  (0000022EED955F78)
-[LOG] SoundI::release                          :     footsteps4 (0000022EEBCD9578)
-[LOG] SoundI::release                          :  (0000022FDE5CFD68)
-[LOG] SoundI::release                          :     footsteps5 (0000022EEBCD8EF8)
-[LOG] SoundI::release                          :  (0000022FDE5CF358)
-[LOG] SoundI::release                          :     footsteps6 (0000022EEBCD8D58)
-[LOG] SoundI::release                          :  (0000022FB9E41EE8)
-[LOG] SoundI::release                          :     heartbeat (0000022EFC84B068)
-[LOG] SoundI::release                          :  (0000022FB9E41928)
-[LOG] SoundI::release                          :     um_foorsteps1 (0000022EFC851388)
-[LOG] SoundI::release                          :  (0000022FB9E41088)
-[LOG] SoundI::release                          :     um_foorsteps2 (0000022EFC850B68)
-[LOG] SoundI::release                          :  (0000022FB9E421C8)
-[LOG] SoundI::release                          :     um_foorsteps3 (0000022EFC84E468)
-[LOG] SoundI::release                          : ambient_house2 (0000022FB950CA88)
-[LOG] SoundI::release                          :     ambient_house2 (0000022EC83A33C8)
-[LOG] SoundI::release                          :     ambient_house2 (000002308F0C3738)
-[LOG] SoundI::release                          : um_breath (0000022EE9ADF158)
-[LOG] SoundI::release                          :     um_breath (0000022EFC84D908)
-[LOG] SoundI::release                          :     um_breath (000002308F91FE48)
-[LOG] SoundI::release                          :  (0000022FB9E42BD8)
-[LOG] SoundI::release                          :     um_foorsteps4 (0000022EFC850348)
-[LOG] SoundI::release                          :  (0000022FB9E41368)
-[LOG] SoundI::release                          :     um_foorsteps5 (0000022EFC84DF88)
-[LOG] SoundI::release                          :  (0000022FB9E41D78)
-[LOG] SoundI::release                          :     um_foorsteps6 (0000022EFC84F648)
-[LOG] Thread::callback                         : FMOD Studio update thread finished.
-[LOG] Thread::callback                         : FMOD Studio bank load thread finished.
-[LOG] Profile::disconnectAll                   : Profiler disconnecting all clients
-[LOG] Thread::callback                         : FMOD Studio sample load thread finished.
-[LOG] LiveUpdate::release                      : 
-[LOG] LiveUpdate::reset                        : Reset connection (reason Disconnected)
-[LOG] Thread::callback                         : FMOD stream thread finished.
-[LOG] Thread::callback                         : FMOD mixer thread finished.
-[LOG] Profile::disconnectAll                   : Profiler disconnecting all clients
-[LOG] SystemI::close                           : Closed.
 [ERR] assert                                   : assertion: 'gSystemInitCount == 0' failed
