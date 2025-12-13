@@ -22,6 +22,7 @@ public class QuestManager : MonoBehaviour
     public GameObject prototypeCompleteUI;
     public float prototypeCompleteDelay = 1.5f;
     public float musicFadeBeforeKnockDuration = 2f;
+    public EnemyLightDistortion enemyLightDistortion;
 
     private Dictionary<string, bool> placedItems = new Dictionary<string, bool>();
 
@@ -63,7 +64,7 @@ public class QuestManager : MonoBehaviour
 
         if (MusicManager.Instance != null)
         {
-            MusicManager.Instance.SetSection("A");
+            MusicManager.Instance.SetSection("Value A");
             MusicManager.Instance.SetVolumeImmediate(1f);
         }
     }
@@ -201,7 +202,8 @@ public class QuestManager : MonoBehaviour
                 if (followLightController != null)
                 {
                     followLightController.StartSequence(this);
-                    if (MusicManager.Instance != null) MusicManager.Instance.SetSection("C");
+                    if (MusicManager.Instance != null) MusicManager.Instance.SetSection("Value C");
+                    MusicManager.Instance.SetVolumeImmediate(1f);
                 }
                 break;
 
@@ -231,15 +233,22 @@ public class QuestManager : MonoBehaviour
     IEnumerator ChaseSceneSequence()
     {
         yield return new WaitForSeconds(0.1f);
-        if (MusicManager.Instance != null) MusicManager.Instance.SetSection("D");
+        if (MusicManager.Instance != null) MusicManager.Instance.SetSection("Value D");
+        MusicManager.Instance.SetVolumeImmediate(1f);
         if (chase != null)
         {
+            chase.gameObject.SetActive(true);
+            if (enemyLightDistortion != null)
+                enemyLightDistortion.SetChaseActive(true);
+
             chase.StartChase();
         }
     }
 
     public void OnQTESuccess()
     {
+        if (enemyLightDistortion != null)
+            enemyLightDistortion.SetChaseActive(false);
         if (MusicManager.Instance != null) MusicManager.Instance.StopMusicImmediate();
         Debug.Log("QTE SUCCESS");
         if (repairQTE != null)
@@ -251,6 +260,8 @@ public class QuestManager : MonoBehaviour
 
     public void OnQTEFailure()
     {
+        if (enemyLightDistortion != null)
+            enemyLightDistortion.SetChaseActive(false);
         if (MusicManager.Instance != null) MusicManager.Instance.StopMusicImmediate();
         Debug.Log("QTE FAILURE");
         if (repairQTE != null)
@@ -266,7 +277,8 @@ public class QuestManager : MonoBehaviour
         if (prototypeCompleteUI != null) prototypeCompleteUI.SetActive(true);
         if (MusicManager.Instance != null)
         {
-            MusicManager.Instance.SetSection("A");
+            MusicManager.Instance.RestartMusic();
+            MusicManager.Instance.SetSection("Value A");
             MusicManager.Instance.SetVolumeImmediate(1f);
         }
         yield return null;

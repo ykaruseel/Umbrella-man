@@ -7,7 +7,7 @@ public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance;
     public EventReference musicEvent;
-    public string sectionParameterName = "Value";
+    public string sectionParameterName = "MusicSwitch";
     public float defaultVolume = 1f;
 
     private EventInstance musicInstance;
@@ -30,7 +30,7 @@ public class MusicManager : MonoBehaviour
             musicInstance.start();
             currentVolume = defaultVolume;
             SetVolumeImmediate(currentVolume);
-            SetSection("A");
+            SetSection("Value A");
         }
         else
         {
@@ -41,16 +41,7 @@ public class MusicManager : MonoBehaviour
     public void SetSection(string section)
     {
         if (!musicInstance.isValid()) return;
-        float v = 0f;
-        switch (section)
-        {
-            case "A": v = 0f; break;
-            case "B": v = 1f; break;
-            case "C": v = 2f; break;
-            case "D": v = 3f; break;
-            default: v = 0f; break;
-        }
-        musicInstance.setParameterByName(sectionParameterName, v);
+        musicInstance.setParameterByNameWithLabel(sectionParameterName, section);
     }
 
     public void FadeToVolume(float targetVolume, float duration)
@@ -100,6 +91,17 @@ public class MusicManager : MonoBehaviour
         if (!musicInstance.isValid()) return;
         musicInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         musicInstance.release();
+    }
+    public void RestartMusic()
+    {
+        if (musicInstance.isValid())
+        {
+            musicInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            musicInstance.release();
+        }
+
+        musicInstance = RuntimeManager.CreateInstance(musicEvent);
+        musicInstance.start();
     }
 
     void OnDestroy()
