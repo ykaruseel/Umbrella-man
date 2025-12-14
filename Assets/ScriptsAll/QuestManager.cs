@@ -24,7 +24,9 @@ public class QuestManager : MonoBehaviour
     public float musicFadeBeforeKnockDuration = 2f;
     public EnemyLightDistortion enemyLightDistortion;
     public EventReference umbrellaManAppearSound;
-
+    public InteractableObject shieldInteractable;
+    public LightFlickerController lightController;
+    public PlayerController playerController;
 
     private Dictionary<string, bool> placedItems = new Dictionary<string, bool>();
 
@@ -250,22 +252,54 @@ public class QuestManager : MonoBehaviour
 
             if (enemyLightDistortion != null)
                 enemyLightDistortion.SetChaseActive(true);
-
+            if (shieldInteractable != null)
+            {
+                shieldInteractable.EnableShieldInteraction();
+            }
             chase.StartChase();
         }
     }
 
     public void OnQTESuccess()
     {
-        if (enemyLightDistortion != null)
-            enemyLightDistortion.SetChaseActive(false);
-        if (MusicManager.Instance != null) MusicManager.Instance.StopMusicImmediate();
-        Debug.Log("QTE SUCCESS");
-        if (repairQTE != null)
+        Debug.Log("QTE Успех! (Финал 1)");
+
+        if (MusicManager.Instance != null)
         {
-            repairQTE.isQTEActive = false;
+            MusicManager.Instance.FadeToVolume(0f, 1f);
         }
-        StartCoroutine(ShowCompletionScreenAfterDelay(prototypeCompleteDelay));
+
+
+        if (umbrellaManNear)
+        {
+            var chase = umbrellaManNear.GetComponent<UmbrellaManChase>();
+            if (chase != null)
+                chase.StopBreathingLoop();
+        }
+
+        if (umbrellaManNear)
+            umbrellaManNear.SetActive(false);
+
+        if (lightController)
+            lightController.TurnOffAllLights();
+
+        if (umbrellaManFar)
+            umbrellaManFar.SetActive(true);
+
+        if (playerController)
+        {
+            playerController.enabled = false;
+            playerController.StartCinematicPan(umbrellaManFar.transform, 4.0f);
+        }
+
+        if (prototypeCompleteUI != null)
+        {
+            StartCoroutine(ShowCompletionScreenAfterDelay(6f));
+        }
+        else
+        {
+            Debug.LogError("Prototype Complete UI не назначен в QuestManager.");
+        }
     }
 
     public void OnQTEFailure()
@@ -284,14 +318,18 @@ public class QuestManager : MonoBehaviour
     IEnumerator ShowCompletionScreenAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        if (prototypeCompleteUI != null) prototypeCompleteUI.SetActive(true);
+
+        if (prototypeCompleteUI != null)
+        {
+            prototypeCompleteUI.SetActive(true);
+            Debug.Log("Финальная надпись 'Prototype complete' активирована.");
+        }
+
         if (MusicManager.Instance != null)
         {
-            MusicManager.Instance.RestartMusic();
             MusicManager.Instance.SetSection("Value A");
-            MusicManager.Instance.SetVolumeImmediate(1f);
+            MusicManager.Instance.FadeToVolume(MusicManager.Instance.defaultVolume, 3f);
         }
-        yield return null;
     }
 
     IEnumerator ShowGameOverAfterDelay(float delay)

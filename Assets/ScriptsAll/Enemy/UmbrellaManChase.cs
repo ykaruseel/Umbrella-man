@@ -159,7 +159,7 @@ public class UmbrellaManChase : MonoBehaviour
         breathingInstance.start();
     }
 
-    private void StopBreathingLoop()
+    public void StopBreathingLoop()
     {
         if (!breathingInstance.isValid()) return;
         breathingInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);

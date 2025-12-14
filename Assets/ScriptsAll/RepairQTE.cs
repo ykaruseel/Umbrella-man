@@ -164,36 +164,33 @@ public class RepairQTE : MonoBehaviour
         {
             playerController.SetCanMove(true);
             playerController.SetDialogueZoom(false);
-            Cursor.lockState = CursorLockMode.None; // CursorLockMode.None для видимости курсора
+            Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-        
-        // Сброс стрелок (для удобства, если QTE будет запущено снова)
+
+        // Сброс стрелок
         foreach (var track in tracks)
             ResetArrowOnTrack(track);
 
-        // Вместо SetShieldIdle() – полностью гасим лампу
+        // Полностью гасим лампу щитка
         TurnOffShieldLight();
 
-        if (questManager != null)
-        {
-            if (success)
-            {
-                // Успех QTE -> ЗАПУСК ХОРОШЕЙ КОНЦОВКИ
-                questManager.OnQTESuccess();
-            }
-            else
-            {
-                // Провал QTE -> ЗАПУСК ПЛОХОЙ КОНЦОВКИ
-                questManager.OnQTEFailure();
-            }
-        }
-        // --- NEW: STOP HEARTBEAT ON QTE END ---
+        // Останавливаем погоню и сердцебиение
         UmbrellaManChase chase = FindFirstObjectByType<UmbrellaManChase>();
         if (chase != null)
         {
+            chase.StopChase();
             chase.StopHeartbeat();
-            Debug.Log("[RepairQTE] Остановили сердцебиение после QTE");
+            Debug.Log("[RepairQTE] Остановили погоню и сердцебиение после QTE");
+        }
+
+        // Сообщаем QuestManager результат QTE
+        if (questManager != null)
+        {
+            if (success)
+                questManager.OnQTESuccess();
+            else
+                questManager.OnQTEFailure();
         }
     }
 
