@@ -23,6 +23,8 @@ public class QuestManager : MonoBehaviour
     public float prototypeCompleteDelay = 1.5f;
     public float musicFadeBeforeKnockDuration = 2f;
     public EnemyLightDistortion enemyLightDistortion;
+    public EventReference umbrellaManAppearSound;
+
 
     private Dictionary<string, bool> placedItems = new Dictionary<string, bool>();
 
@@ -233,11 +235,19 @@ public class QuestManager : MonoBehaviour
     IEnumerator ChaseSceneSequence()
     {
         yield return new WaitForSeconds(0.1f);
-        if (MusicManager.Instance != null) MusicManager.Instance.SetSection("Value D");
+
+        if (MusicManager.Instance != null)
+            MusicManager.Instance.SetSection("Value D");
+
         MusicManager.Instance.SetVolumeImmediate(1f);
+
+        if (!umbrellaManAppearSound.IsNull)
+            RuntimeManager.PlayOneShot(umbrellaManAppearSound);
+
         if (chase != null)
         {
             chase.gameObject.SetActive(true);
+
             if (enemyLightDistortion != null)
                 enemyLightDistortion.SetChaseActive(true);
 
