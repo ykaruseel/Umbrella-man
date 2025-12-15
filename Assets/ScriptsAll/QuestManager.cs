@@ -27,6 +27,7 @@ public class QuestManager : MonoBehaviour
     public InteractableObject shieldInteractable;
     public LightFlickerController lightController;
     public PlayerController playerController;
+    public Quest repairPanelQuest;
 
     private Dictionary<string, bool> placedItems = new Dictionary<string, bool>();
 
@@ -216,7 +217,16 @@ public class QuestManager : MonoBehaviour
 
             case "Quest_RepairPanel":
                 if (MusicManager.Instance != null) MusicManager.Instance.StopMusicImmediate();
-                if (repairQTE != null) repairQTE.StartRepairQTE();
+            
+                // ↓↓↓ ДОБАВЛЕНО: Запускаем квест, чтобы появился ТЕКСТ на экране ↓↓↓
+                if (repairPanelQuest != null)
+                {
+                    StartQuest(repairPanelQuest); 
+                }
+            
+                // ↓↓↓ ВАЖНО: Я отключил это здесь. QTE должно начаться, когда ты подойдешь
+                // к щитку и нажмешь E, а не сразу, когда монстр появился.
+                // if (repairQTE != null) repairQTE.StartRepairQTE(); 
                 break;
 
             default:
@@ -245,6 +255,8 @@ public class QuestManager : MonoBehaviour
 
         if (!umbrellaManAppearSound.IsNull)
             RuntimeManager.PlayOneShot(umbrellaManAppearSound);
+        
+        TriggerQuestEvent("Quest_RepairPanel");
 
         if (chase != null)
         {
@@ -261,46 +273,59 @@ public class QuestManager : MonoBehaviour
     }
 
     public void OnQTESuccess()
+{
+    Debug.Log("QTE Успех! (Финал 1)");
+
+    // Завершаем квест на починку щитка
+    if (repairPanelQuest != null && currentQuest == repairPanelQuest)
     {
-        Debug.Log("QTE Успех! (Финал 1)");
-
-        if (MusicManager.Instance != null)
-        {
-            MusicManager.Instance.FadeToVolume(0f, 1f);
-        }
-
-
-        if (umbrellaManNear)
-        {
-            var chase = umbrellaManNear.GetComponent<UmbrellaManChase>();
-            if (chase != null)
-                chase.StopBreathingLoop();
-        }
-
-        if (umbrellaManNear)
-            umbrellaManNear.SetActive(false);
-
-        if (lightController)
-            lightController.TurnOffAllLights();
-
-        if (umbrellaManFar)
-            umbrellaManFar.SetActive(true);
-
-        if (playerController)
-        {
-            playerController.enabled = false;
-            playerController.StartCinematicPan(umbrellaManFar.transform, 4.0f);
-        }
-
-        if (prototypeCompleteUI != null)
-        {
-            StartCoroutine(ShowCompletionScreenAfterDelay(6f));
-        }
-        else
-        {
-            Debug.LogError("Prototype Complete UI не назначен в QuestManager.");
-        }
+        repairPanelQuest.isComplete = true; 
+        CompleteQuest(repairPanelQuest); 
     }
+
+    // Глушим музыку
+    if (MusicManager.Instance != null)
+    {
+        MusicManager.Instance.FadeToVolume(0f, 1f);
+    }
+
+    // Останавливаем "дыхание" монстра (ближнего)
+    if (umbrellaManNear)
+    {
+        var chase = umbrellaManNear.GetComponent<UmbrellaManChase>();
+        if (chase != null)
+            chase.StopBreathingLoop();
+    }
+
+    // Убираем ближнего монстра
+    if (umbrellaManNear)
+        umbrellaManNear.SetActive(false);
+
+    // ВЫКЛЮЧАЕМ ВЕСЬ СВЕТ (И мигающий, и статичный)
+    if (lightController != null)
+        lightController.TurnOffAllLights();
+
+    // Показываем дальнего монстра
+    if (umbrellaManFar)
+        umbrellaManFar.SetActive(true);
+
+    // Запускаем финальную катсцену (поворот камеры)
+    if (playerController)
+    {
+        playerController.enabled = false;
+        playerController.StartCinematicPan(umbrellaManFar.transform, 4.0f);
+    }
+
+    // Показываем экран победы
+    if (prototypeCompleteUI != null)
+    {
+        StartCoroutine(ShowCompletionScreenAfterDelay(6f));
+    }
+    else
+    {
+        Debug.LogError("Prototype Complete UI не назначен в QuestManager.");
+    }
+}
 
     public void OnQTEFailure()
     {

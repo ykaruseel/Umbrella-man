@@ -1,4 +1,3 @@
-// Файл: QuestUI.cs (ЧИСТАЯ ВЕРСИЯ)
 using UnityEngine;
 using TMPro;
 using System.Collections;
@@ -6,7 +5,7 @@ using System.Collections;
 [RequireComponent(typeof(CanvasGroup))]
 public class QuestUI : MonoBehaviour
 {
-    public GameObject questPanel; // Поле для "Себя"
+    public GameObject questPanel; 
     public TextMeshProUGUI questTitleText;
     public TextMeshProUGUI questObjectiveText;
     public Color completedColor = Color.green;
@@ -17,19 +16,23 @@ public class QuestUI : MonoBehaviour
     public float visibleTime = 3.0f;
     public float fadeOutTime = 0.5f;
 
+    // ↓↓↓ 1. ДОБАВИЛИ ПЕРЕМЕННУЮ ДЛЯ ПАНЕЛИ УПРАВЛЕНИЯ ↓↓↓
+    [Header("Settings")]
+    public GameObject controlsPanel; 
+    // ↑↑↑
+
     private CanvasGroup canvasGroup;
     private Coroutine displayCoroutine;
 
     void Awake()
     {
-        // Твой скриншот ДОКАЗЫВАЕТ, что questPanel НАЗНАЧЕН в инспекторе.
-        // Поэтому "костыль" (if questPanel == null) не нужен.
-        
         canvasGroup = questPanel.GetComponent<CanvasGroup>(); 
         if (questTitleText != null) originalColor = questTitleText.color;
         
-        // Убедись, что QuestPanel ВКЛЮЧЕН в иерархии, но Alpha = 0
         canvasGroup.alpha = 0; 
+        
+        // Гарантированно скрываем панель при старте
+        if (controlsPanel != null) controlsPanel.SetActive(false);
     }
 
     void Update()
@@ -37,6 +40,9 @@ public class QuestUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
              ShowQuestTemporarily();
+             
+             // ↓↓↓ 2. ПОКАЗЫВАЕМ ПАНЕЛЬ ПРИ НАЖАТИИ Q ↓↓↓
+             if (controlsPanel != null) controlsPanel.SetActive(true);
         }
     }
 
@@ -92,15 +98,12 @@ public class QuestUI : MonoBehaviour
             StopCoroutine(displayCoroutine);
         }
         
-        // Мы НЕ используем questPanel.SetActive(true)
         displayCoroutine = StartCoroutine(DisplaySequence());
     }
 
     IEnumerator DisplaySequence()
     {
-        // Мы НЕ используем questPanel.SetActive(true)
-        
-        // Fade In (Агрессивная версия)
+        // Fade In
         float timer = 0;
         float startAlpha = canvasGroup.alpha; 
         while (timer < fadeInTime)
@@ -111,7 +114,7 @@ public class QuestUI : MonoBehaviour
         }
         canvasGroup.alpha = 1;
 
-        // Visible
+        // Visible (ждем 3 секунды)
         yield return new WaitForSeconds(visibleTime);
 
         // Fade Out
@@ -124,7 +127,10 @@ public class QuestUI : MonoBehaviour
         }
         canvasGroup.alpha = 0;
         
-        // Мы НЕ используем questPanel.SetActive(false)
+        // ↓↓↓ 3. СКРЫВАЕМ ПАНЕЛЬ, КОГДА ЗАКОНЧИЛСЯ ТАЙМЕР ↓↓↓
+        if (controlsPanel != null) controlsPanel.SetActive(false);
+        // ↑↑↑
+        
         displayCoroutine = null;
     }
 }
