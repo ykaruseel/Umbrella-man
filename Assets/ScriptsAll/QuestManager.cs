@@ -216,17 +216,11 @@ public class QuestManager : MonoBehaviour
                 break;
 
             case "Quest_RepairPanel":
-                if (MusicManager.Instance != null) MusicManager.Instance.StopMusicImmediate();
-            
-                // ↓↓↓ ДОБАВЛЕНО: Запускаем квест, чтобы появился ТЕКСТ на экране ↓↓↓
+                // ❌ НЕ глушим музыку здесь!
+                // Музыка Value D должна играть во время погони
+
                 if (repairPanelQuest != null)
-                {
-                    StartQuest(repairPanelQuest); 
-                }
-            
-                // ↓↓↓ ВАЖНО: Я отключил это здесь. QTE должно начаться, когда ты подойдешь
-                // к щитку и нажмешь E, а не сразу, когда монстр появился.
-                // if (repairQTE != null) repairQTE.StartRepairQTE(); 
+                    StartQuest(repairPanelQuest);
                 break;
 
             default:
@@ -249,13 +243,20 @@ public class QuestManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         if (MusicManager.Instance != null)
-            MusicManager.Instance.SetSection("Value D");
+        {
+            MusicManager.Instance.EnsureMusicPlaying();
 
-        MusicManager.Instance.SetVolumeImmediate(1f);
+            // ВАЖНО: сначала гарантируем, что музыка СЛЫШНА
+            MusicManager.Instance.SetVolumeImmediate(1f);
+
+            // ВАЖНО: потом переключаем секцию
+            MusicManager.Instance.SetSection("Value D");
+        }
 
         if (!umbrellaManAppearSound.IsNull)
             RuntimeManager.PlayOneShot(umbrellaManAppearSound);
-        
+
+        // ⚠️ Quest_RepairPanel больше НЕ глушит музыку
         TriggerQuestEvent("Quest_RepairPanel");
 
         if (chase != null)
@@ -264,96 +265,91 @@ public class QuestManager : MonoBehaviour
 
             if (enemyLightDistortion != null)
                 enemyLightDistortion.SetChaseActive(true);
+
             if (shieldInteractable != null)
-            {
                 shieldInteractable.EnableShieldInteraction();
-            }
+
             chase.StartChase();
         }
     }
 
     public void OnQTESuccess()
-{
-    Debug.Log("QTE Успех! (Финал 1)");
-
-    // Завершаем квест на починку щитка
-    if (repairPanelQuest != null && currentQuest == repairPanelQuest)
     {
-        repairPanelQuest.isComplete = true; 
-        CompleteQuest(repairPanelQuest); 
+        Debug.Log("QTE Успех! (Финал)");
+
+        if (MusicManager.Instance != null)
+        {
+            // 1️⃣ Уходим в тишину
+            MusicManager.Instance.FadeToVolume(0f, 1f);
+
+            // 2️⃣ ВАЖНО: СРАЗУ ЖЕ переключаемся на A
+            // пока игрок НИЧЕГО не слышит
+            MusicManager.Instance.SetSection("Value A");
+        }
+
+        // Останавливаем дыхание ближнего монстра
+        if (umbrellaManNear)
+        {
+            var chase = umbrellaManNear.GetComponent<UmbrellaManChase>();
+            if (chase != null)
+                chase.StopBreathingLoop();
+        }
+
+        if (umbrellaManNear)
+            umbrellaManNear.SetActive(false);
+
+        // Гасим свет
+        if (lightController != null)
+            lightController.TurnOffAllLights();
+
+        // Показываем дальнего человека с зонтом
+        if (umbrellaManFar)
+            umbrellaManFar.SetActive(true);
+
+        // Камера — время посмотреть
+        if (playerController)
+        {
+            playerController.enabled = false;
+            playerController.StartCinematicPan(
+                umbrellaManFar.transform,
+                4.0f
+            );
+        }
+
+        // Запускаем финальную режиссуру
+        StartCoroutine(FinalSequenceAfterLook(6f));
     }
-
-    // Глушим музыку
-    if (MusicManager.Instance != null)
-    {
-        MusicManager.Instance.FadeToVolume(0f, 1f);
-    }
-
-    // Останавливаем "дыхание" монстра (ближнего)
-    if (umbrellaManNear)
-    {
-        var chase = umbrellaManNear.GetComponent<UmbrellaManChase>();
-        if (chase != null)
-            chase.StopBreathingLoop();
-    }
-
-    // Убираем ближнего монстра
-    if (umbrellaManNear)
-        umbrellaManNear.SetActive(false);
-
-    // ВЫКЛЮЧАЕМ ВЕСЬ СВЕТ (И мигающий, и статичный)
-    if (lightController != null)
-        lightController.TurnOffAllLights();
-
-    // Показываем дальнего монстра
-    if (umbrellaManFar)
-        umbrellaManFar.SetActive(true);
-
-    // Запускаем финальную катсцену (поворот камеры)
-    if (playerController)
-    {
-        playerController.enabled = false;
-        playerController.StartCinematicPan(umbrellaManFar.transform, 4.0f);
-    }
-
-    // Показываем экран победы
-    if (prototypeCompleteUI != null)
-    {
-        StartCoroutine(ShowCompletionScreenAfterDelay(6f));
-    }
-    else
-    {
-        Debug.LogError("Prototype Complete UI не назначен в QuestManager.");
-    }
-}
 
     public void OnQTEFailure()
     {
         if (enemyLightDistortion != null)
             enemyLightDistortion.SetChaseActive(false);
-        if (MusicManager.Instance != null) MusicManager.Instance.StopMusicImmediate();
+
+        // ❌ НЕ убиваем event
+        if (MusicManager.Instance != null)
+            MusicManager.Instance.FadeToVolume(0f, 0.5f);
+
         Debug.Log("QTE FAILURE");
+
         if (repairQTE != null)
-        {
             repairQTE.isQTEActive = false;
-        }
+
         StartCoroutine(ShowGameOverAfterDelay(0.5f));
     }
-
-    IEnumerator ShowCompletionScreenAfterDelay(float delay)
+    IEnumerator FinalSequenceAfterLook(float delay)
     {
         yield return new WaitForSeconds(delay);
 
         if (prototypeCompleteUI != null)
-        {
             prototypeCompleteUI.SetActive(true);
-            Debug.Log("Финальная надпись 'Prototype complete' активирована.");
-        }
 
         if (MusicManager.Instance != null)
         {
-            MusicManager.Instance.SetSection("Value A");
-            MusicManager.Instance.FadeToVolume(MusicManager.Instance.defaultVolume, 3f);
+            // Просто поднимаем громкость
+            MusicManager.Instance.FadeToVolume(
+                MusicManager.Instance.defaultVolume,
+                3f
+            );
         }
     }
 
