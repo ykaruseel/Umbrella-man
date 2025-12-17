@@ -153,7 +153,7 @@ public class UmbrellaManChase : MonoBehaviour
     private void StartBreathingLoop()
     {
         if (breathingLoopEvent.IsNull) return;
-
+        if(breathingInstance.isValid()) return;
         breathingInstance = RuntimeManager.CreateInstance(breathingLoopEvent);
         RuntimeManager.AttachInstanceToGameObject(breathingInstance, transform, GetComponent<Rigidbody>());
         breathingInstance.start();
@@ -162,7 +162,7 @@ public class UmbrellaManChase : MonoBehaviour
     public void StopBreathingLoop()
     {
         if (!breathingInstance.isValid()) return;
-        breathingInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        breathingInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         breathingInstance.release();
         breathingInstance.clearHandle();
     }
@@ -184,7 +184,7 @@ public class UmbrellaManChase : MonoBehaviour
 
     private IEnumerator FootstepLoop()
     {
-        while (isChasing && !hasCaughtPlayer)
+        while (isChasing && !hasCaughtPlayer && !Pause.isPaused)
         {
             RuntimeManager.PlayOneShotAttached(footstepEvent, gameObject);
 
@@ -199,8 +199,9 @@ public class UmbrellaManChase : MonoBehaviour
     public void StartHeartbeat()
     {
         if (heartbeatEvent.IsNull) return;
-
+        if (heartbeatInstance.isValid()) return;
         heartbeatInstance = RuntimeManager.CreateInstance(heartbeatEvent);
+        RuntimeManager.AttachInstanceToGameObject(heartbeatInstance, transform, GetComponent<Rigidbody>());
         heartbeatInstance.start();
     }
 
@@ -210,6 +211,61 @@ public class UmbrellaManChase : MonoBehaviour
         heartbeatInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         heartbeatInstance.release();
         heartbeatInstance.clearHandle();
+    }
+
+    public void ResetChase()
+    {
+
+        StopBreathingLoop();
+        StopFootsteps();
+        StopHeartbeat();
+
+        StopChase();
+
+        transform.position = new Vector3(-0.64f, 0.6480125f, -31.8f);
+        hasCaughtPlayer = false;
+        isChasing = false;
+
+        if (agent != null)
+        {
+            agent.enabled = false;
+        }
+    }
+
+    public void PauseChase()
+    {
+        if (!isChasing) return;
+
+        if (agent != null && agent.enabled)
+            agent.isStopped = true;
+
+        PauseBreathing(true);
+        PauseHeartbeat(true);
+    }
+
+    public void ResumeChase()
+    {
+        if (!isChasing || hasCaughtPlayer) return;
+
+        if (agent != null && agent.enabled)
+            agent.isStopped = false;
+
+        StartCoroutine(FootstepLoop());
+
+        PauseBreathing(false);
+        PauseHeartbeat(false);
+    }
+
+    private void PauseBreathing(bool pause)
+    {
+        if (!breathingInstance.isValid()) return;
+        breathingInstance.setPaused(pause);
+    }
+
+    private void PauseHeartbeat(bool pause)
+    {
+        if (!heartbeatInstance.isValid()) return;
+        heartbeatInstance.setPaused(pause);
     }
 
     private void OnDestroy()

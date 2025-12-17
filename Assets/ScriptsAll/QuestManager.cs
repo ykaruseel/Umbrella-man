@@ -35,7 +35,7 @@ public class QuestManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -337,5 +337,58 @@ public class QuestManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         if (gameOverUI != null) gameOverUI.SetActive(true);
         yield return null;
+    }
+
+    private void Update()
+    {
+        if (gameOverUI != null && gameOverUI.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                RespawnAfterDeath();
+            }
+        }
+    }
+
+    private void RespawnAfterDeath()
+    {
+        if (gameOverUI)
+            gameOverUI.SetActive(false);
+
+        if (playerController)
+        {
+            CharacterController cc = playerController.GetComponent<CharacterController>();
+            if (cc) cc.enabled = false;
+
+            playerController.transform.position = new Vector3(-3.645f, 0.73152f, -35.114f);
+            playerController.transform.rotation = new Quaternion(0f,90f,0f,0f);
+
+            if (cc) cc.enabled = true;
+            playerController.enabled = true;
+        }
+
+        if (chase)
+        {
+            chase.ResetChase();
+            chase.gameObject.SetActive(false);
+        }
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        if (enemyLightDistortion != null)
+            enemyLightDistortion.SetChaseActive(false);
+
+        if (shieldInteractable != null)
+        {
+            shieldInteractable.DisableShieldInteraction();
+        }
+
+        if (repairQTE != null)
+        {
+            repairQTE.ResetQTEState();
+        }
+
+        TriggerQuestEvent("Quest2_Door");
     }
 }

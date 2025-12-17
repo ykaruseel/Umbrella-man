@@ -391,4 +391,27 @@ public class RepairQTE : MonoBehaviour
         // Мы НЕ вызываем OnQTEFailure, чтобы не появлялась надпись "He got you".
         Debug.Log("QTE: Активирована Отмена. Игрок восстанавливает управление.");
     }
+
+    public void ResetQTEState()
+    {
+        isQTEActive = false;
+        currentTrackIndex = 0;
+
+        if (qtePanel != null)
+            qtePanel.SetActive(false);
+
+        foreach (var track in tracks)
+            ResetArrowOnTrack(track);
+
+        TurnOffShieldLight();
+
+        if (shieldRoutine != null)
+        {
+            StopCoroutine(shieldRoutine);
+            shieldRoutine = null;
+        }
+
+        playerController.SetCanMove(true);
+        playerController.SetDialogueZoom(false);
+    }
 }

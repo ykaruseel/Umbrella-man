@@ -15,6 +15,11 @@ public class InteractableObject : MonoBehaviour
         isShieldReady = true;
         Debug.Log("Щиток разблокирован человеком с зонтом.");
     }
+
+    public void DisableShieldInteraction()
+    {
+        isShieldReady = false;
+    }
     
     public void Interact()
     {
