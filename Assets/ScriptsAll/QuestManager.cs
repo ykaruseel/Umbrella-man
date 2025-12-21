@@ -8,26 +8,38 @@ public class QuestManager : MonoBehaviour
 {
     public static QuestManager instance;
 
+    [Header("Quests")]
     public Quest firstQuest;
     public Quest currentQuest;
     public QuestUI questUI;
+    public Quest repairPanelQuest;
+
+    [Header("Game Objects")]
     public GameObject umbrellaManNear;
     public GameObject umbrellaManFar;
     public GameObject gameOverUI;
-    public EventReference knockSound;
-    public EventReference questCompleteSound;
+    public GameObject prototypeCompleteUI;
+    
+    [Header("Components")]
     public FollowLightController followLightController;
     public UmbrellaManChase chase;
     public RepairQTE repairQTE;
-    public GameObject prototypeCompleteUI;
-    public float prototypeCompleteDelay = 1.5f;
-    public float musicFadeBeforeKnockDuration = 2f;
     public EnemyLightDistortion enemyLightDistortion;
-    public EventReference umbrellaManAppearSound;
     public InteractableObject shieldInteractable;
     public LightFlickerController lightController;
     public PlayerController playerController;
-    public Quest repairPanelQuest;
+
+    [Header("Audio")]
+    public EventReference knockSound;
+    public EventReference questCompleteSound;
+    public EventReference umbrellaManAppearSound;
+    public float musicFadeBeforeKnockDuration = 2f;
+    
+    [Header("Final Scene")]
+    public GameObject finalSpotlight;
+
+    [Header("Settings")]
+    public float prototypeCompleteDelay = 1.5f;
 
     private Dictionary<string, bool> placedItems = new Dictionary<string, bool>();
 
@@ -44,12 +56,7 @@ public class QuestManager : MonoBehaviour
             return;
         }
 
-        if (questUI == null)
-        {
-            questUI = FindObjectOfType<QuestUI>();
-            if (questUI == null)
-                Debug.LogError("FATAL: QuestManager не смог найти QuestUI в сцене!");
-        }
+        if (questUI == null) questUI = FindObjectOfType<QuestUI>();
     }
 
     void Start()
@@ -57,16 +64,10 @@ public class QuestManager : MonoBehaviour
         if (umbrellaManNear) umbrellaManNear.SetActive(false);
         if (umbrellaManFar) umbrellaManFar.SetActive(false);
         if (gameOverUI) gameOverUI.SetActive(false);
+        if (prototypeCompleteUI) prototypeCompleteUI.SetActive(false);
 
-        if (firstQuest != null)
-        {
-            StartQuest(firstQuest);
-        } 
-        else 
-        {
-            Debug.LogError("Первый квест не назначен в QuestManager!");
-        }
-
+        if (firstQuest != null) StartQuest(firstQuest);
+        
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.SetSection("Value A");
@@ -76,12 +77,7 @@ public class QuestManager : MonoBehaviour
 
     public void StartQuest(Quest questToStart)
     {
-        if (questToStart == null) return;
-        if (questUI == null)
-        {
-            Debug.LogError("QuestManager не может запустить квест: ссылка на questUI ПУСТАЯ!");
-            return;
-        }
+        if (questToStart == null || questUI == null) return;
 
         currentQuest = questToStart;
         currentQuest.isComplete = false;
@@ -93,8 +89,7 @@ public class QuestManager : MonoBehaviour
             obj.isComplete = false;
         }
 
-        if(questToStart.questID == "Quest1_Placement")
-            placedItems.Clear();
+        if(questToStart.questID == "Quest1_Placement") placedItems.Clear();
 
         Debug.Log("Начат квест: " + questToStart.questTitle);
         questUI.ShowQuestUpdate(currentQuest);
@@ -113,18 +108,13 @@ public class QuestManager : MonoBehaviour
             {
                 placedItems.Add(itemID_or_TargetID, true);
                 objective.currentAmount = placedItems.Count;
-                Debug.Log($"Предмет {itemID_or_TargetID} поставлен. Прогресс: {objective.currentAmount}/{objective.requiredAmount}");
                 questUI.ShowQuestUpdate(currentQuest);
 
-                if (objective.currentAmount >= objective.requiredAmount)
-                {
-                    CompleteCurrentObjective();
-                }
+                if (objective.currentAmount >= objective.requiredAmount) CompleteCurrentObjective();
             }
         }
         else if (objective.objectiveType == ObjectiveType.Interact && objective.targetID == itemID_or_TargetID)
         {
-            Debug.Log($"Взаимодействие с {itemID_or_TargetID} засчитано.");
             CompleteCurrentObjective();
         }
     }
@@ -132,21 +122,10 @@ public class QuestManager : MonoBehaviour
     void CompleteCurrentObjective()
     {
         if (currentQuest == null) return;
-        QuestObjective objective = currentQuest.GetCurrentObjective();
-        if(objective != null)
-        {
-            Debug.Log("Выполнена цель: " + objective.objectiveDescription);
-            currentQuest.CompleteObjective();
-        }
+        currentQuest.CompleteObjective();
 
-        if (currentQuest.CheckObjectives())
-        {
-            CompleteQuest(currentQuest);
-        }
-        else
-        {
-            questUI.ShowQuestUpdate(currentQuest);
-        }
+        if (currentQuest.CheckObjectives()) CompleteQuest(currentQuest);
+        else questUI.ShowQuestUpdate(currentQuest);
     }
 
     void CompleteQuest(Quest completedQuest)
@@ -156,36 +135,19 @@ public class QuestManager : MonoBehaviour
 
         if (completedQuest.questID == "Quest1_Placement" || completedQuest.questID == "Quest2_Door")
         {
-            if (!questCompleteSound.IsNull)
-            {
-                Debug.Log("[QuestManager] Playing questCompleteSound for quest: " + completedQuest.questID);
-                RuntimeManager.PlayOneShot(questCompleteSound);
-            }
-            else
-            {
-                Debug.LogWarning("[QuestManager] questCompleteSound is null — assign it in the inspector.");
-            }
+            if (!questCompleteSound.IsNull) RuntimeManager.PlayOneShot(questCompleteSound);
         }
 
         TriggerQuestEvent(completedQuest.questID);
 
-        if (completedQuest.nextQuest != null)
-        {
-            StartQuest(completedQuest.nextQuest);
-        }
+        if (completedQuest.nextQuest != null) StartQuest(completedQuest.nextQuest);
     }
 
     IEnumerator PlayKnockAfterFade(float fadeDuration)
     {
-        if (MusicManager.Instance != null)
-        {
-            MusicManager.Instance.FadeToVolume(0f, fadeDuration);
-        }
+        if (MusicManager.Instance != null) MusicManager.Instance.FadeToVolume(0f, fadeDuration);
         yield return new WaitForSeconds(fadeDuration);
-        if (!knockSound.IsNull)
-        {
-            RuntimeManager.PlayOneShot(knockSound);
-        }
+        if (!knockSound.IsNull) RuntimeManager.PlayOneShot(knockSound);
     }
 
     public void TriggerQuestEvent(string questID)
@@ -193,14 +155,8 @@ public class QuestManager : MonoBehaviour
         switch (questID)
         {
             case "Quest1_Placement":
-                if (MusicManager.Instance != null)
-                {
-                    StartCoroutine(PlayKnockAfterFade(musicFadeBeforeKnockDuration));
-                }
-                else
-                {
-                    if(!knockSound.IsNull) RuntimeManager.PlayOneShot(knockSound);
-                }
+                if (MusicManager.Instance != null) StartCoroutine(PlayKnockAfterFade(musicFadeBeforeKnockDuration));
+                else if(!knockSound.IsNull) RuntimeManager.PlayOneShot(knockSound);
                 break;
 
             case "Quest2_Door":
@@ -212,28 +168,15 @@ public class QuestManager : MonoBehaviour
                 }
                 break;
 
-            case "Quest_FollowLight":
-                break;
+            case "Quest_FollowLight": break;
 
             case "Quest_RepairPanel":
-                // ❌ НЕ глушим музыку здесь!
-                // Музыка Value D должна играть во время погони
-
-                if (repairPanelQuest != null)
-                    StartQuest(repairPanelQuest);
-                break;
-
-            default:
+                if (repairPanelQuest != null) StartQuest(repairPanelQuest);
                 break;
         }
     }
     
     public void TriggerChaseScene()
-    {
-        StartChaseScene();
-    }
-
-    public void StartChaseScene()
     {
         StartCoroutine(ChaseSceneSequence());
     }
@@ -245,111 +188,104 @@ public class QuestManager : MonoBehaviour
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.EnsureMusicPlaying();
-
-            // ВАЖНО: сначала гарантируем, что музыка СЛЫШНА
             MusicManager.Instance.SetVolumeImmediate(1f);
-
-            // ВАЖНО: потом переключаем секцию
             MusicManager.Instance.SetSection("Value D");
         }
 
-        if (!umbrellaManAppearSound.IsNull)
-            RuntimeManager.PlayOneShot(umbrellaManAppearSound);
+        if (!umbrellaManAppearSound.IsNull) RuntimeManager.PlayOneShot(umbrellaManAppearSound);
 
-        // ⚠️ Quest_RepairPanel больше НЕ глушит музыку
         TriggerQuestEvent("Quest_RepairPanel");
 
         if (chase != null)
         {
             chase.gameObject.SetActive(true);
-
-            if (enemyLightDistortion != null)
-                enemyLightDistortion.SetChaseActive(true);
-
-            if (shieldInteractable != null)
-                shieldInteractable.EnableShieldInteraction();
-
+            if (enemyLightDistortion != null) enemyLightDistortion.SetChaseActive(true);
+            if (shieldInteractable != null) shieldInteractable.EnableShieldInteraction();
             chase.StartChase();
         }
     }
 
     public void OnQTESuccess()
     {
-        Debug.Log("QTE Успех! (Финал)");
-
+        // 1. Музыка
         if (MusicManager.Instance != null)
         {
-            // 1️⃣ Уходим в тишину
             MusicManager.Instance.FadeToVolume(0f, 1f);
-
-            // 2️⃣ ВАЖНО: СРАЗУ ЖЕ переключаемся на A
-            // пока игрок НИЧЕГО не слышит
             MusicManager.Instance.SetSection("Value A");
         }
 
-        // Останавливаем дыхание ближнего монстра
+        
         if (umbrellaManNear)
         {
             var chase = umbrellaManNear.GetComponent<UmbrellaManChase>();
-            if (chase != null)
-                chase.StopBreathingLoop();
+            if (chase != null) chase.StopBreathingLoop();
+            umbrellaManNear.SetActive(false);
         }
 
-        if (umbrellaManNear)
-            umbrellaManNear.SetActive(false);
+        
+        if (lightController != null) lightController.TurnOffAllLights();
 
-        // Гасим свет
-        if (lightController != null)
-            lightController.TurnOffAllLights();
+        
+        if (umbrellaManFar) umbrellaManFar.SetActive(true);
 
-        // Показываем дальнего человека с зонтом
-        if (umbrellaManFar)
-            umbrellaManFar.SetActive(true);
+        
+        if (finalSpotlight != null) 
+        {
+            finalSpotlight.SetActive(true);
+        }
+        
 
-        // Камера — время посмотреть
+        
         if (playerController)
         {
-            playerController.enabled = false;
-            playerController.StartCinematicPan(
-                umbrellaManFar.transform,
-                4.0f
-            );
+            
+        
+            playerController.StartCinematicPan(umbrellaManFar.transform, 4.0f);
         }
 
-        // Запускаем финальную режиссуру
+        
         StartCoroutine(FinalSequenceAfterLook(6f));
     }
 
     public void OnQTEFailure()
     {
-        if (enemyLightDistortion != null)
-            enemyLightDistortion.SetChaseActive(false);
-
-        // ❌ НЕ убиваем event
-        if (MusicManager.Instance != null)
-            MusicManager.Instance.FadeToVolume(0f, 0.5f);
-
-        Debug.Log("QTE FAILURE");
-
-        if (repairQTE != null)
-            repairQTE.isQTEActive = false;
+        if (enemyLightDistortion != null) enemyLightDistortion.SetChaseActive(false);
+        if (MusicManager.Instance != null) MusicManager.Instance.FadeToVolume(0f, 0.5f);
+        if (repairQTE != null) repairQTE.isQTEActive = false;
 
         StartCoroutine(ShowGameOverAfterDelay(0.5f));
     }
+
     IEnumerator FinalSequenceAfterLook(float delay)
     {
         yield return new WaitForSeconds(delay);
 
+        
         if (prototypeCompleteUI != null)
+        {
             prototypeCompleteUI.SetActive(true);
+            
+            
+            CanvasGroup cg = prototypeCompleteUI.GetComponent<CanvasGroup>();
+            if (cg == null) cg = prototypeCompleteUI.AddComponent<CanvasGroup>();
+            
+            // Анимация прозрачности
+            float fadeTime = 2.0f;
+            float t = 0;
+            cg.alpha = 0;
+            
+            while (t < fadeTime)
+            {
+                t += Time.deltaTime;
+                cg.alpha = Mathf.Lerp(0, 1, t / fadeTime);
+                yield return null;
+            }
+            cg.alpha = 1;
+        }
 
         if (MusicManager.Instance != null)
         {
-            // Просто поднимаем громкость
-            MusicManager.Instance.FadeToVolume(
-                MusicManager.Instance.defaultVolume,
-                3f
-            );
+            MusicManager.Instance.FadeToVolume(MusicManager.Instance.defaultVolume, 3f);
         }
     }
 

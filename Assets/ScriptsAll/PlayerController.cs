@@ -50,12 +50,24 @@ public class PlayerController : MonoBehaviour
     private bool canMove = true;
     private bool dialogueZoom = false;
     private float initialFOV;
+    
+    [Header("Zoom Settings")]
+    public Camera playerCamera;
+    public float defaultFOV = 60f;
+    public float zoomFOV = 45f;
+    public float zoomSpeed = 2.0f;
+    
+    private float targetFOV;         // К какому значению мы сейчас стремимся
 
     // --- Ссылка на ObjectInteraction ---
     private ObjectInteraction objectInteraction;
 
     void Start()
     {
+        
+        if (playerCamera == null) playerCamera = Camera.main;
+        targetFOV = defaultFOV;
+        
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -94,6 +106,13 @@ public class PlayerController : MonoBehaviour
         HandleDialogueZoom();
         HandleFootsteps();
         CheckInteractionInput();
+        
+        if (playerCamera != null)
+        {
+            
+            playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, Time.deltaTime * zoomSpeed);
+        }
+        
     }
     private void StopFootsteps()
     {
@@ -336,5 +355,7 @@ public class PlayerController : MonoBehaviour
             virtualCam.transform.LookAt(target); 
         // isCinematic остается true, т.к. игра завершена.
     }
+    
+    
 
 }

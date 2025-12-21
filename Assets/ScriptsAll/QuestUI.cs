@@ -16,9 +16,13 @@ public class QuestUI : MonoBehaviour
     public float visibleTime = 3.0f;
     public float fadeOutTime = 0.5f;
 
-    // ↓↓↓ 1. ДОБАВИЛИ ПЕРЕМЕННУЮ ДЛЯ ПАНЕЛИ УПРАВЛЕНИЯ ↓↓↓
     [Header("Settings")]
     public GameObject controlsPanel; 
+
+    // ↓↓↓ НОВОЕ: Переменные для подсказки "Tap Q" ↓↓↓
+    [Header("Tutorial Prompt")]
+    public TextMeshProUGUI tutorialPromptText; // Ссылка на текст подсказки
+    private bool hasPressedQ = false;          // Флаг: нажимали ли уже Q?
     // ↑↑↑
 
     private CanvasGroup canvasGroup;
@@ -31,17 +35,40 @@ public class QuestUI : MonoBehaviour
         
         canvasGroup.alpha = 0; 
         
-        // Гарантированно скрываем панель при старте
+        // Гарантированно скрываем панель управления при старте
         if (controlsPanel != null) controlsPanel.SetActive(false);
+
+        // Гарантированно ВКЛЮЧАЕМ подсказку при старте
+        if (tutorialPromptText != null) tutorialPromptText.gameObject.SetActive(true);
     }
 
     void Update()
     {
+        // ↓↓↓ НОВОЕ: Логика пульсации текста (мигание) ↓↓↓
+        if (!hasPressedQ && tutorialPromptText != null)
+        {
+            // Плавно меняем прозрачность от 0.2 до 1.0
+            float alpha = 0.2f + Mathf.PingPong(Time.time * 2f, 0.8f);
+            Color c = tutorialPromptText.color;
+            tutorialPromptText.color = new Color(c.r, c.g, c.b, alpha);
+        }
+        // ↑↑↑
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
+             // ↓↓↓ НОВОЕ: Если это первое нажатие - убираем подсказку навсегда ↓↓↓
+             if (!hasPressedQ)
+             {
+                 hasPressedQ = true;
+                 if (tutorialPromptText != null) 
+                 {
+                     tutorialPromptText.gameObject.SetActive(false);
+                 }
+             }
+             // ↑↑↑
+
              ShowQuestTemporarily();
              
-             // ↓↓↓ 2. ПОКАЗЫВАЕМ ПАНЕЛЬ ПРИ НАЖАТИИ Q ↓↓↓
              if (controlsPanel != null) controlsPanel.SetActive(true);
         }
     }
@@ -114,7 +141,7 @@ public class QuestUI : MonoBehaviour
         }
         canvasGroup.alpha = 1;
 
-        // Visible (ждем 3 секунды)
+        // Visible
         yield return new WaitForSeconds(visibleTime);
 
         // Fade Out
@@ -127,9 +154,7 @@ public class QuestUI : MonoBehaviour
         }
         canvasGroup.alpha = 0;
         
-        // ↓↓↓ 3. СКРЫВАЕМ ПАНЕЛЬ, КОГДА ЗАКОНЧИЛСЯ ТАЙМЕР ↓↓↓
         if (controlsPanel != null) controlsPanel.SetActive(false);
-        // ↑↑↑
         
         displayCoroutine = null;
     }
