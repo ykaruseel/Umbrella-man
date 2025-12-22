@@ -49,6 +49,8 @@ public class Pause : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        DialogueManager.instance?.SetPaused();
     }
 
     public void ResumeGame()
@@ -65,6 +67,7 @@ public class Pause : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        DialogueManager.instance?.SetPaused();
         ResetPause();
     }
 

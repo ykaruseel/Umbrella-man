@@ -103,6 +103,9 @@ public class DialogueManager : MonoBehaviour
         // по одному символу
         foreach (char letter in line.sentence.ToCharArray())
         {
+            while (Pause.isPaused)
+                yield return null;
+
             if (dialogueText != null)
                 dialogueText.text += letter;
 
@@ -186,6 +189,15 @@ public class DialogueManager : MonoBehaviour
         }
 
         hasActiveVoice = false;
+    }
+
+    public void SetPaused()
+    {
+        if (hasActiveVoice && currentVoiceInstance.isValid())
+        {
+            Debug.Log("[DialogueManager] Pausing voice instance: " + Pause.isPaused);
+            currentVoiceInstance.setPaused(Pause.isPaused);
+        }
     }
 
     void OnDestroy()
