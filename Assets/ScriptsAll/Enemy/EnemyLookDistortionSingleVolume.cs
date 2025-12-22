@@ -160,7 +160,7 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
 
         if (colorAdj != null)
         {
-            colorAdj.postExposure.value = Mathf.Lerp(baseExposure, -0.5f, finalFactor); // less darkening (was -1)
+            //colorAdj.postExposure.value = Mathf.Lerp(baseExposure, -0.5f, finalFactor); // less darkening (was -1)
             colorAdj.contrast.value = Mathf.Lerp(baseContrast, 3f, finalFactor); // softer contrast (was 7)
         }
 
