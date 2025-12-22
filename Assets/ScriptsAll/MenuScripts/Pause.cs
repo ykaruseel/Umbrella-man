@@ -76,7 +76,8 @@ public class Pause : MonoBehaviour
         isPaused = false;
         _mainButtons.SetActive(true);
         _settings.SetActive(false);
-        _credits.SetActive(false);
+        if(_credits != null)
+            _credits.SetActive(false);
         _pauseMenuUI.SetActive(false);
     }
 }

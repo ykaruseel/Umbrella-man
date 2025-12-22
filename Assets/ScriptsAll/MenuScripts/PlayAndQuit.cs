@@ -6,6 +6,7 @@ public class PlayAndQuit : MonoBehaviour
 {
     public void LoadScene(string sceneName)
     {
+        Debug.Log("Trying to load scene: " + sceneName);
         SceneManager.LoadScene(sceneName);
     }
 
