@@ -655,7 +655,6 @@ RectTransform:
   - {fileID: 849750176}
   - {fileID: 760576361}
   - {fileID: 435839562}
-  - {fileID: 1335966853}
   - {fileID: 24251768}
   m_Father: {fileID: 612807013}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4406,7 +4405,7 @@ MonoBehaviour:
   nameText: {fileID: 1780808407}
   dialogueText: {fileID: 2075687784}
   typingSpeed: 0.03
-  fadeDuration: 3
+  fadeDuration: 1.5
   danielVoiceEvent:
     Guid:
       Data1: -1656578066
@@ -11196,13 +11195,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335966852}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1409642655}
-  m_Father: {fileID: 41857923}
+  m_Father: {fileID: 1690164012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.71214795}
   m_AnchorMax: {x: 0.24300002, y: 1}
@@ -12011,7 +12010,7 @@ GameObject:
   - component: {fileID: 1409642657}
   - component: {fileID: 1409642656}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: WASD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13621,6 +13620,7 @@ RectTransform:
   m_Children:
   - {fileID: 547119909}
   - {fileID: 721403192}
+  - {fileID: 1335966853}
   m_Father: {fileID: 41857923}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -13649,6 +13649,7 @@ MonoBehaviour:
   fadeOutTime: 0.5
   controlsPanel: {fileID: 1335966852}
   tutorialPromptText: {fileID: 24251769}
+  promptAutoCloseTime: 3
 --- !u!225 &1690164014
 CanvasGroup:
   m_ObjectHideFlags: 0
