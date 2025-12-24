@@ -67,10 +67,10 @@ public class RepairQTE : MonoBehaviour
 
         // Поиск контроллеров (первый FindFirstObjectByType более современный)
         playerController = FindFirstObjectByType<PlayerController>();
-        
+
         // Находим QuestManager
-        if(QuestManager.instance != null)
-            questManager = QuestManager.instance; 
+        if (QuestManager.instance != null)
+            questManager = QuestManager.instance;
         else
             Debug.LogWarning("RepairQTE: QuestManager.instance не найден!");
 
@@ -127,7 +127,7 @@ public class RepairQTE : MonoBehaviour
 
         isQTEActive = true;
         currentTrackIndex = 0;
-        
+
         if (qtePanel != null)
             qtePanel.SetActive(true);
 
@@ -245,10 +245,10 @@ public class RepairQTE : MonoBehaviour
             Debug.LogWarning("RepairQTE: не заданы arrow / successZone на треке " + (currentTrackIndex + 1));
             return;
         }
-        
+
         // Получаем позицию стрелки относительно родительского трека
         float arrowY = currentTrack.arrow.anchoredPosition.y;
-        
+
         // Получаем границы зоны успеха
         float zoneY = currentTrack.successZone.anchoredPosition.y;
         float zoneHalfHeight = currentTrack.successZone.rect.height / 2;
@@ -299,7 +299,7 @@ public class RepairQTE : MonoBehaviour
     }
 
     // ----------------- СВЕТ НА ЩИТКЕ -----------------
-    
+
     // ... (Методы для света SetShieldIdle, StartShieldSuccessFlash, StartShieldFailFlash)
     // ... (Методы-Coroutine ShieldSuccessFlashCoroutine, ShieldFailFlashCoroutine)
     // ... (Оставил их без изменений, предполагая, что они не содержат ошибок синтаксиса в теле, кроме конфликта вызова StopQTE в Coroutine ShieldFailFlashCoroutine - см. ниже)
@@ -390,5 +390,30 @@ public class RepairQTE : MonoBehaviour
 
         // Мы НЕ вызываем OnQTEFailure, чтобы не появлялась надпись "He got you".
         Debug.Log("QTE: Активирована Отмена. Игрок восстанавливает управление.");
+    }
+
+
+    public void ResetQTEState()
+    {
+        isQTEActive = false;
+        currentTrackIndex = 0;
+
+        if (qtePanel != null)
+            qtePanel.SetActive(false);
+
+        foreach (var track in tracks)
+            ResetArrowOnTrack(track);
+
+        TurnOffShieldLight();
+
+        if (shieldRoutine != null)
+        {
+            StopCoroutine(shieldRoutine);
+
+            shieldRoutine = null;
+        }
+
+        playerController.SetCanMove(true);
+        playerController.SetDialogueZoom(false);
     }
 }

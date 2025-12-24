@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
             // ВАЖНО: останавливаем шаги, если вдруг шли
             StopFootsteps();
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) && !Pause.isPaused)
                 dm.DisplayNextSentence(); // листаем реплики
 
             return; // блокируем остальное управление
@@ -257,6 +257,9 @@ public class PlayerController : MonoBehaviour
         if (!Input.GetKeyDown(KeyCode.E))
             return;
 
+        if (Pause.isPaused)
+            return;
+
         Ray ray = playerCam.ScreenPointToRay(
             new Vector3(Screen.width / 2, Screen.height / 2)
         );
@@ -355,7 +358,17 @@ public class PlayerController : MonoBehaviour
             virtualCam.transform.LookAt(target); 
         // isCinematic остается true, т.к. игра завершена.
     }
-    
-    
 
+
+
+    public void SetRotation(float yaw, float pitch)
+    {
+        rotationY = yaw;
+        rotationX = pitch;
+
+        transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
+
+        if (virtualCam != null)
+            virtualCam.transform.localRotation = Quaternion.Euler(rotationX, 0f, 0f);
+    }
 }

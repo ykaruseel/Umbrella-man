@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using FMODUnity;
 using FMOD.Studio;
+using UnityEngine.UI;
 
 public class QuestManager : MonoBehaviour
 {
@@ -34,7 +35,10 @@ public class QuestManager : MonoBehaviour
     public EventReference questCompleteSound;
     public EventReference umbrellaManAppearSound;
     public float musicFadeBeforeKnockDuration = 2f;
-    
+
+    [SerializeField] private Image fadeImage;
+    [SerializeField] private float fadeDuration;
+
     [Header("Final Scene")]
     public GameObject finalSpotlight;
 
@@ -48,7 +52,7 @@ public class QuestManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -293,6 +297,89 @@ public class QuestManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         if (gameOverUI != null) gameOverUI.SetActive(true);
+        playerController.SetCanMove(false);
         yield return null;
+    }
+
+    private void Update()
+    {
+        if (gameOverUI != null && gameOverUI.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                RespawnAfterDeath();
+            }
+        }
+    }
+
+    private void RespawnAfterDeath()
+    {
+        if (chase)
+        {
+            chase.ResetChase();
+            chase.gameObject.SetActive(false);
+        }
+
+        if (playerController)
+        {
+            CharacterController cc = playerController.GetComponent<CharacterController>();
+            if (cc) cc.enabled = false;
+
+            playerController.transform.position = new Vector3(-3.645f, 1.133824f, -35.114f);
+            playerController.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+            playerController.SetRotation(90f, 0f);
+            if (gameOverUI)
+                gameOverUI.SetActive(false);
+
+            FadeOut(cc);
+        }
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        if (enemyLightDistortion != null)
+            enemyLightDistortion.SetChaseActive(false);
+
+        if (shieldInteractable != null)
+        {
+            shieldInteractable.DisableShieldInteraction();
+        }
+
+        if (repairQTE != null)
+        {
+            repairQTE.ResetQTEState();
+        }
+
+        TriggerQuestEvent("Quest2_Door");
+    }
+
+    public void FadeOut(CharacterController cc)
+    {
+        if (fadeImage == null) return;
+        fadeImage.gameObject.SetActive(true);
+        StartCoroutine(FadeRoutine(cc));
+    }
+
+    private IEnumerator FadeRoutine(CharacterController cc)
+    {
+        Color color = fadeImage.color;
+        float time = 0f;
+
+        while (time < fadeDuration)
+        {
+            time += Time.deltaTime;
+            float t = time / fadeDuration;
+            color.a = Mathf.Lerp(1f, 0f, t);
+            fadeImage.color = color;
+            yield return null;
+        }
+
+        fadeImage.gameObject.SetActive(false);
+        color.a = 1f;
+        fadeImage.color = color;
+
+        playerController.SetCanMove(true);
+        if (cc) cc.enabled = true;
+        playerController.enabled = true;
     }
 }

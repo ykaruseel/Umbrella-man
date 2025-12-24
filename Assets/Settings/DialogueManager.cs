@@ -110,6 +110,9 @@ public class DialogueManager : MonoBehaviour
 
         foreach (char letter in line.sentence.ToCharArray())
         {
+            while (Pause.isPaused)
+                yield return null;
+
             if (dialogueText != null) dialogueText.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
@@ -183,6 +186,12 @@ public class DialogueManager : MonoBehaviour
             currentVoiceInstance.release();
         }
         hasActiveVoice = false;
+    }
+
+    public void SetPaused()
+    {
+        if (hasActiveVoice && currentVoiceInstance.isValid())
+            currentVoiceInstance.setPaused(Pause.isPaused);
     }
 
     void OnDestroy()
