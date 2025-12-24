@@ -20,7 +20,7 @@ public class InteractableObject : MonoBehaviour
     {
         isShieldReady = false;
     }
-    
+
     public void Interact()
     {
         Debug.Log("Взаимодействие с: " + objectID);

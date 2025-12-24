@@ -153,7 +153,7 @@ public class UmbrellaManChase : MonoBehaviour
     private void StartBreathingLoop()
     {
         if (breathingLoopEvent.IsNull) return;
-        if(breathingInstance.isValid()) return;
+        if (breathingInstance.isValid()) return;
         breathingInstance = RuntimeManager.CreateInstance(breathingLoopEvent);
         RuntimeManager.AttachInstanceToGameObject(breathingInstance, transform, GetComponent<Rigidbody>());
         breathingInstance.start();
@@ -201,7 +201,6 @@ public class UmbrellaManChase : MonoBehaviour
         if (heartbeatEvent.IsNull) return;
         if (heartbeatInstance.isValid()) return;
         heartbeatInstance = RuntimeManager.CreateInstance(heartbeatEvent);
-        RuntimeManager.AttachInstanceToGameObject(heartbeatInstance, transform, GetComponent<Rigidbody>());
         heartbeatInstance.start();
     }
 
@@ -215,11 +214,9 @@ public class UmbrellaManChase : MonoBehaviour
 
     public void ResetChase()
     {
-
         StopBreathingLoop();
         StopFootsteps();
         StopHeartbeat();
-
         StopChase();
 
         transform.position = new Vector3(-0.64f, 0.6480125f, -31.8f);
@@ -227,10 +224,12 @@ public class UmbrellaManChase : MonoBehaviour
         isChasing = false;
 
         if (agent != null)
-        {
             agent.enabled = false;
-        }
     }
+
+
+
+
 
     public void PauseChase()
     {
@@ -243,6 +242,10 @@ public class UmbrellaManChase : MonoBehaviour
         PauseHeartbeat(true);
     }
 
+
+
+
+
     public void ResumeChase()
     {
         if (!isChasing || hasCaughtPlayer) return;
@@ -251,7 +254,6 @@ public class UmbrellaManChase : MonoBehaviour
             agent.isStopped = false;
 
         StartCoroutine(FootstepLoop());
-
         PauseBreathing(false);
         PauseHeartbeat(false);
     }

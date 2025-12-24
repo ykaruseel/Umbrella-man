@@ -1,135 +1,139 @@
-// Файл: LightFlickerController.cs
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic; // Для List
+using System.Collections.Generic;
 
 public class LightFlickerController : MonoBehaviour
 {
-    [Tooltip("Перетащи сюда все лампы, которые должны мигать")]
+    [Header("Лампы для мигания (Сюжет)")]
+    [Tooltip("Перетащи сюда лампы, которые будут мигать во время сцены")]
     public List<Light> lightsToFlicker; 
-    
-    [Header("Настройки мигания")]
-    public float initialDelay = 1f;     // Начальная задержка между миганиями
-    public float minDelay = 0.1f;       // Минимальная задержка (макс. скорость)
-    public float acceleration = 0.05f;  // Насколько быстрее мигает с каждым циклом
-    public int stages = 3;              // Сколько этапов (1 лампа, несколько, все)
 
-    private List<float> initialIntensities = new List<float>(); // Запомним начальную яркость
-    private Coroutine pulsingCoroutine; // Для остановки пульсации
+    [Header("Остальные лампы (Финал)")]
+    [Tooltip("Перетащи сюда все остальные лампы, которые просто горят, но должны погаснуть после QTE")]
+    public List<Light> staticLightsToTurnOff;
+
+    [Header("Настройки мигания")]
+    public float initialDelay = 1f;     
+    public float minDelay = 0.1f;       
+    public float acceleration = 0.05f;  
+    public int stages = 3;              
+
+    private List<float> initialIntensities = new List<float>(); 
+    private Coroutine pulsingCoroutine; 
 
     void Start()
     {
-         // Запоминаем начальную яркость каждой лампы
+         // Запоминаем начальную яркость мигающих ламп
         foreach(Light l in lightsToFlicker)
         {
-            if(l != null)
+            if(l != null) initialIntensities.Add(l.intensity);
+            else initialIntensities.Add(0);
+        }
+    }
+
+    // --- ГЛАВНЫЕ МЕТОДЫ ---
+
+    // 1. Выключить АБСОЛЮТНО ВЕСЬ свет (для успеха QTE)
+    public void TurnOffAllLights()
+    {
+        // Выключаем мигающие лампы
+        foreach (Light l in lightsToFlicker)
+        {
+            if(l) l.enabled = false;
+        }
+
+        // Выключаем статичные лампы (коридор и т.д.)
+        if (staticLightsToTurnOff != null)
+        {
+            foreach (Light l in staticLightsToTurnOff)
             {
-                initialIntensities.Add(l.intensity); // Запоминаем ИНТЕНСИВНОСТЬ
+                if(l) l.enabled = false;
             }
-            else
+        }
+
+        Debug.Log("ВЕСЬ СВЕТ (мигающий и статичный) ВЫКЛЮЧЕН.");
+    }
+
+    // 2. Включить весь свет обратно (если нужно восстановить)
+    public void TurnOnAllLights()
+    {
+        // Включаем мигающие
+        for (int i = 0; i < lightsToFlicker.Count; i++)
+        {
+            if(lightsToFlicker[i]) 
             {
-                initialIntensities.Add(0); // Добавляем заглушку, если лампа null
+                lightsToFlicker[i].enabled = true;
+                if (i < initialIntensities.Count)
+                    lightsToFlicker[i].intensity = initialIntensities[i];
+            }
+        }
+        
+        // Включаем статичные
+        if (staticLightsToTurnOff != null)
+        {
+            foreach (Light l in staticLightsToTurnOff)
+            {
+                if(l) l.enabled = true;
             }
         }
     }
 
-    // Главная корутина, управляющая всей последовательностью мигания
-    // Вызывается из QuestManager
+    // 3. Последовательность мигания (Сюжет)
     public IEnumerator FlickerSequence(System.Action onCompleteCallback)
     {
         if (lightsToFlicker.Count == 0) 
         {
-            Debug.LogWarning("Нет ламп для мигания!");
-            onCompleteCallback?.Invoke(); // Все равно вызываем коллбэк
+            onCompleteCallback?.Invoke();
             yield break;
         }
         
-        // Сначала выключаем все
+        // Выключаем только мигающие перед стартом шоу
         foreach (Light l in lightsToFlicker) { if(l) l.enabled = false; }
-        yield return new WaitForSeconds(0.5f); // Пауза перед началом
+        yield return new WaitForSeconds(0.5f);
 
         float currentDelay = initialDelay;
         int lightsPerStage = Mathf.CeilToInt((float)lightsToFlicker.Count / stages);
 
-        Debug.Log("Начинается последовательность мигания...");
-
-        // Этап 1: Мигает одна лампа (первая в списке)
+        // Этап 1
         if (lightsToFlicker.Count > 0 && lightsToFlicker[0] != null)
         {
-            Debug.Log("Этап 1: Мигает одна лампа");
-            yield return FlickerLights(new List<Light>() { lightsToFlicker[0] }, currentDelay, 5); // Мигнет 5 раз
+            yield return FlickerLights(new List<Light>() { lightsToFlicker[0] }, currentDelay, 5);
             currentDelay = Mathf.Max(minDelay, currentDelay - acceleration * 5);
         }
 
-        // Этап 2: Мигает несколько ламп
+        // Этап 2
         if (stages > 1 && lightsToFlicker.Count > 1)
         {
-            Debug.Log("Этап 2: Мигает несколько ламп");
             int count = Mathf.Min(lightsToFlicker.Count, lightsPerStage * (stages > 2 ? 1 : 2));
             List<Light> stage2Lights = lightsToFlicker.GetRange(0, count);
-            yield return FlickerLights(stage2Lights, currentDelay, 8); // Мигнет 8 раз
+            yield return FlickerLights(stage2Lights, currentDelay, 8);
             currentDelay = Mathf.Max(minDelay, currentDelay - acceleration * 8);
         }
 
-        // Этап 3: Мигают все лампы, ускоряясь
-        Debug.Log("Этап 3: Мигают все лампы, ускоряясь");
+        // Этап 3
         while (currentDelay > minDelay)
         {
-            yield return FlickerLights(lightsToFlicker, currentDelay, 1); // Мигнет 1 раз
+            yield return FlickerLights(lightsToFlicker, currentDelay, 1);
             currentDelay = Mathf.Max(minDelay, currentDelay - acceleration);
         }
 
-        // Финальное быстрое мигание
-        Debug.Log("Финальное мигание");
-        yield return FlickerLights(lightsToFlicker, minDelay, 15); // Мигнет 15 раз очень быстро
+        // Финал мигания
+        yield return FlickerLights(lightsToFlicker, minDelay, 15);
 
-        Debug.Log("Последовательность мигания завершена.");
-        // Восстанавливаем свет
-        TurnOnAllLights();
-
-        // Вызываем коллбэк (например, запуск Квеста 3)
+        TurnOnAllLights(); // Включаем всё обратно
         onCompleteCallback?.Invoke();
     }
 
-    // Вспомогательная корутина, которая заставляет мигать указанные лампы
     IEnumerator FlickerLights(List<Light> lights, float delay, int count)
     {
         for (int i = 0; i < count; i++)
         {
-            // Включаем
             foreach (Light l in lights) { if(l) l.enabled = true; }
             yield return new WaitForSeconds(delay / 2);
-            // Выключаем
             foreach (Light l in lights) { if(l) l.enabled = false; }
             yield return new WaitForSeconds(delay / 2);
         }
     }
-
-     // --- Публичные методы для QuestManager ---
-
-     // Включить весь свет (восстановить)
-     public void TurnOnAllLights()
-     {
-         for (int i = 0; i < lightsToFlicker.Count; i++)
-         {
-             if(lightsToFlicker[i]) 
-             {
-                 lightsToFlicker[i].enabled = true;
-                 lightsToFlicker[i].intensity = initialIntensities[i]; // Восстанавливаем яркость
-             }
-         }
-         Debug.Log("Весь свет включен.");
-     }
-
-     // Выключить весь свет (для успеха QTE)
-     public void TurnOffAllLights()
-     {
-         foreach (Light l in lightsToFlicker)
-         {
-             if(l) l.enabled = false;
-         }
-         Debug.Log("Весь свет выключен.");
-     }
 
      // Включить свет на максимум (для провала QTE)
      public void MaxOutLights()
@@ -139,56 +143,57 @@ public class LightFlickerController : MonoBehaviour
              if(lightsToFlicker[i]) 
              {
                  lightsToFlicker[i].enabled = true;
-                 lightsToFlicker[i].intensity = initialIntensities[i] * 3; // Утроить яркость
+                 if (i < initialIntensities.Count)
+                    lightsToFlicker[i].intensity = initialIntensities[i] * 3;
              }
          }
-         Debug.Log("Свет на максимум!");
+         // Статичные тоже можно включить, если они были выключены
+         if (staticLightsToTurnOff != null)
+         {
+            foreach (Light l in staticLightsToTurnOff) { if(l) l.enabled = true; }
+         }
      }
-     // --- НОВЫЕ МЕТОДЫ ДЛЯ ПОГОНИ ---
 
-// 1. Вызывается QuestManager'ом, чтобы запустить пульсацию ВСЕХ ламп
+     // --- МЕТОДЫ ДЛЯ ПОГОНИ ---
+
      public void StartPulsingFlicker()
      {
-         // Выключаем все лампы (если они горели ровно)
-         TurnOffAllLights();
-         // Запускаем корутину пульсации
+         // Гасим всё перед пульсацией
+         foreach (Light l in lightsToFlicker) { if(l) l.enabled = false; }
+         // Статичные НЕ трогаем или гасим - по желанию. 
+         // Обычно при погоне статичный свет тоже должен пугать, но пока оставим его включенным или выключим:
+         // Если хотите полную темноту с пульсацией - раскомментируйте строку ниже:
+         // if (staticLightsToTurnOff != null) foreach (Light l in staticLightsToTurnOff) { if(l) l.enabled = false; }
+
          pulsingCoroutine = StartCoroutine(PulsingFlicker());
      }
 
-// 2. Вызывается QuestManager'ом, чтобы остановить пульсацию
      public void StopPulsingFlicker()
      {
-         if (pulsingCoroutine != null)
-         {
-             StopCoroutine(pulsingCoroutine);
-         }
-         // Восстанавливаем нормальный свет (перед QTE)
+         if (pulsingCoroutine != null) StopCoroutine(pulsingCoroutine);
          TurnOnAllLights();
      }
 
-// Корутина "слабой пульсации" (как в PDF)
      IEnumerator PulsingFlicker()
      {
-         // Восстанавливаем яркость, но очень низкую
          for (int i = 0; i < lightsToFlicker.Count; i++)
          {
              if(lightsToFlicker[i]) 
              {
                  lightsToFlicker[i].enabled = true;
-                 lightsToFlicker[i].intensity = initialIntensities[i] * 0.1f; // 10% яркости
+                 if (i < initialIntensities.Count)
+                    lightsToFlicker[i].intensity = initialIntensities[i] * 0.1f; 
              }
          }
 
-         float pulseSpeed = 2f; // Скорость пульсации
+         float pulseSpeed = 2f; 
 
          while(true)
          {
-             // Плавно делаем от 10% до 30% яркости
-             float pulse = 0.1f + Mathf.PingPong(Time.time * pulseSpeed, 0.2f); // 0.1 -> 0.3 -> 0.1
-
+             float pulse = 0.1f + Mathf.PingPong(Time.time * pulseSpeed, 0.2f); 
              for (int i = 0; i < lightsToFlicker.Count; i++)
              {
-                 if(lightsToFlicker[i]) 
+                 if(lightsToFlicker[i] && i < initialIntensities.Count) 
                      lightsToFlicker[i].intensity = initialIntensities[i] * pulse;
              }
              yield return null;

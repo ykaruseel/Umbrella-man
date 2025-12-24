@@ -44,6 +44,18 @@ public class MusicManager : MonoBehaviour
         musicInstance.setParameterByNameWithLabel(sectionParameterName, section);
     }
 
+    public void EnsureMusicPlaying()
+    {
+        if (!musicInstance.isValid())
+            return;
+
+        PLAYBACK_STATE state;
+        musicInstance.getPlaybackState(out state);
+
+        if (state != PLAYBACK_STATE.PLAYING)
+            musicInstance.start();
+    }
+
     public void FadeToVolume(float targetVolume, float duration)
     {
         if (!musicInstance.isValid()) return;

@@ -8614,11 +8614,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventRef:
     Guid:
-      Data1: 1083465206
-      Data2: 1172304315
-      Data3: -22473282
-      Data4: -141364541
-    Path: event:/QTE_success
+      Data1: 1658154279
+      Data2: 1136958090
+      Data3: 410765477
+      Data4: -887098538
+    Path: event:/UI/UI_click_button
   requiredTag: Player
   playOnce: 0
   logWarnings: 1
@@ -12351,6 +12351,9 @@ MonoBehaviour:
   fadeInTime: 0.5
   visibleTime: 3
   fadeOutTime: 0.5
+  controlsPanel: {fileID: 0}
+  tutorialPromptText: {fileID: 0}
+  promptAutoCloseTime: 10
 --- !u!1 &1358901015
 GameObject:
   m_ObjectHideFlags: 0
@@ -13381,6 +13384,7 @@ MonoBehaviour:
   useRandomStepInterval: 0
   minFootstepInterval: 0.45
   maxFootstepInterval: 0.8
+  preChaseDelay: 2
   heartbeatEvent:
     Guid:
       Data1: 0
@@ -15851,17 +15855,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab6fc0a7703e3f4c8a314e4a85ca677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questUI: {fileID: 1353485196}
-  currentQuest: {fileID: 0}
   firstQuest: {fileID: 11400000, guid: 50915153bc506ab4489d737f67ae2089, type: 2}
-  quest_FollowLight: {fileID: 11400000, guid: 7dbf82eb6b09936469489fe87a12a6ae, type: 2}
-  quest_RepairPanel: {fileID: 11400000, guid: e7fb9e843b631154a829a980e630b7b0, type: 2}
-  followLightController: {fileID: 549062088}
-  lightController: {fileID: 2040382609}
-  qteSystem: {fileID: 0}
-  playerController: {fileID: 1980483793}
-  shieldInteractable: {fileID: 0}
+  currentQuest: {fileID: 0}
+  questUI: {fileID: 1353485196}
+  repairPanelQuest: {fileID: 0}
+  umbrellaManNear: {fileID: 1507825128}
+  umbrellaManFar: {fileID: 1349813925}
   gameOverUI: {fileID: 276402199}
+  prototypeCompleteUI: {fileID: 0}
+  followLightController: {fileID: 549062088}
+  chase: {fileID: 0}
+  repairQTE: {fileID: 0}
+  enemyLightDistortion: {fileID: 827785111}
+  shieldInteractable: {fileID: 0}
+  lightController: {fileID: 2040382609}
+  playerController: {fileID: 1980483793}
   knockSound:
     Guid:
       Data1: 26153199
@@ -15876,17 +15884,16 @@ MonoBehaviour:
       Data3: 516923534
       Data4: 1673419026
     Path: event:/Quest
-  enemyLightDistortion: {fileID: 827785111}
-  umbrellaManNear: {fileID: 1507825128}
-  umbrellaManFar: {fileID: 1349813925}
-  umbrellaAppearEvent:
+  umbrellaManAppearSound:
     Guid:
-      Data1: -2088746596
-      Data2: 1183469415
-      Data3: 1052227243
-      Data4: -2048410900
-    Path: event:/UM_appear
-  prototypeCompleteUI: {fileID: 0}
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  musicFadeBeforeKnockDuration: 2
+  finalSpotlight: {fileID: 0}
+  prototypeCompleteDelay: 1.5
 --- !u!4 &1694909107
 Transform:
   m_ObjectHideFlags: 0
@@ -19483,6 +19490,10 @@ MonoBehaviour:
   virtualCam: {fileID: 1242166331}
   dialogueZoomFOV: 50
   dialogueZoomSpeed: 1
+  playerCamera: {fileID: 0}
+  defaultFOV: 60
+  zoomFOV: 45
+  zoomSpeed: 2
 --- !u!114 &1980483794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20222,6 +20233,7 @@ MonoBehaviour:
   nameText: {fileID: 1501607056}
   dialogueText: {fileID: 1554862953}
   typingSpeed: 0.03
+  fadeDuration: 0.5
   danielVoiceEvent:
     Guid:
       Data1: -1656578066
@@ -20236,6 +20248,7 @@ MonoBehaviour:
       Data3: -2026549598
       Data4: 1506929119
     Path: event:/lester_voice
+  dialogueCanvasGroup: {fileID: 0}
 --- !u!1 &2019108883
 GameObject:
   m_ObjectHideFlags: 0
@@ -20696,11 +20709,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventRef:
     Guid:
-      Data1: 799443240
-      Data2: 1182879183
-      Data3: 1945114808
-      Data4: 1431666962
-    Path: event:/UM_footsteps
+      Data1: 1931441628
+      Data2: 1208338051
+      Data3: -1105825131
+      Data4: 1987752066
+    Path: event:/UI/UI_point_button
   requiredTag: Player
   playOnce: 0
   logWarnings: 1
@@ -21303,6 +21316,7 @@ MonoBehaviour:
   - {fileID: 634228597}
   - {fileID: 0}
   - {fileID: 1668653272}
+  staticLightsToTurnOff: []
   initialDelay: 1
   minDelay: 0.1
   acceleration: 0.05
