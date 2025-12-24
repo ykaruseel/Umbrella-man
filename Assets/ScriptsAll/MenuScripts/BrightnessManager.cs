@@ -53,4 +53,12 @@ public class BrightnessManager : MonoBehaviour
         if (colorAdjustments != null)
             colorAdjustments.postExposure.value = value;
     }
+
+    private void OnDestroy()
+    {
+        if (brightnessSlider != null)
+        {
+            brightnessSlider.onValueChanged.RemoveListener(OnSliderChanged);
+        }
+    }
 }
