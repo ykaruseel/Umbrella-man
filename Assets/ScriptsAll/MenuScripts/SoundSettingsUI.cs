@@ -17,4 +17,11 @@ public class SoundSettingsUI : MonoBehaviour
         musicSlider.onValueChanged.AddListener(SoundSettingsManager.Instance.SetMusicVolume);
         sfxSlider.onValueChanged.AddListener(SoundSettingsManager.Instance.SetSFXVolume);
     }
+
+    private void OnDestroy()
+    {
+        masterSlider.onValueChanged.RemoveListener(SoundSettingsManager.Instance.SetMasterVolume);
+        musicSlider.onValueChanged.RemoveListener(SoundSettingsManager.Instance.SetMusicVolume);
+        sfxSlider.onValueChanged.RemoveListener(SoundSettingsManager.Instance.SetSFXVolume);
+    }
 }
