@@ -47,9 +47,6 @@ public class QuestManager : MonoBehaviour
 
     private Dictionary<string, bool> placedItems = new Dictionary<string, bool>();
 
-    [SerializeField] private Image fadeImage;
-    [SerializeField] private float fadeDuration;
-
     void Awake()
     {
         if (instance == null)
