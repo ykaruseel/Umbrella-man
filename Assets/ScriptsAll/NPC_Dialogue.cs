@@ -1,4 +1,3 @@
-// 📁 Assets/ScriptsAll/NPC_Dialogue.cs
 using UnityEngine;
 using System.Collections; // ✅ обязательно для IEnumerator
 
@@ -18,9 +17,9 @@ public class NPC_Dialogue : MonoBehaviour
 
     void Start()
     {
-        dialogueManager = FindObjectOfType<DialogueManager>();
+        dialogueManager = FindFirstObjectByType<DialogueManager>();
         questManager = QuestManager.instance;
-        playerController = FindObjectOfType<PlayerController>();
+        playerController = FindFirstObjectByType<PlayerController>();
 
         if (dialogueManager == null)
             Debug.LogError("NPC_Dialogue: DialogueManager не найден в сцене!");
@@ -97,11 +96,13 @@ public class NPC_Dialogue : MonoBehaviour
         if (questManager != null)
         {
             questManager.UpdateQuestProgress("door", ObjectiveType.Interact);
+
+            // 👇👇👇 ВОТ ЭТА ВАЖНАЯ СТРОЧКА 👇👇👇
+            // Она меняет текст задания на экране сразу после разговора
+            questManager.ForceUpdateQuestText("Follow the light");
         }
 
-        Debug.Log("📜 Диалог завершён — запускается мигание света и квест 3.");
+        Debug.Log("📜 Диалог завершён — Текст обновлен на 'Follow the light'");
     }
-    
-    
 }
 
