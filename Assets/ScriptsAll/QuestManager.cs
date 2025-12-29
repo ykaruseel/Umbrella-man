@@ -301,18 +301,7 @@ public class QuestManager : MonoBehaviour
         yield return null;
     }
 
-    private void Update()
-    {
-        if (gameOverUI != null && gameOverUI.activeSelf)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                RespawnAfterDeath();
-            }
-        }
-    }
-
-    private void RespawnAfterDeath()
+    public void RespawnAfterDeath()
     {
         if (chase)
         {

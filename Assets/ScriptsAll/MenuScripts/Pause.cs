@@ -11,9 +11,11 @@ public class Pause : MonoBehaviour
     [SerializeField] private GameObject _pauseMenuUI;
     [SerializeField] private List<GameObject> _UIElements = new();
 
-    [SerializeField] private GameObject _mainButtons;
-    [SerializeField] private GameObject _settings;
-    [SerializeField] private GameObject _credits;
+    //[SerializeField] private GameObject _mainButtons;
+    //[SerializeField] private GameObject _settings;
+    //[SerializeField] private GameObject _credits;
+
+    [SerializeField] private MenuFader _menuFader;
 
     private void Update()
     {
@@ -56,6 +58,7 @@ public class Pause : MonoBehaviour
     public void ResumeGame()
     {
         isPaused = false;
+        _menuFader.ResetFade();
         _pauseMenuUI.SetActive(false);
 
         _playerController.SetCanMove(true);
@@ -68,16 +71,16 @@ public class Pause : MonoBehaviour
         Cursor.visible = false;
 
         DialogueManager.instance?.SetPaused();
-        ResetPause();
+        //ResetPause();
     }
 
     public void ResetPause()
     {
-        isPaused = false;
+        /*isPaused = false;
         _mainButtons.SetActive(true);
         _settings.SetActive(false);
         if(_credits != null)
             _credits.SetActive(false);
-        _pauseMenuUI.SetActive(false);
+        _pauseMenuUI.SetActive(false);*/
     }
 }
