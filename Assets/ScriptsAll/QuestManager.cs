@@ -94,12 +94,14 @@ public class QuestManager : MonoBehaviour
             if (textComp != null)
             {
                 textComp.text = text;
+                textComp.color = Color.white;
             }
             else
             {
                 // Запасной вариант для обычного Text
                 var oldText = questUI.GetComponentInChildren<Text>();
                 if (oldText != null) oldText.text = text;
+                oldText.color = Color.white;
             }
         }
     }
