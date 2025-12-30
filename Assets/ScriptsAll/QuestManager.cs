@@ -333,18 +333,7 @@ public class QuestManager : MonoBehaviour
         Cursor.visible = true;
     }
 
-    private void Update()
-    {
-        if (gameOverUI != null && gameOverUI.activeSelf)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                RespawnAfterDeath();
-            }
-        }
-    }
-
-    private void RespawnAfterDeath()
+    public void RespawnAfterDeath()
     {
         if (chase)
         {
