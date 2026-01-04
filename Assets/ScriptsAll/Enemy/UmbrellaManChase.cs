@@ -14,7 +14,9 @@ public class UmbrellaManChase : MonoBehaviour
     public float catchDistance = 1.0f;
 
     [Header("Game Over UI")]
-    public GameObject heGotYouUI;
+    // ЭТО ПОЛЕ БОЛЬШЕ НЕ НУЖНО ИСПОЛЬЗОВАТЬ ЗДЕСЬ, НО Я ОСТАВИЛ ЧТОБЫ НЕ СБИЛАСЬ ССЫЛКА
+    // ТЕПЕРЬ ЗА ЭКРАН ОТВЕЧАЕТ DeathHandler НА ИГРОКЕ
+    public GameObject heGotYouUI; 
 
     [Header("FMOD – дыхание человека с зонтом")]
     [SerializeField] private EventReference breathingLoopEvent;
@@ -125,6 +127,7 @@ public class UmbrellaManChase : MonoBehaviour
             HandleCatch();
     }
 
+    // --- ВОТ ТУТ ГЛАВНЫЕ ИЗМЕНЕНИЯ ---
     private void HandleCatch()
     {
         if (hasCaughtPlayer) return;
@@ -132,23 +135,38 @@ public class UmbrellaManChase : MonoBehaviour
         hasCaughtPlayer = true;
         isChasing = false;
 
+        // 1. Останавливаем врага
         if (agent != null)
             agent.isStopped = true;
 
+        // 2. Глушим звуки шагов и дыхания (чтобы не мешали звукам скримера, если будут)
         StopBreathingLoop();
         StopFootsteps();
         StopHeartbeat();
 
-        if (heGotYouUI != null)
-            heGotYouUI.SetActive(true);
-
-        var pc = player.GetComponent<PlayerController>();
-        if (pc != null)
-            pc.enabled = false;
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        // 3. ВМЕСТО ВКЛЮЧЕНИЯ ЭКРАНА НАПРЯМУЮ, ВЫЗЫВАЕМ DEATHHANDLER
+        if (player != null)
+        {
+            var deathHandler = player.GetComponent<DeathHandler>();
+            
+            if (deathHandler != null)
+            {
+                // Передаем 'transform' (себя), чтобы камера игрока повернулась на нас
+                deathHandler.TriggerDeath(transform);
+            }
+            else
+            {
+                // Если забыл повесить скрипт на игрока — сработает старый метод (как страховка)
+                Debug.LogWarning("DeathHandler не найден на игроке! Использую старый метод.");
+                if (heGotYouUI != null) heGotYouUI.SetActive(true);
+                var pc = player.GetComponent<PlayerController>();
+                if (pc != null) pc.enabled = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+        }
     }
+    // ---------------------------------
 
     private void StartBreathingLoop()
     {
@@ -227,10 +245,6 @@ public class UmbrellaManChase : MonoBehaviour
             agent.enabled = false;
     }
 
-
-
-
-
     public void PauseChase()
     {
         if (!isChasing) return;
@@ -241,10 +255,6 @@ public class UmbrellaManChase : MonoBehaviour
         PauseBreathing(true);
         PauseHeartbeat(true);
     }
-
-
-
-
 
     public void ResumeChase()
     {
