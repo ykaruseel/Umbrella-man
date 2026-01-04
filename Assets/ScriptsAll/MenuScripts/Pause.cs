@@ -78,6 +78,7 @@ public class Pause : MonoBehaviour
 
     private IEnumerator FadeOut()
     {
+        PauseAudioSnapshot.Instance?.ExitPause();
         isTransitioning = true;
 
         _pauseMenu.interactable = false;
@@ -128,6 +129,7 @@ public class Pause : MonoBehaviour
 
     private IEnumerator FadeIn()
     {
+        PauseAudioSnapshot.Instance?.EnterPause();
         isPaused = true;
         //_pauseMenuUI.SetActive(true);
 
