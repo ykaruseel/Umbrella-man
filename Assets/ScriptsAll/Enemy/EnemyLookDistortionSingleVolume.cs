@@ -46,6 +46,7 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
     float baseChromatic;
     float baseLensIntensity;
     float baseGrainIntensity;
+    float baseSaturation;
 
     float target = 0f;
     float current = 0f;
@@ -80,6 +81,7 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
         {
             baseExposure = colorAdj.postExposure.value;
             baseContrast = colorAdj.contrast.value;
+            baseSaturation = colorAdj.saturation.value;
         }
 
         if (chromatic != null) baseChromatic = chromatic.intensity.value;
