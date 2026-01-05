@@ -72,6 +72,8 @@ public class NPC_Dialogue : MonoBehaviour
         // Запускаем диалог
         if (dialogueManager != null)
         {
+            playerController.ZoomIn();
+
             Debug.Log("💬 Запускается диалог с соседом...");
             dialogueManager.StartDialogue(dialogueLines);
 
@@ -89,6 +91,7 @@ public class NPC_Dialogue : MonoBehaviour
         // Разблокируем движение и убираем зум
         if (playerController)
         {
+            playerController.ZoomOut();
             playerController.SetCanMove(true);
             playerController.SetDialogueZoom(false);
         }

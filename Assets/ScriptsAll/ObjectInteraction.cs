@@ -1,4 +1,3 @@
-// Assets/Scripts/ObjectInteraction.cs
 using System.Collections;
 using UnityEngine;
 using FMODUnity;
@@ -8,7 +7,7 @@ public class ObjectInteraction : MonoBehaviour
     public Camera playerCamera;
     public Transform holdPoint;
     public float interactionDistance = 3f;
-    public LayerMask interactionLayerMask; // <- Это поле больше не используется PlayerController'ом, но может быть нужно для чего-то еще
+    public LayerMask interactionLayerMask; 
 
     [Header("FMOD Events")]
     [SerializeField] private EventReference pickupEvent;
@@ -25,30 +24,63 @@ public class ObjectInteraction : MonoBehaviour
     void Start()
     {
         playerController = GetComponent<CharacterController>();
+        if (playerCamera == null) playerCamera = Camera.main;
     }
 
-    // <<< МЕТОД Update() ОТСЮДА УДАЛЕН. Вся логика в PlayerController.cs >>>
-
-    // Методы сделаны публичными (public), чтобы PlayerController мог их вызывать
+    // Методы публичные для PlayerController
     
     public void PlaceObject(PlacementSpot spot)
     {
         UpdateHighlights(false);
-        
-        // --- ДОБАВЛЕНО (Шаг 7) ---
-        // Сообщаем QuestManager ДО того, как очистим heldItemID
-        QuestManager.instance.UpdateQuestProgress(spot.requiredItemID, ObjectiveType.Place);
-        // -------------------------
 
-        heldItemID = null; 
-        heldObject.layer = originalLayer;
-        heldObject.transform.SetParent(null);
-        heldObject.transform.position = spot.placementTransform.position;
-        heldObject.transform.rotation = spot.placementTransform.rotation;
+        if (QuestManager.instance != null)
+        {
+            QuestManager.instance.UpdateQuestProgress(
+                spot.requiredItemID,
+                ObjectiveType.Place
+            );
+        }
+
+        StartCoroutine(SmoothPlaceObject(spot));
+    }
+
+    private IEnumerator SmoothPlaceObject(PlacementSpot spot)
+    {
+        float duration = 0.35f;
+        float elapsed = 0f;
+
+        Transform objTransform = heldObject.transform;
+
+        Vector3 startPos = objTransform.position;
+        Quaternion startRot = objTransform.rotation;
+
+        Vector3 targetPos = spot.placementTransform.position;
+        Quaternion targetRot = spot.placementTransform.rotation;
+
         heldObjectRb.isKinematic = true;
+        heldObject.layer = originalLayer;
         heldObject.tag = "Untagged";
         spot.enabled = false;
         spot.GetComponent<Collider>().enabled = false;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            t = Mathf.SmoothStep(0f, 1f, t);
+
+            objTransform.position = Vector3.Lerp(startPos, targetPos, t);
+            objTransform.rotation = Quaternion.Slerp(startRot, targetRot, t);
+
+            yield return null;
+        }
+
+        objTransform.position = targetPos;
+        objTransform.rotation = targetRot;
+        objTransform.SetParent(null);
+
+        heldItemID = null;
         heldObject = null;
         heldObjectRb = null;
 
@@ -61,7 +93,9 @@ public class ObjectInteraction : MonoBehaviour
         heldObjectRb = heldObject.GetComponent<Rigidbody>();
         originalScale = heldObject.transform.localScale;
         originalLayer = heldObject.layer;
-        heldObject.layer = 2; // Ignore Raycast
+        
+        // Меняем слой на IgnoreRaycast (обычно 2), чтобы сам предмет не мешал лучам
+        heldObject.layer = 2; 
 
         PlaceableItem placeable = heldObject.GetComponent<PlaceableItem>();
         if (placeable != null)
@@ -86,10 +120,33 @@ public class ObjectInteraction : MonoBehaviour
             UpdateHighlights(false);
             heldItemID = null;
         }
+
         heldObject.layer = originalLayer;
         isInteracting = true;
         Physics.IgnoreCollision(heldObject.GetComponent<Collider>(), playerController, true);
+        
+        // Отцепляем от игрока
         heldObject.transform.SetParent(null);
+
+        // --- ИСПРАВЛЕНИЕ: ПРОВЕРКА СТЕН (ANTI-CLIP) ---
+        // Пускаем луч от камеры до точки, где должен быть предмет
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        float distanceToHoldPoint = Vector3.Distance(playerCamera.transform.position, holdPoint.position);
+
+        // Маска для стен (обычно Default). Используем ~0 (Все слои), но исключаем слой игрока если нужно.
+        // Здесь мы просто проверяем, ударились ли мы обо что-то твердое (не триггер)
+        if (Physics.Raycast(ray, out RaycastHit hit, distanceToHoldPoint))
+        {
+            // Проверяем, что это не сам игрок и не триггер
+            if (!hit.collider.isTrigger && hit.transform != transform)
+            {
+                // Если луч попал в стену — ставим предмет ПЕРЕД стеной (с отступом 20 см)
+                heldObject.transform.position = hit.point - (playerCamera.transform.forward * 0.2f);
+            }
+        }
+        // Если препятствий нет — предмет остается там, где и был (на holdPoint), ничего менять не надо
+        // ------------------------------------------------
+
         heldObject.transform.localScale = originalScale;
         heldObjectRb.useGravity = true;
         heldObjectRb.isKinematic = false;
@@ -101,19 +158,16 @@ public class ObjectInteraction : MonoBehaviour
         heldObjectRb = null;
     }
 
-    // --- ДОБАВЛЕНЫ НОВЫЕ МЕТОДЫ (Шаг 7) ---
-    // Проверяет, держим ли мы что-то в руках
+    // Вспомогательные методы
     public bool IsHoldingObject()
     {
         return heldObject != null;
     }
 
-    // Позволяет PlayerController узнать ID предмета в руках
     public string GetHeldItemID()
     {
         return heldItemID;
     }
-    // -------------------------------------
 
     void UpdateHighlights(bool show)
     {

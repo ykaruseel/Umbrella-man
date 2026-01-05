@@ -23,7 +23,7 @@ public class Pause : MonoBehaviour
         {
             foreach (GameObject obj in _UIElements)
             {
-                if (obj == null) continue;
+                if (!obj.activeSelf) continue;
 
                 if (obj.activeSelf) return;
             }
