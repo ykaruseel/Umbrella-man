@@ -42,11 +42,11 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
     float baseVignette;
     float baseVignetteSmoothness;
     float baseExposure;
-    float baseContrast;
-    float baseChromatic;
-    float baseLensIntensity;
-    float baseGrainIntensity;
-    float baseSaturation;
+    public float baseContrast;
+    public float baseChromatic;
+    public float baseLensIntensity;
+    public float baseGrainIntensity;
+    public float baseSaturation;
 
     float target = 0f;
     float current = 0f;

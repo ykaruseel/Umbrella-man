@@ -16,7 +16,7 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Settings")]
     public float typingSpeed = 0.03f;   // скорость печати
-    public float fadeDuration = 0.5f;   // скорость появления окна
+    public float fadeDuration = 0.2f;   // чуть ускорил появление (было 0.5)
 
     [Header("FMOD Voices")]
     [SerializeField] private EventReference danielVoiceEvent;
@@ -25,24 +25,26 @@ public class DialogueManager : MonoBehaviour
     private Queue<DialogueLine> linesQueue = new Queue<DialogueLine>();
     private bool isDialogueActive = false;
     
+    // --- НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ ПРОПУСКА ---
+    private bool isTyping = false;       // Печатается ли текст сейчас?
+    private string currentSentence = ""; // Храним полную фразу здесь
+    // -------------------------------------
+
     private Coroutine typingCoroutine;
-    private Coroutine fadeCoroutine; // Корутина для плавного появления/исчезновения
+    private Coroutine fadeCoroutine; 
 
     private FMOD.Studio.EventInstance currentVoiceInstance;
     private bool hasActiveVoice = false;
-    public CanvasGroup dialogueCanvasGroup; // Ссылка на CanvasGroup
+    public CanvasGroup dialogueCanvasGroup; 
 
     void Awake()
     {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
+        if (instance == null) instance = this;
+        else Destroy(gameObject);
     }
 
     void Start()
     {
-        // Пытаемся найти CanvasGroup, если его нет — добавим сами
         if (dialoguePanel != null)
         {
             dialogueCanvasGroup = dialoguePanel.GetComponent<CanvasGroup>();
@@ -52,11 +54,10 @@ public class DialogueManager : MonoBehaviour
             }
             
             dialoguePanel.SetActive(false);
-            dialogueCanvasGroup.alpha = 0f; // Скрываем сразу
+            dialogueCanvasGroup.alpha = 0f; 
         }
     }
 
-    // Вызывается из NPC_Dialogue
     public void StartDialogue(DialogueLine[] lines)
     {
         if (lines == null || lines.Length == 0) return;
@@ -66,12 +67,9 @@ public class DialogueManager : MonoBehaviour
 
         isDialogueActive = true;
 
-        // Запускаем плавное появление окна
         if (dialoguePanel != null)
         {
             dialoguePanel.SetActive(true);
-            
-            // Если была корутина исчезновения — останавливаем
             if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
             fadeCoroutine = StartCoroutine(FadeCanvasGroup(dialogueCanvasGroup, 0f, 1f));
         }
@@ -79,14 +77,22 @@ public class DialogueManager : MonoBehaviour
         DisplayNextSentence();
     }
 
+    // --- ОБНОВЛЕННАЯ ЛОГИКА ОТОБРАЖЕНИЯ ---
     public void DisplayNextSentence()
     {
-        if (typingCoroutine != null)
+        // 1. Если текст ЕЩЁ печатается — завершаем его мгновенно
+        if (isTyping)
         {
-            StopCoroutine(typingCoroutine);
-            typingCoroutine = null;
+            if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+            
+            if (dialogueText != null) 
+                dialogueText.text = currentSentence; // Показываем всю фразу сразу
+            
+            isTyping = false;
+            return; // ВАЖНО: Выходим, не запуская следующую фразу
         }
 
+        // 2. Если текст УЖЕ написан полностью — переходим к следующему
         StopCurrentVoice(); 
 
         if (linesQueue.Count == 0)
@@ -96,6 +102,9 @@ public class DialogueManager : MonoBehaviour
         }
 
         DialogueLine line = linesQueue.Dequeue();
+        
+        // Сохраняем полную фразу для пропуска
+        currentSentence = line.sentence;
 
         if (nameText != null) nameText.text = line.speakerName;
 
@@ -104,19 +113,27 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator TypeSentence(DialogueLine line)
     {
+        isTyping = true; // Начали печать
+        
         if (dialogueText != null) dialogueText.text = "";
 
         StartVoiceForSpeaker(line.speakerName);
 
         foreach (char letter in line.sentence.ToCharArray())
         {
+            // Учитываем паузу (твоя старая логика)
             while (Pause.isPaused)
+            {
+                SetPaused(); // ставим звук на паузу
                 yield return null;
+            }
+            SetPaused(); // снимаем звук с паузы
 
             if (dialogueText != null) dialogueText.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
 
+        isTyping = false; // Закончили печать
         StopCurrentVoice();
         typingCoroutine = null;
     }
@@ -126,7 +143,6 @@ public class DialogueManager : MonoBehaviour
         isDialogueActive = false;
         StopCurrentVoice();
 
-        // Запускаем плавное исчезновение
         if (dialoguePanel != null && dialogueCanvasGroup != null)
         {
             if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
@@ -134,7 +150,6 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    // Универсальная корутина для фейда
     private IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end, bool disableAfter = false)
     {
         float timer = 0f;

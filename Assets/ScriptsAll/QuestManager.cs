@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.UI;
+using TMPro; // ✅ ДОБАВЛЕНО: Нужно для работы с текстом
 
 public class QuestManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class QuestManager : MonoBehaviour
     [Header("Quests")]
     public Quest firstQuest;
     public Quest currentQuest;
-    public QuestUI questUI;
+    public QuestUI questUI; // Это ссылка на скрипт QuestUI
     public Quest repairPanelQuest;
 
     [Header("Game Objects")]
@@ -52,7 +53,6 @@ public class QuestManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -67,6 +67,8 @@ public class QuestManager : MonoBehaviour
     {
         if (umbrellaManNear) umbrellaManNear.SetActive(false);
         if (umbrellaManFar) umbrellaManFar.SetActive(false);
+        
+        // ✅ ГАРАНТИЯ: Выключаем оба экрана при старте
         if (gameOverUI) gameOverUI.SetActive(false);
         if (prototypeCompleteUI) prototypeCompleteUI.SetActive(false);
 
@@ -78,6 +80,32 @@ public class QuestManager : MonoBehaviour
             MusicManager.Instance.SetVolumeImmediate(1f);
         }
     }
+
+    // --- ✅ НОВЫЙ МЕТОД ДЛЯ СМЕНЫ ТЕКСТА (ВЫЗЫВАЕТСЯ ИЗ ДИАЛОГА) ---
+    public void ForceUpdateQuestText(string text)
+    {
+        if (questUI != null)
+        {
+            // Включаем сам объект UI, если он был выключен
+            questUI.gameObject.SetActive(true);
+
+            // Ищем TextMeshPro внутри
+            var textComp = questUI.GetComponentInChildren<TextMeshProUGUI>();
+            if (textComp != null)
+            {
+                textComp.text = text;
+                textComp.color = Color.white;
+            }
+            else
+            {
+                // Запасной вариант для обычного Text
+                var oldText = questUI.GetComponentInChildren<Text>();
+                if (oldText != null) oldText.text = text;
+                oldText.color = Color.white;
+            }
+        }
+    }
+    // -------------------------------------------------------------
 
     public void StartQuest(Quest questToStart)
     {
@@ -211,13 +239,12 @@ public class QuestManager : MonoBehaviour
 
     public void OnQTESuccess()
     {
-        // 1. Музыка
+        // ПОБЕДА
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.FadeToVolume(0f, 1f);
             MusicManager.Instance.SetSection("Value A");
         }
-
         
         if (umbrellaManNear)
         {
@@ -226,33 +253,21 @@ public class QuestManager : MonoBehaviour
             umbrellaManNear.SetActive(false);
         }
 
-        
         if (lightController != null) lightController.TurnOffAllLights();
-
-        
         if (umbrellaManFar) umbrellaManFar.SetActive(true);
-
-        
-        if (finalSpotlight != null) 
-        {
-            finalSpotlight.SetActive(true);
-        }
-        
-
+        if (finalSpotlight != null) finalSpotlight.SetActive(true);
         
         if (playerController)
         {
-            
-        
             playerController.StartCinematicPan(umbrellaManFar.transform, 4.0f);
         }
 
-        
         StartCoroutine(FinalSequenceAfterLook(6f));
     }
 
     public void OnQTEFailure()
     {
+        // ПРОИГРЫШ
         if (enemyLightDistortion != null) enemyLightDistortion.SetChaseActive(false);
         if (MusicManager.Instance != null) MusicManager.Instance.FadeToVolume(0f, 0.5f);
         if (repairQTE != null) repairQTE.isQTEActive = false;
@@ -260,20 +275,26 @@ public class QuestManager : MonoBehaviour
         StartCoroutine(ShowGameOverAfterDelay(0.5f));
     }
 
+    // --- Метод для вызова Game Over извне (например, если монстр поймал) ---
+    public void TriggerGameOver()
+    {
+        StartCoroutine(ShowGameOverAfterDelay(0f));
+    }
+
     IEnumerator FinalSequenceAfterLook(float delay)
     {
         yield return new WaitForSeconds(delay);
 
-        
+        // ✅ ГАРАНТИЯ: Выключаем Game Over перед показом победы
+        if (gameOverUI != null) gameOverUI.SetActive(false);
+
         if (prototypeCompleteUI != null)
         {
             prototypeCompleteUI.SetActive(true);
             
-            
             CanvasGroup cg = prototypeCompleteUI.GetComponent<CanvasGroup>();
             if (cg == null) cg = prototypeCompleteUI.AddComponent<CanvasGroup>();
             
-            // Анимация прозрачности
             float fadeTime = 2.0f;
             float t = 0;
             cg.alpha = 0;
@@ -291,14 +312,25 @@ public class QuestManager : MonoBehaviour
         {
             MusicManager.Instance.FadeToVolume(MusicManager.Instance.defaultVolume, 3f);
         }
+        
+        // Останавливаем время и показываем курсор для финала
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     IEnumerator ShowGameOverAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+
+        // ✅ ГАРАНТИЯ: Выключаем экран победы перед показом смерти
+        if (prototypeCompleteUI != null) prototypeCompleteUI.SetActive(false);
+
         if (gameOverUI != null) gameOverUI.SetActive(true);
-        playerController.SetCanMove(false);
-        yield return null;
+        
+        if (playerController) playerController.SetCanMove(false);
+        
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void RespawnAfterDeath()
@@ -317,8 +349,10 @@ public class QuestManager : MonoBehaviour
             playerController.transform.position = new Vector3(-3.645f, 1.133824f, -35.114f);
             playerController.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
             playerController.SetRotation(90f, 0f);
-            if (gameOverUI)
-                gameOverUI.SetActive(false);
+            
+            // Скрываем UI при респауне
+            if (gameOverUI) gameOverUI.SetActive(false);
+            if (prototypeCompleteUI) prototypeCompleteUI.SetActive(false);
 
             FadeOut(cc);
         }
