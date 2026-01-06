@@ -4825,7 +4825,7 @@ MonoBehaviour:
       Data4: 1925124348
     Path: event:/house_ambient
   virtualCam: {fileID: 308851622}
-  dialogueZoomFOV: 50
+  dialogueZoomFOV: 40
   dialogueZoomSpeed: 1
   playerCamera: {fileID: 0}
   defaultFOV: 60
@@ -16427,6 +16427,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2648640c8865743bf278bd2217b027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  zoomTarget: {fileID: 0}
+  zoomDuration: 1
+  zoomFOV: 30
+  blackScreen: {fileID: 0}
+  progressBar: {fileID: 0}
+  sceneToLoad: 
+  UI: {fileID: 0}
 --- !u!114 &761136573
 MonoBehaviour:
   m_ObjectHideFlags: 0

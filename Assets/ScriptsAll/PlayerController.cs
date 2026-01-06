@@ -44,8 +44,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Dialogue Zoom Settings")]
     public CinemachineCamera virtualCam;   // виртуальная камера для зума
-    public float dialogueZoomFOV = 40f;
-    public float dialogueZoomSpeed = 2f;
+    [SerializeField] private float dialogueZoomFOV;
+    [SerializeField] private float dialogueZoomSpeed;
+    private Coroutine currentZoomCoroutine;
 
     private bool canMove = true;
     private bool dialogueZoom = false;
@@ -127,6 +128,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
+        if(!canMove) return;
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
@@ -167,13 +169,43 @@ public class PlayerController : MonoBehaviour
     {
         if (virtualCam == null) return;
 
-        float targetFOV = dialogueZoom ? dialogueZoomFOV : initialFOV;
+        //float targetFOV = dialogueZoom ? dialogueZoomFOV : initialFOV;
 
-        virtualCam.Lens.FieldOfView = Mathf.Lerp(
-            virtualCam.Lens.FieldOfView,
-            targetFOV,
-            Time.deltaTime * dialogueZoomSpeed
-        );
+        //virtualCam.Lens.FieldOfView = Mathf.Lerp(
+        //    virtualCam.Lens.FieldOfView,
+        //    targetFOV,
+        //    Time.deltaTime * dialogueZoomSpeed
+        //);
+    }
+
+    // НУЖНО БУДЕТ ЗАМЕНИТЬ ЧИСЛА, КОГДА БУДУ ДЕЛАТЬ НАСТРОЙКУ FOV
+    public void ZoomIn()
+    {
+        if (currentZoomCoroutine != null)
+            StopCoroutine(currentZoomCoroutine);
+
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, 40f));
+    }
+
+    public void ZoomOut()
+    {
+        if (currentZoomCoroutine != null)
+            StopCoroutine(currentZoomCoroutine);
+
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, 50f));
+    }
+
+    private IEnumerator SmoothZoom(float from, float to)
+    {
+        float elapsed = 0f;
+        while (elapsed < dialogueZoomSpeed)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / dialogueZoomSpeed);
+            virtualCam.Lens.FieldOfView = Mathf.Lerp(from, to, t);
+            yield return null;
+        }
+        virtualCam.Lens.FieldOfView = to;
     }
 
     private void HandleFootsteps()
@@ -333,33 +365,40 @@ public class PlayerController : MonoBehaviour
     {
         if (virtualCam == null || target == null) yield break;
 
-        float time = 0;
-        Quaternion startRotation = virtualCam.transform.localRotation;
+        Transform cam = virtualCam.transform;
+
+        Vector3 e = cam.eulerAngles;
+        e.z = 0f;
+        cam.rotation = Quaternion.Euler(e);
+
+        Quaternion startRot = cam.rotation;
+
+        Vector3 targetDir = (target.position - cam.position).normalized;
+        Quaternion targetRot = Quaternion.LookRotation(targetDir, cam.up);
+
+        float time = 0f;
 
         while (time < duration)
         {
-            // Находим целевой поворот (чтобы смотреть на фигуру)
-            Vector3 direction = target.position - virtualCam.transform.position;
-            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            float t = time / duration;
 
-            // Плавно поворачиваем камеру
-            virtualCam.transform.rotation = Quaternion.Slerp(
-                startRotation, 
-                targetRotation, 
-                time / duration
-            );
+            Quaternion rot = Quaternion.Slerp(startRot, targetRot, t);
+            cam.rotation = RemoveRoll(rot);
 
             time += Time.deltaTime;
             yield return null;
         }
 
-        // Финальная фиксация на цели
-        if (target != null)
-            virtualCam.transform.LookAt(target); 
-        // isCinematic остается true, т.к. игра завершена.
+        cam.rotation = targetRot;
+        cam.rotation = Quaternion.Euler(cam.eulerAngles.x, cam.eulerAngles.y, 0f);
     }
 
+    Quaternion RemoveRoll(Quaternion q)
+    {
+        Vector3 fwd = q * Vector3.forward;
 
+        return Quaternion.LookRotation(fwd, Vector3.up);
+    }
 
     public void SetRotation(float yaw, float pitch)
     {

@@ -240,6 +240,7 @@ public class QuestManager : MonoBehaviour
     public void OnQTESuccess()
     {
         // ПОБЕДА
+        if (playerController) playerController.SetCanMove(false);
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.FadeToVolume(0f, 1f);
@@ -350,7 +351,6 @@ public class QuestManager : MonoBehaviour
             playerController.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
             playerController.SetRotation(90f, 0f);
             
-            // Скрываем UI при респауне
             if (gameOverUI) gameOverUI.SetActive(false);
             if (prototypeCompleteUI) prototypeCompleteUI.SetActive(false);
 
@@ -402,6 +402,7 @@ public class QuestManager : MonoBehaviour
         fadeImage.color = color;
 
         playerController.SetCanMove(true);
+        playerController.isCinematic = false;
         if (cc) cc.enabled = true;
         playerController.enabled = true;
     }

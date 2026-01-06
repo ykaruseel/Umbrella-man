@@ -156,7 +156,7 @@ public class Pause : MonoBehaviour
             float t = elapsed / fadeDuration;
 
             _pauseMenu.alpha = Mathf.Lerp(startAlpha, 1f, t);
-            _enemyLookDistortionSingleVolume.baseSaturation = Mathf.Lerp(_enemyLookDistortionSingleVolume.baseSaturation, -10f, t);
+            _enemyLookDistortionSingleVolume.baseSaturation = Mathf.Lerp(_enemyLookDistortionSingleVolume.baseSaturation, -50f, t);
             _enemyLookDistortionSingleVolume.baseContrast = Mathf.Lerp(_enemyLookDistortionSingleVolume.baseContrast, 30f, t);
             _enemyLookDistortionSingleVolume.baseChromatic = Mathf.Lerp(_enemyLookDistortionSingleVolume.baseChromatic, 1f, t);
             _enemyLookDistortionSingleVolume.baseGrainIntensity = Mathf.Lerp(_enemyLookDistortionSingleVolume.baseGrainIntensity, 1f, t);
@@ -166,7 +166,7 @@ public class Pause : MonoBehaviour
 
         _pauseMenu.alpha = 1;
 
-        _enemyLookDistortionSingleVolume.baseSaturation = -10f;
+        _enemyLookDistortionSingleVolume.baseSaturation = -50f;
         _enemyLookDistortionSingleVolume.baseContrast = 30f;
         _enemyLookDistortionSingleVolume.baseChromatic = 1f;
         _enemyLookDistortionSingleVolume.baseGrainIntensity = 1f;

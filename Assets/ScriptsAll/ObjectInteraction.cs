@@ -28,26 +28,59 @@ public class ObjectInteraction : MonoBehaviour
     }
 
     // Методы публичные для PlayerController
-    
+
     public void PlaceObject(PlacementSpot spot)
     {
         UpdateHighlights(false);
-        
-        // Квест засчитывается
+
         if (QuestManager.instance != null)
         {
-            QuestManager.instance.UpdateQuestProgress(spot.requiredItemID, ObjectiveType.Place);
+            QuestManager.instance.UpdateQuestProgress(
+                spot.requiredItemID,
+                ObjectiveType.Place
+            );
         }
 
-        heldItemID = null; 
-        heldObject.layer = originalLayer;
-        heldObject.transform.SetParent(null);
-        heldObject.transform.position = spot.placementTransform.position;
-        heldObject.transform.rotation = spot.placementTransform.rotation;
+        StartCoroutine(SmoothPlaceObject(spot));
+    }
+
+    private IEnumerator SmoothPlaceObject(PlacementSpot spot)
+    {
+        float duration = 0.35f;
+        float elapsed = 0f;
+
+        Transform objTransform = heldObject.transform;
+
+        Vector3 startPos = objTransform.position;
+        Quaternion startRot = objTransform.rotation;
+
+        Vector3 targetPos = spot.placementTransform.position;
+        Quaternion targetRot = spot.placementTransform.rotation;
+
         heldObjectRb.isKinematic = true;
+        heldObject.layer = originalLayer;
         heldObject.tag = "Untagged";
         spot.enabled = false;
         spot.GetComponent<Collider>().enabled = false;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            t = Mathf.SmoothStep(0f, 1f, t);
+
+            objTransform.position = Vector3.Lerp(startPos, targetPos, t);
+            objTransform.rotation = Quaternion.Slerp(startRot, targetRot, t);
+
+            yield return null;
+        }
+
+        objTransform.position = targetPos;
+        objTransform.rotation = targetRot;
+        objTransform.SetParent(null);
+
+        heldItemID = null;
         heldObject = null;
         heldObjectRb = null;
 

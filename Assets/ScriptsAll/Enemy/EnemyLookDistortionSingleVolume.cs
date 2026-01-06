@@ -174,6 +174,9 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
 
         if (grain != null)
             grain.intensity.value = Mathf.Lerp(baseGrainIntensity, 1.5f, finalFactor);
+
+        if (colorAdj != null)
+            colorAdj.saturation.value = Mathf.Lerp(baseSaturation, -10f, finalFactor);
     }
 }
 

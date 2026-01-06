@@ -34,13 +34,15 @@ public class DeathHandler : MonoBehaviour
         if (gameOverUI != null)
         {
             gameOverUI.alpha = 0; 
+            gameOverUI.interactable = false;
+            gameOverUI.blocksRaycasts = false;
             gameOverUI.gameObject.SetActive(false);
         }
     }
 
     public void TriggerDeath(Transform enemyFace)
     {
-        if (isDead) return;
+        //if (isDead) return;
         isDead = true;
 
         if (playerController != null)
@@ -105,5 +107,9 @@ public class DeathHandler : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        gameOverUI.interactable = true;
+        gameOverUI.blocksRaycasts = true;
+        horrorVolume.weight = 0f;
     }
 }
