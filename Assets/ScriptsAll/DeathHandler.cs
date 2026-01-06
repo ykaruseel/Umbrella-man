@@ -11,13 +11,20 @@ public class DeathHandler : MonoBehaviour
     public CanvasGroup gameOverUI;
     public Transform playerCamera;
 
-    [Header("Настройки Смерти")]
-    public float scareDuration = 1.5f; // Длительность испуга
-    public float turnSpeed = 5f;       // Скорость поворота
-    
+    [Header("Настройки Скримера")]
+    [Tooltip("Как быстро происходит поворот и появление эффектов (в секундах). Для скримера ставь мало: 0.3 - 0.5")]
+    public float scareDuration = 0.4f; // Сделали быстрым по умолчанию
+
+    [Tooltip("Скорость поворота камеры. Для резкости ставь 15-20.")]
+    public float turnSpeed = 20f;       // Сделали очень быстрым
+
+    [Header("Настройки Паузы")]
+    [Tooltip("Сколько времени смотреть на врага ПОСЛЕ поворота, прежде чем появится надпись.")]
+    public float stareDuration = 1.5f;  // Время "посмотреть в глаза"
+
     [Header("Настройка Взгляда")]
-    [Tooltip("Высота глаз врага от пола. Если смотрит слишком высоко — уменьши, если в грудь — увеличь.")]
-    public float enemyEyeHeight = 1.6f; // <--- ВОТ ЭТИМ ТЕПЕРЬ МОЖНО РЕГУЛИРОВАТЬ
+    [Tooltip("Высота глаз врага. Регулируй, чтобы смотреть в лицо.")]
+    public float enemyEyeHeight = 1.5f; 
 
     private bool isDead = false;
 
@@ -50,9 +57,7 @@ public class DeathHandler : MonoBehaviour
         float timer = 0f;
         Quaternion startRotation = playerCamera.rotation;
         
-        // Используем переменную из инспектора для высоты
-        Vector3 lookTarget = target.position + Vector3.up * enemyEyeHeight;
-
+        // 1. ФАЗА СКРИМЕРА (Резкий поворот + Эффекты)
         while (timer < scareDuration)
         {
             timer += Time.deltaTime;
@@ -60,22 +65,32 @@ public class DeathHandler : MonoBehaviour
 
             if (target != null)
             {
-                // Пересчитываем точку каждый кадр (вдруг враг чуть двинулся)
-                lookTarget = target.position + Vector3.up * enemyEyeHeight;
-
+                // Считаем точку взгляда
+                Vector3 lookTarget = target.position + Vector3.up * enemyEyeHeight;
                 Vector3 direction = (lookTarget - playerCamera.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
+                
+                // Lerp теперь будет очень быстрым из-за высокого turnSpeed и короткого scareDuration
                 playerCamera.rotation = Quaternion.Slerp(startRotation, lookRotation, progress * turnSpeed);
             }
 
             if (horrorVolume != null)
             {
+                // Эффекты нарастают резко
                 horrorVolume.weight = Mathf.Lerp(0f, 1f, progress);
             }
 
             yield return null;
         }
 
+        // Гарантируем, что эффекты включены на 100% в конце фазы
+        if (horrorVolume != null) horrorVolume.weight = 1f;
+
+        // 2. ФАЗА ПАУЗЫ (Смотрим на врага)
+        // Ждем указанное время, ничего не делая — просто страх
+        yield return new WaitForSeconds(stareDuration);
+
+        // 3. ФАЗА ТЕКСТА (Появление UI)
         if (gameOverUI != null)
         {
             gameOverUI.gameObject.SetActive(true);
