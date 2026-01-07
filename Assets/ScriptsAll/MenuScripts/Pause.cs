@@ -180,5 +180,6 @@ public class Pause : MonoBehaviour
     private void OnDestroy()
     {
         isPaused = false;
+        PauseAudioSnapshot.Instance?.ExitPause();
     }
 }
