@@ -284,12 +284,13 @@ MonoBehaviour:
   - {fileID: -4591390725316187520}
   - {fileID: -306867619160590007}
   - {fileID: -349748285782248941}
+  - {fileID: 1458538504385332588}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8700398147420201416}
   StringsBanks:
   - {fileID: 752984927737422183}
-  cacheTime: 639033838292723413
+  cacheTime: 639035670552966077
   cacheVersion: 131632
 --- !u!114 &633512588349238002
 MonoBehaviour:
@@ -333,10 +334,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639033838292723413
+  lastModified: 639035670552966077
   FileSizes:
   - Name: Desktop
-    Value: 2168
+    Value: 2204
   Exists: 1
 --- !u!114 &1284147733947282436
 MonoBehaviour:
@@ -365,6 +366,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 15712
+--- !u!114 &1458538504385332588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/smoke
+  m_EditorClassIdentifier: 
+  Path: event:/smoke
+  Guid:
+    Data1: -1654485819
+    Data2: 1171949253
+    Data3: -1969896297
+    Data4: 970218449
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 10
+  Length: 6022
 --- !u!114 &1512720396776843630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,7 +418,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 10
   Length: 2000
 --- !u!114 &1975088972620090020
 MonoBehaviour:
@@ -440,7 +468,7 @@ MonoBehaviour:
   Banks:
   - {fileID: 8700398147420201416}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
@@ -552,8 +580,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
+  MinDistance: 0.7
+  MaxDistance: 9
   Length: 34903
 --- !u!114 &7219568635252318342
 MonoBehaviour:
@@ -606,8 +634,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
+  MinDistance: 0.3
+  MaxDistance: 3.2
   Length: 16740
 --- !u!114 &8045734764998159971
 MonoBehaviour:
@@ -729,10 +757,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639033838292651377
+  lastModified: 639035670552932674
   FileSizes:
   - Name: Desktop
-    Value: 5679744
+    Value: 5748224
   Exists: 1
 --- !u!114 &8823139062609224079
 MonoBehaviour:

@@ -167,12 +167,21 @@ public class QuestManager : MonoBehaviour
 
         if (completedQuest.questID == "Quest1_Placement" || completedQuest.questID == "Quest2_Door")
         {
-            if (!questCompleteSound.IsNull) RuntimeManager.PlayOneShot(questCompleteSound);
+            if (!questCompleteSound.IsNull)
+                RuntimeManager.PlayOneShot(questCompleteSound);
+        }
+
+        if (completedQuest.questID == "Quest1_Placement")
+        {
+            var door = FindFirstObjectByType<NPC_Dialogue>();
+            if (door != null)
+                door.PlayKnock();
         }
 
         TriggerQuestEvent(completedQuest.questID);
 
-        if (completedQuest.nextQuest != null) StartQuest(completedQuest.nextQuest);
+        if (completedQuest.nextQuest != null)
+            StartQuest(completedQuest.nextQuest);
     }
 
     IEnumerator PlayKnockAfterFade(float fadeDuration)
