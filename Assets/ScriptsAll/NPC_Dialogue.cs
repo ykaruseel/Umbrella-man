@@ -101,5 +101,7 @@ public class NPC_Dialogue : MonoBehaviour
 
         Debug.Log("📜 Диалог завершён — запускается мигание света и квест 3.");
     }
+    
+    
 }
 

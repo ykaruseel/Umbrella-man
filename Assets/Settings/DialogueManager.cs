@@ -1,4 +1,3 @@
-// DialogueManager.cs
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,12 +10,13 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager instance;
 
     [Header("UI")]
-    public GameObject dialoguePanel;    // панель с диалогом (можно выключать/включать)
+    public GameObject dialoguePanel;    // панель с диалогом
     public TMP_Text nameText;
-    public TMP_Text dialogueText;           // текст реплики
+    public TMP_Text dialogueText;       
 
-    [Header("Typing")]
-    public float typingSpeed = 0.03f;   // скорость "печати" символов
+    [Header("Settings")]
+    public float typingSpeed = 0.03f;   // скорость печати
+    public float fadeDuration = 0.5f;   // скорость появления окна
 
     [Header("FMOD Voices")]
     [SerializeField] private EventReference danielVoiceEvent;
@@ -24,10 +24,13 @@ public class DialogueManager : MonoBehaviour
 
     private Queue<DialogueLine> linesQueue = new Queue<DialogueLine>();
     private bool isDialogueActive = false;
+    
     private Coroutine typingCoroutine;
+    private Coroutine fadeCoroutine; // Корутина для плавного появления/исчезновения
 
     private FMOD.Studio.EventInstance currentVoiceInstance;
     private bool hasActiveVoice = false;
+    public CanvasGroup dialogueCanvasGroup; // Ссылка на CanvasGroup
 
     void Awake()
     {
@@ -39,43 +42,52 @@ public class DialogueManager : MonoBehaviour
 
     void Start()
     {
+        // Пытаемся найти CanvasGroup, если его нет — добавим сами
         if (dialoguePanel != null)
+        {
+            dialogueCanvasGroup = dialoguePanel.GetComponent<CanvasGroup>();
+            if (dialogueCanvasGroup == null)
+            {
+                dialogueCanvasGroup = dialoguePanel.AddComponent<CanvasGroup>();
+            }
+            
             dialoguePanel.SetActive(false);
+            dialogueCanvasGroup.alpha = 0f; // Скрываем сразу
+        }
     }
 
     // Вызывается из NPC_Dialogue
     public void StartDialogue(DialogueLine[] lines)
     {
-        if (lines == null || lines.Length == 0)
-        {
-            Debug.LogWarning("DialogueManager: Пустой массив реплик.");
-            return;
-        }
+        if (lines == null || lines.Length == 0) return;
 
         linesQueue.Clear();
-
-        foreach (var line in lines)
-            linesQueue.Enqueue(line);
+        foreach (var line in lines) linesQueue.Enqueue(line);
 
         isDialogueActive = true;
 
+        // Запускаем плавное появление окна
         if (dialoguePanel != null)
+        {
             dialoguePanel.SetActive(true);
+            
+            // Если была корутина исчезновения — останавливаем
+            if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+            fadeCoroutine = StartCoroutine(FadeCanvasGroup(dialogueCanvasGroup, 0f, 1f));
+        }
 
         DisplayNextSentence();
     }
 
-    // Вызывается при нажатии E из PlayerController
     public void DisplayNextSentence()
     {
-        // если сейчас что-то печатается — остановим корутину и плавно заглушим звук
         if (typingCoroutine != null)
         {
             StopCoroutine(typingCoroutine);
             typingCoroutine = null;
         }
 
-        StopCurrentVoice(); // мягко глушим предыдущий голос
+        StopCurrentVoice(); 
 
         if (linesQueue.Count == 0)
         {
@@ -85,50 +97,62 @@ public class DialogueManager : MonoBehaviour
 
         DialogueLine line = linesQueue.Dequeue();
 
-        if (nameText != null)
-            nameText.text = line.speakerName;
+        if (nameText != null) nameText.text = line.speakerName;
 
-        // запускаем печать новой реплики с голосом
         typingCoroutine = StartCoroutine(TypeSentence(line));
     }
 
     private IEnumerator TypeSentence(DialogueLine line)
     {
-        if (dialogueText != null)
-            dialogueText.text = "";
+        if (dialogueText != null) dialogueText.text = "";
 
-        // запускаем голос под текущего спикера
         StartVoiceForSpeaker(line.speakerName);
 
-        // по одному символу
         foreach (char letter in line.sentence.ToCharArray())
         {
-            if (dialogueText != null)
-                dialogueText.text += letter;
+            while (Pause.isPaused)
+                yield return null;
 
+            if (dialogueText != null) dialogueText.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        // когда печать закончилась — плавно заглушаем голос
         StopCurrentVoice();
-
         typingCoroutine = null;
     }
 
     private void EndDialogue()
     {
         isDialogueActive = false;
+        StopCurrentVoice();
 
-        StopCurrentVoice(); // на всякий случай
+        // Запускаем плавное исчезновение
+        if (dialoguePanel != null && dialogueCanvasGroup != null)
+        {
+            if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+            fadeCoroutine = StartCoroutine(FadeCanvasGroup(dialogueCanvasGroup, 1f, 0f, true));
+        }
+    }
 
-        if (dialoguePanel != null)
+    // Универсальная корутина для фейда
+    private IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end, bool disableAfter = false)
+    {
+        float timer = 0f;
+        cg.alpha = start;
+
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            cg.alpha = Mathf.Lerp(start, end, timer / fadeDuration);
+            yield return null;
+        }
+
+        cg.alpha = end;
+
+        if (disableAfter && dialoguePanel != null)
+        {
             dialoguePanel.SetActive(false);
-
-        if (dialogueText != null)
-            dialogueText.text = "";
-
-        if (nameText != null)
-            nameText.text = "";
+        }
     }
 
     public bool IsDialogueActive()
@@ -137,36 +161,16 @@ public class DialogueManager : MonoBehaviour
     }
 
     // ---------- FMOD ГОЛОСА ----------
-
     private void StartVoiceForSpeaker(string speakerName)
     {
-        // сначала глушим предыдущий голос
         StopCurrentVoice();
-
         EventReference voiceEvent = new EventReference();
 
-        // МЭППИНГ ИМЁН -> FMOD ИВЕНТ
-        // Важно: в инспекторе speakerName у DialogueLine
-        // должен быть строго "Daniel" или "Lester"
-        if (speakerName == "Daniel")
-        {
-            voiceEvent = danielVoiceEvent;
-        }
-        else if (speakerName == "Lester")
-        {
-            voiceEvent = lesterVoiceEvent;
-        }
-        else
-        {
-            // если неизвестный спикер — не включаем голос
-            return;
-        }
+        if (speakerName == "Daniel") voiceEvent = danielVoiceEvent;
+        else if (speakerName == "Lester") voiceEvent = lesterVoiceEvent;
+        else return;
 
-        if (voiceEvent.IsNull)
-        {
-            Debug.LogWarning($"DialogueManager: для спикера {speakerName} не назначен FMOD Event.");
-            return;
-        }
+        if (voiceEvent.IsNull) return;
 
         currentVoiceInstance = RuntimeManager.CreateInstance(voiceEvent);
         currentVoiceInstance.start();
@@ -175,22 +179,23 @@ public class DialogueManager : MonoBehaviour
 
     private void StopCurrentVoice()
     {
-        if (!hasActiveVoice)
-            return;
-
+        if (!hasActiveVoice) return;
         if (currentVoiceInstance.isValid())
         {
-            // мягкое затухание
             currentVoiceInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             currentVoiceInstance.release();
         }
-
         hasActiveVoice = false;
+    }
+
+    public void SetPaused()
+    {
+        if (hasActiveVoice && currentVoiceInstance.isValid())
+            currentVoiceInstance.setPaused(Pause.isPaused);
     }
 
     void OnDestroy()
     {
-        // если объект уничтожается — не забываем освободить инстанс
         if (hasActiveVoice && currentVoiceInstance.isValid())
         {
             currentVoiceInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
@@ -198,4 +203,3 @@ public class DialogueManager : MonoBehaviour
         }
     }
 }
-

@@ -50,12 +50,24 @@ public class PlayerController : MonoBehaviour
     private bool canMove = true;
     private bool dialogueZoom = false;
     private float initialFOV;
+    
+    [Header("Zoom Settings")]
+    public Camera playerCamera;
+    public float defaultFOV = 60f;
+    public float zoomFOV = 45f;
+    public float zoomSpeed = 2.0f;
+    
+    private float targetFOV;         // К какому значению мы сейчас стремимся
 
     // --- Ссылка на ObjectInteraction ---
     private ObjectInteraction objectInteraction;
 
     void Start()
     {
+        
+        if (playerCamera == null) playerCamera = Camera.main;
+        targetFOV = defaultFOV;
+        
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -83,7 +95,7 @@ public class PlayerController : MonoBehaviour
             // ВАЖНО: останавливаем шаги, если вдруг шли
             StopFootsteps();
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) && !Pause.isPaused)
                 dm.DisplayNextSentence(); // листаем реплики
 
             return; // блокируем остальное управление
@@ -94,6 +106,13 @@ public class PlayerController : MonoBehaviour
         HandleDialogueZoom();
         HandleFootsteps();
         CheckInteractionInput();
+        
+        if (playerCamera != null)
+        {
+            
+            playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, Time.deltaTime * zoomSpeed);
+        }
+        
     }
     private void StopFootsteps()
     {
@@ -238,6 +257,9 @@ public class PlayerController : MonoBehaviour
         if (!Input.GetKeyDown(KeyCode.E))
             return;
 
+        if (Pause.isPaused)
+            return;
+
         Ray ray = playerCam.ScreenPointToRay(
             new Vector3(Screen.width / 2, Screen.height / 2)
         );
@@ -337,4 +359,16 @@ public class PlayerController : MonoBehaviour
         // isCinematic остается true, т.к. игра завершена.
     }
 
+
+
+    public void SetRotation(float yaw, float pitch)
+    {
+        rotationY = yaw;
+        rotationX = pitch;
+
+        transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
+
+        if (virtualCam != null)
+            virtualCam.transform.localRotation = Quaternion.Euler(rotationX, 0f, 0f);
+    }
 }
