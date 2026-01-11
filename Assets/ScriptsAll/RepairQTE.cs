@@ -1,16 +1,15 @@
-// Файл: RepairQTE.cs (ФИНАЛЬНАЯ ИНТЕГРИРОВАННАЯ ВЕРСИЯ)
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using FMODUnity;
-using System.Collections; // Добавили для Coroutine
+using System.Collections; 
 
 public class RepairQTE : MonoBehaviour
 {
     // --- ССЫЛКИ И НАСТРОЙКИ ---
     [Header("UI References")]
     public GameObject qtePanel;
-    public List<TrackData> tracks; // Исправлено: один список
+    public List<TrackData> tracks; 
 
     [Header("Game State")]
     public bool isQTEActive = false;
@@ -43,7 +42,7 @@ public class RepairQTE : MonoBehaviour
 
     // --- ССЫЛКИ НА МОЗГИ ---
     public QuestManager questManager;
-    private PlayerController playerController; // Исправлено: одно объявление
+    private PlayerController playerController; 
 
     [System.Serializable]
     public class TrackData
@@ -55,7 +54,7 @@ public class RepairQTE : MonoBehaviour
         [HideInInspector] public float trackHeight;
 
         [Header("Условие победы")]
-        public float minWinY = 45f; // допустимое отклонение по Y
+        public float minWinY = 45f; 
     }
 
     // ----------------- LIFECYCLE -----------------
@@ -65,10 +64,8 @@ public class RepairQTE : MonoBehaviour
         if (qtePanel != null)
             qtePanel.SetActive(false);
 
-        // Поиск контроллеров (первый FindFirstObjectByType более современный)
         playerController = FindFirstObjectByType<PlayerController>();
 
-        // Находим QuestManager
         if (QuestManager.instance != null)
             questManager = QuestManager.instance;
         else
@@ -82,7 +79,7 @@ public class RepairQTE : MonoBehaviour
             else if (track.arrow != null && track.arrow.parent is RectTransform rt)
                 track.trackHeight = rt.rect.height;
             else
-                track.trackHeight = 200f; // Дефолтное значение
+                track.trackHeight = 200f; 
         }
 
         // Настройка света щитка
@@ -93,37 +90,44 @@ public class RepairQTE : MonoBehaviour
         }
     }
 
-    // В файле RepairQTE.cs
-
     void Update()
     {
+        // [FIX 1] Если игра закончилась (смерть) во время QTE — вырубаем всё
+        if (PlayerController.isGameEnded && isQTEActive)
+        {
+            ForceStopQTE();
+            return;
+        }
+
         if (!isQTEActive) return;
 
-        // ↓↓↓ Твоя логика: двигаем стрелку активного трека ↓↓↓
+        // Двигаем стрелку
         if (currentTrackIndex >= 0 && currentTrackIndex < tracks.Count)
         {
             MoveArrow(tracks[currentTrackIndex]);
         }
 
-        // ввод QTE: ПРОБЕЛ
+        // Ввод QTE
         if (Input.GetKeyDown(KeyCode.Space))
         {
             CheckHit();
         }
 
-        // ↓↓↓ ИСПРАВЛЕНИЕ ОШИБКИ ESC: Теперь вызываем CancelQTE() ↓↓↓
+        // Отмена на ESC
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            CancelQTE(); // FIX: Выходим без вызова финала поражения
+            CancelQTE(); 
         }
     }
 
     // ----------------- ПУБЛИЧНЫЙ СТАРТ / СТОП -----------------
 
-    // --- ЛОГИКА ЗАПУСКА ---
     public void StartRepairQTE()
     {
-        if (isQTEActive) return; // Не запускаем, если уже активно
+        if (isQTEActive) return; 
+        
+        // [FIX 2] Не запускаем, если игра уже кончилась
+        if (PlayerController.isGameEnded) return; 
 
         isQTEActive = true;
         currentTrackIndex = 0;
@@ -131,7 +135,6 @@ public class RepairQTE : MonoBehaviour
         if (qtePanel != null)
             qtePanel.SetActive(true);
 
-        // БЛОКИРУЕМ игрока и камеру
         if (playerController != null)
         {
             playerController.SetCanMove(false);
@@ -143,48 +146,55 @@ public class RepairQTE : MonoBehaviour
         foreach (var track in tracks)
             ResetArrowOnTrack(track);
 
-        // Включаем лампу щитка
         if (shieldLight != null)
             shieldLight.enabled = true;
 
         SetShieldIdle();
 
-        Debug.Log("RepairQTE: старт QTE, текущий трек = 1");
+        Debug.Log("RepairQTE: старт QTE");
     }
 
     public void StopQTE(bool success)
     {
+        // [FIX 3] ГЛАВНАЯ ПРОВЕРКА
+        // Если враг уже убил нас (флаг true), то запрещаем выигрывать.
+        if (PlayerController.isGameEnded) return;
+
+        // Если мы выиграли, ставим флаг, чтобы враг теперь НЕ мог убить нас
+        if (success)
+        {
+            PlayerController.isGameEnded = true;
+        }
+        // -----------------------
+
         isQTEActive = false;
 
         if (qtePanel != null)
             qtePanel.SetActive(false);
 
-        // Разблокируем игрока и камеру
-        if (playerController != null)
+        // Разблокировка управления (только если не победа, т.к. при победе обычно катсцена/титры)
+        // Но если хочешь, чтобы при победе игрок мог ходить — раскомментируй блок ниже для success тоже.
+        if (!success && playerController != null)
         {
             playerController.SetCanMove(true);
             playerController.SetDialogueZoom(false);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+        // Для победы (Prototype Complete) обычно управление блокируют, поэтому оставим игрока стоять.
 
-        // Сброс стрелок
         foreach (var track in tracks)
             ResetArrowOnTrack(track);
 
-        // Полностью гасим лампу щитка
         TurnOffShieldLight();
 
-        // Останавливаем погоню и сердцебиение
         UmbrellaManChase chase = FindFirstObjectByType<UmbrellaManChase>();
         if (chase != null)
         {
             chase.StopChase();
             chase.StopHeartbeat();
-            Debug.Log("[RepairQTE] Остановили погоню и сердцебиение после QTE");
         }
 
-        // Сообщаем QuestManager результат QTE
         if (questManager != null)
         {
             if (success)
@@ -192,6 +202,15 @@ public class RepairQTE : MonoBehaviour
             else
                 questManager.OnQTEFailure();
         }
+    }
+
+    // Метод для экстренного закрытия при смерти
+    void ForceStopQTE()
+    {
+        isQTEActive = false;
+        if (qtePanel != null) qtePanel.SetActive(false);
+        TurnOffShieldLight();
+        // Управление игроку НЕ возвращаем, так как он умер
     }
 
     void TurnOffShieldLight()
@@ -214,10 +233,9 @@ public class RepairQTE : MonoBehaviour
     {
         if (track.arrow == null || track.trackBackground == null) return;
 
-        // Используем один расчет для PingPong
         float h = track.trackHeight;
         float pingPongValue = Mathf.PingPong(Time.time * track.speed, h);
-        float newY = pingPongValue - (h / 2f); // Сдвигаем к центру
+        float newY = pingPongValue - (h / 2f); 
 
         track.arrow.anchoredPosition = new Vector2(track.arrow.anchoredPosition.x, newY);
     }
@@ -228,7 +246,7 @@ public class RepairQTE : MonoBehaviour
 
         float h = track.trackHeight;
         var pos = track.arrow.anchoredPosition;
-        pos.y = -h / 2f; // Ставим в самый низ
+        pos.y = -h / 2f; 
         track.arrow.anchoredPosition = pos;
     }
 
@@ -242,56 +260,45 @@ public class RepairQTE : MonoBehaviour
 
         if (currentTrack.arrow == null || currentTrack.successZone == null)
         {
-            Debug.LogWarning("RepairQTE: не заданы arrow / successZone на треке " + (currentTrackIndex + 1));
+            Debug.LogWarning("RepairQTE: не заданы настройки трека!");
             return;
         }
 
-        // Получаем позицию стрелки относительно родительского трека
         float arrowY = currentTrack.arrow.anchoredPosition.y;
-
-        // Получаем границы зоны успеха
         float zoneY = currentTrack.successZone.anchoredPosition.y;
         float zoneHalfHeight = currentTrack.successZone.rect.height / 2;
 
-        // Проверка: находится ли стрелка в пределах зоны (Zone Y - half height) до (Zone Y + half height)
-        if (Mathf.Abs(arrowY - zoneY) <= zoneHalfHeight) // УСЛОВИЕ УСПЕХА
+        // Проверка попадания
+        if (Mathf.Abs(arrowY - zoneY) <= zoneHalfHeight) 
         {
-            // УСПЕХ ПОЛОСЫ
-            Debug.Log($"TRACK {currentTrackIndex + 1}: УСПЕХ");
-
-            // 👉 сразу играем звук успеха полоски
+            // УСПЕХ
             if (!trackSuccessEvent.IsNull)
                 FMODUnity.RuntimeManager.PlayOneShot(trackSuccessEvent);
 
             StartShieldSuccessFlash();
             currentTrackIndex++;
 
-            // Финальный успех QTE
             if (currentTrackIndex >= tracks.Count)
             {
-                // звук полного успеха
+                // ПОЛНАЯ ПОБЕДА
                 if (!qteSuccessEvent.IsNull)
                     FMODUnity.RuntimeManager.PlayOneShot(qteSuccessEvent);
 
-                StopQTE(true); // ПОЛНАЯ ПОБЕДА!
+                StopQTE(true); 
             }
             else
             {
-                Debug.Log($"Переход на трек {currentTrackIndex + 1}");
                 ResetArrowOnTrack(tracks[currentTrackIndex]);
             }
         }
         else
         {
-            // ПРОМАХ / СБРОС
-            Debug.Log($"TRACK {currentTrackIndex + 1}: ПРОМАХ, возврат на первый трек");
-
+            // ПРОМАХ
             if (!trackFailEvent.IsNull)
                 FMODUnity.RuntimeManager.PlayOneShot(trackFailEvent);
 
             StartShieldFailFlash();
 
-            // Сброс на первый трек
             currentTrackIndex = 0;
             foreach (var track in tracks)
                 ResetArrowOnTrack(track);
@@ -299,10 +306,6 @@ public class RepairQTE : MonoBehaviour
     }
 
     // ----------------- СВЕТ НА ЩИТКЕ -----------------
-
-    // ... (Методы для света SetShieldIdle, StartShieldSuccessFlash, StartShieldFailFlash)
-    // ... (Методы-Coroutine ShieldSuccessFlashCoroutine, ShieldFailFlashCoroutine)
-    // ... (Оставил их без изменений, предполагая, что они не содержат ошибок синтаксиса в теле, кроме конфликта вызова StopQTE в Coroutine ShieldFailFlashCoroutine - см. ниже)
 
     void SetShieldIdle()
     {
@@ -330,19 +333,13 @@ public class RepairQTE : MonoBehaviour
         float t = 0f;
         while (t < shieldSuccessDuration)
         {
-            if (playerController != null)
-            {
-                // плавное, но быстрое пульсирование по синусу
-                float phase = Mathf.Sin(t * Mathf.PI * 4f); // несколько пульсов
-                float k = Mathf.InverseLerp(-1f, 1f, phase); // 0..1
-                shieldLight.intensity = Mathf.Lerp(shieldIdleIntensity, shieldSuccessIntensity, k);
-
-                t += Time.deltaTime;
-                yield return null;
-                //playerController.SetDialogueZoom(false); // Убрано: SetDialogueZoom должен быть в StopQTE
-            }
+            // Плавное пульсирование
+             float phase = Mathf.Sin(t * Mathf.PI * 4f); 
+             float k = Mathf.InverseLerp(-1f, 1f, phase); 
+             shieldLight.intensity = Mathf.Lerp(shieldIdleIntensity, shieldSuccessIntensity, k);
+             t += Time.deltaTime;
+             yield return null;
         }
-
         shieldLight.intensity = shieldIdleIntensity;
         shieldRoutine = null;
     }
@@ -351,47 +348,32 @@ public class RepairQTE : MonoBehaviour
     {
         float t = 0f;
         bool state = false;
-
         while (t < shieldFailDuration)
         {
-            // более "рваное" мигание при фейле
+            // Резкое мигание
             state = !state;
-
             shieldLight.intensity = state ? shieldFailIntensity : 0f;
-
             float wait = Random.Range(0.05f, 0.12f);
             t += wait;
             yield return new WaitForSeconds(wait);
         }
-
-        if (questManager != null)
-        {
-            // Эта логика должна быть в StopQTE, а не в Coroutine
-            // Но чтобы починить, я оставлю здесь вызовы.
-        }
-
         shieldLight.intensity = shieldIdleIntensity;
         shieldRoutine = null;
     }
-    // В файле RepairQTE.cs (НОВАЯ ФУНКЦИЯ)
 
+    // Отмена QTE на ESC
     void CancelQTE()
     {
         isQTEActive = false;
-        qtePanel.SetActive(false); // Скрываем QTE панель
+        qtePanel.SetActive(false); 
 
-        // Присваиваем игроку обратно контроль движения и камеры
         if (playerController != null)
         {
-            playerController.SetCanMove(true); // Разблокируем движение!
-            playerController.SetDialogueZoom(false); // Выходим из зума
-            // Курсор остается заблокирован, так как мы вернулись к игре
+            playerController.SetCanMove(true); 
+            playerController.SetDialogueZoom(false); 
         }
-
-        // Мы НЕ вызываем OnQTEFailure, чтобы не появлялась надпись "He got you".
-        Debug.Log("QTE: Активирована Отмена. Игрок восстанавливает управление.");
+        // Не вызываем Fail, просто закрываем
     }
-
 
     public void ResetQTEState()
     {
@@ -409,11 +391,13 @@ public class RepairQTE : MonoBehaviour
         if (shieldRoutine != null)
         {
             StopCoroutine(shieldRoutine);
-
             shieldRoutine = null;
         }
 
-        playerController.SetCanMove(true);
-        playerController.SetDialogueZoom(false);
+        if (playerController != null)
+        {
+            playerController.SetCanMove(true);
+            playerController.SetDialogueZoom(false);
+        }
     }
 }

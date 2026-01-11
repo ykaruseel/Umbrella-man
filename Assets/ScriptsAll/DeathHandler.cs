@@ -42,6 +42,11 @@ public class DeathHandler : MonoBehaviour
 
     public void TriggerDeath(Transform enemyFace)
     {
+        // Если игра уже закончилась (например, прошли QTE), то не умираем
+        if (PlayerController.isGameEnded) return;
+
+        // Если нет, то СТАВИМ ФЛАГ, что игра закончена
+        PlayerController.isGameEnded = true;
         //if (isDead) return;
         isDead = true;
 

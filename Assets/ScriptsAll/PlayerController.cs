@@ -59,12 +59,16 @@ public class PlayerController : MonoBehaviour
     public float zoomSpeed = 2.0f;
     
     private float targetFOV;         // К какому значению мы сейчас стремимся
+    
+    public static bool isGameEnded = false;
 
     // --- Ссылка на ObjectInteraction ---
     private ObjectInteraction objectInteraction;
 
     void Start()
     {
+        
+        isGameEnded = false;
         
         if (playerCamera == null) playerCamera = Camera.main;
         targetFOV = defaultFOV;
@@ -178,7 +182,7 @@ public class PlayerController : MonoBehaviour
         //);
     }
 
-    // НУЖНО БУДЕТ ЗАМЕНИТЬ ЧИСЛА, КОГДА БУДУ ДЕЛАТЬ НАСТРОЙКУ FOV
+    
     public void ZoomIn()
     {
         if (currentZoomCoroutine != null)
@@ -267,12 +271,9 @@ public class PlayerController : MonoBehaviour
     {
         dialogueZoom = value;
     }
+     
 
-    // --- Механика взаимодействия с предметами ---
-    // Файл: PlayerController.cs
-    // Вставь этот метод целиком (вместо старого)
-
-    // --- Механика взаимодействия с предметами + блок E во время QTE ---
+    
     void CheckInteractionInput()
     {
         // 1) Если активен диалог – игнорируем взаимодействия
