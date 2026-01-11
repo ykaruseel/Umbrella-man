@@ -4,51 +4,44 @@ using System.Collections.Generic;
 
 public class ResolutionSettings : MonoBehaviour
 {
-    public TMP_Dropdown resolutionDropdown;
-    Resolution[] resolutions;
+    [SerializeField] private TMP_Text resolutionText;
+    private List<Resolution> resolutions;
+    private int currentIndex;
 
     private void Start()
     {
-        resolutions = Screen.resolutions;
-        resolutionDropdown.ClearOptions();
-
-        List<string> options = new List<string>();
-        int defaultIndex = 0;
-
-        Resolution currentRes = Screen.currentResolution;
-
-        for (int i = 0; i < resolutions.Length; i++)
+        resolutions = new List<Resolution>();
+        foreach (var res in Screen.resolutions)
         {
-            string option = resolutions[i].width + " x " + resolutions[i].height;
-            if (!options.Contains(option))
-            {
-                options.Add(option);
-            }
-
-            if (resolutions[i].width == currentRes.width && resolutions[i].height == currentRes.height)
-            {
-                defaultIndex = options.IndexOf(option);
-            }
+            bool exists = resolutions.Exists(r => r.width == res.width && r.height == res.height);
+            if (!exists)
+                resolutions.Add(res);
         }
 
-        resolutionDropdown.AddOptions(options);
+        int savedIndex = PlayerPrefs.GetInt("ResolutionIndex", 0);
+        currentIndex = Mathf.Clamp(savedIndex, 0, resolutions.Count - 1);
 
-        int savedIndex = PlayerPrefs.GetInt("ResolutionIndex", defaultIndex);
-
-        resolutionDropdown.value = savedIndex;
-        resolutionDropdown.RefreshShownValue();
-
-        SetResolution(savedIndex);
+        ApplyResolution();
     }
 
-    public void SetResolution(int index)
+    public void NextResolution()
     {
-        string[] resParts = resolutionDropdown.options[index].text.Split('x');
-        int width = int.Parse(resParts[0].Trim());
-        int height = int.Parse(resParts[1].Trim());
+        currentIndex = (currentIndex + 1) % resolutions.Count;
+        ApplyResolution();
+    }
 
-        Screen.SetResolution(width, height, Screen.fullScreenMode);
+    public void PreviousResolution()
+    {
+        currentIndex--;
+        if (currentIndex < 0) currentIndex = resolutions.Count - 1;
+        ApplyResolution();
+    }
 
-        PlayerPrefs.SetInt("ResolutionIndex", index);
+    private void ApplyResolution()
+    {
+        Resolution res = resolutions[currentIndex];
+        Screen.SetResolution(res.width, res.height, Screen.fullScreenMode);
+        resolutionText.text = $"{res.width} x {res.height}";
+        PlayerPrefs.SetInt("ResolutionIndex", currentIndex);
     }
 }

@@ -42,10 +42,11 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
     float baseVignette;
     float baseVignetteSmoothness;
     float baseExposure;
-    float baseContrast;
-    float baseChromatic;
-    float baseLensIntensity;
-    float baseGrainIntensity;
+    public float baseContrast;
+    public float baseChromatic;
+    public float baseLensIntensity;
+    public float baseGrainIntensity;
+    public float baseSaturation;
 
     float target = 0f;
     float current = 0f;
@@ -80,6 +81,7 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
         {
             baseExposure = colorAdj.postExposure.value;
             baseContrast = colorAdj.contrast.value;
+            baseSaturation = colorAdj.saturation.value;
         }
 
         if (chromatic != null) baseChromatic = chromatic.intensity.value;
@@ -172,6 +174,9 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
 
         if (grain != null)
             grain.intensity.value = Mathf.Lerp(baseGrainIntensity, 1.5f, finalFactor);
+
+        if (colorAdj != null)
+            colorAdj.saturation.value = Mathf.Lerp(baseSaturation, -10f, finalFactor);
     }
 }
 

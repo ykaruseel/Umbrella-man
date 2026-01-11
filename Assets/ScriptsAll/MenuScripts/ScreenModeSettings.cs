@@ -1,28 +1,47 @@
+using TMPro;
 using UnityEngine;
 
 public class ScreenModeSettings : MonoBehaviour
 {
+    [SerializeField] private TMP_Text modeText;
+    private FullScreenMode[] modes = new FullScreenMode[]
+    {
+        FullScreenMode.ExclusiveFullScreen,
+        FullScreenMode.Windowed,
+        FullScreenMode.FullScreenWindow
+    };
+    private string[] modeNames = new string[]
+    {
+        "Fullscreen",
+        "Windowed",
+        "Borderless"
+    };
+
+    private int currentIndex;
+
     private void Start()
     {
-        int mode = PlayerPrefs.GetInt("ScreenMode", 0);
-        SetScreenMode(mode);
+        currentIndex = PlayerPrefs.GetInt("ScreenMode", 0);
+        ApplyMode();
     }
 
-    public void SetScreenMode(int mode)
+    public void NextMode()
     {
-        switch (mode)
-        {
-            case 0:
-                Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
-                break;
-            case 1:
-                Screen.fullScreenMode = FullScreenMode.Windowed;
-                break;
-            case 2:
-                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
-                break;
-        }
+        currentIndex = (currentIndex + 1) % modes.Length;
+        ApplyMode();
+    }
 
-        PlayerPrefs.SetInt("ScreenMode", mode);
+    public void PreviousMode()
+    {
+        currentIndex--;
+        if (currentIndex < 0) currentIndex = modes.Length - 1;
+        ApplyMode();
+    }
+
+    private void ApplyMode()
+    {
+        Screen.fullScreenMode = modes[currentIndex];
+        modeText.text = modeNames[currentIndex];
+        PlayerPrefs.SetInt("ScreenMode", currentIndex);
     }
 }
