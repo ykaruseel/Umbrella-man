@@ -65,6 +65,7 @@ public class QuestManager : MonoBehaviour
 
     void Start()
     {
+        FadeOut(playerController.GetComponent<CharacterController>());
         if (umbrellaManNear) umbrellaManNear.SetActive(false);
         if (umbrellaManFar) umbrellaManFar.SetActive(false);
         

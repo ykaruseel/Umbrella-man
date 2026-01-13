@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class PlayAndQuit : MonoBehaviour
 {
-    public void LoadScene(string sceneName)
-    {
-        PauseAudioSnapshot.Instance?.ExitPause();
-        Debug.Log("Trying to load scene: " + sceneName);
-        SceneManager.LoadScene(sceneName);
-    }
+    //public void LoadScene(string sceneName)
+    //{
+    //    PauseAudioSnapshot.Instance?.ExitPause();
+    //    Debug.Log("Trying to load scene: " + sceneName);
+    //    SceneManager.LoadScene(sceneName);
+    //}
 
     public void QuitApplication()
     {
@@ -33,6 +33,7 @@ public class PlayAndQuit : MonoBehaviour
     [Header("UI")]
     public CanvasGroup blackScreen;
     public Slider progressBar;
+    public GameObject progressBarGO;
 
     [Header("Scene")]
     public string sceneToLoad;
@@ -41,6 +42,8 @@ public class PlayAndQuit : MonoBehaviour
     private Coroutine zoomCoroutine;
 
     [SerializeField] private CanvasGroup UI;
+
+    public LoadingScreenController loadingScreen;
 
     void Start()
     {
@@ -99,9 +102,29 @@ public class PlayAndQuit : MonoBehaviour
         StartCoroutine(LoadSceneAsync());
     }
 
+    [SerializeField] private float fadeDuration = 1f;
+
+    private IEnumerator FadeToBlack()
+    {
+        if (blackScreen == null) yield break;
+
+        blackScreen.gameObject.SetActive(true);
+
+        float elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            blackScreen.alpha = Mathf.Clamp01(elapsed / fadeDuration);
+            yield return null;
+        }
+
+        blackScreen.alpha = 1f;
+    }
+
     private IEnumerator LoadSceneAsync()
     {
         blackScreen.gameObject.SetActive(true);
+        progressBarGO.SetActive(true);
 
         float fadeTime = 0.5f;
         float fade = 0f;
@@ -112,6 +135,8 @@ public class PlayAndQuit : MonoBehaviour
             yield return null;
         }
         blackScreen.alpha = 1f;
+
+        StartCoroutine(loadingScreen.SequenceRoutine());
 
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
         op.allowSceneActivation = false;
@@ -134,6 +159,12 @@ public class PlayAndQuit : MonoBehaviour
 
             if (realProgress >= 1f && fakeProgress >= 1f)
             {
+                progressBarGO.SetActive(false);
+
+                StartCoroutine(loadingScreen.TitleWrite());
+
+                yield return new WaitUntil(() => LoadingScreenController.CanSwitchScenes);
+
                 cam.gameObject.SetActive(false);
 
                 op.allowSceneActivation = true;
@@ -148,6 +179,61 @@ public class PlayAndQuit : MonoBehaviour
         AsyncOperation unloadOp = SceneManager.UnloadSceneAsync("MenuScene");
         while (!unloadOp.isDone)
             yield return null;
-
     }
+
+    //private IEnumerator LoadSceneAsync()
+    //{
+    //    blackScreen.gameObject.SetActive(true);
+
+    //    float fadeTime = 0.5f;
+    //    float fade = 0f;
+    //    while (fade < fadeTime)
+    //    {
+    //        fade += Time.deltaTime;
+    //        blackScreen.alpha = fade / fadeTime;
+    //        yield return null;
+    //    }
+    //    blackScreen.alpha = 1f;
+
+    //    loadingScreen.StartSequence();
+
+    //    AsyncOperation op = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
+    //    op.allowSceneActivation = false;
+
+    //    float displayProgress = 0f;
+    //    float fakeDuration = 2.5f;
+    //    float timer = 0f;
+
+    //    while (!op.isDone)
+    //    {
+    //        timer += Time.deltaTime;
+
+    //        float realProgress = Mathf.Clamp01(op.progress / 0.9f);
+
+    //        float fakeProgress = Mathf.Clamp01(timer / fakeDuration);
+
+    //        displayProgress = Mathf.Min(fakeProgress, realProgress);
+
+    //        progressBar.value = displayProgress;
+
+    //        if (realProgress >= 1f && fakeProgress >= 1f)
+    //        {
+    //            cam.gameObject.SetActive(false);
+
+    //            yield return new WaitForSeconds(1f);
+
+    //            op.allowSceneActivation = true;
+    //        }
+
+    //        yield return null;
+    //    }
+
+    //    Scene gameScene = SceneManager.GetSceneByName(sceneToLoad);
+    //    SceneManager.SetActiveScene(gameScene);
+
+    //    AsyncOperation unloadOp = SceneManager.UnloadSceneAsync("MenuScene");
+    //    while (!unloadOp.isDone)
+    //        yield return null;
+
+    //}
 }

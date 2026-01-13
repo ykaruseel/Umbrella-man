@@ -188,7 +188,7 @@ public class PlayerController : MonoBehaviour
         if (currentZoomCoroutine != null)
             StopCoroutine(currentZoomCoroutine);
 
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, 40f));
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView*0.8f));
     }
 
     public void ZoomOut()
@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
         if (currentZoomCoroutine != null)
             StopCoroutine(currentZoomCoroutine);
 
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, 50f));
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView/0.8f));
     }
 
     private IEnumerator SmoothZoom(float from, float to)
