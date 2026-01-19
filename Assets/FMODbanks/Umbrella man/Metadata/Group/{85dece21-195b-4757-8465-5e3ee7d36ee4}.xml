@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerGroup" id="{85dece21-195b-4757-8465-5e3ee7d36ee4}">
+		<property name="name">
+			<value>InGame</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{ad390fac-5885-4041-8d13-c52713961ff9}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{bee70f2a-01ea-468b-9a82-907bcde0a792}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{65e88003-463d-4792-8a0c-e9369ffcfc54}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{ad390fac-5885-4041-8d13-c52713961ff9}">
+		<relationship name="effects">
+			<destination>{19dc8f72-bb27-4a89-bda8-b14a2cb7065b}</destination>
+			<destination>{5dd9a43c-8014-402c-8b33-91d06b3e1e01}</destination>
+			<destination>{3c354f95-30fa-479b-b834-e68049c09cd3}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{bee70f2a-01ea-468b-9a82-907bcde0a792}" />
+	<object class="MixerBusFader" id="{19dc8f72-bb27-4a89-bda8-b14a2cb7065b}" />
+	<object class="LowpassEffect" id="{5dd9a43c-8014-402c-8b33-91d06b3e1e01}">
+		<property name="cutoff">
+			<value>22000</value>
+		</property>
+	</object>
+	<object class="DelayEffect" id="{3c354f95-30fa-479b-b834-e68049c09cd3}">
+		<property name="level">
+			<value>-80</value>
+		</property>
+	</object>
+</objects>

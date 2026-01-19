@@ -36,7 +36,7 @@ public class Pause : MonoBehaviour
         {
             foreach (GameObject obj in _UIElements)
             {
-                if (!obj.activeSelf) continue;
+                if (obj == null) continue;
 
                 if (obj.activeSelf) return;
             }
@@ -78,6 +78,7 @@ public class Pause : MonoBehaviour
 
     private IEnumerator FadeOut()
     {
+        PauseAudioSnapshot.Instance?.ExitPause();
         isTransitioning = true;
 
         _pauseMenu.interactable = false;
@@ -128,6 +129,7 @@ public class Pause : MonoBehaviour
 
     private IEnumerator FadeIn()
     {
+        PauseAudioSnapshot.Instance?.EnterPause();
         isPaused = true;
         //_pauseMenuUI.SetActive(true);
 
@@ -178,5 +180,6 @@ public class Pause : MonoBehaviour
     private void OnDestroy()
     {
         isPaused = false;
+        PauseAudioSnapshot.Instance?.ExitPause();
     }
 }

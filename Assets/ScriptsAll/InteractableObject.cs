@@ -25,7 +25,15 @@ public class InteractableObject : MonoBehaviour
     {
         Debug.Log("Взаимодействие с: " + objectID);
 
-        // 👇 НОВОЕ: Если щиток не готов, то выходим
+        // 👇 [СЮДА] Вставляем это в самое начало!
+        // Чтобы обучение засчиталось, даже если щиток пока закрыт.
+        if (TutorialManager.instance != null)
+        {
+            TutorialManager.instance.CompleteInteractionStep();
+        }
+        // ----------------------------------------------------
+
+        // 👇 А уже ПОТОМ проверяем условия
         if (!isShieldReady)
         {
             Debug.Log("Щиток пока заблокирован. Нужно дождаться ключевого события.");
@@ -34,16 +42,15 @@ public class InteractableObject : MonoBehaviour
 
         // --- ЛОГИКА QTE ---
         RepairQTE qteScript = GetComponent<RepairQTE>();
-        
+    
         if (qteScript != null)
         {
             Debug.Log("Найден скрипт RepairQTE! Запускаем мини-игру.");
             qteScript.StartRepairQTE();
             return; 
         }
-        // -----------------------------
 
-        // --- ЛОГИКА КВЕСТОВ (используется только если QTE не найден) ---
+        // --- ЛОГИКА КВЕСТОВ ---
         QuestManager qm = QuestManager.instance;
         if (qm != null && qm.currentQuest != null)
         {

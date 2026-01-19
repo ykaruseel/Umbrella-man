@@ -1,9 +1,7 @@
-﻿using FMODUnity;
-using System.Collections;
-using Unity.Cinemachine;
-using UnityEditor;
+﻿using System.Collections;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI.Table;
+using FMODUnity;
+using Unity.Cinemachine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -61,12 +59,16 @@ public class PlayerController : MonoBehaviour
     public float zoomSpeed = 2.0f;
     
     private float targetFOV;         // К какому значению мы сейчас стремимся
+    
+    public static bool isGameEnded = false;
 
     // --- Ссылка на ObjectInteraction ---
     private ObjectInteraction objectInteraction;
 
     void Start()
     {
+        
+        isGameEnded = false;
         
         if (playerCamera == null) playerCamera = Camera.main;
         targetFOV = defaultFOV;
@@ -130,6 +132,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
+        if(!canMove) return;
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
@@ -179,13 +182,13 @@ public class PlayerController : MonoBehaviour
         //);
     }
 
-    // НУЖНО БУДЕТ ЗАМЕНИТЬ ЧИСЛА, КОГДА БУДУ ДЕЛАТЬ НАСТРОЙКУ FOV
+    
     public void ZoomIn()
     {
         if (currentZoomCoroutine != null)
             StopCoroutine(currentZoomCoroutine);
 
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, 40f));
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView*0.8f));
     }
 
     public void ZoomOut()
@@ -193,7 +196,7 @@ public class PlayerController : MonoBehaviour
         if (currentZoomCoroutine != null)
             StopCoroutine(currentZoomCoroutine);
 
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, 50f));
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView/0.8f));
     }
 
     private IEnumerator SmoothZoom(float from, float to)
@@ -268,12 +271,9 @@ public class PlayerController : MonoBehaviour
     {
         dialogueZoom = value;
     }
+     
 
-    // --- Механика взаимодействия с предметами ---
-    // Файл: PlayerController.cs
-    // Вставь этот метод целиком (вместо старого)
-
-    // --- Механика взаимодействия с предметами + блок E во время QTE ---
+    
     void CheckInteractionInput()
     {
         // 1) Если активен диалог – игнорируем взаимодействия
@@ -400,7 +400,6 @@ public class PlayerController : MonoBehaviour
 
         return Quaternion.LookRotation(fwd, Vector3.up);
     }
-
 
     public void SetRotation(float yaw, float pitch)
     {

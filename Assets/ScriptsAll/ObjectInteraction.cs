@@ -28,7 +28,7 @@ public class ObjectInteraction : MonoBehaviour
     }
 
     // Методы публичные для PlayerController
-    
+
     public void PlaceObject(PlacementSpot spot)
     {
         UpdateHighlights(false);

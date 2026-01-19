@@ -65,6 +65,7 @@ public class QuestManager : MonoBehaviour
 
     void Start()
     {
+        FadeOut(playerController.GetComponent<CharacterController>());
         if (umbrellaManNear) umbrellaManNear.SetActive(false);
         if (umbrellaManFar) umbrellaManFar.SetActive(false);
         
@@ -167,12 +168,21 @@ public class QuestManager : MonoBehaviour
 
         if (completedQuest.questID == "Quest1_Placement" || completedQuest.questID == "Quest2_Door")
         {
-            if (!questCompleteSound.IsNull) RuntimeManager.PlayOneShot(questCompleteSound);
+            if (!questCompleteSound.IsNull)
+                RuntimeManager.PlayOneShot(questCompleteSound);
+        }
+
+        if (completedQuest.questID == "Quest1_Placement")
+        {
+            var door = FindFirstObjectByType<NPC_Dialogue>();
+            if (door != null)
+                door.PlayKnock();
         }
 
         TriggerQuestEvent(completedQuest.questID);
 
-        if (completedQuest.nextQuest != null) StartQuest(completedQuest.nextQuest);
+        if (completedQuest.nextQuest != null)
+            StartQuest(completedQuest.nextQuest);
     }
 
     IEnumerator PlayKnockAfterFade(float fadeDuration)
@@ -240,6 +250,7 @@ public class QuestManager : MonoBehaviour
     public void OnQTESuccess()
     {
         // ПОБЕДА
+        if (playerController) playerController.SetCanMove(false);
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.FadeToVolume(0f, 1f);
@@ -350,7 +361,6 @@ public class QuestManager : MonoBehaviour
             playerController.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
             playerController.SetRotation(90f, 0f);
             
-            // Скрываем UI при респауне
             if (gameOverUI) gameOverUI.SetActive(false);
             if (prototypeCompleteUI) prototypeCompleteUI.SetActive(false);
 
@@ -402,6 +412,7 @@ public class QuestManager : MonoBehaviour
         fadeImage.color = color;
 
         playerController.SetCanMove(true);
+        playerController.isCinematic = false;
         if (cc) cc.enabled = true;
         playerController.enabled = true;
     }

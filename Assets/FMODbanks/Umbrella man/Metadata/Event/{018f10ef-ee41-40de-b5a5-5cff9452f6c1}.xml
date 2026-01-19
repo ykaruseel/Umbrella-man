@@ -5,7 +5,7 @@
 			<value>knocking</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{35a80e89-568f-4a4b-b70d-281ae4eabf68}</destination>
@@ -105,7 +105,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{aaa9ea80-fb2d-4ef5-8d96-7a762288870b}">
 		<property name="volume">
-			<value>-5</value>
+			<value>-2</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -155,9 +155,11 @@
 	<object class="MixerBusEffectChain" id="{3f2d3d2b-12f1-4d7a-8171-4c3b1f117bd1}">
 		<relationship name="effects">
 			<destination>{ecf48ff3-d5d3-40ac-af26-c7303a9121dd}</destination>
+			<destination>{3e8e9751-e65d-44bd-824e-789459ea2e71}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{08d521cf-fc5e-4622-ba22-368d600bec2d}" />
 	<object class="MixerBusFader" id="{68874aa1-b8f4-46a2-a250-65deabf4da58}" />
 	<object class="MixerBusFader" id="{ecf48ff3-d5d3-40ac-af26-c7303a9121dd}" />
+	<object class="SpatialiserEffect" id="{3e8e9751-e65d-44bd-824e-789459ea2e71}" />
 </objects>
