@@ -1,33 +1,36 @@
 using UnityEngine;
 using System.Collections;
-using FMODUnity; // Используем FMOD
+using FMODUnity;
 
 public class CinematicReveal : MonoBehaviour
 {
     [Header("Activation Conditions")]
-    // 👇 НОВОЕ: Сюда пиши ID квеста (например, Quest_Explore)
+    // Впиши сюда Quest_FollowLight
     public string requiredQuestID; 
 
     [Header("Main Settings")]
-    public PlayerController player;          // Ссылка на игрока
-    public Transform lookTarget;             // Пустой объект в углу
-    public GameObject umbrellaMan;           // Объект врага
+    public PlayerController player;
+    public Transform lookTarget;
+    public GameObject umbrellaMan;
     
+    // 👇 ВОТ ЭТА ПЕРЕМЕННАЯ, КОТОРОЙ У ТЕБЯ НЕ БЫЛО
+    [Tooltip("Перетащи сюда объект _FollowLightController")]
+    public FollowLightController oldController; 
+
     [Header("Lighting & Effects")]
-    public Light thirdLamp;                  // Лампа
-    public GameObject lampModel;             // Модель лампы
-    public ParticleSystem smokeParticles;    // Дым
-    public ParticleSystem sparkParticles;    // Искры
+    public Light thirdLamp;
+    public GameObject lampModel;
+    public ParticleSystem smokeParticles;
+    public ParticleSystem sparkParticles;
 
-    [Header("Audio (FMOD)")]
-    public EventReference lightFlickerSound; 
-    public EventReference appearSound;       
-    public EventReference explosionSound;    
+    [Header("Audio")]
+    public EventReference appearSound;
+    public EventReference explosionSound;
 
-    [Header("Timing Settings")]
-    public float smokeDuration = 5.0f;       
-    public float stareDuration = 2.0f;       
-    public float zoomFOV = 40f;              
+    [Header("Timing")]
+    public float smokeDuration = 5.0f;
+    public float stareDuration = 2.0f;
+    public float zoomFOV = 40f;
     
     private bool hasTriggered = false;
     private Coroutine flickerCoroutine;
@@ -41,84 +44,87 @@ public class CinematicReveal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Сначала проверяем, что это Игрок и триггер еще не сработал
         if (hasTriggered || !other.CompareTag("Player")) return;
 
-        // 👇 НОВАЯ ПРОВЕРКА КВЕСТА
-        // Если поле requiredQuestID не пустое, проверяем текущий квест
-        if (!string.IsNullOrEmpty(requiredQuestID))
+        // ПРОВЕРКА КВЕСТА С ОТЛАДКОЙ
+        if (QuestManager.instance != null && QuestManager.instance.currentQuest != null)
         {
-            if (QuestManager.instance != null && QuestManager.instance.currentQuest != null)
+            string currentID = QuestManager.instance.currentQuest.questID;
+            
+            // 👇 ЭТА СТРОЧКА ПОКАЖЕТ ПРАВДУ В КОНСОЛИ
+            Debug.Log($"[CinematicReveal] Текущий квест: '{currentID}' | Требуется: '{requiredQuestID}'");
+
+            if (!string.IsNullOrEmpty(requiredQuestID) && currentID != requiredQuestID)
             {
-                // Если ID текущего квеста НЕ совпадает с нужным -> выходим
-                if (QuestManager.instance.currentQuest.questID != requiredQuestID)
-                {
-                    return; 
-                }
+                Debug.Log($"[CinematicReveal] ОТМЕНА: ID не совпадают!");
+                return;
             }
         }
+        else
+        {
+            Debug.Log("[CinematicReveal] QuestManager не найден или квеста нет!");
+        }
 
-        // Если квест совпал (или ID не был задан), запускаем сцену
+        Debug.Log("[CinematicReveal] УСЛОВИЯ СОВПАЛИ! ЗАПУСК!");
         hasTriggered = true;
         StartCoroutine(PlayCinematicSequence());
     }
 
     IEnumerator PlayCinematicSequence()
     {
-        // -----------------------------------------------------------
-        // 1. БЛОКИРОВКА И ПОВОРОТ КАМЕРЫ
-        // -----------------------------------------------------------
+        // 0. ОТКЛЮЧАЕМ СТАРЫЙ КОНТРОЛЛЕР СВЕТА
+        if (oldController != null)
+        {
+            oldController.StopAllCoroutines();
+            oldController.enabled = false; // Выключаем его, чтобы не мешал
+            Debug.Log("Cinematic: Старый контроллер света отключен.");
+        }
+
+        // 1. БЛОКИРОВКА ИГРОКА
         if (player != null)
         {
-            player.SetCanMove(false); 
-            if (lookTarget != null) 
-                player.StartCinematicPan(lookTarget, 1.5f);
-            
+            player.SetCanMove(false);
+            if (lookTarget != null) player.StartCinematicPan(lookTarget, 1.5f);
             StartCoroutine(DoZoom(zoomFOV, 2.0f));
         }
 
-        // -----------------------------------------------------------
-        // 2. МИГАНИЕ СВЕТА И ДЫМ
-        // -----------------------------------------------------------
-        if (thirdLamp != null)
-        {
-            flickerCoroutine = StartCoroutine(FlickerLightRoutine());
-        }
-
+        // 2. МИГАНИЕ ЛАМПЫ И ДЫМ
+        if (thirdLamp != null) flickerCoroutine = StartCoroutine(FlickerLightRoutine());
         if (smokeParticles != null) smokeParticles.Play();
 
         yield return new WaitForSeconds(smokeDuration);
 
-        // -----------------------------------------------------------
         // 3. ПОЯВЛЕНИЕ ЧЕЛОВЕКА
-        // -----------------------------------------------------------
         if (umbrellaMan != null)
         {
             umbrellaMan.SetActive(true);
-            
             Vector3 lookPos = player.transform.position;
-            lookPos.y = umbrellaMan.transform.position.y; 
+            lookPos.y = umbrellaMan.transform.position.y;
             umbrellaMan.transform.LookAt(lookPos);
-
             if (!appearSound.IsNull) RuntimeManager.PlayOneShot(appearSound, umbrellaMan.transform.position);
+        }
+
+        // 4. ОСТАНОВКА МИГАНИЯ -> ЯРКИЙ СВЕТ (ЧТОБЫ ВИДЕТЬ ВРАГА)
+        if (flickerCoroutine != null) StopCoroutine(flickerCoroutine);
+        if (thirdLamp != null)
+        {
+            thirdLamp.enabled = true;
+            thirdLamp.intensity = 2.5f; 
         }
 
         yield return new WaitForSeconds(stareDuration);
 
-        // -----------------------------------------------------------
-        // 4. ВЗРЫВ ЛАМПЫ
-        // -----------------------------------------------------------
-        if (flickerCoroutine != null) StopCoroutine(flickerCoroutine);
-
+        // 5. ВЗРЫВ ЛАМПЫ
         if (!explosionSound.IsNull) RuntimeManager.PlayOneShot(explosionSound, thirdLamp.transform.position);
         if (sparkParticles != null) sparkParticles.Play();
 
         if (thirdLamp != null)
         {
-            thirdLamp.enabled = false;
+            thirdLamp.enabled = false; // Свет гаснет
             thirdLamp.intensity = 0;
         }
 
+        // Гасим материал лампы
         if (lampModel != null)
         {
             var renderer = lampModel.GetComponent<Renderer>();
@@ -132,35 +138,21 @@ public class CinematicReveal : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        // -----------------------------------------------------------
-        // 5. СТАРТ ПОГОНИ
-        // -----------------------------------------------------------
-        
+        // 6. СТАРТ ПОГОНИ
         if (player != null)
         {
-            StartCoroutine(DoZoom(60f, 0.5f)); 
+            StartCoroutine(DoZoom(60f, 0.5f)); // Возвращаем камеру
             player.isCinematic = false; 
             player.SetCanMove(true);    
         }
 
+        // Запускаем скрипт бега на враге
         if (umbrellaMan != null)
         {
-            var chaseScript = umbrellaMan.GetComponent<UmbrellaManChase>();
-            if (chaseScript != null)
-            {
-                chaseScript.StartChase();
-            }
-            else
-            {
-                Debug.LogWarning("На объекте UmbrellaMan нет скрипта UmbrellaManChase!");
-            }
+            var chase = umbrellaMan.GetComponent<UmbrellaManChase>();
+            if (chase != null) chase.StartChase();
         }
         
-        if (QuestManager.instance != null)
-        {
-            // QuestManager.instance.TriggerChaseScene(); 
-        }
-
         Destroy(gameObject, 2f);
     }
 
@@ -169,10 +161,8 @@ public class CinematicReveal : MonoBehaviour
         while (true)
         {
             if (thirdLamp == null) yield break;
-            
             thirdLamp.intensity = Random.Range(0.2f, 3.0f);
             yield return new WaitForSeconds(Random.Range(0.05f, 0.15f));
-            
             if (Random.value > 0.7f)
             {
                 thirdLamp.enabled = false;
@@ -185,10 +175,8 @@ public class CinematicReveal : MonoBehaviour
     IEnumerator DoZoom(float targetFOV, float duration)
     {
         if (player == null || player.playerCamera == null) yield break;
-
         float startFOV = player.playerCamera.fieldOfView;
         float time = 0f;
-
         while (time < duration)
         {
             time += Time.deltaTime;

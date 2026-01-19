@@ -27165,21 +27165,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217f6039ff2d21a41ab61022a1b1e1ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredQuestID: 
+  requiredQuestID: Quest2_Door
   player: {fileID: 332663620}
   lookTarget: {fileID: 5399866}
   umbrellaMan: {fileID: 1888251721}
+  oldController: {fileID: 375994149}
   thirdLamp: {fileID: 2031310956}
   lampModel: {fileID: 309428907}
   smokeParticles: {fileID: 1712302191}
   sparkParticles: {fileID: 0}
-  lightFlickerSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   appearSound:
     Guid:
       Data1: 0
@@ -27227,8 +27221,8 @@ Transform:
   m_GameObject: {fileID: 1417980364}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.303, y: 0.912, z: -31.314}
-  m_LocalScale: {x: 0.3719635, y: 0.2365776, z: 2.0116334}
+  m_LocalPosition: {x: 2.303, y: 0.912, z: -31.33}
+  m_LocalScale: {x: 0.3719635, y: 1.1519673, z: 2.7271714}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -39682,8 +39676,6 @@ GameObject:
   - component: {fileID: 2031310957}
   - component: {fileID: 2031310956}
   - component: {fileID: 2031310955}
-  - component: {fileID: 2031310959}
-  - component: {fileID: 2031310958}
   m_Layer: 0
   m_Name: Point Light (F3)
   m_TagString: Untagged
@@ -39789,46 +39781,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0.106, y: -0.231, z: 0.216}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 7.7300677, y: 7.7300677, z: 7.7300677}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1712083599}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &2031310958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031310954}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c16d35762090f8844b28dcd984d6ea65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 375994149}
-  lightIndex: 2
---- !u!135 &2031310959
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031310954}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 2.4643698
-  m_Center: {x: 2.27, y: -0.71, z: 1.57}
 --- !u!1001 &2033402614
 PrefabInstance:
   m_ObjectHideFlags: 0
