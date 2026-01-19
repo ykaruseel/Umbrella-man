@@ -28,8 +28,6 @@ public class LoadingScreenController : MonoBehaviour
 
     [SerializeField] private PlayAndQuit loader;
 
-    [SerializeField] private VHSNoise noise;
-
     private void Start()
     {
         CanSwitchScenes = false;
@@ -56,14 +54,12 @@ public class LoadingScreenController : MonoBehaviour
         yield return new WaitForSeconds(titleDelay);
         yield return TypeText(titleLine1, "Do you know");
         yield return new WaitForSeconds(1.5f);
-        yield return TypeText(titleLine2, "The man with the umbrella");
+        yield return TypeText(titleLine2, "The man with the umbrella?");
 
         yield return new WaitForSeconds(2f);
 
         yield return DeleteText(titleLine2);
         yield return DeleteText(titleLine1);
-
-        StartCoroutine(noise.FadeRoutine());
 
         yield return new WaitForSeconds(2f);
 
