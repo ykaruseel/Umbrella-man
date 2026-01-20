@@ -49,29 +49,23 @@ public class CinematicReveal : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (hasTriggered || !other.CompareTag("Player")) return;
-
-        if (canActivate == false)
-        {
-            return; 
-        }
+        if (canActivate == false) return;
 
         Debug.Log("Cinematic: Дверь дала добро! ЗАПУСК!");
         hasTriggered = true;
         StartCoroutine(PlayCinematicSequence());
     }
 
-    // --- КАТСЦЕНА ---
     IEnumerator PlayCinematicSequence()
     {
         if (oldController != null) { oldController.StopAllCoroutines(); oldController.enabled = false; }
         if (player != null) { player.SetCanMove(false); StartCoroutine(DoZoom(zoomFOV, 2.0f)); }
         
-        // 🔥 ВОТ ИСПРАВЛЕНИЕ 🔥
-        // Если лампа была выключена (темно), мы её ПРИНУДИТЕЛЬНО включаем перед миганием.
+        // Включаем свет принудительно, чтобы не было темно
         if (thirdLamp != null)
         {
-            thirdLamp.enabled = true; // Включаем объект
-            thirdLamp.intensity = 2.0f; // Даем нормальную яркость
+            thirdLamp.enabled = true; 
+            thirdLamp.intensity = 2.0f; 
         }
 
         if (thirdLamp != null) flickerCoroutine = StartCoroutine(FlickerLightRoutine());
@@ -97,13 +91,28 @@ public class CinematicReveal : MonoBehaviour
 
         yield return new WaitForSeconds(stareDuration);
 
+        // --- ВЗРЫВ И ИСКРЫ ---
         if (!explosionSound.IsNull) RuntimeManager.PlayOneShot(explosionSound, thirdLamp.transform.position);
-        if (sparkParticles != null) sparkParticles.Play();
+        
+        // 🔥 ЗАПУСКАЕМ ИСКРЫ
+        if (sparkParticles != null) 
+        {
+            // На всякий случай отключаем зацикливание
+            var main = sparkParticles.main;
+            main.loop = false; 
+            sparkParticles.Play();
+        }
+
         if (sparksBaseLight != null) sparksBaseLight.SetActive(true);
         if (thirdLamp != null) { thirdLamp.enabled = false; thirdLamp.intensity = 0; }
         if (lampModel != null) { var r = lampModel.GetComponent<Renderer>(); if(r) r.material.DisableKeyword("_EMISSION"); }
 
-        yield return new WaitForSeconds(0.5f);
+        // 🔥 ЖДЕМ РОВНО 1.5 СЕКУНДЫ (ИСКРЫ ГОРЯТ) 🔥
+        yield return new WaitForSeconds(1.5f);
+
+        // 🔥 ЖЕСТКО ВЫКЛЮЧАЕМ ИСКРЫ И НАЧИНАЕМ ПОГОНЮ
+        if (sparkParticles != null) sparkParticles.Stop();
+
         if (player != null) { StartCoroutine(DoZoom(60f, 0.5f)); player.isCinematic = false; player.SetCanMove(true); }
         if (umbrellaMan != null) { var chase = umbrellaMan.GetComponent<UmbrellaManChase>(); if (chase != null) chase.StartChase(); }
         
