@@ -313,8 +313,13 @@ public class PlayerController : MonoBehaviour
                     objectInteraction.PlaceObject(spot);
                     return;
                 }
-            }
 
+                if (hit.collider.CompareTag("Door"))
+                {
+                    hit.collider.GetComponent<DoorController>().TryOpenDoor();
+                    return;
+                }
+            }
             // Иначе просто роняем
             objectInteraction.DropObject();
             return;
@@ -349,7 +354,7 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
-            if(hit.collider.CompareTag("Door"))
+            if (hit.collider.CompareTag("Door"))
             {
                 hit.collider.GetComponent<DoorController>().TryOpenDoor();
                 return;
