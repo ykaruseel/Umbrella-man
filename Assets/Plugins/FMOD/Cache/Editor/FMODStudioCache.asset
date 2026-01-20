@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8677079374651456167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Door/door_open
+  m_EditorClassIdentifier: 
+  Path: event:/Door/door_open
+  Guid:
+    Data1: 765916491
+    Data2: 1194232949
+    Data3: -196000835
+    Data4: 1889739155
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 8.2
+  Length: 2130
 --- !u!114 &-8606886389135041407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10,9 +37,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/daniel_voice
+  m_Name: event:/Daniel_voice
   m_EditorClassIdentifier: 
-  Path: event:/daniel_voice
+  Path: event:/Daniel_voice
   Guid:
     Data1: -1656578066
     Data2: 1094193858
@@ -285,12 +312,15 @@ MonoBehaviour:
   - {fileID: -306867619160590007}
   - {fileID: -349748285782248941}
   - {fileID: 1458538504385332588}
+  - {fileID: 654676325712783170}
+  - {fileID: 7609529138026096043}
+  - {fileID: -8677079374651456167}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8700398147420201416}
   StringsBanks:
   - {fileID: 752984927737422183}
-  cacheTime: 639037314745246918
+  cacheTime: 639043614807363169
   cacheVersion: 131632
 --- !u!114 &633512588349238002
 MonoBehaviour:
@@ -319,6 +349,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 614
+--- !u!114 &654676325712783170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Door/handle open
+  m_EditorClassIdentifier: 
+  Path: event:/Door/handle open
+  Guid:
+    Data1: 848316784
+    Data2: 1171768547
+    Data3: -1702842703
+    Data4: -610751153
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 9
+  Length: 821
 --- !u!114 &752984927737422183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,10 +391,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639037314745246918
+  lastModified: 639043614807363169
   FileSizes:
   - Name: Desktop
-    Value: 2204
+    Value: 2356
   Exists: 1
 --- !u!114 &1284147733947282436
 MonoBehaviour:
@@ -581,7 +638,7 @@ MonoBehaviour:
   IsOneShot: 0
   Parameters: []
   MinDistance: 0.7
-  MaxDistance: 9
+  MaxDistance: 5.4
   Length: 34903
 --- !u!114 &7219568635252318342
 MonoBehaviour:
@@ -610,6 +667,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 5000
+--- !u!114 &7609529138026096043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Menu_theme
+  m_EditorClassIdentifier: 
+  Path: event:/Menu_theme
+  Guid:
+    Data1: 1129893248
+    Data2: 1341247553
+    Data3: -291228769
+    Data4: -412936285
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 118569
 --- !u!114 &7986049578393855909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -757,10 +841,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639037314745210971
+  lastModified: 639043614807298394
   FileSizes:
   - Name: Desktop
-    Value: 5748224
+    Value: 7353376
   Exists: 1
 --- !u!114 &8823139062609224079
 MonoBehaviour:

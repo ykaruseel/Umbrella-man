@@ -5941,11 +5941,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicEvent:
     Guid:
-      Data1: -1760517789
-      Data2: 1291410756
-      Data3: -1905415776
-      Data4: -1363321436
-    Path: event:/UM_music_theme
+      Data1: 1129893248
+      Data2: 1341247553
+      Data3: -291228769
+      Data4: -412936285
+    Path: event:/Menu_theme
 --- !u!114 &677600672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17190,6 +17190,7 @@ GameObject:
   - component: {fileID: 1554599046}
   - component: {fileID: 1554599045}
   - component: {fileID: 1554599044}
+  - component: {fileID: 1554599048}
   m_Layer: 0
   m_Name: Point Light 1
   m_TagString: Untagged
@@ -17335,6 +17336,40 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1554599048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554599042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdc008f5b48e34f4d96370c916e65b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseIntensity: 3
+  intensityVariation: 1
+  pulseSpeed: 1.2
+  pulseStrength: 1
+  noiseSpeed: 3
+  noiseStrength: 0.3
+  blackoutChance: 0.2
+  blackoutDuration: {x: 0.15, y: 0.7}
+  pulseEvent:
+    Guid:
+      Data1: -17885544
+      Data2: 1159110524
+      Data3: -1140916298
+      Data4: 1231805708
+    Path: event:/light_pulse
+  flickerEvent:
+    Guid:
+      Data1: -113876769
+      Data2: 1189421630
+      Data3: -1374099295
+      Data4: -87091086
+    Path: event:/light_on
 --- !u!1 &1556474194
 GameObject:
   m_ObjectHideFlags: 0
