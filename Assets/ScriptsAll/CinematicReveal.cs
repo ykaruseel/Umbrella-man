@@ -6,7 +6,7 @@ public class CinematicReveal : MonoBehaviour
 {
     [Header("ЛОГИКА АКТИВАЦИИ")]
     [Tooltip("Эта галочка включится САМА, когда ты поговоришь с дверью.")]
-    public bool canActivate = false; // <--- ПО УМОЛЧАНИЮ FALSE (ВЫКЛЮЧЕНО)
+    public bool canActivate = false; 
 
     [Header("Настройки")]
     public PlayerController player;
@@ -36,7 +36,6 @@ public class CinematicReveal : MonoBehaviour
 
     void Start()
     {
-        // Прячем монстра при старте
         if (umbrellaMan != null)
         {
             manRenderers = umbrellaMan.GetComponentsInChildren<Renderer>();
@@ -51,27 +50,33 @@ public class CinematicReveal : MonoBehaviour
     {
         if (hasTriggered || !other.CompareTag("Player")) return;
 
-        // 🔥 ПРОВЕРКА: РАЗРЕШИЛА ЛИ ДВЕРЬ? 🔥
         if (canActivate == false)
         {
-            // Дверь еще не разрешила -> ничего не делаем
             return; 
         }
 
-        // Если canActivate == true, значит с дверью поговорили!
         Debug.Log("Cinematic: Дверь дала добро! ЗАПУСК!");
         hasTriggered = true;
         StartCoroutine(PlayCinematicSequence());
     }
 
-    // --- КАТСЦЕНА (БЕЗ ИЗМЕНЕНИЙ) ---
+    // --- КАТСЦЕНА ---
     IEnumerator PlayCinematicSequence()
     {
         if (oldController != null) { oldController.StopAllCoroutines(); oldController.enabled = false; }
         if (player != null) { player.SetCanMove(false); StartCoroutine(DoZoom(zoomFOV, 2.0f)); }
         
+        // 🔥 ВОТ ИСПРАВЛЕНИЕ 🔥
+        // Если лампа была выключена (темно), мы её ПРИНУДИТЕЛЬНО включаем перед миганием.
+        if (thirdLamp != null)
+        {
+            thirdLamp.enabled = true; // Включаем объект
+            thirdLamp.intensity = 2.0f; // Даем нормальную яркость
+        }
+
         if (thirdLamp != null) flickerCoroutine = StartCoroutine(FlickerLightRoutine());
         if (smokeParticles != null) smokeParticles.Play();
+        
         yield return new WaitForSeconds(smokeDuration);
 
         if (flickerCoroutine != null) StopCoroutine(flickerCoroutine);
