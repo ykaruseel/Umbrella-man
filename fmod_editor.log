@@ -4,10 +4,10 @@
 [LOG] SystemI::init                            : Initialize version=20230 (155271), maxchannels=256, flags=0x00020000
 [LOG] OutputWASAPI::init                       : Mix Format (WAVEFORMATEX): wFormatTag=0xFFFE, nChannels=2, nSamplesPerSec=48000, nAvgBytesPerSec=384000, nBlockAlign=8, wBitsPerSample=32, cbSize=22.
 [LOG] OutputWASAPI::init                       : Mix Format (WAVEFORMATEXTENSIBLE): wValidBitsPerSample=32, dwChannelMask=0x00000003, SubFormat=00000003-0000-0010-8000-00AA00389B71.
-[LOG] OutputWASAPI::init                       : Output buffer size: 4096 samples, latency: 0.00ms, period: 10.00ms, DSP buffer: 1024 * 4
+[LOG] OutputWASAPI::init                       : Output buffer size: 4096 samples, latency: 0.00ms, period: 12.00ms, DSP buffer: 1024 * 4
 [LOG] Thread::initThread                       : Init FMOD stream thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFB, Stack Size: 98304, Semaphore: No, Sleep Time: 10, Looping: Yes.
 [LOG] Thread::initThread                       : Init FMOD mixer thread. Affinity: 0x4000000000000001, Priority: 0xFFFF7FFA, Stack Size: 81920, Semaphore: No, Sleep Time: 0, Looping: Yes.
-[LOG] AsyncManager::init                       : manager 0000020A47930078 isAsync 0 updatePeriod 0.02
+[LOG] AsyncManager::init                       : manager 00000209E0F74CF8 isAsync 0 updatePeriod 0.02
 [LOG] AsyncManager::init                       : done
 [LOG] PlaybackSystem::init                     : 
 [LOG] Thread::initThread                       : Init FMOD Studio sample load thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFD, Stack Size: 98304, Semaphore: No, Sleep Time: 1, Looping: No.
@@ -19,92 +19,24 @@
 [LOG] PlaybackSystem::acquireMasterBus         : Setting master channel group format to 6
 [LOG] SystemI::createSound                     : filename = Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank : mode 02010082
 [LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] AsyncThread::add                         : add sound to async queue : soundi = 000002096CB453E8, queue head = 000002083E9834A8, queue count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002096CB453E8
+[LOG] Thread::initThread                       : Init FMOD nonblocking thread (0). Affinity: 0x4000000000000003, Priority: 0xFFFF7FFC, Stack Size: 114688, Semaphore: Yes, Sleep Time: 0, Looping: Yes.
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 00000209E2537B78, queue head = 0000020B76530318, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000209E2537B78
 [LOG] SystemI::createSoundInternal             :     Create name='Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank', mode=0x02010082
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 7288224
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 65152
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000020863D84920
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000020ABD4A0CC0
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
 [LOG] SystemI::createSoundInternal             :     Stream 0/1: name='light_pulse1', format=5, channels=2, frequency=48000, lengthbytes=209408, lengthpcm=809760, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.725220.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002096CB453E8
-[LOG] SoundI::release                          : light_pulse1 (000002096CB453E8)
-[LOG] SoundI::release                          :     light_pulse1 (000002086FD68EF8)
-[LOG] SoundI::release                          :     light_pulse1 (0000020841A3A3E8)
-[LOG] SystemI::createSound                     : filename = Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] AsyncThread::add                         : add sound to async queue : soundi = 000002093D5C5418, queue head = 000002083E9834A8, queue count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002093D5C5418
-[LOG] SystemI::createSoundInternal             :     Create name='Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 7288224
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 65152
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000208708F5B90
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekposition = 600
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='light_pulse3', format=5, channels=2, frequency=48000, lengthbytes=204608, lengthpcm=809760, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.931854.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002093D5C5418
-[LOG] SoundI::release                          : light_pulse1 (0000020A471AB888)
-[LOG] SoundI::release                          :     light_pulse1 (000002086FD69A58)
-[LOG] SoundI::release                          :     light_pulse1 (0000020A47410B68)
-[LOG] SoundI::release                          : light_pulse3 (000002093D5C5418)
-[LOG] SoundI::release                          :     light_pulse3 (000002086FD69238)
-[LOG] SoundI::release                          :     light_pulse3 (000002087190BE08)
-[LOG] SoundI::release                          : menu_theme_2.0-1 (0000020873483DC8)
-[LOG] SoundI::release                          :     menu_theme_2.0-1 (000002086FD65618)
-[LOG] SoundI::release                          :     menu_theme_2.0-1 (000002093D524E08)
-[LOG] SoundI::release                          :  (000002093A0B6F88)
-[LOG] SoundI::release                          :     press_button_1 (000002086FD671B8)
-[LOG] SoundI::release                          :  (000002093A0B69C8)
-[LOG] SoundI::release                          :     press_button_2 (000002086FD68878)
-[LOG] SoundI::release                          :  (000002093A0B6578)
-[LOG] SoundI::release                          :     press_button_3 (000002086FD67018)
-[LOG] SoundI::release                          :  (000002093A0B6B38)
-[LOG] SoundI::release                          :     press_button_4 (000002086FD68D58)
-[LOG] SoundI::release                          :  (000002093A0B6858)
-[LOG] SoundI::release                          :     press_button_5 (000002086FD67358)
-[LOG] SoundI::release                          :  (000002086689B838)
-[LOG] SoundI::release                          :     press_button_6 (000002086FD69098)
-[LOG] SoundI::release                          :  (0000020918A26E98)
-[LOG] SoundI::release                          :     pointing_button_1 (000002086FD686D8)
-[LOG] SoundI::release                          :  (0000020918A25BE8)
-[LOG] SoundI::release                          :     pointing_button_2 (000002086FD630B8)
-[LOG] SoundI::release                          :  (0000020918A25A78)
-[LOG] SoundI::release                          :     pointing_button_3 (000002086FD633F8)
-[LOG] SoundI::release                          :  (0000020918A25908)
-[LOG] SoundI::release                          :     pointing_button_4 (000002086FD68058)
-[LOG] SoundI::release                          :  (0000020918A25798)
-[LOG] SoundI::release                          :     pointing_button_5 (000002086FD66E78)
-[LOG] SoundI::release                          :  (0000020918A27178)
-[LOG] SoundI::release                          :     pointing_button_6 (000002086FD67EB8)
-[LOG] SoundI::release                          :  (00000206915A5208)
-[LOG] SoundI::release                          :     light_turn_off1 (000002086FD66178)
-[LOG] SoundI::release                          :  (00000206915A6A78)
-[LOG] SoundI::release                          :     light_turn_off2 (000002086FD62D78)
-[LOG] SoundI::release                          :  (00000206915A6798)
-[LOG] SoundI::release                          :     light_turn_off3 (000002086FD62F18)
-[LOG] SoundI::release                          :  (00000206915A5938)
-[LOG] SoundI::release                          :     light_turn_off4 (000002086FD65E38)
-[LOG] Thread::callback                         : FMOD Studio update thread finished.
-[LOG] Thread::callback                         : FMOD Studio bank load thread finished.
-[LOG] Profile::disconnectAll                   : Profiler disconnecting all clients
-[LOG] Thread::callback                         : FMOD Studio sample load thread finished.
-[LOG] LiveUpdate::release                      : 
-[LOG] LiveUpdate::reset                        : Reset connection (reason Disconnected)
-[LOG] Thread::callback                         : FMOD stream thread finished.
-[LOG] Thread::callback                         : FMOD mixer thread finished.
-[LOG] Profile::disconnectAll                   : Profiler disconnecting all clients
-[LOG] SystemI::close                           : Closed.
-[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
-[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
-[LOG] PlaybackSystem::acquireMasterBus         : Setting master channel group format to 6
+[LOG] Thread::initThread                       :     Init FMOD file thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFC, Stack Size: 65536, Semaphore: No, Sleep Time: 10, Looping: Yes.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000209E2537B78
+[LOG] SoundI::release                          : light_pulse1 (00000209E2537B78)
+[LOG] SoundI::release                          :     light_pulse1 (00000209ED60BA78)
+[LOG] SoundI::release                          :     light_pulse1 (0000020C455E02E8)
 [LOG] Thread::callback                         : FMOD Studio bank load thread finished.
 [LOG] Thread::callback                         : FMOD Studio sample load thread finished.
 [LOG] LiveUpdate::release                      : 
