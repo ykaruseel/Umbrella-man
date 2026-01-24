@@ -89,6 +89,9 @@ public class ObjectInteraction : MonoBehaviour
 
     public void PickupObject(GameObject obj)
     {
+        OutlineInteractable outline = obj.GetComponent<OutlineInteractable>();
+        if (outline != null)
+            outline.Hide();
         heldObject = obj;
         heldObjectRb = heldObject.GetComponent<Rigidbody>();
         originalScale = heldObject.transform.localScale;

@@ -315,12 +315,13 @@ MonoBehaviour:
   - {fileID: 654676325712783170}
   - {fileID: 7609529138026096043}
   - {fileID: -8677079374651456167}
+  - {fileID: 7550881733829925233}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8700398147420201416}
   StringsBanks:
   - {fileID: 752984927737422183}
-  cacheTime: 639045207781338649
+  cacheTime: 639048532627874993
   cacheVersion: 131632
 --- !u!114 &633512588349238002
 MonoBehaviour:
@@ -391,10 +392,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639045207781338649
+  lastModified: 639048532627874993
   FileSizes:
   - Name: Desktop
-    Value: 2356
+    Value: 2404
   Exists: 1
 --- !u!114 &1284147733947282436
 MonoBehaviour:
@@ -661,12 +662,39 @@ MonoBehaviour:
   Banks:
   - {fileID: 8700398147420201416}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 5000
+  Length: 4000
+--- !u!114 &7550881733829925233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Door/door_close
+  m_EditorClassIdentifier: 
+  Path: event:/Door/door_close
+  Guid:
+    Data1: 1382409584
+    Data2: 1166898845
+    Data3: -826678877
+    Data4: -285607321
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 9.400001
+  Length: 1035
 --- !u!114 &7609529138026096043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -719,7 +747,7 @@ MonoBehaviour:
   IsOneShot: 0
   Parameters: []
   MinDistance: 0.3
-  MaxDistance: 3.2
+  MaxDistance: 8.2
   Length: 16740
 --- !u!114 &8045734764998159971
 MonoBehaviour:
@@ -841,10 +869,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639045207781283321
+  lastModified: 639048532627810024
   FileSizes:
   - Name: Desktop
-    Value: 7353376
+    Value: 7424672
   Exists: 1
 --- !u!114 &8823139062609224079
 MonoBehaviour:

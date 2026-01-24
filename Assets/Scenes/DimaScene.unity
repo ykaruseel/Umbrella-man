@@ -8906,6 +8906,7 @@ MonoBehaviour:
   - speakerName: NPC
     sentence: This is cheese lair
   interactionPrompt: {fileID: 699263431}
+  monsterTriggerScript: {fileID: 0}
   knockSound:
     Guid:
       Data1: 0
@@ -10468,9 +10469,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 2895cae8df3010846b21e90e59834508,
         type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 2895cae8df3010846b21e90e59834508,
+        type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: ba39a99e2cd981d48b9b22f2cd7e49a1, type: 2}
+      objectReference: {fileID: 2100000, guid: 9dfe7dc687e16554b954244e7d504985, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 2895cae8df3010846b21e90e59834508,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0b8425d17dfd6cb4eac172e41d6f4409, type: 2}
     - target: {fileID: 919132149155446097, guid: 2895cae8df3010846b21e90e59834508,
         type: 3}
       propertyPath: m_Name
@@ -10497,6 +10508,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1169434124}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2895cae8df3010846b21e90e59834508,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1169434127}
   m_SourcePrefab: {fileID: 100100000, guid: 2895cae8df3010846b21e90e59834508, type: 3}
 --- !u!1001 &671284340
 PrefabInstance:
@@ -12609,9 +12624,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: df9d567a7b833f442a2726396ac6a275,
         type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: df9d567a7b833f442a2726396ac6a275,
+        type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ed2f6a6d9ca163b429ba13095a45ccc0, type: 2}
+    - target: {fileID: -7511558181221131132, guid: df9d567a7b833f442a2726396ac6a275,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0b8425d17dfd6cb4eac172e41d6f4409, type: 2}
     - target: {fileID: 919132149155446097, guid: df9d567a7b833f442a2726396ac6a275,
         type: 3}
       propertyPath: m_Name
@@ -12643,6 +12668,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1236342183}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: df9d567a7b833f442a2726396ac6a275,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1236342189}
   m_SourcePrefab: {fileID: 100100000, guid: df9d567a7b833f442a2726396ac6a275, type: 3}
 --- !u!1 &822356145
 GameObject:
@@ -13594,6 +13623,7 @@ MonoBehaviour:
   - speakerName: Lester
     sentence: Be careful. There are problems with the lighting again today.
   interactionPrompt: {fileID: 1529525733}
+  monsterTriggerScript: {fileID: 0}
   knockSound:
     Guid:
       Data1: 0
@@ -15692,6 +15722,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.2376821, y: 0.20974338, z: 0.20027924}
   m_Center: {x: 0.0075992346, y: -0.12193167, z: -0.0024642944}
+--- !u!114 &1169434127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169434123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: 0b8425d17dfd6cb4eac172e41d6f4409, type: 2}
 --- !u!1001 &1183876110
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16373,6 +16416,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5489728, y: 0.68558043, z: 0.5652854}
   m_Center: {x: 0.027176509, y: 0.35089585, z: 0.33018553}
+--- !u!114 &1236342189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236342182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: 0b8425d17dfd6cb4eac172e41d6f4409, type: 2}
 --- !u!1 &1242166326
 GameObject:
   m_ObjectHideFlags: 0
