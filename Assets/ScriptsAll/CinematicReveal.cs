@@ -24,6 +24,8 @@ public class CinematicReveal : MonoBehaviour
     [Header("Звук")]
     public EventReference appearSound;
     public EventReference explosionSound;
+    public EventReference smokeSound;
+
 
     [Header("Тайминги")]
     public float smokeDuration = 5.0f;
@@ -70,7 +72,9 @@ public class CinematicReveal : MonoBehaviour
 
         if (thirdLamp != null) flickerCoroutine = StartCoroutine(FlickerLightRoutine());
         if (smokeParticles != null) smokeParticles.Play();
-        
+        if (!smokeSound.IsNull)
+            RuntimeManager.PlayOneShot(smokeSound, smokeParticles.transform.position);
+
         yield return new WaitForSeconds(smokeDuration);
 
         if (flickerCoroutine != null) StopCoroutine(flickerCoroutine);

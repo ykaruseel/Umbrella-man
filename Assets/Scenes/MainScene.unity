@@ -1830,6 +1830,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 920288753}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ede0aaa01a004bd0992fe7002638985,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 920288759}
   m_SourcePrefab: {fileID: 100100000, guid: 1ede0aaa01a004bd0992fe7002638985, type: 3}
 --- !u!1 &148708255
 GameObject:
@@ -3552,7 +3556,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 3b893e65caacefe4b94318da35020d1c,
         type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 3b893e65caacefe4b94318da35020d1c,
+        type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3ace88c8a7f9140e1886bb55fe2e7d43, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 3b893e65caacefe4b94318da35020d1c,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 3ace88c8a7f9140e1886bb55fe2e7d43, type: 2}
     - target: {fileID: 919132149155446097, guid: 3b893e65caacefe4b94318da35020d1c,
@@ -4308,6 +4322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemID: TV
+  isPlaced: 0
 --- !u!54 &285454672
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4356,6 +4371,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5489728, y: 0.68558043, z: 0.5652854}
   m_Center: {x: 0.027176509, y: 0.35089585, z: 0.33018553}
+--- !u!114 &285454677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285454670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: 0b8425d17dfd6cb4eac172e41d6f4409, type: 2}
 --- !u!1 &287185995
 GameObject:
   m_ObjectHideFlags: 0
@@ -11474,7 +11502,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: edbd8e08c9cc17343a70207d665b72e7,
         type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: edbd8e08c9cc17343a70207d665b72e7,
+        type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 57822beef6fc5a0419a01ab530ad7696, type: 2}
+    - target: {fileID: -7511558181221131132, guid: edbd8e08c9cc17343a70207d665b72e7,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 57822beef6fc5a0419a01ab530ad7696, type: 2}
     - target: {fileID: 919132149155446097, guid: edbd8e08c9cc17343a70207d665b72e7,
@@ -15251,6 +15289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemID: Lamp
+  isPlaced: 0
 --- !u!54 &651635692
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -15305,6 +15344,19 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1118049941}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &651635699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651635687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: 0b8425d17dfd6cb4eac172e41d6f4409, type: 2}
 --- !u!1 &654808969
 GameObject:
   m_ObjectHideFlags: 0
@@ -20221,6 +20273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemID: Art
+  isPlaced: 0
 --- !u!65 &920288754
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20269,6 +20322,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &920288759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920288752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: 0b8425d17dfd6cb4eac172e41d6f4409, type: 2}
 --- !u!1 &923257478
 GameObject:
   m_ObjectHideFlags: 0
@@ -23556,6 +23622,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 651635692}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 37062ac09f8e84b45b1b23a90a454251,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 651635699}
   m_SourcePrefab: {fileID: 100100000, guid: 37062ac09f8e84b45b1b23a90a454251, type: 3}
 --- !u!1 &1118562255
 GameObject:
@@ -25256,6 +25326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemID: Plant
+  isPlaced: 0
 --- !u!65 &1241455891
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25277,6 +25348,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.2376821, y: 0.20974338, z: 0.20027924}
   m_Center: {x: 0.0075992346, y: -0.12193167, z: -0.0024642944}
+--- !u!114 &1241455895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241455888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: 0b8425d17dfd6cb4eac172e41d6f4409, type: 2}
 --- !u!1 &1242857699
 GameObject:
   m_ObjectHideFlags: 0
@@ -27406,7 +27490,14 @@ MonoBehaviour:
       Data3: 281023675
       Data4: 1198192120
     Path: event:/light_off
-  smokeDuration: 5
+  smokeSound:
+    Guid:
+      Data1: -1654485819
+      Data2: 1171949253
+      Data3: -1969896297
+      Data4: 970218449
+    Path: event:/smoke
+  smokeDuration: 2
   stareDuration: 2
   zoomFOV: 30
 --- !u!65 &1417980366
@@ -36367,6 +36458,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1241455889}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2895cae8df3010846b21e90e59834508,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1241455895}
   m_SourcePrefab: {fileID: 100100000, guid: 2895cae8df3010846b21e90e59834508, type: 3}
 --- !u!4 &1783121576 stripped
 Transform:
@@ -39574,6 +39669,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 285454671}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: df9d567a7b833f442a2726396ac6a275,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 285454677}
   m_SourcePrefab: {fileID: 100100000, guid: df9d567a7b833f442a2726396ac6a275, type: 3}
 --- !u!1 &1993009688
 GameObject:

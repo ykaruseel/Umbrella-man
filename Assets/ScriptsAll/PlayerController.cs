@@ -285,8 +285,9 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactionLayerMask))
         {
             OutlineInteractable outline = hit.collider.GetComponentInParent<OutlineInteractable>();
+            PlaceableItem placeable = hit.collider.GetComponentInParent<PlaceableItem>();
 
-            if (outline != null)
+            if (outline != null && placeable != null && !placeable.isPlaced)
             {
                 if (currentOutline != outline)
                 {

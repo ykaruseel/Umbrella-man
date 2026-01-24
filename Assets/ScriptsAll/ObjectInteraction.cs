@@ -81,6 +81,14 @@ public class ObjectInteraction : MonoBehaviour
         objTransform.SetParent(null);
 
         heldItemID = null;
+        PlaceableItem placeable = objTransform.GetComponent<PlaceableItem>();
+        if (placeable != null)
+            placeable.isPlaced = true;
+
+        OutlineInteractable outline = objTransform.GetComponent<OutlineInteractable>();
+        if (outline != null)
+            outline.Hide();
+
         heldObject = null;
         heldObjectRb = null;
 
