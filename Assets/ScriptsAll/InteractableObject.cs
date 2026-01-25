@@ -5,9 +5,11 @@ public class InteractableObject : MonoBehaviour
     public string objectID;
     public ObjectiveType interactionType = ObjectiveType.Interact;
 
+    // 👇 НОВОЕ: Переменная для блокировки щитка
     [Header("Gating")]
     public bool isShieldReady = false; 
 
+    // 👇 НОВОЕ: Публичный метод для разблокировки
     public void EnableShieldInteraction()
     {
         isShieldReady = true;
@@ -23,24 +25,22 @@ public class InteractableObject : MonoBehaviour
     {
         Debug.Log("Взаимодействие с: " + objectID);
 
+        // 👇 [СЮДА] Вставляем это в самое начало!
         // Чтобы обучение засчиталось, даже если щиток пока закрыт.
         if (TutorialManager.instance != null)
         {
             TutorialManager.instance.CompleteInteractionStep();
         }
+        // ----------------------------------------------------
 
-        // 🔥 [ИСПРАВЛЕНИЕ] 🔥
-        // Я закомментировал этот блок. Теперь щиток НЕ проверяет условия
-        // и открывается всегда, когда ты нажмешь E.
-        /* if (!isShieldReady)
+        // 👇 А уже ПОТОМ проверяем условия
+        if (!isShieldReady)
         {
             Debug.Log("Щиток пока заблокирован. Нужно дождаться ключевого события.");
             return;
         }
-        */
 
         // --- ЛОГИКА QTE ---
-        // Пытаемся найти скрипт QTE на этом же объекте
         RepairQTE qteScript = GetComponent<RepairQTE>();
     
         if (qteScript != null)
@@ -50,12 +50,11 @@ public class InteractableObject : MonoBehaviour
             return; 
         }
 
-        // --- ЛОГИКА КВЕСТОВ (Обычные предметы) ---
+        // --- ЛОГИКА КВЕСТОВ ---
         QuestManager qm = QuestManager.instance;
         if (qm != null && qm.currentQuest != null)
         {
-            // Здесь старая логика, если нужна
-            // qm.UpdateQuestProgress(objectID, interactionType);
+            // ... (Старая логика квестов) ...
         }
     }
 }

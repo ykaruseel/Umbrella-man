@@ -2,8 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
-using FMODUnity;
-
 
 public class DeathHandler : MonoBehaviour
 {
@@ -13,26 +11,20 @@ public class DeathHandler : MonoBehaviour
     public CanvasGroup gameOverUI;
     public Transform playerCamera;
 
-
     [Header("Настройки Скримера")]
     [Tooltip("Как быстро происходит поворот и появление эффектов (в секундах). Для скримера ставь мало: 0.3 - 0.5")]
-    public float scareDuration = 0.4f; 
+    public float scareDuration = 0.4f; // Сделали быстрым по умолчанию
 
     [Tooltip("Скорость поворота камеры. Для резкости ставь 15-20.")]
-    public float turnSpeed = 20f;      
+    public float turnSpeed = 20f;       // Сделали очень быстрым
 
     [Header("Настройки Паузы")]
     [Tooltip("Сколько времени смотреть на врага ПОСЛЕ поворота, прежде чем появится надпись.")]
-    public float stareDuration = 1.5f;  
+    public float stareDuration = 1.5f;  // Время "посмотреть в глаза"
 
     [Header("Настройка Взгляда")]
     [Tooltip("Высота глаз врага. Регулируй, чтобы смотреть в лицо.")]
-    public float enemyEyeHeight = 1.5f;
-    [Header("FMOD – Death Screamer")]
-    [SerializeField] private EventReference deathScreamerEvent;
-    private FMOD.Studio.EventInstance deathScreamerInstance;
-
-
+    public float enemyEyeHeight = 1.5f; 
 
     private bool isDead = false;
 
@@ -50,28 +42,18 @@ public class DeathHandler : MonoBehaviour
 
     public void TriggerDeath(Transform enemyFace)
     {
+        // Если игра уже закончилась (например, прошли QTE), то не умираем
         if (PlayerController.isGameEnded) return;
 
+        // Если нет, то СТАВИМ ФЛАГ, что игра закончена
         PlayerController.isGameEnded = true;
+        //if (isDead) return;
         isDead = true;
-
-        if (!deathScreamerEvent.IsNull)
-        {
-            deathScreamerInstance = RuntimeManager.CreateInstance(deathScreamerEvent);
-
-            RuntimeManager.AttachInstanceToGameObject(
-    deathScreamerInstance,
-    playerCamera.gameObject,
-    (Rigidbody)null
-);
-
-            deathScreamerInstance.start();
-        }
 
         if (playerController != null)
         {
-            playerController.SetCanMove(false);
-            playerController.isCinematic = true;
+            playerController.SetCanMove(false); 
+            playerController.isCinematic = true; 
         }
 
         StartCoroutine(DeathSequence(enemyFace));
@@ -134,12 +116,5 @@ public class DeathHandler : MonoBehaviour
         gameOverUI.interactable = true;
         gameOverUI.blocksRaycasts = true;
         horrorVolume.weight = 0f;
-
-        if (deathScreamerInstance.isValid())
-        {
-            deathScreamerInstance.release();
-            deathScreamerInstance.clearHandle();
-        }
-
     }
 }
