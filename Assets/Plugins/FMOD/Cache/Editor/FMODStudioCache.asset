@@ -1,33 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8677079374651456167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Door/door_open
-  m_EditorClassIdentifier: 
-  Path: event:/Door/door_open
-  Guid:
-    Data1: 765916491
-    Data2: 1194232949
-    Data3: -196000835
-    Data4: 1889739155
-  Banks:
-  - {fileID: 8700398147420201416}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters:
-  - {fileID: -882613364029805096}
-  MinDistance: 1
-  MaxDistance: 8.2
-  Length: 6153
 --- !u!114 &-8606886389135041407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Daniel_voice
+  m_Name: event:/daniel_voice
   m_EditorClassIdentifier: 
-  Path: event:/Daniel_voice
+  Path: event:/daniel_voice
   Guid:
     Data1: -1656578066
     Data2: 1094193858
@@ -220,7 +192,7 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 4000
---- !u!114 &-882613364029805096
+--- !u!114 &-1302296214378012314
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -343,13 +315,13 @@ MonoBehaviour:
   - {fileID: -349748285782248941}
   - {fileID: 1458538504385332588}
   - {fileID: 7609529138026096043}
-  - {fileID: -8677079374651456167}
+  - {fileID: 3198676649012269277}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8700398147420201416}
   StringsBanks:
   - {fileID: 752984927737422183}
-  cacheTime: 639049472452790595
+  cacheTime: 639049792208142773
   cacheVersion: 131632
 --- !u!114 &633512588349238002
 MonoBehaviour:
@@ -393,10 +365,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639049472452790595
+  lastModified: 639049792208142773
   FileSizes:
   - Name: Desktop
-    Value: 2336
+    Value: 2332
   Exists: 1
 --- !u!114 &1284147733947282436
 MonoBehaviour:
@@ -450,7 +422,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 30
   Length: 6022
 --- !u!114 &1512720396776843630
 MonoBehaviour:
@@ -506,6 +478,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 190
+--- !u!114 &3198676649012269277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/door_open
+  m_EditorClassIdentifier: 
+  Path: event:/door_open
+  Guid:
+    Data1: 765916491
+    Data2: 1194232949
+    Data3: -196000835
+    Data4: 1889739155
+  Banks:
+  - {fileID: 8700398147420201416}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -1302296214378012314}
+  MinDistance: 1
+  MaxDistance: 8.2
+  Length: 6153
 --- !u!114 &3249106965749413924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -843,7 +843,7 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639049472452735283
+  lastModified: 639049792208066503
   FileSizes:
   - Name: Desktop
     Value: 7531456

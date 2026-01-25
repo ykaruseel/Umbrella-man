@@ -64,6 +64,12 @@ public class CinematicReveal : MonoBehaviour
 
     IEnumerator PlayCinematicSequence()
     {
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.EnsureMusicPlaying();
+            MusicManager.Instance.SetSection("Value E");
+            MusicManager.Instance.SetVolumeImmediate(1f);
+        }
         if (oldController != null) { oldController.StopAllCoroutines(); oldController.enabled = false; }
         if (player != null) { player.SetCanMove(false); StartCoroutine(DoZoom(zoomFOV, 2.0f)); }
         

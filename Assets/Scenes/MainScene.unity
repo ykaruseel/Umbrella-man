@@ -5629,7 +5629,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 0de7615a7b1e7944a894055572806f63, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14028,6 +14028,89 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1001 &566004311
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5120463
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.053824604
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -37.823406
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6518729
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7583282
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -98.634
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6674233460568420317, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0de7615a7b1e7944a894055572806f63, type: 2}
+    - target: {fileID: -1200992287928325038, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0de7615a7b1e7944a894055572806f63, type: 2}
+    - target: {fileID: 919132149155446097, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: m_Name
+      value: UmbrellaMen
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: ea3f882f29fe03143ba7c4ce14324ea7,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 977a3d0e99c854a479ac5949bff76ebf, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ea3f882f29fe03143ba7c4ce14324ea7, type: 3}
 --- !u!1 &566291894
 GameObject:
   m_ObjectHideFlags: 0
@@ -35672,8 +35755,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.1247823, y: 1.9079839, z: 1.1822053}
-  m_Center: {x: -0.27355754, y: 0.9541176, z: -0.3906173}
+  m_Size: {x: 0.8781438, y: 1.9079839, z: 0.87033474}
+  m_Center: {x: -0.15023828, y: 0.9541176, z: -0.23468202}
 --- !u!4 &1718611858 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1a4b5fa0653739145b23ade362cf36ef,
@@ -35696,11 +35779,11 @@ MonoBehaviour:
   bulbRenderer: {fileID: 332487866}
   clickSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -113876769
+      Data2: 1189421630
+      Data3: -1374099295
+      Data4: -87091086
+    Path: event:/light_on
 --- !u!114 &1718611860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41942,3 +42025,4 @@ SceneRoots:
   - {fileID: 1986290332}
   - {fileID: 1267551915}
   - {fileID: 1712302192}
+  - {fileID: 566004311}
