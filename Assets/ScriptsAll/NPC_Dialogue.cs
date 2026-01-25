@@ -8,6 +8,10 @@ public class NPC_Dialogue : MonoBehaviour
     public DialogueLine[] dialogueLines;
     public GameObject interactionPrompt;
 
+    [Header("СВЯЗЬ С МОНСТРОМ")]
+    // 👇 ПЕРЕТАЩИ СЮДА TRIGGER_REVEAL В ИНСПЕКТОРЕ 👇
+    public CinematicReveal monsterTriggerScript; 
+
     [Header("FMOD")]
     [SerializeField] private EventReference knockSound;
 
@@ -31,18 +35,18 @@ public class NPC_Dialogue : MonoBehaviour
 
     public void TriggerDialogue()
     {
-        if (questManager == null || questManager.currentQuest == null)
-            return;
+        // Проверки квестов (если нужны)
+        if (questManager != null && questManager.currentQuest != null)
+        {
+            QuestObjective objective = questManager.currentQuest.GetCurrentObjective();
+            if (objective != null)
+            {
+                if (objective.targetID != "door" || objective.objectiveType != ObjectiveType.Interact)
+                    return;
+            }
+        }
 
-        QuestObjective objective = questManager.currentQuest.GetCurrentObjective();
-        if (objective == null)
-            return;
-
-        if (objective.targetID != "door" || objective.objectiveType != ObjectiveType.Interact)
-            return;
-
-        if (dialogueTriggered)
-            return;
+        if (dialogueTriggered) return;
 
         dialogueTriggered = true;
 
@@ -64,9 +68,11 @@ public class NPC_Dialogue : MonoBehaviour
 
     private IEnumerator HandleDialogueSequence()
     {
+        // Ждем пока игрок дочитает диалог
         while (dialogueManager != null && dialogueManager.IsDialogueActive())
             yield return null;
 
+        // Возвращаем управление
         if (playerController)
         {
             playerController.ZoomOut();
@@ -74,10 +80,22 @@ public class NPC_Dialogue : MonoBehaviour
             playerController.SetDialogueZoom(false);
         }
 
+        // Обновляем квест
         if (questManager != null)
         {
             questManager.UpdateQuestProgress("door", ObjectiveType.Interact);
             questManager.ForceUpdateQuestText("Follow the light");
+        }
+
+        // 🔥 САМОЕ ВАЖНОЕ: ВКЛЮЧАЕМ МОНСТРА 🔥
+        if (monsterTriggerScript != null)
+        {
+            monsterTriggerScript.canActivate = true;
+            Debug.Log("NPC_Dialogue: Диалог закончен -> МОНСТР ТЕПЕРЬ АКТИВЕН!");
+        }
+        else
+        {
+            Debug.LogWarning("NPC_Dialogue: ЗАБЫЛ ПЕРЕТАЩИТЬ Trigger_Reveal В ПОЛЕ СКРИПТА!");
         }
     }
 }

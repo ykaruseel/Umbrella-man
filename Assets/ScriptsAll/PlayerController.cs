@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private float rotationX = 0f;
     private float rotationY = 0f;
     private Coroutine footstepCoroutine;
+    private OutlineInteractable currentOutline;
 
 
     [Header("Dialogue Zoom Settings")]
@@ -111,7 +112,8 @@ public class PlayerController : MonoBehaviour
         HandleDialogueZoom();
         HandleFootsteps();
         CheckInteractionInput();
-        
+        UpdateOutline();
+
         if (playerCamera != null)
         {
             
@@ -271,9 +273,43 @@ public class PlayerController : MonoBehaviour
     {
         dialogueZoom = value;
     }
-     
+    void UpdateOutline()
+    {
+        if (objectInteraction != null && objectInteraction.IsHoldingObject())
+        {
+            ClearOutline();
+            return;
+        }
 
-    
+        Ray ray = playerCam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+        if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactionLayerMask))
+        {
+            OutlineInteractable outline = hit.collider.GetComponentInParent<OutlineInteractable>();
+            PlaceableItem placeable = hit.collider.GetComponentInParent<PlaceableItem>();
+
+            if (outline != null && placeable != null && !placeable.isPlaced)
+            {
+                if (currentOutline != outline)
+                {
+                    ClearOutline();
+                    currentOutline = outline;
+                    currentOutline.Show();
+                }
+                return;
+            }
+        }
+
+        ClearOutline();
+    }
+
+    void ClearOutline()
+    {
+        if (currentOutline != null)
+        {
+            currentOutline.Hide();
+            currentOutline = null;
+        }
+    }
     void CheckInteractionInput()
     {
         // 1) Если активен диалог – игнорируем взаимодействия
@@ -350,6 +386,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+  
 
     public void LockMovementButAllowLook()
     {
