@@ -72,6 +72,12 @@ public class DeathHandler : MonoBehaviour
         {
             playerController.SetCanMove(false);
             playerController.isCinematic = true;
+
+        }
+
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.FadeToVolume(0f, 0.4f);
         }
 
         StartCoroutine(DeathSequence(enemyFace));
@@ -79,6 +85,12 @@ public class DeathHandler : MonoBehaviour
 
     private IEnumerator DeathSequence(Transform target)
     {
+        if (MusicManager.Instance != null)
+        {
+            yield return new WaitForSeconds(2f);
+            MusicManager.Instance.FadeToVolume(0f, 0.4f);
+        }
+
         float timer = 0f;
         Quaternion startRotation = playerCamera.rotation;
         

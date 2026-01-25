@@ -62,7 +62,13 @@ public class CinematicReveal : MonoBehaviour
     {
         if (oldController != null) { oldController.StopAllCoroutines(); oldController.enabled = false; }
         if (player != null) { player.SetCanMove(false); StartCoroutine(DoZoom(zoomFOV, 2.0f)); }
-        
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.EnsureMusicPlaying();
+            MusicManager.Instance.SetSection("Value E");
+            MusicManager.Instance.SetVolumeImmediate(1f);
+        }
+
         // Включаем свет принудительно, чтобы не было темно
         if (thirdLamp != null)
         {
