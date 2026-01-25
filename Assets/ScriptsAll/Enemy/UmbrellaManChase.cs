@@ -58,6 +58,12 @@ public class UmbrellaManChase : MonoBehaviour
 
     public void StartChase()
     {
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.EnsureMusicPlaying();
+            MusicManager.Instance.SetSection("Value D");
+        }
+
         if (player == null)
         {
             Debug.LogError("[UmbrellaManChase] Player не назначен");

@@ -23,10 +23,11 @@ MonoBehaviour:
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
-  Parameters: []
+  Parameters:
+  - {fileID: -882613364029805096}
   MinDistance: 1
   MaxDistance: 8.2
-  Length: 2130
+  Length: 6153
 --- !u!114 &-8606886389135041407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +70,7 @@ MonoBehaviour:
   Name: MusicSwitch
   StudioPath: 
   Min: 0
-  Max: 3
+  Max: 4
   Default: 0
   ID:
     data1: 3599626145
@@ -81,6 +82,7 @@ MonoBehaviour:
   - Value B
   - Value C
   - Value D
+  - Value E
   Exists: 1
 --- !u!114 &-4940084768312974374
 MonoBehaviour:
@@ -163,7 +165,7 @@ MonoBehaviour:
   - {fileID: -7938278677619134801}
   MinDistance: 1
   MaxDistance: 20
-  Length: 96000
+  Length: 104000
 --- !u!114 &-2001575873056593154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,6 +220,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 4000
+--- !u!114 &-882613364029805096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/door_open/Door
+  m_EditorClassIdentifier: 
+  Name: Door
+  StudioPath: 
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 3654080759
+    data2: 3095147820
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Handle
+  - Squeak
+  - Close
+  - End
+  Exists: 1
 --- !u!114 &-349748285782248941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,16 +342,14 @@ MonoBehaviour:
   - {fileID: -306867619160590007}
   - {fileID: -349748285782248941}
   - {fileID: 1458538504385332588}
-  - {fileID: 654676325712783170}
   - {fileID: 7609529138026096043}
   - {fileID: -8677079374651456167}
-  - {fileID: 7550881733829925233}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8700398147420201416}
   StringsBanks:
   - {fileID: 752984927737422183}
-  cacheTime: 639049589828979627
+  cacheTime: 639049472452790595
   cacheVersion: 131632
 --- !u!114 &633512588349238002
 MonoBehaviour:
@@ -350,33 +378,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 614
---- !u!114 &654676325712783170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Door/handle open
-  m_EditorClassIdentifier: 
-  Path: event:/Door/handle open
-  Guid:
-    Data1: 848316784
-    Data2: 1171768547
-    Data3: -1702842703
-    Data4: -610751153
-  Banks:
-  - {fileID: 8700398147420201416}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 9
-  Length: 821
 --- !u!114 &752984927737422183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,10 +393,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639049589828979627
+  lastModified: 639049472452790595
   FileSizes:
   - Name: Desktop
-    Value: 2404
+    Value: 2336
   Exists: 1
 --- !u!114 &1284147733947282436
 MonoBehaviour:
@@ -668,33 +669,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 4000
---- !u!114 &7550881733829925233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Door/door_close
-  m_EditorClassIdentifier: 
-  Path: event:/Door/door_close
-  Guid:
-    Data1: 1382409584
-    Data2: 1166898845
-    Data3: -826678877
-    Data4: -285607321
-  Banks:
-  - {fileID: 8700398147420201416}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 9.400001
-  Length: 1035
 --- !u!114 &7609529138026096043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -869,10 +843,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639049589828959600
+  lastModified: 639049472452735283
   FileSizes:
   - Name: Desktop
-    Value: 7425088
+    Value: 7531456
   Exists: 1
 --- !u!114 &8823139062609224079
 MonoBehaviour:
