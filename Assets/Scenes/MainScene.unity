@@ -24510,6 +24510,7 @@ GameObject:
   - component: {fileID: 1180168861}
   - component: {fileID: 1180168863}
   - component: {fileID: 1180168862}
+  - component: {fileID: 1180168864}
   m_Layer: 0
   m_Name: Electric Panel Light
   m_TagString: Untagged
@@ -24620,6 +24621,22 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1180168864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180168860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b443446629b58240b7ba716aee17fd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myLight: {fileID: 1180168863}
+  minIntensity: 0.5
+  maxIntensity: 2.5
+  pulseSpeed: 2
 --- !u!1001 &1186436433
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27467,6 +27484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canActivate: 0
+  electricPanelLight: {fileID: 1180168864}
   player: {fileID: 332663620}
   lookTarget: {fileID: 5399866}
   umbrellaMan: {fileID: 1888251721}

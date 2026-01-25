@@ -8,6 +8,10 @@ public class CinematicReveal : MonoBehaviour
     [Tooltip("Эта галочка включится САМА, когда ты поговоришь с дверью.")]
     public bool canActivate = false; 
 
+    // 👇 ДОБАВИЛ СЮДА 👇
+    [Header("СВЕТ ПАНЕЛИ (МАЯК)")]
+    public PanelLightBeacon electricPanelLight; 
+
     [Header("Настройки")]
     public PlayerController player;
     public Transform lookTarget;
@@ -63,7 +67,7 @@ public class CinematicReveal : MonoBehaviour
         if (oldController != null) { oldController.StopAllCoroutines(); oldController.enabled = false; }
         if (player != null) { player.SetCanMove(false); StartCoroutine(DoZoom(zoomFOV, 2.0f)); }
         
-        // Включаем свет принудительно, чтобы не было темно
+        
         if (thirdLamp != null)
         {
             thirdLamp.enabled = true; 
@@ -95,13 +99,13 @@ public class CinematicReveal : MonoBehaviour
 
         yield return new WaitForSeconds(stareDuration);
 
-        // --- ВЗРЫВ И ИСКРЫ ---
+        
         if (!explosionSound.IsNull) RuntimeManager.PlayOneShot(explosionSound, thirdLamp.transform.position);
         
-        // 🔥 ЗАПУСКАЕМ ИСКРЫ
+        
         if (sparkParticles != null) 
         {
-            // На всякий случай отключаем зацикливание
+            
             var main = sparkParticles.main;
             main.loop = false; 
             sparkParticles.Play();
@@ -111,12 +115,19 @@ public class CinematicReveal : MonoBehaviour
         if (thirdLamp != null) { thirdLamp.enabled = false; thirdLamp.intensity = 0; }
         if (lampModel != null) { var r = lampModel.GetComponent<Renderer>(); if(r) r.material.DisableKeyword("_EMISSION"); }
 
-        // 🔥 ЖДЕМ РОВНО 1.5 СЕКУНДЫ (ИСКРЫ ГОРЯТ) 🔥
+        
         yield return new WaitForSeconds(1.5f);
 
-        // 🔥 ЖЕСТКО ВЫКЛЮЧАЕМ ИСКРЫ И НАЧИНАЕМ ПОГОНЮ
+        
         if (sparkParticles != null) sparkParticles.Stop();
 
+        
+        if (electricPanelLight != null)
+        {
+            electricPanelLight.ActivateBeacon();
+        }
+
+        
         if (player != null) { StartCoroutine(DoZoom(60f, 0.5f)); player.isCinematic = false; player.SetCanMove(true); }
         if (umbrellaMan != null) { var chase = umbrellaMan.GetComponent<UmbrellaManChase>(); if (chase != null) chase.StartChase(); }
         
