@@ -62,7 +62,7 @@ public class CinematicReveal : MonoBehaviour
 
     IEnumerator PlayCinematicSequence()
     {
-        // --- МУЗЫКА ---
+        
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.EnsureMusicPlaying();
@@ -73,14 +73,14 @@ public class CinematicReveal : MonoBehaviour
         if (oldController != null) { oldController.StopAllCoroutines(); oldController.enabled = false; }
         if (player != null) { player.SetCanMove(false); StartCoroutine(DoZoom(zoomFOV, 2.0f)); }
         
-        // Включаем лампу
+        
         if (thirdLamp != null)
         {
             thirdLamp.enabled = true; 
             thirdLamp.intensity = 2.0f; 
         }
 
-        // --- 1. МИГАНИЕ (Как было) ---
+        
         if (thirdLamp != null) flickerCoroutine = StartCoroutine(FlickerLightRoutine());
         
         if (smokeParticles != null) smokeParticles.Play();
@@ -89,11 +89,11 @@ public class CinematicReveal : MonoBehaviour
 
         yield return new WaitForSeconds(smokeDuration);
 
-        // Стоп мигание
+        
         if (flickerCoroutine != null) StopCoroutine(flickerCoroutine);
         if (thirdLamp != null) thirdLamp.intensity = 0f; 
 
-        // --- 2. ПОЯВЛЕНИЕ ---
+        
         if (umbrellaMan != null)
         {
             Vector3 lookPos = player.transform.position;
@@ -103,7 +103,7 @@ public class CinematicReveal : MonoBehaviour
             if (!appearSound.IsNull) RuntimeManager.PlayOneShot(appearSound, umbrellaMan.transform.position);
         }
 
-        // "Выдох" (Плавное разгорание)
+        
         float fadeTime = 0f;
         while (fadeTime < 1.5f) 
         { 
@@ -115,30 +115,29 @@ public class CinematicReveal : MonoBehaviour
 
         yield return new WaitForSeconds(stareDuration);
 
-        // --- 3. ВЗРЫВ (БАХ) ---
+        
         
         if (!explosionSound.IsNull) RuntimeManager.PlayOneShot(explosionSound, thirdLamp.transform.position);
         
-        // ВЫКЛЮЧАЕМ ДЫМ СРАЗУ
+        
         if (smokeParticles != null) smokeParticles.Stop(); 
 
-        // ИСКРЫ
+        
         if (sparkParticles != null) 
         {
             var main = sparkParticles.main;
             main.loop = false; 
             
-            // >>> ВОТ ЗДЕСЬ Я ДОБАВИЛ СКОРОСТЬ <<<
-            // 50f - это очень быстро. Если захочешь еще быстрее, поставь 100f
+            
             main.startSpeed = 35f; 
 
             sparkParticles.Play();
         }
 
-        // Включаем вспышку
+        
         if (sparksBaseLight != null) sparksBaseLight.SetActive(true);
 
-        // --- ПЛАВНОЕ УГАСАНИЕ СВЕТА (1.5 сек) ---
+        
         float dieTimer = 0f;
         float startIntensity = (thirdLamp != null) ? thirdLamp.intensity : 2.5f;
         bool sparksStopped = false; 
@@ -148,17 +147,17 @@ public class CinematicReveal : MonoBehaviour
             dieTimer += Time.deltaTime;
             float t = dieTimer / 1.5f;
 
-            // 1. Плавно гасим лампу
+            
             if (thirdLamp != null) thirdLamp.intensity = Mathf.Lerp(startIntensity, 0f, t);
 
-            // 2. Плавно гасим вспышку
+            
             if (sparksBaseLight != null)
             {
                 var l = sparksBaseLight.GetComponent<Light>();
                 if (l != null) l.intensity = Mathf.Lerp(5f, 0f, t);
             }
 
-            // 3. ИСКРЫ ЖИВУТ ТОЛЬКО 0.1 СЕКУНДЫ (Короткий пшик)
+            
             if (dieTimer > 0.1f && !sparksStopped)
             {
                 if (sparkParticles != null) sparkParticles.Stop();
@@ -168,7 +167,7 @@ public class CinematicReveal : MonoBehaviour
             yield return null;
         }
 
-        // --- 4. ФИНАЛ (Чистка) ---
+        
         if (thirdLamp != null) { thirdLamp.enabled = false; thirdLamp.intensity = 0; }
         if (lampModel != null) { var r = lampModel.GetComponent<Renderer>(); if(r) r.material.DisableKeyword("_EMISSION"); }
         if (sparksBaseLight != null) sparksBaseLight.SetActive(false);
@@ -186,7 +185,7 @@ public class CinematicReveal : MonoBehaviour
         Destroy(gameObject, 2f);
     }
     
-    // Старое мигание
+    
     IEnumerator FlickerLightRoutine() 
     { 
         while (true) 
