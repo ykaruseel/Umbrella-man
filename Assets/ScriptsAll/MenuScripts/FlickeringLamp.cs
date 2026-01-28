@@ -38,7 +38,6 @@ public class FlickeringLamp : MonoBehaviour
         lamp = GetComponent<Light>();
         noiseSeed = Random.Range(0f, 1000f);
 
-        // Pulse loop
         if (!pulseEvent.IsNull)
         {
             pulseInstance = RuntimeManager.CreateInstance(pulseEvent);
@@ -60,7 +59,6 @@ public class FlickeringLamp : MonoBehaviour
         finalIntensity = Mathf.Clamp(finalIntensity, 0f, baseIntensity + intensityVariation);
         lamp.intensity = finalIntensity;
 
-        // Передаём пульсацию в FMOD
         if (pulseInstance.isValid())
         {
             pulseInstance.setParameterByName("PulseIntensity", normalizedPulse);
@@ -72,11 +70,24 @@ public class FlickeringLamp : MonoBehaviour
         }
     }
 
+    public void StopFlicker()
+    {
+        StopAllCoroutines();
+        enabled = false;
+
+        if (pulseInstance.isValid())
+        {
+            pulseInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            pulseInstance.release();
+        }
+
+        lamp.intensity = baseIntensity;
+    }
+
     IEnumerator Blackout()
     {
         isBlackout = true;
 
-        // Flicker OFF
         if (!flickerEvent.IsNull)
             RuntimeManager.PlayOneShot(flickerEvent, transform.position);
 
@@ -84,7 +95,6 @@ public class FlickeringLamp : MonoBehaviour
 
         yield return new WaitForSeconds(Random.Range(blackoutDuration.x, blackoutDuration.y));
 
-        // Flicker ON
         if (!flickerEvent.IsNull)
             RuntimeManager.PlayOneShot(flickerEvent, transform.position);
 

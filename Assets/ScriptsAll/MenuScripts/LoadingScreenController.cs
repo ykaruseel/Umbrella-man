@@ -9,6 +9,8 @@ using UnityEngine.UI;
 public class LoadingScreenController : MonoBehaviour
 {
     public static bool CanSwitchScenes = false;
+    public float musicFadeOutTime = 1.5f;
+
 
     [Header("UI")]
     public TMP_Text technicalText;
@@ -18,6 +20,7 @@ public class LoadingScreenController : MonoBehaviour
     [Header("Typewriter")]
     [SerializeField] private float typeSpeed = 0.05f;
     [SerializeField] private float deleteSpeed = 0.03f;
+
 
     [Header("Messages")]
     public List<string> technicalMessages;
@@ -63,7 +66,25 @@ public class LoadingScreenController : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
+        StartCoroutine(FadeOutMenuMusic(musicFadeOutTime)); 
+
         CanSwitchScenes = true;
+    }
+
+    IEnumerator FadeOutMenuMusic(float duration)
+    {
+        var vca = FMODUnity.RuntimeManager.GetVCA("vca:/Music");
+        float t = 0f;
+        float start = 1f;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            vca.setVolume(Mathf.Lerp(start, 0f, t / duration));
+            yield return null;
+        }
+
+        vca.setVolume(0f);
     }
 
     IEnumerator TypeText(TMP_Text text, string content)
