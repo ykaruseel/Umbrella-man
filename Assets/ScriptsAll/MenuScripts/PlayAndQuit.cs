@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class PlayAndQuit : MonoBehaviour
 {
-    //public void LoadScene(string sceneName)
-    //{
-    //    PauseAudioSnapshot.Instance?.ExitPause();
-    //    Debug.Log("Trying to load scene: " + sceneName);
-    //    SceneManager.LoadScene(sceneName);
-    //}
+    public void LoadScene(string sceneName)
+    {
+        PauseAudioSnapshot.Instance?.ExitPause();
+        Debug.Log("Trying to load scene: " + sceneName);
+        SceneManager.LoadScene(sceneName);
+    }
 
     public void QuitApplication()
     {

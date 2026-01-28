@@ -202,25 +202,47 @@ public class FollowLightController : MonoBehaviour
         float firstWait = Random.Range(min, max);
         yield return new WaitForSeconds(firstWait);
 
+        bool lightState = true;
+
         while (true)
         {
             // toggle
-            light.enabled = !light.enabled;
-
+            lightState = !lightState;
+            
             // play sound with debounce
-            if (light.enabled)
+            float startIntensity = light.intensity;
+            float targetIntensity;
+
+            if (lightState)
             {
                 if (!lightOnEvent.IsNull && CanPlaySoundForLamp(index))
                     RuntimeManager.PlayOneShotAttached(lightOnEvent, light.gameObject);
+                targetIntensity = 0f;
             }
             else
             {
                 if (!lightOffEvent.IsNull && CanPlaySoundForLamp(index))
                     RuntimeManager.PlayOneShotAttached(lightOffEvent, light.gameObject);
+                targetIntensity = 6f;
+
             }
 
             float wait = Random.Range(min, max);
-            yield return new WaitForSeconds(wait);
+            float t = 0f;
+
+            while (t < 1f)
+            {
+                t += Time.deltaTime / wait;
+
+                light.intensity = Mathf.Lerp(
+                    startIntensity,
+                    targetIntensity,
+                    Mathf.SmoothStep(0f, 1f, t)
+                );
+                yield return null;
+            }
+            light.intensity = targetIntensity;
+            //yield return new WaitForSeconds(wait);
         }
     }
 

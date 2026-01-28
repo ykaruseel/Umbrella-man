@@ -3,8 +3,12 @@ using UnityEngine;
 
 public class GameTitleIntro : MonoBehaviour
 {
-    public CanvasGroup intro;
+    public CanvasGroup BackGround;
+    public CanvasGroup Text;
     public CanvasGroup UI;
+
+    public GameObject IntroGO;
+
     public float fadeDuration = 2f;
 
 
@@ -14,24 +18,29 @@ public class GameTitleIntro : MonoBehaviour
     {
         if (introPlayed)
         {
-            if (intro != null)
-                intro.gameObject.SetActive(false);
+            if (BackGround != null)
+                IntroGO.SetActive(false);
             return;
         }
+
+        Text.alpha = 0f;
+        Text.blocksRaycasts = false;
+        Text.interactable = false;
 
         UI.alpha = 0f;
         UI.blocksRaycasts = false;
         UI.interactable = false;
 
-
         introPlayed = true;
 
-        if (intro != null)
-            intro.gameObject.SetActive(true);
+        if (BackGround != null)
+            BackGround.gameObject.SetActive(true);
 
-        intro.alpha = 1f;
+        BackGround.alpha = 1f;
+        BackGround.blocksRaycasts = true;
+        BackGround.interactable = true;
 
-        StartCoroutine(FadeOutIntro());
+        StartCoroutine(FadeInUI());
     }
 
     private IEnumerator FadeOutIntro()
@@ -40,19 +49,18 @@ public class GameTitleIntro : MonoBehaviour
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
-            intro.alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+            BackGround.alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
             yield return null;
         }
 
-        intro.alpha = 0f;
-        intro.gameObject.SetActive(false);
+        BackGround.alpha = 0f;
+        BackGround.blocksRaycasts = false;
+        BackGround.interactable = false;
+        BackGround.gameObject.SetActive(false);
 
-        StartCoroutine(FadeInUI());
-    }
+        IntroGO.SetActive(false);
 
-    private IEnumerator FadeInUI()
-    {
-        float elapsed = 0f;
+        elapsed = 0f;
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
@@ -63,5 +71,36 @@ public class GameTitleIntro : MonoBehaviour
         UI.alpha = 1f;
         UI.blocksRaycasts = true;
         UI.interactable = true;
+    }
+
+    private IEnumerator FadeInUI()
+    {
+        float elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            Text.alpha = Mathf.Lerp(0f, 1f, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        Text.alpha = 1f;
+        Text.blocksRaycasts = true;
+        Text.interactable = true;
+
+        yield return new WaitForSeconds(2f);
+
+        elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            Text.alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        Text.alpha = 0f;
+        Text.blocksRaycasts = false;
+        Text.interactable = false;
+
+        StartCoroutine(FadeOutIntro());
     }
 }
