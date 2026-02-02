@@ -259,10 +259,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639052378432037321
+  lastModified: 639055488423035937
   FileSizes:
   - Name: Desktop
-    Value: 2332
+    Value: 2428
   Exists: 1
 --- !u!114 &-5818334718709818027
 MonoBehaviour:
@@ -415,10 +415,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639052378432002172
+  lastModified: 639055488422993326
   FileSizes:
   - Name: Desktop
-    Value: 7531456
+    Value: 7590080
   Exists: 1
 --- !u!114 &-2389006954385351409
 MonoBehaviour:
@@ -475,6 +475,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 8.2
   Length: 6153
+--- !u!114 &-510329170306464809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/typewriter
+  m_EditorClassIdentifier: 
+  Path: event:/typewriter
+  Guid:
+    Data1: -1117237023
+    Data2: 1287279405
+    Data3: 2120680875
+    Data4: 262036342
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 90
 --- !u!114 &-334524225225303624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,12 +571,14 @@ MonoBehaviour:
   - {fileID: -8021645440373705052}
   - {fileID: -7073522169605571070}
   - {fileID: -2389006954385351409}
+  - {fileID: -510329170306464809}
+  - {fileID: 6911577824956472809}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2609684373490591824}
   StringsBanks:
   - {fileID: -6018097725551979117}
-  cacheTime: 639052378432037321
+  cacheTime: 639055488423035937
   cacheVersion: 131632
 --- !u!114 &287105674858362597
 MonoBehaviour:
@@ -687,7 +716,7 @@ MonoBehaviour:
   IsOneShot: 0
   Parameters: []
   MinDistance: 0.3
-  MaxDistance: 8.2
+  MaxDistance: 5.8
   Length: 16740
 --- !u!114 &5160949801371015276
 MonoBehaviour:
@@ -743,6 +772,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 614
+--- !u!114 &6911577824956472809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/bulb_explosion
+  m_EditorClassIdentifier: 
+  Path: event:/bulb_explosion
+  Guid:
+    Data1: -316771933
+    Data2: 1341733141
+    Data3: -481351532
+    Data4: -1398181600
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1067
 --- !u!114 &7739967697791764525
 MonoBehaviour:
   m_ObjectHideFlags: 0

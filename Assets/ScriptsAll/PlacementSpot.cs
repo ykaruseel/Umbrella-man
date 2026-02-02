@@ -2,30 +2,40 @@ using UnityEngine;
 
 public class PlacementSpot : MonoBehaviour
 {
-    // ID предмета, который подходит к этому месту (должен совпадать с ID предмета)
     public string requiredItemID;
-
-    // Ссылка на объект-подсветку (например, свет или полупрозрачный материал)
     public GameObject highlightEffect;
-
-    // Точное место и поворот, где будет стоять предмет после установки
     public Transform placementTransform;
 
     void Start()
     {
-        // В начале игры подсветка всегда выключена
         if (highlightEffect != null)
-        {
             highlightEffect.SetActive(false);
-        }
     }
 
-    // Этот метод будет включать или выключать подсветку
+    public bool TryPlace(GameObject item)
+    {
+        PlaceableItem placeable = item.GetComponent<PlaceableItem>();
+        if (placeable == null) return false;
+        if (placeable.itemID != requiredItemID) return false;
+
+        item.transform.position = placementTransform.position;
+        item.transform.rotation = placementTransform.rotation;
+
+        placeable.isPlaced = true;
+
+        PulseHighlight pulse = item.GetComponent<PulseHighlight>();
+        if (pulse != null)
+            pulse.Hide();
+
+        if (highlightEffect != null)
+            highlightEffect.SetActive(false);
+
+        return true;
+    }
+
     public void SetHighlight(bool isActive)
     {
         if (highlightEffect != null)
-        {
             highlightEffect.SetActive(isActive);
-        }
     }
 }

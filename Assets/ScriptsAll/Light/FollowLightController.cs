@@ -23,13 +23,23 @@ public class FollowLightController : MonoBehaviour
     private QuestManager questManager;
 
     [Header("Optional FMOD one-shot sounds (3D)")]
-    [SerializeField] public EventReference lightOnEvent;
-    [SerializeField] public EventReference lightOffEvent;
+
+    [SerializeField] private FMODUnity.EventReference pulseLoopEvent;
+    private FMOD.Studio.EventInstance pulseInstance;
+    [SerializeField] private EventReference lightOnEvent;
+    [SerializeField] private EventReference lightOffEvent;
+
+    [SerializeField] private FMODUnity.EventReference pulseLoopEventLoop;
+    private FMOD.Studio.EventInstance pulseLoopInstance;
+
+
 
     [Header("Sound debounce (avoid annoying double clicks)")]
     public float minSoundInterval = 0.18f;
     public float[] perLampMinSoundInterval;
     private float[] lastSoundTime;
+    private Light currentActiveLight;
+
 
     void Awake()
     {
@@ -84,7 +94,6 @@ public class FollowLightController : MonoBehaviour
         if (lightsSequence == null) return;
         if (index < 0 || index >= lightsSequence.Length) return;
 
-        // stop other flicker coroutines but DO NOT modify their light.enabled values
         for (int i = 0; i < lightsSequence.Length; i++)
         {
             if (i == index) continue;
@@ -98,12 +107,29 @@ public class FollowLightController : MonoBehaviour
         Light light = lightsSequence[index];
         if (light == null) return;
 
-        // activate trigger for this lamp
         var trig = light.GetComponent<FollowLightTrigger>();
         if (trig != null)
             trig.ActivateTrigger();
 
-        // compute delays
+        if (pulseLoopInstance.isValid())
+        {
+            pulseLoopInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            pulseLoopInstance.release();
+        }
+
+        currentActiveLight = light;
+
+        if (!pulseLoopEventLoop.IsNull)
+        {
+            pulseLoopInstance = FMODUnity.RuntimeManager.CreateInstance(pulseLoopEventLoop);
+            FMODUnity.RuntimeManager.AttachInstanceToGameObject(
+                pulseLoopInstance,
+                light.gameObject,
+                (Rigidbody)null
+            );
+            pulseLoopInstance.start();
+        }
+
         float min = flickerMinDelay;
         float max = flickerMaxDelay;
         if (perLampMinDelay != null && perLampMaxDelay != null &&
@@ -113,19 +139,15 @@ public class FollowLightController : MonoBehaviour
             max = perLampMaxDelay[index];
         }
 
-        // Ensure flickerCoroutines array exists
         if (flickerCoroutines == null)
             flickerCoroutines = new Coroutine[lightsSequence.Length];
 
-        // Stop existing coroutine if any
         if (flickerCoroutines[index] != null)
         {
             StopCoroutine(flickerCoroutines[index]);
             flickerCoroutines[index] = null;
         }
 
-        // Start flicker coroutine. IMPORTANT: coroutine will toggle lamp but we ensure its first action
-        // will be to set lamp.enabled = true for visual continuity (so others don't go dark).
         flickerCoroutines[index] = StartCoroutine(FlickerLightCoroutine(index, light, min, max));
     }
 
@@ -196,8 +218,6 @@ public class FollowLightController : MonoBehaviour
     {
         if (light == null) yield break;
 
-        // make sure lamp is visibly ON to start with, then wait one interval before toggling off,
-        // so initial state for other lamps remains ON.
         light.enabled = true;
         float firstWait = Random.Range(min, max);
         yield return new WaitForSeconds(firstWait);
@@ -206,26 +226,10 @@ public class FollowLightController : MonoBehaviour
 
         while (true)
         {
-            // toggle
             lightState = !lightState;
-            
-            // play sound with debounce
+
             float startIntensity = light.intensity;
-            float targetIntensity;
-
-            if (lightState)
-            {
-                if (!lightOnEvent.IsNull && CanPlaySoundForLamp(index))
-                    RuntimeManager.PlayOneShotAttached(lightOnEvent, light.gameObject);
-                targetIntensity = 0f;
-            }
-            else
-            {
-                if (!lightOffEvent.IsNull && CanPlaySoundForLamp(index))
-                    RuntimeManager.PlayOneShotAttached(lightOffEvent, light.gameObject);
-                targetIntensity = 6f;
-
-            }
+            float targetIntensity = lightState ? 0f : 6f;
 
             float wait = Random.Range(min, max);
             float t = 0f;
@@ -233,7 +237,6 @@ public class FollowLightController : MonoBehaviour
             while (t < 1f)
             {
                 t += Time.deltaTime / wait;
-
                 light.intensity = Mathf.Lerp(
                     startIntensity,
                     targetIntensity,
@@ -241,8 +244,8 @@ public class FollowLightController : MonoBehaviour
                 );
                 yield return null;
             }
+
             light.intensity = targetIntensity;
-            //yield return new WaitForSeconds(wait);
         }
     }
 
@@ -319,6 +322,12 @@ public class FollowLightController : MonoBehaviour
                 StopCoroutine(flickerCoroutines[i]);
                 flickerCoroutines[i] = null;
             }
+        }
+
+        if (pulseLoopInstance.isValid())
+        {
+            pulseLoopInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            pulseLoopInstance.release();
         }
     }
     
