@@ -9,6 +9,8 @@ using UnityEngine.UI;
 public class LoadingScreenController : MonoBehaviour
 {
     public static bool CanSwitchScenes = false;
+    public float musicFadeOutTime = 1.5f;
+
 
     [Header("UI")]
     public TMP_Text technicalText;
@@ -19,6 +21,7 @@ public class LoadingScreenController : MonoBehaviour
     [SerializeField] private float typeSpeed = 0.05f;
     [SerializeField] private float deleteSpeed = 0.03f;
 
+
     [Header("Messages")]
     public List<string> technicalMessages;
 
@@ -27,8 +30,6 @@ public class LoadingScreenController : MonoBehaviour
     public float titleDelay = 2f;
 
     [SerializeField] private PlayAndQuit loader;
-
-    [SerializeField] private VHSNoise noise;
 
     private void Start()
     {
@@ -56,18 +57,34 @@ public class LoadingScreenController : MonoBehaviour
         yield return new WaitForSeconds(titleDelay);
         yield return TypeText(titleLine1, "Do you know");
         yield return new WaitForSeconds(1.5f);
-        yield return TypeText(titleLine2, "The man with the umbrella");
+        yield return TypeText(titleLine2, "The man with the umbrella?");
 
         yield return new WaitForSeconds(2f);
 
         yield return DeleteText(titleLine2);
         yield return DeleteText(titleLine1);
 
-        StartCoroutine(noise.FadeRoutine());
-
         yield return new WaitForSeconds(2f);
 
+        StartCoroutine(FadeOutMenuMusic(musicFadeOutTime)); 
+
         CanSwitchScenes = true;
+    }
+
+    IEnumerator FadeOutMenuMusic(float duration)
+    {
+        var vca = FMODUnity.RuntimeManager.GetVCA("vca:/Music");
+        float t = 0f;
+        float start = 1f;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            vca.setVolume(Mathf.Lerp(start, 0f, t / duration));
+            yield return null;
+        }
+
+        vca.setVolume(0f);
     }
 
     IEnumerator TypeText(TMP_Text text, string content)

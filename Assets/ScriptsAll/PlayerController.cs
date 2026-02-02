@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0f;
-    private float rotationY = 0f;
+    private float rotationY = 180f;
     private Coroutine footstepCoroutine;
 
 
@@ -313,6 +313,12 @@ public class PlayerController : MonoBehaviour
                     objectInteraction.PlaceObject(spot);
                     return;
                 }
+
+                if (hit.collider.CompareTag("Door"))
+                {
+                    hit.collider.GetComponent<DoorController>().TryOpenDoor();
+                    return;
+                }
             }
 
             // Иначе просто роняем
@@ -346,6 +352,12 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("[PlayerController] Interact with " + hit.collider.name);
                 interactable.Interact();
+                return;
+            }
+
+            if(hit.collider.CompareTag("Door"))
+            {
+                hit.collider.GetComponent<DoorController>().TryOpenDoor();
                 return;
             }
         }

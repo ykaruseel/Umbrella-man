@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class PlayAndQuit : MonoBehaviour
 {
-    //public void LoadScene(string sceneName)
-    //{
-    //    PauseAudioSnapshot.Instance?.ExitPause();
-    //    Debug.Log("Trying to load scene: " + sceneName);
-    //    SceneManager.LoadScene(sceneName);
-    //}
+    public void LoadScene(string sceneName)
+    {
+        PauseAudioSnapshot.Instance?.ExitPause();
+        Debug.Log("Trying to load scene: " + sceneName);
+        SceneManager.LoadScene(sceneName);
+    }
 
     public void QuitApplication()
     {
@@ -37,6 +37,7 @@ public class PlayAndQuit : MonoBehaviour
 
     [Header("Scene")]
     public string sceneToLoad;
+    public FlickeringLamp menuLamp;
 
     private float originalFOV;
     private Coroutine zoomCoroutine;
@@ -59,6 +60,9 @@ public class PlayAndQuit : MonoBehaviour
 
     public void OnLoadLevelButton()
     {
+        if (menuLamp != null)
+            menuLamp.StopFlicker();
+
         if (zoomCoroutine != null)
             StopCoroutine(zoomCoroutine);
 
