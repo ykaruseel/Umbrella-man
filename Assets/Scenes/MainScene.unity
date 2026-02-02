@@ -40029,6 +40029,7 @@ GameObject:
   - component: {fileID: 1888251724}
   - component: {fileID: 1888251723}
   - component: {fileID: 1888251722}
+  - component: {fileID: 1888251728}
   m_Layer: 7
   m_Name: UmbrellaManNear
   m_TagString: Untagged
@@ -40048,6 +40049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd0079592e8f4a4b9ed79d4afd92963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 1888251728}
   player: {fileID: 332663625}
   walkSpeed: 1
   catchDistance: 1.2
@@ -40191,6 +40193,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1888251728
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1888251721}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d97855caff80b8940b3251e761ec27ee, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1893415701
 PrefabInstance:
   m_ObjectHideFlags: 0
