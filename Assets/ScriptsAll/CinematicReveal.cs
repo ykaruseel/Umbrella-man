@@ -5,7 +5,6 @@ using FMODUnity;
 public class CinematicReveal : MonoBehaviour
 {
     [Header("ЛОГИКА АКТИВАЦИИ")]
-    [Tooltip("Эта галочка включится САМА, когда ты поговоришь с дверью.")]
     public bool canActivate = false;
 
     [Header("СВЕТ ПАНЕЛИ (МАЯК)")]
@@ -37,17 +36,47 @@ public class CinematicReveal : MonoBehaviour
     private bool hasTriggered = false;
     private Coroutine flickerCoroutine;
     private Renderer[] manRenderers;
+    private Collider myCollider; 
 
     void Start()
     {
+        myCollider = GetComponent<Collider>(); 
+
         if (umbrellaMan != null)
         {
             manRenderers = umbrellaMan.GetComponentsInChildren<Renderer>();
             foreach (var r in manRenderers) r.enabled = false;
         }
+        
+        // Гарантируем чистое состояние на старте
+        ResetCinematicState();
+    }
+
+    // ЭТА ФУНКЦИЯ ЧИНИТ БАГ: ОНА СБРАСЫВАЕТ СЦЕНУ ПРИ РЕСПАУНЕ
+    public void ResetCinematicState()
+    {
+        StopAllCoroutines(); 
+        hasTriggered = false; 
+
+        // 1. Включаем триггер обратно
+        if (myCollider != null) myCollider.enabled = true;
+
+        // 2. Выключаем все эффекты
         if (smokeParticles != null) smokeParticles.Stop();
         if (sparkParticles != null) sparkParticles.Stop();
         if (sparksBaseLight != null) sparksBaseLight.SetActive(false);
+        if (thirdLamp != null) { thirdLamp.enabled = false; thirdLamp.intensity = 0; }
+        
+        if (flickerCoroutine != null) StopCoroutine(flickerCoroutine);
+
+        // 3. Сбрасываем врага
+        if (umbrellaMan != null)
+        {
+            var chase = umbrellaMan.GetComponent<UmbrellaManChase>();
+            if (chase != null) chase.ResetChase(); 
+
+            if (manRenderers != null) foreach (var r in manRenderers) r.enabled = false;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -57,12 +86,15 @@ public class CinematicReveal : MonoBehaviour
 
         Debug.Log("Cinematic: Дверь дала добро! ЗАПУСК!");
         hasTriggered = true;
+        
+        // Временно выключаем триггер, пока идет сцена
+        if (myCollider != null) myCollider.enabled = false;
+
         StartCoroutine(PlayCinematicSequence());
     }
 
     IEnumerator PlayCinematicSequence()
     {
-
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.EnsureMusicPlaying();
@@ -79,7 +111,6 @@ public class CinematicReveal : MonoBehaviour
             thirdLamp.enabled = true;
             thirdLamp.intensity = 2.0f;
         }
-
 
         if (thirdLamp != null) flickerCoroutine = StartCoroutine(FlickerLightRoutine());
 
@@ -116,7 +147,6 @@ public class CinematicReveal : MonoBehaviour
         yield return new WaitForSeconds(stareDuration);
 
 
-
         if (!explosionSound.IsNull) RuntimeManager.PlayOneShot(explosionSound, thirdLamp.transform.position);
 
 
@@ -127,10 +157,7 @@ public class CinematicReveal : MonoBehaviour
         {
             var main = sparkParticles.main;
             main.loop = false;
-
-
-            main.startSpeed = 35f;
-
+            main.startSpeed = 35f; 
             sparkParticles.Play();
         }
 
@@ -147,16 +174,13 @@ public class CinematicReveal : MonoBehaviour
             dieTimer += Time.deltaTime;
             float t = dieTimer / 1.5f;
 
-
             if (thirdLamp != null) thirdLamp.intensity = Mathf.Lerp(startIntensity, 0f, t);
-
 
             if (sparksBaseLight != null)
             {
                 var l = sparksBaseLight.GetComponent<Light>();
                 if (l != null) l.intensity = Mathf.Lerp(5f, 0f, t);
             }
-
 
             if (dieTimer > 0.1f && !sparksStopped)
             {
@@ -181,8 +205,8 @@ public class CinematicReveal : MonoBehaviour
 
         if (player != null) { StartCoroutine(DoZoom(60f, 0.5f)); player.isCinematic = false; player.SetCanMove(true); }
         if (umbrellaMan != null) { var chase = umbrellaMan.GetComponent<UmbrellaManChase>(); if (chase != null) chase.StartChase(); }
-
-        Destroy(gameObject, 2f);
+        
+        // УБРАЛИ Destroy(gameObject), ТЕПЕРЬ ВСЁ РАБОТАЕТ ВЕЧНО
     }
 
 

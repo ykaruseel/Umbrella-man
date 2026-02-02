@@ -154,4 +154,39 @@ public class DeathHandler : MonoBehaviour
         }
 
     }
+    public void RestartGame()
+    {
+        // 1. Ищем CinematicReveal и говорим ему: "СБРОСЬСЯ!"
+        CinematicReveal cinematic = FindObjectOfType<CinematicReveal>();
+        if (cinematic != null)
+        {
+            cinematic.ResetCinematicState();
+        }
+
+        // 2. Сбрасываем флаги смерти
+        PlayerController.isGameEnded = false;
+        isDead = false;
+
+        // 3. Выключаем экран смерти
+        if (gameOverUI != null) gameOverUI.gameObject.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        if (horrorVolume != null) horrorVolume.weight = 0f;
+
+        // 4. Возвращаем управление игроку
+        if (playerController != null)
+        {
+            playerController.isCinematic = false;
+            playerController.SetCanMove(true);
+            
+            // Если нужно вернуть игрока назад в коридор — раскомментируй и впиши координаты:
+            // playerController.transform.position = new Vector3(0, 0, 0); 
+        }
+        
+        // 5. Возвращаем музыку
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.FadeToVolume(1f, 1f);
+        }
+    }
 }

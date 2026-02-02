@@ -243,12 +243,17 @@ public class UmbrellaManChase : MonoBehaviour
         StopHeartbeat();
         StopChase();
 
+        // Сброс позиции в невидимую зону (или стартовую точку)
         transform.position = new Vector3(-0.64f, 0.6480125f, -31.8f);
+        
         hasCaughtPlayer = false;
         isChasing = false;
 
         if (agent != null)
             agent.enabled = false;
+
+        // ВАЖНО: Выключаем самого человека, чтобы CinematicReveal мог включить его заново
+        gameObject.SetActive(false); 
     }
 
     public void PauseChase()
