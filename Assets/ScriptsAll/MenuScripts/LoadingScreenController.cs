@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class LoadingScreenController : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class LoadingScreenController : MonoBehaviour
     [Header("Typewriter")]
     [SerializeField] private float typeSpeed = 0.05f;
     [SerializeField] private float deleteSpeed = 0.03f;
+    [SerializeField] private FMODUnity.EventReference typewriterEvent;
+
 
 
     [Header("Messages")]
@@ -54,10 +57,9 @@ public class LoadingScreenController : MonoBehaviour
 
     public IEnumerator TitleWrite()
     {
-        yield return new WaitForSeconds(titleDelay);
-        yield return TypeText(titleLine1, "Do you know");
+        yield return TypeText(titleLine1, "Do you know", true);
         yield return new WaitForSeconds(1.5f);
-        yield return TypeText(titleLine2, "The man with the umbrella?");
+        yield return TypeText(titleLine2, "The man with the umbrella?", true);
 
         yield return new WaitForSeconds(2f);
 
@@ -86,13 +88,17 @@ public class LoadingScreenController : MonoBehaviour
 
         vca.setVolume(0f);
     }
-
-    IEnumerator TypeText(TMP_Text text, string content)
+    IEnumerator TypeText(TMP_Text targetText, string textToType, bool playSound = false)
     {
-        text.text = "";
-        foreach (char c in content)
+        targetText.text = "";
+
+        foreach (char c in textToType)
         {
-            text.text += c;
+            targetText.text += c;
+
+            if (playSound && c != ' ' && !typewriterEvent.IsNull)
+                RuntimeManager.PlayOneShot(typewriterEvent);
+
             yield return new WaitForSeconds(typeSpeed);
         }
     }

@@ -27,7 +27,6 @@ public class ObjectInteraction : MonoBehaviour
         if (playerCamera == null) playerCamera = Camera.main;
     }
 
-    // Методы публичные для PlayerController
 
     public void PlaceObject(PlacementSpot spot)
     {
@@ -97,6 +96,10 @@ public class ObjectInteraction : MonoBehaviour
 
     public void PickupObject(GameObject obj)
     {
+        var pulse = obj.GetComponent<PulseHighlight>();
+        if (pulse != null)
+            pulse.Hide();
+
         OutlineInteractable outline = obj.GetComponent<OutlineInteractable>();
         if (outline != null)
             outline.Hide();

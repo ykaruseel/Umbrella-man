@@ -22,6 +22,11 @@ public class CameraSequenceController : MonoBehaviour
 
     void Start()
     {
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.SetVolumeImmediate(0f);
+        }
+
         playerController.isCinematic = true;
         playerController.SetCanMove(false);
 
@@ -78,6 +83,13 @@ public class CameraSequenceController : MonoBehaviour
 
         playerController.isCinematic = false;
         playerController.SetCanMove(true);
+
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.EnsureMusicPlaying();
+            MusicManager.Instance.FadeToVolume(1f, 1.2f);
+        }
+
 
         fade.SetFadeImageActive(false);
 
