@@ -19,42 +19,82 @@ public class QuestUI : MonoBehaviour
     [Header("Settings")]
     public GameObject controlsPanel; 
 
-    // 🔥 УДАЛЕНО: Переменные для старой подсказки (tutorialPromptText и таймеры)
+    [Header("Tutorial Prompt")]
+    public TextMeshProUGUI tutorialPromptText; 
+    public float promptAutoCloseTime = 10f; // Через сколько секунд исчезнет само
+    
+    private bool hasPressedQ = false;          
+    private bool isPromptFadingOut = false;    // Флаг, что подсказка уже исчезает
+    private float promptTimer = 0f;            // Таймер для подсказки
 
     private CanvasGroup canvasGroup;
     private Coroutine displayCoroutine;
 
     void Awake()
     {
-        if (questPanel != null)
-        {
-            canvasGroup = questPanel.GetComponent<CanvasGroup>();
-            canvasGroup.alpha = 0;
-        }
-
+        canvasGroup = questPanel.GetComponent<CanvasGroup>(); 
         if (questTitleText != null) originalColor = questTitleText.color;
         
-        if (controlsPanel != null) controlsPanel.SetActive(false);
+        canvasGroup.alpha = 0; 
         
-        // 🔥 УДАЛЕНО: Включение старого текста при старте
+        if (controlsPanel != null) controlsPanel.SetActive(false);
+        if (tutorialPromptText != null) tutorialPromptText.gameObject.SetActive(true);
     }
 
     void Update()
     {
-        // 🔥 УДАЛЕНО: Логика пульсации старой подсказки
+        // --- Логика подсказки "Tap Q" ---
+        if (!hasPressedQ && tutorialPromptText != null && !isPromptFadingOut)
+        {
+            // 1. Пульсация
+            float alpha = 0.3f + Mathf.PingPong(Time.time * 2f, 0.7f);
+            tutorialPromptText.color = new Color(tutorialPromptText.color.r, tutorialPromptText.color.g, tutorialPromptText.color.b, alpha);
 
-        // --- Обработка нажатия Q (ОСТАВЛЕНО) ---
+            // 2. Таймер авто-исчезновения
+            promptTimer += Time.deltaTime;
+            if (promptTimer >= promptAutoCloseTime)
+            {
+                StartCoroutine(FadeOutPrompt());
+            }
+        }
+
+        // --- Обработка нажатия Q ---
         if (Input.GetKeyDown(KeyCode.Q))
         {
-             // Просто показываем квест
+             // Если подсказка еще висит — плавно убираем её
+             if (!hasPressedQ)
+             {
+                 if (!isPromptFadingOut) StartCoroutine(FadeOutPrompt());
+             }
+
              ShowQuestTemporarily();
              
-             // Включаем панель управления (если она нужна)
+             // Включаем панель управления (она должна быть дочерней к questPanel, чтобы плавно исчезнуть)
              if (controlsPanel != null) controlsPanel.SetActive(true);
         }
     }
 
-    // 🔥 УДАЛЕНО: Coroutine FadeOutPrompt
+    // Корутина для плавного исчезновения подсказки "Tap Q"
+    IEnumerator FadeOutPrompt()
+    {
+        isPromptFadingOut = true;
+        hasPressedQ = true; // Больше не показываем
+
+        float duration = 1.0f;
+        float timer = 0f;
+        Color startColor = tutorialPromptText.color;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startColor.a, 0f, timer / duration);
+            tutorialPromptText.color = new Color(startColor.r, startColor.g, startColor.b, newAlpha);
+            yield return null;
+        }
+
+        tutorialPromptText.color = new Color(startColor.r, startColor.g, startColor.b, 0f);
+        tutorialPromptText.gameObject.SetActive(false);
+    }
 
     public void ShowQuestUpdate(Quest quest)
     {
