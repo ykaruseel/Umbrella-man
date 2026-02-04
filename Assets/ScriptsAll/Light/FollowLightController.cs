@@ -154,6 +154,7 @@ public class FollowLightController : MonoBehaviour
     // Called by FollowLightTrigger when player approaches
     public void LightTriggered(int index)
     {
+        Debug.Log("FollowLightController: LightTriggered called for index " + index);
         if (lightsSequence == null) return;
         if (index != currentLightIndex) return;
         if (index < 0 || index >= lightsSequence.Length) return;
@@ -185,6 +186,7 @@ public class FollowLightController : MonoBehaviour
         // advance or final
         if (index == lightsSequence.Length - 1)
         {
+            Debug.Log("FollowLightController: Last light reached, starting final sequence.");
             StartCoroutine(FinalLightSequence(light));
         }
         else
@@ -252,6 +254,7 @@ public class FollowLightController : MonoBehaviour
     // Final sequence: no fast strobe, controlled toggles, then final off and chase trigger
     IEnumerator FinalLightSequence(Light light)
     {
+        Debug.Log("FollowLightController: Starting FINAL light sequence.");
         if (light == null)
         {
             if (questManager != null) questManager.TriggerChaseScene();

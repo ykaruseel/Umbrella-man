@@ -42,6 +42,8 @@ public class UmbrellaManChase : MonoBehaviour
     private bool hasCaughtPlayer;
     private Coroutine chaseInitCoroutine;
 
+    public ChaseLightController chaseLightController;
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -80,6 +82,9 @@ public class UmbrellaManChase : MonoBehaviour
             StopCoroutine(chaseInitCoroutine);
 
         chaseInitCoroutine = StartCoroutine(InitChaseRoutine());
+
+        if (chaseLightController != null)
+            chaseLightController.StartChaseLights();
     }
 
     private IEnumerator InitChaseRoutine()
