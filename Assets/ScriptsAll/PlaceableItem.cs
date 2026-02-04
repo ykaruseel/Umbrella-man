@@ -1,7 +1,9 @@
 using UnityEngine;
 
+
 public class PlaceableItem : MonoBehaviour
 {
-    // РЈРЅРёРєР°Р»СЊРЅС‹Р№ ID РґР»СЏ СЌС‚РѕРіРѕ РїСЂРµРґРјРµС‚Р°, РЅР°РїСЂРёРјРµСЂ "VaseKey" РёР»Рё "BookOfRituals"
+    // Уникальный ID для этого предмета, например "VaseKey" или "BookOfRituals"
     public string itemID;
+    public bool isPlaced = false;
 }

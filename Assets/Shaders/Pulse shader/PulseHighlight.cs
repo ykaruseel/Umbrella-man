@@ -12,6 +12,12 @@ public class PulseHighlight : MonoBehaviour
         rend = GetComponentInChildren<Renderer>();
     }
 
+    void Start()
+    {
+        Show();
+    }
+
+
     public void Show()
     {
         if (rend == null || pulseMaterial == null || active) return;

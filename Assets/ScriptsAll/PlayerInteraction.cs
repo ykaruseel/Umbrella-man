@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -43,6 +43,10 @@ public class PlayerInteraction : MonoBehaviour
     {
         PulseHighlight pulse = hit.collider.GetComponentInParent<PulseHighlight>();
         PlaceableItem placeable = hit.collider.GetComponentInParent<PlaceableItem>();
+        OutlineInteractable outline = hit.collider.GetComponentInParent<OutlineInteractable>();
+
+        if (outline != null)
+            outline.Show();
 
         if (pulse == null || placeable == null)
         {
@@ -66,11 +70,11 @@ public class PlayerInteraction : MonoBehaviour
 
     void ClearPulse()
     {
-        if (currentPulse != null)
-        {
-            currentPulse.Hide();
-            currentPulse = null;
-        }
+        OutlineInteractable outline = currentPulse?.GetComponent<OutlineInteractable>();
+        if (outline != null)
+            outline.Hide();
+
+     
     }
 
     void HandleInteraction()

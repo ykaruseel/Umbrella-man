@@ -7,7 +7,7 @@ public class ObjectInteraction : MonoBehaviour
     public Camera playerCamera;
     public Transform holdPoint;
     public float interactionDistance = 3f;
-    public LayerMask interactionLayerMask; 
+    public LayerMask interactionLayerMask;
 
     [Header("FMOD Events")]
     [SerializeField] private EventReference pickupEvent;
@@ -107,16 +107,18 @@ public class ObjectInteraction : MonoBehaviour
         heldObjectRb = heldObject.GetComponent<Rigidbody>();
         originalScale = heldObject.transform.localScale;
         originalLayer = heldObject.layer;
-        
+
         // Меняем слой на IgnoreRaycast (обычно 2), чтобы сам предмет не мешал лучам
-        heldObject.layer = 2; 
+        heldObject.layer = 2;
 
         PlaceableItem placeable = heldObject.GetComponent<PlaceableItem>();
         if (placeable != null)
         {
+            placeable.isPlaced = false;
             heldItemID = placeable.itemID;
             UpdateHighlights(true);
         }
+
 
         heldObjectRb.useGravity = false;
         heldObjectRb.isKinematic = true;
@@ -138,7 +140,7 @@ public class ObjectInteraction : MonoBehaviour
         heldObject.layer = originalLayer;
         isInteracting = true;
         Physics.IgnoreCollision(heldObject.GetComponent<Collider>(), playerController, true);
-        
+
         // Отцепляем от игрока
         heldObject.transform.SetParent(null);
 
@@ -203,4 +205,7 @@ public class ObjectInteraction : MonoBehaviour
         isInteracting = false;
     }
 }
+
+
+
 
