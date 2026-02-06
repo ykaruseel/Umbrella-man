@@ -37,6 +37,9 @@ public class RepairQTE : MonoBehaviour
     [Tooltip("Длительность мигания при фейле (сек)")]
     public float shieldFailDuration = 0.6f;
 
+    [Header("UI – лампочка")]
+    [SerializeField] private Animator lampAnimator;
+
     private float shieldBaseIntensity;
     private Coroutine shieldRoutine;
 
@@ -274,6 +277,12 @@ public class RepairQTE : MonoBehaviour
             // УСПЕХ
             if (!trackSuccessEvent.IsNull)
                 FMODUnity.RuntimeManager.PlayOneShot(trackSuccessEvent);
+
+            if (lampAnimator != null)
+            {
+                lampAnimator.ResetTrigger("Success");
+                lampAnimator.SetTrigger("Success");
+            }
 
             StartShieldSuccessFlash();
             currentTrackIndex++;

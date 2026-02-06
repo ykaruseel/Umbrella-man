@@ -22,10 +22,7 @@ public class PlacementSpot : MonoBehaviour
         item.transform.rotation = placementTransform.rotation;
 
         placeable.isPlaced = true;
-
-        PulseHighlight pulse = item.GetComponent<PulseHighlight>();
-        if (pulse != null)
-            pulse.Hide();
+        placeable.SetState(PlaceableItem.ItemState.Placed);
 
         if (highlightEffect != null)
             highlightEffect.SetActive(false);

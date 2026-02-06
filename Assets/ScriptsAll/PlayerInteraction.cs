@@ -9,7 +9,7 @@ public class PlayerInteraction : MonoBehaviour
     DialogueManager dialogueManager;
     PlayerController playerController;
 
-    PulseHighlight currentPulse;
+    OutlineInteractable currentOutline;
 
     void Start()
     {
@@ -20,61 +20,43 @@ public class PlayerInteraction : MonoBehaviour
     void Update()
     {
         if (!Pause.isPaused)
-            UpdatePulse();
+            UpdateOutline();
 
         if (Input.GetKeyDown(KeyCode.E) && !Pause.isPaused)
             HandleInteraction();
     }
 
-    void UpdatePulse()
+    void UpdateOutline()
     {
         Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
 
         if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactionLayerMask))
         {
-            UpdatePulseHighlight(hit);
-            return;
+            OutlineInteractable outline = hit.collider.GetComponentInParent<OutlineInteractable>();
+            PlaceableItem item = hit.collider.GetComponentInParent<PlaceableItem>();
+
+            if (outline != null && item != null && item.CurrentState == PlaceableItem.ItemState.OnGround)
+            {
+                if (currentOutline != outline)
+                {
+                    ClearOutline();
+                    currentOutline = outline;
+                    currentOutline.Show();
+                }
+                return;
+            }
         }
 
-        ClearPulse();
+        ClearOutline();
     }
 
-    void UpdatePulseHighlight(RaycastHit hit)
+    void ClearOutline()
     {
-        PulseHighlight pulse = hit.collider.GetComponentInParent<PulseHighlight>();
-        PlaceableItem placeable = hit.collider.GetComponentInParent<PlaceableItem>();
-        OutlineInteractable outline = hit.collider.GetComponentInParent<OutlineInteractable>();
-
-        if (outline != null)
-            outline.Show();
-
-        if (pulse == null || placeable == null)
+        if (currentOutline != null)
         {
-            ClearPulse();
-            return;
+            currentOutline.Hide();
+            currentOutline = null;
         }
-
-        if (placeable.isPlaced || IsHoldingObject())
-        {
-            ClearPulse();
-            return;
-        }
-
-        if (currentPulse != pulse)
-        {
-            ClearPulse();
-            currentPulse = pulse;
-            currentPulse.Show();
-        }
-    }
-
-    void ClearPulse()
-    {
-        OutlineInteractable outline = currentPulse?.GetComponent<OutlineInteractable>();
-        if (outline != null)
-            outline.Hide();
-
-     
     }
 
     void HandleInteraction()
@@ -101,17 +83,11 @@ public class PlayerInteraction : MonoBehaviour
 
             if (hit.collider.CompareTag("Pickable"))
             {
-                ObjectInteraction objectInteraction = GetComponent<ObjectInteraction>();
-                if (objectInteraction != null)
-                    objectInteraction.PickupObject(hit.collider.gameObject);
+                ObjectInteraction oi = GetComponent<ObjectInteraction>();
+                if (oi != null)
+                    oi.PickupObject(hit.collider.gameObject);
             }
         }
-    }
-
-    bool IsHoldingObject()
-    {
-        ObjectInteraction oi = GetComponent<ObjectInteraction>();
-        return oi != null && oi.IsHoldingObject();
     }
 
     bool IsDialogueActive(DialogueManager manager)
