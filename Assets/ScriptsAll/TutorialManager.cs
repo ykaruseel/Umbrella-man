@@ -36,6 +36,11 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
+        uiGroup.alpha = 0f;
+    }
+
+    public void StartTutorial()
+    {
         int savedStep = PlayerPrefs.GetInt("TutorialProgress", 0);
         currentStep = (TutorialStep)savedStep;
 
@@ -47,6 +52,7 @@ public class TutorialManager : MonoBehaviour
 
         StartCoroutine(ProcessStep());
     }
+
 
     void Update()
     {

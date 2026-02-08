@@ -32,6 +32,8 @@ public class UmbrellaManChase : MonoBehaviour
     [Header("Chase Timing")]
     public float preChaseDelay = 2.0f;
     private Coroutine footstepCoroutine;
+    public PanelLightBeacon panelLightBeacon;
+
 
     [Header("FMOD – Heartbeat игрока")]
     [SerializeField] private EventReference heartbeatEvent;
@@ -77,6 +79,10 @@ public class UmbrellaManChase : MonoBehaviour
         }
 
         gameObject.SetActive(true);
+
+        if (panelLightBeacon != null)
+            panelLightBeacon.ActivateBeacon();
+
 
         if (chaseInitCoroutine != null)
             StopCoroutine(chaseInitCoroutine);

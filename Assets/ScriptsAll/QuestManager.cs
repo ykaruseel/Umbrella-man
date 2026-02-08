@@ -69,11 +69,10 @@ public class QuestManager : MonoBehaviour
         if (umbrellaManNear) umbrellaManNear.SetActive(false);
         if (umbrellaManFar) umbrellaManFar.SetActive(false);
         
-        // ✅ ГАРАНТИЯ: Выключаем оба экрана при старте
         if (gameOverUI) gameOverUI.SetActive(false);
         if (prototypeCompleteUI) prototypeCompleteUI.SetActive(false);
 
-        if (firstQuest != null) StartQuest(firstQuest);
+       // if (firstQuest != null) StartQuest(firstQuest);
         
         if (MusicManager.Instance != null)
         {
@@ -82,15 +81,21 @@ public class QuestManager : MonoBehaviour
         }
     }
 
-    // --- ✅ НОВЫЙ МЕТОД ДЛЯ СМЕНЫ ТЕКСТА (ВЫЗЫВАЕТСЯ ИЗ ДИАЛОГА) ---
+    public void StartFirstQuest()
+    {
+        if (firstQuest != null)
+        {
+            StartQuest(firstQuest);
+        }
+    }
+
+
     public void ForceUpdateQuestText(string text)
     {
         if (questUI != null)
         {
-            // Включаем сам объект UI, если он был выключен
             questUI.gameObject.SetActive(true);
 
-            // Ищем TextMeshPro внутри
             var textComp = questUI.GetComponentInChildren<TextMeshProUGUI>();
             if (textComp != null)
             {
@@ -99,7 +104,6 @@ public class QuestManager : MonoBehaviour
             }
             else
             {
-                // Запасной вариант для обычного Text
                 var oldText = questUI.GetComponentInChildren<Text>();
                 if (oldText != null) oldText.text = text;
                 oldText.color = Color.white;
