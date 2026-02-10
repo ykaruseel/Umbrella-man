@@ -6,6 +6,7 @@ public class UmbrellaManSequenceController : MonoBehaviour
 {
     [Header("Particles")]
     public ParticleSystem smokeParticles;
+    public ParticleSystem sparkParticles;
     public float particleInitialLifetime = 7f;
 
     [Header("Growing Object (Wall Spot)")]
@@ -99,6 +100,7 @@ public class UmbrellaManSequenceController : MonoBehaviour
 
         yield return StartCoroutine(IdleAndShrinkRoutine());
 
+        StartCoroutine(PlaySparkParticles());
         RuntimeManager.PlayOneShotAttached(explosionSound, flickerLight.gameObject);
 
         flickerLight.enabled = false;
@@ -113,8 +115,15 @@ public class UmbrellaManSequenceController : MonoBehaviour
         enemyCollider.enabled = true;
 
         QuestManager.instance.TriggerChaseScene();
-        //enemyCollider.SendMessage("OnEnemyActivated", SendMessageOptions.DontRequireReceiver);
+    }
 
+    private IEnumerator PlaySparkParticles()
+    {
+        sparkParticles.Play();
+
+        yield return new WaitForSeconds(0.1f);
+
+        sparkParticles.Stop();
     }
 
     private IEnumerator ScaleObjectRoutine(float duration)
@@ -304,6 +313,11 @@ public class UmbrellaManSequenceController : MonoBehaviour
         {
             pulseInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             pulseInstance.release();
+        }
+
+        if(sparkParticles != null)
+        {
+            sparkParticles.Stop();
         }
 
         isEnemyMoving = false;
