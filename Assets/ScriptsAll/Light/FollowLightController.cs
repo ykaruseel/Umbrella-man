@@ -32,6 +32,8 @@ public class FollowLightController : MonoBehaviour
     [SerializeField] private FMODUnity.EventReference pulseLoopEventLoop;
     private FMOD.Studio.EventInstance pulseLoopInstance;
 
+    [SerializeField] private UmbrellaManSequenceController umbrellaManSequenceController;
+
 
 
     [Header("Sound debounce (avoid annoying double clicks)")]
@@ -257,7 +259,7 @@ public class FollowLightController : MonoBehaviour
         Debug.Log("FollowLightController: Starting FINAL light sequence.");
         if (light == null)
         {
-            if (questManager != null) questManager.TriggerChaseScene();
+            if (questManager != null) umbrellaManSequenceController.StartSequence();
             yield break;
         }
 
@@ -291,7 +293,7 @@ public class FollowLightController : MonoBehaviour
         light.enabled = false;
         if (!lightOffEvent.IsNull && CanPlaySoundForLamp(lastIndex)) RuntimeManager.PlayOneShotAttached(lightOffEvent, light.gameObject);
 
-        if (questManager != null) questManager.TriggerChaseScene();
+        if (questManager != null) umbrellaManSequenceController.StartSequence();
     }
 
     private bool CanPlaySoundForLamp(int index)

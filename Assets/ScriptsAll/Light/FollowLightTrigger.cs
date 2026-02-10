@@ -16,8 +16,8 @@ public class FollowLightTrigger : MonoBehaviour
     {
         trigger = GetComponent<SphereCollider>();
         trigger.isTrigger = true;
-        trigger.radius = 1.5f; // Дистанция 1.5 метра, как в PDF
-        trigger.enabled = false; // Выключен по умолчанию
+        trigger.radius = 1.5f;
+        trigger.enabled = false;
     }
 
     // Включает триггер
@@ -37,7 +37,6 @@ public class FollowLightTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Сообщаем "мозгу", что игрок у этой лампы
             if (controller != null)
             {
                 controller.LightTriggered(lightIndex);

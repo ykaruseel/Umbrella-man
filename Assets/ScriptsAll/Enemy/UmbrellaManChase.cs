@@ -34,7 +34,6 @@ public class UmbrellaManChase : MonoBehaviour
     private Coroutine footstepCoroutine;
     public PanelLightBeacon panelLightBeacon;
 
-
     [Header("FMOD – Heartbeat игрока")]
     [SerializeField] private EventReference heartbeatEvent;
     private EventInstance heartbeatInstance;

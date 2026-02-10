@@ -81,16 +81,16 @@ public class CinematicReveal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (hasTriggered || !other.CompareTag("Player")) return;
-        if (canActivate == false) return;
+        //if (hasTriggered || !other.CompareTag("Player")) return;
+        //if (canActivate == false) return;
 
-        Debug.Log("Cinematic: Дверь дала добро! ЗАПУСК!");
-        hasTriggered = true;
+        //Debug.Log("Cinematic: Дверь дала добро! ЗАПУСК!");
+        //hasTriggered = true;
         
-        // Временно выключаем триггер, пока идет сцена
-        if (myCollider != null) myCollider.enabled = false;
+        //// Временно выключаем триггер, пока идет сцена
+        //if (myCollider != null) myCollider.enabled = false;
 
-        StartCoroutine(PlayCinematicSequence());
+        //StartCoroutine(PlayCinematicSequence());
     }
 
     IEnumerator PlayCinematicSequence()
