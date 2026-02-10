@@ -64,6 +64,12 @@ public class UmbrellaManSequenceController : MonoBehaviour
 
     public void StartSequence()
     {
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.EnsureMusicPlaying();
+            MusicManager.Instance.SetSection("Value E");
+        }
+
         lightDistortion.enabled = false;
         StartCoroutine(SequenceRoutine());
     }

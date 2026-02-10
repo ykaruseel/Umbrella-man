@@ -41,6 +41,14 @@ public class TutorialManager : MonoBehaviour
 
     public void StartTutorial()
     {
+        gameObject.SetActive(true);
+
+        if (uiGroup != null)
+            uiGroup.gameObject.SetActive(true);
+
+        if (uiText != null)
+            uiText.gameObject.SetActive(true);
+
         int savedStep = PlayerPrefs.GetInt("TutorialProgress", 0);
         currentStep = (TutorialStep)savedStep;
 
