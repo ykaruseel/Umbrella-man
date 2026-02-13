@@ -18,11 +18,28 @@ public class ResolutionSettings : MonoBehaviour
                 resolutions.Add(res);
         }
 
-        int savedIndex = PlayerPrefs.GetInt("ResolutionIndex", 0);
-        currentIndex = Mathf.Clamp(savedIndex, 0, resolutions.Count - 1);
+        if (!PlayerPrefs.HasKey("ResolutionIndex"))
+        {
+            Resolution current = Screen.currentResolution;
+
+            currentIndex = resolutions.FindIndex(r =>
+                r.width == current.width &&
+                r.height == current.height);
+
+            if (currentIndex < 0)
+                currentIndex = resolutions.Count - 1;
+        }
+        else
+        {
+            currentIndex = Mathf.Clamp(
+                PlayerPrefs.GetInt("ResolutionIndex"),
+                0,
+                resolutions.Count - 1);
+        }
 
         ApplyResolution();
     }
+
 
     public void NextResolution()
     {
