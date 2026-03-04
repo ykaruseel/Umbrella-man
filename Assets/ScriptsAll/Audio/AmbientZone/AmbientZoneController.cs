@@ -1,38 +1,57 @@
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
+using System.Collections;
 
-public class AmbientZoneController : MonoBehaviour
+public class AmbientController : MonoBehaviour
 {
-    [SerializeField] private EventReference apartmentAmbient;
-    [SerializeField] private EventReference stairwellAmbient;
+    [SerializeField] private EventReference ambientEvent;
 
-    private EventInstance apartmentInstance;
-    private EventInstance stairwellInstance;
+    private EventInstance ambientInstance;
+    private Coroutine transition;
 
     private void Start()
     {
-        apartmentInstance = RuntimeManager.CreateInstance(apartmentAmbient);
-        stairwellInstance = RuntimeManager.CreateInstance(stairwellAmbient);
-
-        apartmentInstance.start();
+        ambientInstance = RuntimeManager.CreateInstance(ambientEvent);
+        ambientInstance.start();
     }
 
-    public void EnterApartment()
+    public void SetApartment()
     {
-        stairwellInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        apartmentInstance.start();
+        StartTransition(0f);
     }
 
-    public void EnterStairwell()
+    public void SetStairwell()
     {
-        apartmentInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        stairwellInstance.start();
+        StartTransition(1f);
+    }
+
+    void StartTransition(float target)
+    {
+        if (transition != null) StopCoroutine(transition);
+        transition = StartCoroutine(ChangeArea(target));
+    }
+
+    IEnumerator ChangeArea(float target)
+    {
+        ambientInstance.getParameterByName("Area", out float current);
+
+        float time = 0f;
+        float duration = 2f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float value = Mathf.Lerp(current, target, time / duration);
+            ambientInstance.setParameterByName("Area", value);
+            yield return null;
+        }
+
+        ambientInstance.setParameterByName("Area", target);
     }
 
     private void OnDestroy()
     {
-        apartmentInstance.release();
-        stairwellInstance.release();
+        ambientInstance.release();
     }
 }
