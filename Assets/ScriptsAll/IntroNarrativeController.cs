@@ -5,14 +5,12 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 
-/// <summary>
-/// Тёмный экран с предысторией при старте. Блокирует ТОЛЬКО движение, не мешает подбору/взаимодействию.
-/// </summary>
+
 public sealed class IntroNarrativeController : MonoBehaviour
 {
     [Header("Durations (seconds)")]
     [SerializeField] private float fadeInSeconds = 0.6f;
-    [SerializeField] private float showSeconds = 60f;   // ~1 минута чтения
+    [SerializeField] private float showSeconds = 60f;
     [SerializeField] private float fadeOutSeconds = 0.8f;
 
     [Header("Narrative UI")]
@@ -26,9 +24,9 @@ public sealed class IntroNarrativeController : MonoBehaviour
     [TextArea(6, 12)]
     [SerializeField]
     private string storyText =
-        "Город давно погрузился во тьму. Дожди не прекращались, а окна погасли одно за другим.\n" +
-        "Говорят, по переулкам бродит человек с зонтом. Те, кто встретил его взгляд, не возвращались...\n\n" +
-        "Сегодня ночью ты проснулся от стука. Кажется, он уже здесь.";
+        "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.\n" +
+        "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ...\n\n" +
+        "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.";
 
     private bool createdUI;
 
@@ -47,16 +45,16 @@ public sealed class IntroNarrativeController : MonoBehaviour
             canvasGroup.alpha = 0f;
             canvasGroup.gameObject.SetActive(true);
             canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = true; // UI клики перекрывает; физический Raycast игрока не трогаем
+            canvasGroup.blocksRaycasts = true;
         }
     }
 
     void Start()
     {
-        // Важно: НЕ отключаем компонент. Лочим только движение, взгляд/взаимодействия оставить.
+        
         if (playerController != null)
         {
-            playerController.LockMovementButAllowLook(); // движение off, камера/взаимодействия on
+            playerController.LockMovementButAllowLook();
         }
 
         StartCoroutine(RunIntroSequence());
@@ -67,21 +65,21 @@ public sealed class IntroNarrativeController : MonoBehaviour
         if (canvasGroup == null)
             yield break;
 
-        // Fade In
+        
         yield return FadeCanvasGroup(canvasGroup, 0f, 1f, fadeInSeconds);
 
-        // Пауза для чтения
+        
         yield return new WaitForSeconds(showSeconds);
 
-        // Fade Out
+        
         yield return FadeCanvasGroup(canvasGroup, 1f, 0f, fadeOutSeconds);
 
-        // Прячем UI и возвращаем возможность ходить
+        
         canvasGroup.gameObject.SetActive(false);
 
         if (playerController != null)
         {
-            playerController.SetCanMove(true); // вернуть движение
+            playerController.SetCanMove(true);
         }
 
         if (createdUI && canvasGroup != null)
@@ -107,7 +105,7 @@ public sealed class IntroNarrativeController : MonoBehaviour
 
     private void CreateOverlayUIIfMissing()
     {
-        // Canvas
+        
         var canvasGO = new GameObject("IntroNarrativeCanvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster), typeof(CanvasGroup));
         var canvas = canvasGO.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -119,7 +117,7 @@ public sealed class IntroNarrativeController : MonoBehaviour
 
         canvasGroup = canvasGO.GetComponent<CanvasGroup>();
 
-        // Background Panel
+        
         var panelGO = new GameObject("Background", typeof(RectTransform), typeof(Image));
         panelGO.transform.SetParent(canvasGO.transform, false);
         var rect = panelGO.GetComponent<RectTransform>();
@@ -129,7 +127,7 @@ public sealed class IntroNarrativeController : MonoBehaviour
         backgroundImage = panelGO.GetComponent<Image>();
         backgroundImage.color = new Color(0f, 0f, 0f, 0.96f);
 
-        // Text (TMP)
+        
         var textGO = new GameObject("NarrativeText", typeof(RectTransform), typeof(TextMeshProUGUI));
         textGO.transform.SetParent(panelGO.transform, false);
         var textRect = textGO.GetComponent<RectTransform>();

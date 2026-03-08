@@ -1,4 +1,4 @@
-// Assets/ScriptsAll/QTESystem.cs  (исходный простой)
+
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -6,7 +6,7 @@ using System.Collections;
 
 public class QTESystem : MonoBehaviour
 {
-    [Header("UI Элементы")]
+    [Header("UI пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ")]
     public GameObject qtePanel;
     public TextMeshProUGUI keyPromptText;
     public Slider timerSlider;
@@ -36,7 +36,7 @@ public class QTESystem : MonoBehaviour
 
         qteActive = true;
         if (qtePanel) qtePanel.SetActive(true);
-        Debug.Log("QTE начат! Нажмите " + key.ToString());
+        Debug.Log("QTE пїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅ " + key.ToString());
     }
 
     void Update()

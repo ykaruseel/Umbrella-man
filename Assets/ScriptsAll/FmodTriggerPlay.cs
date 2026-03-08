@@ -9,19 +9,19 @@ public sealed class FmodTriggerPlay : MonoBehaviour
     public EventReference eventRef;
 
     [Header("Filter")]
-    [Tooltip("Оставь пустым, чтобы реагировать на любой коллайдер.")]
+    [Tooltip("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.")]
     public string requiredTag = "Player";
 
     [Header("Behavior")]
-    [Tooltip("Проигрывать только один раз за жизнь объекта.")]
+    [Tooltip("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.")]
     public bool playOnce = false;
 
-    [Tooltip("Печатать предупреждения, если что-то не так.")]
+    [Tooltip("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ.")]
     public bool logWarnings = true;
 
     private bool _played;
 
-    // Почему: автоконфигурируем триггер, чтобы не забыть включить isTrigger.
+    
     private void Reset()
     {
         var col3D = GetComponent<Collider>();
@@ -62,7 +62,7 @@ public sealed class FmodTriggerPlay : MonoBehaviour
     {
         if (eventRef.IsNull)
         {
-            if (logWarnings) Debug.LogWarning("[FmodTriggerPlay] EventReference пуст. Укажи ивент в инспекторе.");
+            if (logWarnings) Debug.LogWarning("[FmodTriggerPlay] EventReference пїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
             return;
         }
 

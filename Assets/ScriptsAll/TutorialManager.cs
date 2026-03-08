@@ -66,12 +66,12 @@ public class TutorialManager : MonoBehaviour
     {
         if (isVisible)
         {
-            // Пульсация
+            
             float alpha = Mathf.PingPong(Time.time * pulseSpeed, 0.6f) + 0.4f; 
             uiGroup.alpha = alpha;
         }
 
-        // --- ШАГ 1: ДВИЖЕНИЕ (WASD) ---
+        
         if (currentStep == TutorialStep.Movement_WASD && isVisible)
         {
             float x = Input.GetAxis("Horizontal");
@@ -87,24 +87,24 @@ public class TutorialManager : MonoBehaviour
             }
         }
 
-        // --- ШАГ 2: ВЗАИМОДЕЙСТВИЕ (E) ---
+        
         if (currentStep == TutorialStep.Interaction_E && isVisible)
         {
             moveTimer += Time.deltaTime;
-            // Страховка 7 секунд
+            
             if (moveTimer > 7.0f)
             {
                 AdvanceTutorial();
             }
         }
 
-        // --- ШАГ 3: ЗАДАЧА (Q) — ОБНОВЛЕНО ---
+        
         if (currentStep == TutorialStep.Task_Q && isVisible)
         {
-            // Теперь тоже используем таймер
+            
             moveTimer += Time.deltaTime;
 
-            // Если прошло 3 секунды ИЛИ нажата Q — завершаем
+            
             if (moveTimer > 3.0f || Input.GetKeyDown(KeyCode.Q))
             {
                 AdvanceTutorial();
@@ -123,7 +123,7 @@ public class TutorialManager : MonoBehaviour
     private void AdvanceTutorial()
     {
         isVisible = false; 
-        moveTimer = 0f;    // Сброс таймера
+        moveTimer = 0f;
         
         switch (currentStep)
         {

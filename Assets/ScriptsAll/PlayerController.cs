@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("Dialogue Zoom Settings")]
-    public CinemachineCamera virtualCam;   // виртуальная камера для зума
+    public CinemachineCamera virtualCam;
     [SerializeField] private float dialogueZoomFOV;
     [SerializeField] private float dialogueZoomSpeed;
     private Coroutine currentZoomCoroutine;
@@ -58,11 +58,11 @@ public class PlayerController : MonoBehaviour
     public float zoomFOV = 45f;
     public float zoomSpeed = 2.0f;
     
-    private float targetFOV;         // К какому значению мы сейчас стремимся
+    private float targetFOV;
     
     public static bool isGameEnded = false;
 
-    // --- Ссылка на ObjectInteraction ---
+    
     private ObjectInteraction objectInteraction;
 
     void Start()
@@ -93,17 +93,17 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // --- если диалог активен, разрешаем только "E" для переключения ---
+        
         DialogueManager dm = FindObjectOfType<DialogueManager>();
         if (dm != null && dm.IsDialogueActive())
         {
-            // ВАЖНО: останавливаем шаги, если вдруг шли
+            
             StopFootsteps();
 
             if (Input.GetKeyDown(KeyCode.E) && !Pause.isPaused)
-                dm.DisplayNextSentence(); // листаем реплики
+                dm.DisplayNextSentence();
 
-            return; // блокируем остальное управление
+            return;
         }
 
         HandleMovement();
@@ -173,13 +173,9 @@ public class PlayerController : MonoBehaviour
     {
         if (virtualCam == null) return;
 
-        //float targetFOV = dialogueZoom ? dialogueZoomFOV : initialFOV;
+        
 
-        //virtualCam.Lens.FieldOfView = Mathf.Lerp(
-        //    virtualCam.Lens.FieldOfView,
-        //    targetFOV,
-        //    Time.deltaTime * dialogueZoomSpeed
-        //);
+        
     }
 
     
@@ -223,7 +219,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (!isMoving && isWalking)
         {
-            // Перестали двигаться — останавливаем шаги
+            
             StopFootsteps();
         }
     }
@@ -244,7 +240,7 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
 
-        // корутина закончилась
+         
         footstepCoroutine = null;
     }
 
@@ -258,7 +254,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // --- Методы для внешних систем ---
+    
     public void SetCanMove(bool value)
     {
         canMove = value;
@@ -276,17 +272,17 @@ public class PlayerController : MonoBehaviour
     
     void CheckInteractionInput()
     {
-        // 1) Если активен диалог – игнорируем взаимодействия
+        
         DialogueManager dm = FindFirstObjectByType<DialogueManager>();
         if (dm != null && dm.IsDialogueActive())
             return;
 
-        // 2) Если активен QTE – тоже игнорируем E, чтобы не перезапускать щиток
+        
         RepairQTE qte = FindFirstObjectByType<RepairQTE>();
         if (qte != null && qte.isQTEActive)
             return;
 
-        // 3) Дальше реагируем только если реально нажали E
+        
         if (!Input.GetKeyDown(KeyCode.E))
             return;
 
@@ -301,7 +297,7 @@ public class PlayerController : MonoBehaviour
             ray, out hit, interactionDistance, interactionLayerMask
         );
 
-        // --- Если что-то держим в руках ---
+        
         if (objectInteraction.IsHoldingObject())
         {
             if (hitSomething)
@@ -309,7 +305,7 @@ public class PlayerController : MonoBehaviour
                 PlacementSpot spot = hit.collider.GetComponent<PlacementSpot>();
                 if (spot != null && spot.requiredItemID == objectInteraction.GetHeldItemID())
                 {
-                    // КЛАДЕМ предмет в нужное место
+                    
                     objectInteraction.PlaceObject(spot);
                     return;
                 }
@@ -321,15 +317,15 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            // Иначе просто роняем
+            
             objectInteraction.DropObject();
             return;
         }
 
-        // --- Если ничего не держим, пробуем взаимодействовать с тем, во что попал луч ---
+        
         if (hitSomething)
         {
-            // 1) Диалог с NPC
+            
             NPC_Dialogue npcDialogue = hit.collider.GetComponent<NPC_Dialogue>();
             if (npcDialogue != null)
             {
@@ -338,7 +334,7 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
-            // 2) Подбираемый предмет
+            
             if (hit.collider.CompareTag("Pickable"))
             {
                 Debug.Log("[PlayerController] Pickup Pickable");
@@ -346,7 +342,7 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
-            // 3) Прочие интерактивные объекты (щиток и т.п.)
+            
             InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
             if (interactable != null)
             {
@@ -365,12 +361,12 @@ public class PlayerController : MonoBehaviour
 
     public void LockMovementButAllowLook()
     {
-        canMove = false; // блокируем движение
-                         // но не трогаем камеру — игрок может осматриваться
+        canMove = false;
+                         
     }
     public void StartCinematicPan(Transform target, float duration)
     {
-        isCinematic = true; // Блокируем мышь
+        isCinematic = true;
         StartCoroutine(PanToTarget(target, duration));
     }
 

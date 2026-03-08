@@ -48,20 +48,20 @@ public class CinematicReveal : MonoBehaviour
             foreach (var r in manRenderers) r.enabled = false;
         }
         
-        // Гарантируем чистое состояние на старте
+        
         ResetCinematicState();
     }
 
-    // ЭТА ФУНКЦИЯ ЧИНИТ БАГ: ОНА СБРАСЫВАЕТ СЦЕНУ ПРИ РЕСПАУНЕ
+    
     public void ResetCinematicState()
     {
         StopAllCoroutines(); 
         hasTriggered = false; 
 
-        // 1. Включаем триггер обратно
+        
         if (myCollider != null) myCollider.enabled = true;
 
-        // 2. Выключаем все эффекты
+        
         if (smokeParticles != null) smokeParticles.Stop();
         if (sparkParticles != null) sparkParticles.Stop();
         if (sparksBaseLight != null) sparksBaseLight.SetActive(false);
@@ -69,7 +69,7 @@ public class CinematicReveal : MonoBehaviour
         
         if (flickerCoroutine != null) StopCoroutine(flickerCoroutine);
 
-        // 3. Сбрасываем врага
+        
         if (umbrellaMan != null)
         {
             var chase = umbrellaMan.GetComponent<UmbrellaManChase>();
@@ -87,7 +87,7 @@ public class CinematicReveal : MonoBehaviour
         //Debug.Log("Cinematic: Дверь дала добро! ЗАПУСК!");
         //hasTriggered = true;
         
-        //// Временно выключаем триггер, пока идет сцена
+        
         //if (myCollider != null) myCollider.enabled = false;
 
         //StartCoroutine(PlayCinematicSequence());
@@ -206,7 +206,7 @@ public class CinematicReveal : MonoBehaviour
         if (player != null) { StartCoroutine(DoZoom(60f, 0.5f)); player.isCinematic = false; player.SetCanMove(true); }
         if (umbrellaMan != null) { var chase = umbrellaMan.GetComponent<UmbrellaManChase>(); if (chase != null) chase.StartChase(); }
         
-        // УБРАЛИ Destroy(gameObject), ТЕПЕРЬ ВСЁ РАБОТАЕТ ВЕЧНО
+        
     }
 
 

@@ -94,7 +94,7 @@ public class DeathHandler : MonoBehaviour
         float timer = 0f;
         Quaternion startRotation = playerCamera.rotation;
         
-        // 1. ФАЗА СКРИМЕРА (Резкий поворот + Эффекты)
+        
         while (timer < scareDuration)
         {
             timer += Time.deltaTime;
@@ -102,32 +102,31 @@ public class DeathHandler : MonoBehaviour
 
             if (target != null)
             {
-                // Считаем точку взгляда
+                
                 Vector3 lookTarget = target.position + Vector3.up * enemyEyeHeight;
                 Vector3 direction = (lookTarget - playerCamera.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
                 
-                // Lerp теперь будет очень быстрым из-за высокого turnSpeed и короткого scareDuration
+                
                 playerCamera.rotation = Quaternion.Slerp(startRotation, lookRotation, progress * turnSpeed);
             }
 
             if (horrorVolume != null)
             {
-                // Эффекты нарастают резко
+                
                 horrorVolume.weight = Mathf.Lerp(0f, 1f, progress);
             }
 
             yield return null;
         }
 
-        // Гарантируем, что эффекты включены на 100% в конце фазы
+        
         if (horrorVolume != null) horrorVolume.weight = 1f;
 
-        // 2. ФАЗА ПАУЗЫ (Смотрим на врага)
-        // Ждем указанное время, ничего не делая — просто страх
+        
         yield return new WaitForSeconds(stareDuration);
 
-        // 3. ФАЗА ТЕКСТА (Появление UI)
+        
         if (gameOverUI != null)
         {
             gameOverUI.gameObject.SetActive(true);
@@ -156,34 +155,33 @@ public class DeathHandler : MonoBehaviour
     }
     public void RestartGame()
     {
-        // 1. Ищем CinematicReveal и говорим ему: "СБРОСЬСЯ!"
+        
         CinematicReveal cinematic = FindObjectOfType<CinematicReveal>();
         if (cinematic != null)
         {
             cinematic.ResetCinematicState();
         }
 
-        // 2. Сбрасываем флаги смерти
+        
         PlayerController.isGameEnded = false;
         isDead = false;
 
-        // 3. Выключаем экран смерти
+        
         if (gameOverUI != null) gameOverUI.gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         if (horrorVolume != null) horrorVolume.weight = 0f;
 
-        // 4. Возвращаем управление игроку
+        
         if (playerController != null)
         {
             playerController.isCinematic = false;
             playerController.SetCanMove(true);
             
-            // Если нужно вернуть игрока назад в коридор — раскомментируй и впиши координаты:
-            // playerController.transform.position = new Vector3(0, 0, 0); 
+            
         }
         
-        // 5. Возвращаем музыку
+        
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.FadeToVolume(1f, 1f);

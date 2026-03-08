@@ -2,33 +2,30 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Простой переход между двумя сценами по клавишам.
-/// Минимум логики: A -> B (goKey), B -> A (backKey).
-/// </summary>
+
 public sealed class SimpleSceneHotkeys : MonoBehaviour
 {
     [Header("Target")]
-    [Tooltip("Имя целевой сцены (как в файле .unity и Build Settings).")]
+    [Tooltip("пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ .unity пїЅ Build Settings).")]
     public string targetSceneName = "SoundScene";
 
     [Header("Hotkeys")]
     public KeyCode goKey = KeyCode.F10;
     public KeyCode backKey = KeyCode.F9;
 
-    private string _previousScene; // почему: нужно помнить, куда возвращаться
+    private string _previousScene;
 
     private void Update()
     {
         if (!string.IsNullOrWhiteSpace(targetSceneName) && Input.GetKeyDown(goKey))
         {
-            // Уже в целевой сцене — не прыгаем повторно
+            
             var current = SceneManager.GetActiveScene().name;
             if (current == targetSceneName) return;
 
             if (!CanLoadByName(targetSceneName))
             {
-                Debug.LogWarning($"[SimpleSceneHotkeys] Сцена '{targetSceneName}' не в Build Settings.");
+                Debug.LogWarning($"[SimpleSceneHotkeys] пїЅпїЅпїЅпїЅпїЅ '{targetSceneName}' пїЅпїЅ пїЅ Build Settings.");
                 return;
             }
 
@@ -40,12 +37,12 @@ public sealed class SimpleSceneHotkeys : MonoBehaviour
         {
             if (!CanLoadByName(_previousScene))
             {
-                Debug.LogWarning($"[SimpleSceneHotkeys] Предыдущая сцена '{_previousScene}' не в Build Settings.");
+                Debug.LogWarning($"[SimpleSceneHotkeys] пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ '{_previousScene}' пїЅпїЅ пїЅ Build Settings.");
                 return;
             }
 
             var backTo = _previousScene;
-            _previousScene = null; // чтобы избежать циклов при спаме клавиши
+            _previousScene = null;
             SceneManager.LoadScene(backTo, LoadSceneMode.Single);
         }
     }

@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro; // Обязательно для TextMeshPro
+using TMPro;
 
 public class SkipPulse : MonoBehaviour
 {
@@ -12,11 +12,11 @@ public class SkipPulse : MonoBehaviour
     
     [Tooltip("Минимальная прозрачность (самая тусклая точка)")]
     [Range(0f, 1f)]
-    public float minAlpha = 0.2f; // Ставим мало, чтобы было "еле заметно"
+    public float minAlpha = 0.2f;
 
     [Tooltip("Максимальная прозрачность (самая яркая точка)")]
     [Range(0f, 1f)]
-    public float maxAlpha = 0.7f; // Не 1.0, чтобы не было слишком ярко
+    public float maxAlpha = 0.7f;
 
     [Header("Настройки Появления (Fade In)")]
     [Tooltip("За сколько секунд текст появится после открытия диалога")]
@@ -26,17 +26,17 @@ public class SkipPulse : MonoBehaviour
 
     void Start()
     {
-        // Если забыл привязать вручную, пробуем найти сами
+        
         if (textComponent == null)
             textComponent = GetComponent<TMP_Text>();
     }
 
     void OnEnable()
     {
-        // Сбрасываем таймер появления каждый раз, когда диалог включается
+        
         currentFadeTime = 0f;
         
-        // Сразу делаем текст невидимым, чтобы он начал проявляться
+        
         SetAlpha(0f);
     }
 
@@ -44,26 +44,23 @@ public class SkipPulse : MonoBehaviour
     {
         if (textComponent == null) return;
 
-        // 1. Логика плавного входа (Intro Fade In)
-        // Текст постепенно проявляется от 0 до 1 (множитель)
+        
         float introMultiplier = 1f;
         if (currentFadeTime < fadeInDuration)
         {
             currentFadeTime += Time.deltaTime;
             introMultiplier = currentFadeTime / fadeInDuration;
-            // Можно добавить плавности (Ease Out)
+            
             introMultiplier = Mathf.SmoothStep(0f, 1f, introMultiplier);
         }
 
-        // 2. Логика пульсации (Sine Wave)
-        // Mathf.Sin дает значения от -1 до 1. Превращаем это в диапазон 0..1
+        
         float wave = (Mathf.Sin(Time.time * speed) + 1f) / 2f;
         
-        // Интерполируем между min и max прозрачностью
+        
         float pulseAlpha = Mathf.Lerp(minAlpha, maxAlpha, wave);
 
-        // 3. Итоговая прозрачность
-        // Умножаем пульсацию на интро (пока интро идет, альфа будет расти от 0 до пульсации)
+        
         float finalAlpha = pulseAlpha * introMultiplier;
 
         SetAlpha(finalAlpha);
