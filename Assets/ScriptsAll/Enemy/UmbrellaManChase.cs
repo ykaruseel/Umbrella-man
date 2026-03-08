@@ -108,7 +108,6 @@ public class UmbrellaManChase : MonoBehaviour
         StartFootsteps();
         StartHeartbeat();
 
-        // Запускаем анимацию ходьбы
         if (anim != null) anim.SetBool("isMoving", true);
 
         yield return new WaitForSeconds(preChaseDelay);

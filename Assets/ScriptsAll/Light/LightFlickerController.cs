@@ -23,7 +23,7 @@ public class LightFlickerController : MonoBehaviour
 
     void Start()
     {
-         // Запоминаем начальную яркость мигающих ламп
+     
         foreach(Light l in lightsToFlicker)
         {
             if(l != null) initialIntensities.Add(l.intensity);
@@ -31,18 +31,16 @@ public class LightFlickerController : MonoBehaviour
         }
     }
 
-    // --- ГЛАВНЫЕ МЕТОДЫ ---
-
-    // 1. Выключить АБСОЛЮТНО ВЕСЬ свет (для успеха QTE)
+   
     public void TurnOffAllLights()
     {
-        // Выключаем мигающие лампы
+        
         foreach (Light l in lightsToFlicker)
         {
             if(l) l.enabled = false;
         }
 
-        // Выключаем статичные лампы (коридор и т.д.)
+ 
         if (staticLightsToTurnOff != null)
         {
             foreach (Light l in staticLightsToTurnOff)
@@ -54,10 +52,10 @@ public class LightFlickerController : MonoBehaviour
         Debug.Log("ВЕСЬ СВЕТ (мигающий и статичный) ВЫКЛЮЧЕН.");
     }
 
-    // 2. Включить весь свет обратно (если нужно восстановить)
+   
     public void TurnOnAllLights()
     {
-        // Включаем мигающие
+      
         for (int i = 0; i < lightsToFlicker.Count; i++)
         {
             if(lightsToFlicker[i]) 
@@ -68,7 +66,7 @@ public class LightFlickerController : MonoBehaviour
             }
         }
         
-        // Включаем статичные
+   
         if (staticLightsToTurnOff != null)
         {
             foreach (Light l in staticLightsToTurnOff)
@@ -87,21 +85,21 @@ public class LightFlickerController : MonoBehaviour
             yield break;
         }
         
-        // Выключаем только мигающие перед стартом шоу
+   
         foreach (Light l in lightsToFlicker) { if(l) l.enabled = false; }
         yield return new WaitForSeconds(0.5f);
 
         float currentDelay = initialDelay;
         int lightsPerStage = Mathf.CeilToInt((float)lightsToFlicker.Count / stages);
 
-        // Этап 1
+        
         if (lightsToFlicker.Count > 0 && lightsToFlicker[0] != null)
         {
             yield return FlickerLights(new List<Light>() { lightsToFlicker[0] }, currentDelay, 5);
             currentDelay = Mathf.Max(minDelay, currentDelay - acceleration * 5);
         }
 
-        // Этап 2
+        
         if (stages > 1 && lightsToFlicker.Count > 1)
         {
             int count = Mathf.Min(lightsToFlicker.Count, lightsPerStage * (stages > 2 ? 1 : 2));
@@ -110,17 +108,17 @@ public class LightFlickerController : MonoBehaviour
             currentDelay = Mathf.Max(minDelay, currentDelay - acceleration * 8);
         }
 
-        // Этап 3
+        
         while (currentDelay > minDelay)
         {
             yield return FlickerLights(lightsToFlicker, currentDelay, 1);
             currentDelay = Mathf.Max(minDelay, currentDelay - acceleration);
         }
 
-        // Финал мигания
+      
         yield return FlickerLights(lightsToFlicker, minDelay, 15);
 
-        TurnOnAllLights(); // Включаем всё обратно
+        TurnOnAllLights(); 
         onCompleteCallback?.Invoke();
     }
 
@@ -135,7 +133,7 @@ public class LightFlickerController : MonoBehaviour
         }
     }
 
-     // Включить свет на максимум (для провала QTE)
+     
      public void MaxOutLights()
      {
           for (int i = 0; i < lightsToFlicker.Count; i++)
@@ -147,23 +145,20 @@ public class LightFlickerController : MonoBehaviour
                     lightsToFlicker[i].intensity = initialIntensities[i] * 3;
              }
          }
-         // Статичные тоже можно включить, если они были выключены
+     
          if (staticLightsToTurnOff != null)
          {
             foreach (Light l in staticLightsToTurnOff) { if(l) l.enabled = true; }
          }
      }
 
-     // --- МЕТОДЫ ДЛЯ ПОГОНИ ---
+   
 
      public void StartPulsingFlicker()
      {
-         // Гасим всё перед пульсацией
+        
          foreach (Light l in lightsToFlicker) { if(l) l.enabled = false; }
-         // Статичные НЕ трогаем или гасим - по желанию. 
-         // Обычно при погоне статичный свет тоже должен пугать, но пока оставим его включенным или выключим:
-         // Если хотите полную темноту с пульсацией - раскомментируйте строку ниже:
-         // if (staticLightsToTurnOff != null) foreach (Light l in staticLightsToTurnOff) { if(l) l.enabled = false; }
+        
 
          pulsingCoroutine = StartCoroutine(PulsingFlicker());
      }
