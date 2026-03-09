@@ -1,5 +1,4 @@
-// FollowLightController.cs — fixed: all lamps steady ON at sequence start; only active lamp flickers.
-// Includes per-lamp delays, sound debounce and final sequence (no strobe).
+
 using UnityEngine;
 using System.Collections;
 using FMODUnity;
@@ -53,7 +52,7 @@ public class FollowLightController : MonoBehaviour
         }
     }
 
-    // START: все лампы включены ровно; только первая начнёт мигать
+    
     public void StartSequence(QuestManager qm)
     {
         questManager = qm;
@@ -61,7 +60,7 @@ public class FollowLightController : MonoBehaviour
 
         if (lightsSequence == null) return;
 
-        // 1) Включаем ВСЕ лампы (steady ON)
+        
         for (int i = 0; i < lightsSequence.Length; i++)
         {
             var l = lightsSequence[i];
@@ -70,7 +69,7 @@ public class FollowLightController : MonoBehaviour
                 l.enabled = true;
             }
 
-            // 2) останавливаем любые корутины и сбрасываем таймеры звуков
+            
             if (flickerCoroutines != null && i < flickerCoroutines.Length && flickerCoroutines[i] != null)
             {
                 StopCoroutine(flickerCoroutines[i]);
@@ -80,17 +79,17 @@ public class FollowLightController : MonoBehaviour
             if (lastSoundTime != null && i < lastSoundTime.Length)
                 lastSoundTime[i] = -999f;
 
-            // 3) деактивируем триггеры, активируем только для pulsing lamp позже
+            
             var trig = l != null ? l.GetComponent<FollowLightTrigger>() : null;
             if (trig != null)
                 trig.DeactivateTrigger();
         }
 
-        // Запускаем пульс только для первой лампы
+        
         ActivateLight(currentLightIndex);
     }
 
-    // Activate flicker for a single lamp. Do NOT change other lamps' enabled state.
+    
     void ActivateLight(int index)
     {
         if (lightsSequence == null) return;
@@ -153,7 +152,7 @@ public class FollowLightController : MonoBehaviour
         flickerCoroutines[index] = StartCoroutine(FlickerLightCoroutine(index, light, min, max));
     }
 
-    // Called by FollowLightTrigger when player approaches
+    
     public void LightTriggered(int index)
     {
         Debug.Log("FollowLightController: LightTriggered called for index " + index);
@@ -163,29 +162,29 @@ public class FollowLightController : MonoBehaviour
 
         Light light = lightsSequence[index];
 
-        // stop flicker coroutine for this lamp
+        
         if (flickerCoroutines != null && index < flickerCoroutines.Length && flickerCoroutines[index] != null)
         {
             StopCoroutine(flickerCoroutines[index]);
             flickerCoroutines[index] = null;
         }
 
-        // set steady ON
+        
         if (light != null)
             light.enabled = true;
 
-        // play on-sound with debounce
+        
         if (light != null && !lightOnEvent.IsNull)
         {
             if (CanPlaySoundForLamp(index))
                 RuntimeManager.PlayOneShotAttached(lightOnEvent, light.gameObject);
         }
 
-        // deactivate trigger
+        
         var trig = light != null ? light.GetComponent<FollowLightTrigger>() : null;
         if (trig != null) trig.DeactivateTrigger();
 
-        // advance or final
+        
         if (index == lightsSequence.Length - 1)
         {
             Debug.Log("FollowLightController: Last light reached, starting final sequence.");
@@ -204,20 +203,20 @@ public class FollowLightController : MonoBehaviour
                 perLampMaxDelay[index] *= 0.9f;
             }
 
-            // small delay before next lamp starts flickering to avoid immediate double-click feeling
+            
             StartCoroutine(DelayedActivateNext(currentLightIndex, 0.25f));
         }
     }
 
-    // Delayed activation so player has small breathing space
+    
     private IEnumerator DelayedActivateNext(int index, float delay)
     {
         yield return new WaitForSeconds(delay);
         ActivateLight(index);
     }
 
-    // Flicker coroutine — toggles the lamp. First iteration ensures it's ON before toggling off,
-    // so other lamps never end up all off at start.
+    
+    
     IEnumerator FlickerLightCoroutine(int index, Light light, float min, float max)
     {
         if (light == null) yield break;
@@ -253,7 +252,7 @@ public class FollowLightController : MonoBehaviour
         }
     }
 
-    // Final sequence: no fast strobe, controlled toggles, then final off and chase trigger
+    
     IEnumerator FinalLightSequence(Light light)
     {
         Debug.Log("FollowLightController: Starting FINAL light sequence.");
@@ -277,7 +276,7 @@ public class FollowLightController : MonoBehaviour
         float wait2 = Mathf.Clamp(Random.Range(min, max) * 0.6f, 0.02f, 1f);
         float wait3 = Mathf.Clamp(Random.Range(min, max) * 0.8f, 0.02f, 1f);
 
-        // sequence: on -> off -> on -> final off (sounds debounced)
+        
         light.enabled = true;
         if (!lightOnEvent.IsNull && CanPlaySoundForLamp(lastIndex)) RuntimeManager.PlayOneShotAttached(lightOnEvent, light.gameObject);
         yield return new WaitForSeconds(wait1);

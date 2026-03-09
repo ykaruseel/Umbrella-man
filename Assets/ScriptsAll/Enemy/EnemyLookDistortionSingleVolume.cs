@@ -28,8 +28,8 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
     public LayerMask occlusionMask = ~0;
 
     [Header("Tuning (reduce to weaken effects)")]
-    [Range(0f, 1f)] public float postProcessStrength = 0.6f; // overall multiplier - tweak this down to weaken effects
-    [Range(0f, 1f)] public float pulseAmplitude = 0.08f; // was ~0.15 - lower for less strong pulse
+    [Range(0f, 1f)] public float postProcessStrength = 0.6f; 
+    [Range(0f, 1f)] public float pulseAmplitude = 0.08f; 
 
     private Camera cam;
 
@@ -104,13 +104,13 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
             Vector3 dirToEnemy = toEnemy.normalized;
             float angle = Vector3.Angle(cam.transform.forward, dirToEnemy);
 
-            // distance zone multiplier (keep smaller to soften effect)
+            
             float distanceZoneMultiplier;
-            if (distance > midDistance) distanceZoneMultiplier = 0.14f; // was 0.2
-            else if (distance > nearDistance) distanceZoneMultiplier = 0.28f; // was 0.4
-            else distanceZoneMultiplier = 0.7f; // was 1.0
+            if (distance > midDistance) distanceZoneMultiplier = 0.14f; 
+            else if (distance > nearDistance) distanceZoneMultiplier = 0.28f; 
+            else distanceZoneMultiplier = 0.7f; 
 
-            // occlusion check
+           
             bool blocked = false;
             if (Physics.Raycast(cam.transform.position, dirToEnemy, out RaycastHit hit, maxDistance, occlusionMask))
             {
@@ -146,28 +146,27 @@ public class EnemyLookDistortionSingleVolume : MonoBehaviour
 
         if (isNearZone && current > 0.5f)
         {
-            float pulse = 1f + pulseAmplitude * Mathf.Sin(Time.time * pulseSpeed); // milder pulse
+            float pulse = 1f + pulseAmplitude * Mathf.Sin(Time.time * pulseSpeed); 
             finalFactor *= pulse;
         }
 
-        // overall strength multiplier (soften everything)
+  
         finalFactor = Mathf.Clamp01(finalFactor * postProcessStrength);
 
-        // Apply softened effects
+        
         if (vignette != null)
         {
-            vignette.intensity.value = Mathf.Lerp(baseVignette, baseVignette + 0.25f, finalFactor); // softer max increase
+            vignette.intensity.value = Mathf.Lerp(baseVignette, baseVignette + 0.25f, finalFactor); 
             vignette.smoothness.value = Mathf.Lerp(baseVignetteSmoothness, 0.5f, finalFactor);
         }
 
         if (colorAdj != null)
         {
-            //colorAdj.postExposure.value = Mathf.Lerp(baseExposure, -0.5f, finalFactor); // less darkening (was -1)
-            colorAdj.contrast.value = Mathf.Lerp(baseContrast, 3f, finalFactor); // softer contrast (was 7)
+            
+            colorAdj.contrast.value = Mathf.Lerp(baseContrast, 3f, finalFactor); 
         }
-
         if (chromatic != null)
-            chromatic.intensity.value = Mathf.Lerp(baseChromatic, 1.5f, finalFactor); // softer chroma
+            chromatic.intensity.value = Mathf.Lerp(baseChromatic, 1.5f, finalFactor); 
 
         if (lens != null)
             lens.intensity.value = Mathf.Lerp(baseLensIntensity, -0.5f, finalFactor);

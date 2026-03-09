@@ -21,11 +21,11 @@ public class QuestUI : MonoBehaviour
 
     [Header("Tutorial Prompt")]
     public TextMeshProUGUI tutorialPromptText; 
-    public float promptAutoCloseTime = 10f; // Через сколько секунд исчезнет само
+    public float promptAutoCloseTime = 10f;
     
     private bool hasPressedQ = false;          
-    private bool isPromptFadingOut = false;    // Флаг, что подсказка уже исчезает
-    private float promptTimer = 0f;            // Таймер для подсказки
+    private bool isPromptFadingOut = false; 
+    private float promptTimer = 0f; 
 
     private CanvasGroup canvasGroup;
     private Coroutine displayCoroutine;
@@ -43,14 +43,14 @@ public class QuestUI : MonoBehaviour
 
     void Update()
     {
-        // --- Логика подсказки "Tap Q" ---
+        
         if (!hasPressedQ && tutorialPromptText != null && !isPromptFadingOut)
         {
-            // 1. Пульсация
+            
             float alpha = 0.3f + Mathf.PingPong(Time.time * 2f, 0.7f);
             tutorialPromptText.color = new Color(tutorialPromptText.color.r, tutorialPromptText.color.g, tutorialPromptText.color.b, alpha);
 
-            // 2. Таймер авто-исчезновения
+            
             promptTimer += Time.deltaTime;
             if (promptTimer >= promptAutoCloseTime)
             {
@@ -58,10 +58,10 @@ public class QuestUI : MonoBehaviour
             }
         }
 
-        // --- Обработка нажатия Q ---
+        
         if (Input.GetKeyDown(KeyCode.Q))
         {
-             // Если подсказка еще висит — плавно убираем её
+             
              if (!hasPressedQ)
              {
                  if (!isPromptFadingOut) StartCoroutine(FadeOutPrompt());
@@ -69,16 +69,16 @@ public class QuestUI : MonoBehaviour
 
              ShowQuestTemporarily();
              
-             // Включаем панель управления (она должна быть дочерней к questPanel, чтобы плавно исчезнуть)
+             
              if (controlsPanel != null) controlsPanel.SetActive(true);
         }
     }
 
-    // Корутина для плавного исчезновения подсказки "Tap Q"
+    
     IEnumerator FadeOutPrompt()
     {
         isPromptFadingOut = true;
-        hasPressedQ = true; // Больше не показываем
+        hasPressedQ = true;
 
         float duration = 1.0f;
         float timer = 0f;
@@ -160,10 +160,10 @@ public class QuestUI : MonoBehaviour
         }
         canvasGroup.alpha = 1;
 
-        // Visible
+        
         yield return new WaitForSeconds(visibleTime);
 
-        // Fade Out
+        
         timer = 0;
         while (timer < fadeOutTime)
         {

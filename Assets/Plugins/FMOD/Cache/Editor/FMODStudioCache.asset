@@ -259,10 +259,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639083986751847179
+  lastModified: 639085728114647758
   FileSizes:
   - Name: Desktop
-    Value: 2446
+    Value: 2476
   Exists: 1
 --- !u!114 &-5818334718709818027
 MonoBehaviour:
@@ -318,30 +318,6 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 0
---- !u!114 &-5091701768379979806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/ambient/Area
-  m_EditorClassIdentifier: 
-  Name: Area
-  StudioPath: 
-  Min: 0
-  Max: 1
-  Default: 0
-  ID:
-    data1: 1051083592
-    data2: 3371954083
-  Type: 0
-  IsGlobal: 0
-  Labels: []
-  Exists: 1
 --- !u!114 &-4661074941603050904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,10 +415,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639083986751817408
+  lastModified: 639085728114619159
   FileSizes:
   - Name: Desktop
-    Value: 9036192
+    Value: 9050560
   Exists: 1
 --- !u!114 &-2389006954385351409
 MonoBehaviour:
@@ -590,20 +566,48 @@ MonoBehaviour:
   - {fileID: 8796229747903559745}
   - {fileID: -4661074941603050904}
   - {fileID: 6796018810949169705}
+  - {fileID: 287105674858362597}
   - {fileID: -2699777285015492189}
   - {fileID: -8021645440373705052}
   - {fileID: -7073522169605571070}
   - {fileID: -2389006954385351409}
   - {fileID: -510329170306464809}
   - {fileID: 6911577824956472809}
-  - {fileID: 3833457610413843269}
+  - {fileID: 7488933356382493641}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2609684373490591824}
   StringsBanks:
   - {fileID: -6018097725551979117}
-  cacheTime: 639083986751847179
+  cacheTime: 639085728114647758
   cacheVersion: 131632
+--- !u!114 &287105674858362597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/house_ambient
+  m_EditorClassIdentifier: 
+  Path: event:/house_ambient
+  Guid:
+    Data1: -422220060
+    Data2: 1231043229
+    Data3: 800105882
+    Data4: 1925124348
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 115909
 --- !u!114 &1368022522580965473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -661,34 +665,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 112000
---- !u!114 &3833457610413843269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/ambient
-  m_EditorClassIdentifier: 
-  Path: event:/ambient
-  Guid:
-    Data1: -422220060
-    Data2: 1231043229
-    Data3: 800105882
-    Data4: 1925124348
-  Banks:
-  - {fileID: -2609684373490591824}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters:
-  - {fileID: -5091701768379979806}
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 115909
 --- !u!114 &4464495001815465787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -824,6 +800,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1067
+--- !u!114 &7488933356382493641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/apartment_ambient
+  m_EditorClassIdentifier: 
+  Path: event:/apartment_ambient
+  Guid:
+    Data1: 25843848
+    Data2: 1174512775
+    Data3: -11300675
+    Data4: -1947805138
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 115909
 --- !u!114 &7739967697791764525
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -174,7 +174,7 @@ public class ObjectInteraction : MonoBehaviour
     }
 
 
-    // Вспомогательные методы
+    
     public bool IsHoldingObject()
     {
         return heldObject != null;

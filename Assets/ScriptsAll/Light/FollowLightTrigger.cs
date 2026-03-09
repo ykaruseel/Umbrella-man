@@ -4,10 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(SphereCollider))]
 public class FollowLightTrigger : MonoBehaviour
 {
-    // Ссылка на главный контроллер (перетащим в инспекторе)
+  
     public FollowLightController controller; 
     
-    // Номер этой лампы в цепочке (0, 1, 2, 3...)
+   
     public int lightIndex; 
     
     private SphereCollider trigger;
@@ -20,19 +20,19 @@ public class FollowLightTrigger : MonoBehaviour
         trigger.enabled = false;
     }
 
-    // Включает триггер
+   
     public void ActivateTrigger()
     {
         trigger.enabled = true;
     }
 
-    // Выключает триггер
+ 
     public void DeactivateTrigger()
     {
         trigger.enabled = false;
     }
 
-    // Когда игрок входит в зону
+ 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

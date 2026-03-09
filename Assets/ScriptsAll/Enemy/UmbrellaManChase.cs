@@ -7,7 +7,7 @@ using FMOD.Studio;
 public class UmbrellaManChase : MonoBehaviour
 {
     [Header("Animation Settings")]
-    public Animator anim; // СЮДА ПЕРЕТАЩИ КОМПОНЕНТ ANIMATOR
+    public Animator anim;
 
     [Header("References")]
     public Transform player;
@@ -49,7 +49,7 @@ public class UmbrellaManChase : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
 
-        // Если забыл назначить аниматор вручную, пробуем найти сами
+        
         if (anim == null) anim = GetComponentInChildren<Animator>();
 
         if (agent == null)
@@ -108,7 +108,6 @@ public class UmbrellaManChase : MonoBehaviour
         StartFootsteps();
         StartHeartbeat();
 
-        // Запускаем анимацию ходьбы
         if (anim != null) anim.SetBool("isMoving", true);
 
         yield return new WaitForSeconds(preChaseDelay);
@@ -134,7 +133,7 @@ public class UmbrellaManChase : MonoBehaviour
             agent.enabled = false;
         }
 
-        // Останавливаем анимацию
+        
         if (anim != null) anim.SetBool("isMoving", false);
 
         StopBreathingLoop();
@@ -149,14 +148,14 @@ public class UmbrellaManChase : MonoBehaviour
 
         agent.SetDestination(player.position);
 
-        // --- УПРАВЛЕНИЕ АНИМАЦИЕЙ ---
+        
         if (anim != null)
         {
-            // Если скорость агента больше 0.1, значит он идет
+            
             bool isMoving = agent.velocity.sqrMagnitude > 0.1f;
             anim.SetBool("isMoving", isMoving);
         }
-        // -----------------------------
+        
 
         if (Vector3.Distance(transform.position, player.position) <= catchDistance)
             HandleCatch();
@@ -169,19 +168,19 @@ public class UmbrellaManChase : MonoBehaviour
         hasCaughtPlayer = true;
         isChasing = false;
 
-        // 1. Останавливаем врага
+        
         if (agent != null)
             agent.isStopped = true;
 
-        // Останавливаем анимацию при поимке
+        
         if (anim != null) anim.SetBool("isMoving", false);
 
-        // 2. Глушим звуки
+        
         StopBreathingLoop();
         StopFootsteps();
         StopHeartbeat();
 
-        // 3. Вызываем смерть
+        
         if (player != null)
         {
             var deathHandler = player.GetComponent<DeathHandler>();
@@ -202,7 +201,7 @@ public class UmbrellaManChase : MonoBehaviour
         }
     }
 
-    // --- СБРОС (Для починки бага с респавном) ---
+    
     public void ResetChase()
     {
         StopBreathingLoop();
@@ -218,18 +217,18 @@ public class UmbrellaManChase : MonoBehaviour
         if (agent != null)
             agent.enabled = false;
 
-        // Сбрасываем анимацию полностью
+        
         if (anim != null)
         {
             anim.Rebind(); 
             anim.SetBool("isMoving", false);
         }
 
-        // ВАЖНО: Выключаем самого человека
+        
         gameObject.SetActive(false); 
     }
 
-    // ... ОСТАЛЬНЫЕ МЕТОДЫ FMOD БЕЗ ИЗМЕНЕНИЙ ...
+    
     private void StartBreathingLoop()
     {
         if (breathingLoopEvent.IsNull) return;
@@ -296,7 +295,7 @@ public class UmbrellaManChase : MonoBehaviour
     {
         if (!isChasing) return;
         if (agent != null && agent.enabled) agent.isStopped = true;
-        if (anim != null) anim.speed = 0; // Пауза анимации
+        if (anim != null) anim.speed = 0;
         PauseBreathing(true);
         PauseHeartbeat(true);
     }
@@ -305,7 +304,7 @@ public class UmbrellaManChase : MonoBehaviour
     {
         if (!isChasing || hasCaughtPlayer) return;
         if (agent != null && agent.enabled) agent.isStopped = false;
-        if (anim != null) anim.speed = 1; // Продолжить анимацию
+        if (anim != null) anim.speed = 1;
         StartCoroutine(FootstepLoop());
         PauseBreathing(false);
         PauseHeartbeat(false);
