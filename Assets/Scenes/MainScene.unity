@@ -49427,6 +49427,79 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1589211369}
   m_CullTransparentMesh: 1
+--- !u!1 &1589358159
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1589358160}
+  - component: {fileID: 1589358161}
+  - component: {fileID: 1589358162}
+  m_Layer: 0
+  m_Name: BasementZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1589358160
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589358159}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -13.42, y: -9.23, z: 24.76}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1892586744}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1589358161
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589358159}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10.294383, y: 4.6861143, z: 9.173998}
+  m_Center: {x: -2.4393115, y: 1.6788392, z: 1.4640207}
+--- !u!114 &1589358162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589358159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64cf936c965dc964aa9c09b4515dcc66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basementSnapshot:
+    Guid:
+      Data1: 1408180764
+      Data2: 1219259560
+      Data3: -1773405524
+      Data4: -60620714
+    Path: snapshot:/Reverb_Basement
 --- !u!1 &1591200466 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cca9c5ae1248de3409dd38efb14c69a7,
@@ -50717,6 +50790,7 @@ GameObject:
   - component: {fileID: 1624307706}
   - component: {fileID: 1624307710}
   - component: {fileID: 1624307709}
+  - component: {fileID: 1624307711}
   m_Layer: 0
   m_Name: BlockZone
   m_TagString: Untagged
@@ -50771,8 +50845,27 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 17.088242, y: 11.5723, z: 30.209156}
-  m_Center: {x: -17.553268, y: -2.3355446, z: 12.150064}
+  m_Size: {x: 19.72705, y: 11.5723, z: 24.004238}
+  m_Center: {x: -18.872673, y: -2.3355446, z: 9.0476055}
+--- !u!114 &1624307711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624307705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29bc95feee668664385e573276c609b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stairwellSnapshot:
+    Guid:
+      Data1: -412914045
+      Data2: 1091081582
+      Data3: 355278516
+      Data4: 843878287
+    Path: snapshot:/Reverb_Stairwell
 --- !u!1 &1625949827
 GameObject:
   m_ObjectHideFlags: 0
@@ -57690,6 +57783,7 @@ Transform:
   m_Children:
   - {fileID: 1655616892}
   - {fileID: 1624307706}
+  - {fileID: 1589358160}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1893415701
