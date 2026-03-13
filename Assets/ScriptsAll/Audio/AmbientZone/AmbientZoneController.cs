@@ -26,6 +26,11 @@ public class AmbientController : MonoBehaviour
         StartTransition(1f);
     }
 
+    public void SetBasement()
+    {
+        StartTransition(2f);
+    }
+
     void StartTransition(float target)
     {
         if (transition != null) StopCoroutine(transition);
