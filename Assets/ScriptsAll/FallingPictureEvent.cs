@@ -29,7 +29,10 @@ public class FallingPicture : MonoBehaviour
         rb.isKinematic = false;
         
         
-        rb.AddForce(transform.forward * 2f, ForceMode.Impulse); 
+        rb.AddForce(transform.forward * 0.1f, ForceMode.Impulse); 
+
+        
+        rb.AddTorque(transform.right * 0.1f, ForceMode.Impulse); 
         
         isFalling = true;
     }
