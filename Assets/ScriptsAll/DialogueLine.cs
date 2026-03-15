@@ -1,12 +1,12 @@
 using UnityEngine;
 
 
-[System.Serializable] // Эта строчка важна, чтобы мы могли редактировать диалоги в инспекторе
+[System.Serializable] 
 
 public class DialogueLine
 {
-    public string speakerName; // Имя того, кто говорит
+    public string speakerName; 
 
-    [TextArea(3, 10)] // Делает текстовое поле в инспекторе больше и удобнее
-    public string sentence; // Сама реплика
+    [TextArea(3, 10)] 
+    public string sentence;
 }

@@ -1,29 +1,29 @@
-// Файл: Quest.cs (Оставляем как было)
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quest System/New Quest")]
 public class Quest : ScriptableObject
 {
-    public string questID; // Добавим ID для удобства поиска
+    public string questID;
     public string questTitle;
     [TextArea(3, 10)]
-    public string questDescription; // Не используется в UI, но полезно для описания
+    public string questDescription;
     public QuestObjective[] objectives;
     public bool isComplete = false;
-    public Quest nextQuest; // Ссылка на следующий квест в цепочке
+    public Quest nextQuest;
 
-    [HideInInspector] public int currentObjectiveIndex = 0; // Отслеживаем текущую цель
+    [HideInInspector] public int currentObjectiveIndex = 0;
 
     public bool CheckObjectives()
     {
-        // В линейном квесте проверяем только текущую цель
+        
         if (currentObjectiveIndex >= objectives.Length)
         {
              isComplete = true;
              return true;
         }
         return false;
-        // Можно добавить проверку всех, если нужно будет
+        
     }
 
     public QuestObjective GetCurrentObjective()
@@ -48,12 +48,12 @@ public class Quest : ScriptableObject
 [System.Serializable]
 public class QuestObjective
 {
-    public string objectiveDescription; // "Поставить вазу на стол 0/4"
+    public string objectiveDescription;
     public ObjectiveType objectiveType;
-    public string targetID;             // ID цели ("Vase", "Door", "Panel")
-    public int requiredAmount = 1;      // Для квеста 1 (сколько предметов)
-    [HideInInspector] public int currentAmount = 0; // Текущее количество
-    [HideInInspector] public bool isComplete = false; // Используем CompleteObjective для установки
+    public string targetID;    
+    public int requiredAmount = 1;   
+    [HideInInspector] public int currentAmount = 0;
+    [HideInInspector] public bool isComplete = false;
 }
 
 public enum ObjectiveType

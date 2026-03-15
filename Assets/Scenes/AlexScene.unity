@@ -362,6 +362,7 @@ MonoBehaviour:
   - speakerName: Lester
     sentence: Be careful. There are problems with the lighting again today.
   interactionPrompt: {fileID: 1272709741}
+  monsterTriggerScript: {fileID: 0}
   knockSound:
     Guid:
       Data1: 26153199
@@ -4249,6 +4250,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Entrance_door
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bb53983a7fdfd2d45ab8d94a023d930b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2134676594697312699, guid: bb53983a7fdfd2d45ab8d94a023d930b,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -4626,6 +4632,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemID: TV
+  isPlaced: 0
 --- !u!54 &285454672
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5938,6 +5945,13 @@ MonoBehaviour:
   turnSpeed: 15.1
   stareDuration: 3
   enemyEyeHeight: 0.7
+  deathScreamerEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!1 &340111086
 GameObject:
   m_ObjectHideFlags: 0
@@ -15858,6 +15872,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemID: Lamp
+  isPlaced: 0
 --- !u!54 &651635692
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -20898,6 +20913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemID: Art
+  isPlaced: 0
 --- !u!65 &920288754
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23337,6 +23353,7 @@ MonoBehaviour:
   - speakerName: NPC
     sentence: This is cheese lair
   interactionPrompt: {fileID: 1016952845}
+  monsterTriggerScript: {fileID: 0}
   knockSound:
     Guid:
       Data1: 0
@@ -26049,6 +26066,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemID: Plant
+  isPlaced: 0
 --- !u!65 &1241455891
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -28321,21 +28339,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217f6039ff2d21a41ab61022a1b1e1ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredQuestID: 
+  canActivate: 0
+  electricPanelLight: {fileID: 0}
   player: {fileID: 332663620}
   lookTarget: {fileID: 5399866}
   umbrellaMan: {fileID: 1888251721}
+  oldController: {fileID: 0}
   thirdLamp: {fileID: 2031310956}
   lampModel: {fileID: 309428907}
   smokeParticles: {fileID: 1712302191}
   sparkParticles: {fileID: 0}
-  lightFlickerSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+  sparksBaseLight: {fileID: 0}
   appearSound:
     Guid:
       Data1: 0
@@ -28344,6 +28358,13 @@ MonoBehaviour:
       Data4: 0
     Path: 
   explosionSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  smokeSound:
     Guid:
       Data1: 0
       Data2: 0

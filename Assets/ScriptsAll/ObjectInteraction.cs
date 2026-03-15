@@ -7,7 +7,7 @@ public class ObjectInteraction : MonoBehaviour
     public Camera playerCamera;
     public Transform holdPoint;
     public float interactionDistance = 3f;
-    public LayerMask interactionLayerMask; 
+    public LayerMask interactionLayerMask;
 
     [Header("FMOD Events")]
     [SerializeField] private EventReference pickupEvent;
@@ -27,7 +27,6 @@ public class ObjectInteraction : MonoBehaviour
         if (playerCamera == null) playerCamera = Camera.main;
     }
 
-    // Методы публичные для PlayerController
 
     public void PlaceObject(PlacementSpot spot)
     {
@@ -81,6 +80,14 @@ public class ObjectInteraction : MonoBehaviour
         objTransform.SetParent(null);
 
         heldItemID = null;
+        PlaceableItem placeable = objTransform.GetComponent<PlaceableItem>();
+        if (placeable != null)
+            placeable.isPlaced = true;
+
+        OutlineInteractable outline = objTransform.GetComponent<OutlineInteractable>();
+        if (outline != null)
+            outline.Hide();
+
         heldObject = null;
         heldObjectRb = null;
 
@@ -89,17 +96,29 @@ public class ObjectInteraction : MonoBehaviour
 
     public void PickupObject(GameObject obj)
     {
+        var pulse = obj.GetComponent<PulseHighlight>();
+        if (pulse != null)
+            pulse.Hide();
+
+        OutlineInteractable outline = obj.GetComponent<OutlineInteractable>();
+        if (outline != null)
+            outline.Hide();
+
         heldObject = obj;
         heldObjectRb = heldObject.GetComponent<Rigidbody>();
         originalScale = heldObject.transform.localScale;
         originalLayer = heldObject.layer;
-        
-        // Меняем слой на IgnoreRaycast (обычно 2), чтобы сам предмет не мешал лучам
-        heldObject.layer = 2; 
+
+        heldObject.layer = 2;
+
+        PlaceableItem item = heldObject.GetComponent<PlaceableItem>();
+        if (item != null)
+            item.SetState(PlaceableItem.ItemState.Held);
 
         PlaceableItem placeable = heldObject.GetComponent<PlaceableItem>();
         if (placeable != null)
         {
+            placeable.isPlaced = false;
             heldItemID = placeable.itemID;
             UpdateHighlights(true);
         }
@@ -121,31 +140,26 @@ public class ObjectInteraction : MonoBehaviour
             heldItemID = null;
         }
 
+        PlaceableItem item = heldObject.GetComponent<PlaceableItem>();
+        if (item != null)
+            item.SetState(PlaceableItem.ItemState.OnGround);
+
         heldObject.layer = originalLayer;
         isInteracting = true;
         Physics.IgnoreCollision(heldObject.GetComponent<Collider>(), playerController, true);
-        
-        // Отцепляем от игрока
+
         heldObject.transform.SetParent(null);
 
-        // --- ИСПРАВЛЕНИЕ: ПРОВЕРКА СТЕН (ANTI-CLIP) ---
-        // Пускаем луч от камеры до точки, где должен быть предмет
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         float distanceToHoldPoint = Vector3.Distance(playerCamera.transform.position, holdPoint.position);
 
-        // Маска для стен (обычно Default). Используем ~0 (Все слои), но исключаем слой игрока если нужно.
-        // Здесь мы просто проверяем, ударились ли мы обо что-то твердое (не триггер)
         if (Physics.Raycast(ray, out RaycastHit hit, distanceToHoldPoint))
         {
-            // Проверяем, что это не сам игрок и не триггер
             if (!hit.collider.isTrigger && hit.transform != transform)
             {
-                // Если луч попал в стену — ставим предмет ПЕРЕД стеной (с отступом 20 см)
                 heldObject.transform.position = hit.point - (playerCamera.transform.forward * 0.2f);
             }
         }
-        // Если препятствий нет — предмет остается там, где и был (на holdPoint), ничего менять не надо
-        // ------------------------------------------------
 
         heldObject.transform.localScale = originalScale;
         heldObjectRb.useGravity = true;
@@ -154,11 +168,13 @@ public class ObjectInteraction : MonoBehaviour
         RuntimeManager.PlayOneShot(dropEvent, transform.position);
 
         StartCoroutine(ReEnableCollisionAfterDelay(heldObject.GetComponent<Collider>(), 1f));
+
         heldObject = null;
         heldObjectRb = null;
     }
 
-    // Вспомогательные методы
+
+    
     public bool IsHoldingObject()
     {
         return heldObject != null;
@@ -189,4 +205,7 @@ public class ObjectInteraction : MonoBehaviour
         isInteracting = false;
     }
 }
+
+
+
 

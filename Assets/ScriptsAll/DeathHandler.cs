@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using FMODUnity;
+
 
 public class DeathHandler : MonoBehaviour
 {
@@ -11,20 +13,26 @@ public class DeathHandler : MonoBehaviour
     public CanvasGroup gameOverUI;
     public Transform playerCamera;
 
+
     [Header("Настройки Скримера")]
     [Tooltip("Как быстро происходит поворот и появление эффектов (в секундах). Для скримера ставь мало: 0.3 - 0.5")]
-    public float scareDuration = 0.4f; // Сделали быстрым по умолчанию
+    public float scareDuration = 0.4f; 
 
     [Tooltip("Скорость поворота камеры. Для резкости ставь 15-20.")]
-    public float turnSpeed = 20f;       // Сделали очень быстрым
+    public float turnSpeed = 20f;      
 
     [Header("Настройки Паузы")]
     [Tooltip("Сколько времени смотреть на врага ПОСЛЕ поворота, прежде чем появится надпись.")]
-    public float stareDuration = 1.5f;  // Время "посмотреть в глаза"
+    public float stareDuration = 1.5f;  
 
     [Header("Настройка Взгляда")]
     [Tooltip("Высота глаз врага. Регулируй, чтобы смотреть в лицо.")]
-    public float enemyEyeHeight = 1.5f; 
+    public float enemyEyeHeight = 1.5f;
+    [Header("FMOD – Death Screamer")]
+    [SerializeField] private EventReference deathScreamerEvent;
+    private FMOD.Studio.EventInstance deathScreamerInstance;
+
+
 
     private bool isDead = false;
 
@@ -42,18 +50,34 @@ public class DeathHandler : MonoBehaviour
 
     public void TriggerDeath(Transform enemyFace)
     {
-        // Если игра уже закончилась (например, прошли QTE), то не умираем
         if (PlayerController.isGameEnded) return;
 
-        // Если нет, то СТАВИМ ФЛАГ, что игра закончена
         PlayerController.isGameEnded = true;
-        //if (isDead) return;
         isDead = true;
+
+        if (!deathScreamerEvent.IsNull)
+        {
+            deathScreamerInstance = RuntimeManager.CreateInstance(deathScreamerEvent);
+
+            RuntimeManager.AttachInstanceToGameObject(
+    deathScreamerInstance,
+    playerCamera.gameObject,
+    (Rigidbody)null
+);
+
+            deathScreamerInstance.start();
+        }
 
         if (playerController != null)
         {
-            playerController.SetCanMove(false); 
-            playerController.isCinematic = true; 
+            playerController.SetCanMove(false);
+            playerController.isCinematic = true;
+
+        }
+
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.FadeToVolume(0f, 0.4f);
         }
 
         StartCoroutine(DeathSequence(enemyFace));
@@ -61,10 +85,16 @@ public class DeathHandler : MonoBehaviour
 
     private IEnumerator DeathSequence(Transform target)
     {
+        if (MusicManager.Instance != null)
+        {
+            yield return new WaitForSeconds(2f);
+            MusicManager.Instance.FadeToVolume(0f, 0.4f);
+        }
+
         float timer = 0f;
         Quaternion startRotation = playerCamera.rotation;
         
-        // 1. ФАЗА СКРИМЕРА (Резкий поворот + Эффекты)
+        
         while (timer < scareDuration)
         {
             timer += Time.deltaTime;
@@ -72,32 +102,31 @@ public class DeathHandler : MonoBehaviour
 
             if (target != null)
             {
-                // Считаем точку взгляда
+                
                 Vector3 lookTarget = target.position + Vector3.up * enemyEyeHeight;
                 Vector3 direction = (lookTarget - playerCamera.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
                 
-                // Lerp теперь будет очень быстрым из-за высокого turnSpeed и короткого scareDuration
+                
                 playerCamera.rotation = Quaternion.Slerp(startRotation, lookRotation, progress * turnSpeed);
             }
 
             if (horrorVolume != null)
             {
-                // Эффекты нарастают резко
+                
                 horrorVolume.weight = Mathf.Lerp(0f, 1f, progress);
             }
 
             yield return null;
         }
 
-        // Гарантируем, что эффекты включены на 100% в конце фазы
+        
         if (horrorVolume != null) horrorVolume.weight = 1f;
 
-        // 2. ФАЗА ПАУЗЫ (Смотрим на врага)
-        // Ждем указанное время, ничего не делая — просто страх
+        
         yield return new WaitForSeconds(stareDuration);
 
-        // 3. ФАЗА ТЕКСТА (Появление UI)
+        
         if (gameOverUI != null)
         {
             gameOverUI.gameObject.SetActive(true);
@@ -116,5 +145,46 @@ public class DeathHandler : MonoBehaviour
         gameOverUI.interactable = true;
         gameOverUI.blocksRaycasts = true;
         horrorVolume.weight = 0f;
+
+        if (deathScreamerInstance.isValid())
+        {
+            deathScreamerInstance.release();
+            deathScreamerInstance.clearHandle();
+        }
+
+    }
+    public void RestartGame()
+    {
+        
+        CinematicReveal cinematic = FindObjectOfType<CinematicReveal>();
+        if (cinematic != null)
+        {
+            cinematic.ResetCinematicState();
+        }
+
+        
+        PlayerController.isGameEnded = false;
+        isDead = false;
+
+        
+        if (gameOverUI != null) gameOverUI.gameObject.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        if (horrorVolume != null) horrorVolume.weight = 0f;
+
+        
+        if (playerController != null)
+        {
+            playerController.isCinematic = false;
+            playerController.SetCanMove(true);
+            
+            
+        }
+        
+        
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.FadeToVolume(1f, 1f);
+        }
     }
 }

@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -6,8 +6,10 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask interactionLayerMask;
     public Camera playerCamera;
 
-    private DialogueManager dialogueManager;
-    private PlayerController playerController;
+    DialogueManager dialogueManager;
+    PlayerController playerController;
+
+    OutlineInteractable currentOutline;
 
     void Start()
     {
@@ -17,22 +19,54 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
+        if (!Pause.isPaused)
+            UpdateOutline();
+
         if (Input.GetKeyDown(KeyCode.E) && !Pause.isPaused)
-        {
             HandleInteraction();
+    }
+
+    void UpdateOutline()
+    {
+        Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+
+        if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactionLayerMask))
+        {
+            OutlineInteractable outline = hit.collider.GetComponentInParent<OutlineInteractable>();
+            PlaceableItem item = hit.collider.GetComponentInParent<PlaceableItem>();
+
+            if (outline != null && item != null && item.CurrentState == PlaceableItem.ItemState.OnGround)
+            {
+                if (currentOutline != outline)
+                {
+                    ClearOutline();
+                    currentOutline = outline;
+                    currentOutline.Show();
+                }
+                return;
+            }
+        }
+
+        ClearOutline();
+    }
+
+    void ClearOutline()
+    {
+        if (currentOutline != null)
+        {
+            currentOutline.Hide();
+            currentOutline = null;
         }
     }
 
     void HandleInteraction()
     {
-        // Если диалог активен, не даём взаимодействовать
         if (dialogueManager != null && IsDialogueActive(dialogueManager))
             return;
 
         Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
         if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactionLayerMask))
         {
-            // Проверяем, есть ли на объекте NPC_Dialogue
             NPC_Dialogue npcDialogue = hit.collider.GetComponent<NPC_Dialogue>();
             if (npcDialogue != null)
             {
@@ -40,7 +74,6 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
-            // Проверяем, есть ли InteractableObject (например, щиток)
             InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
             if (interactable != null)
             {
@@ -48,26 +81,21 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
-            // Проверяем, можно ли поднять предмет
             if (hit.collider.CompareTag("Pickable"))
             {
-                ObjectInteraction objectInteraction = GetComponent<ObjectInteraction>();
-                if (objectInteraction != null)
-                {
-                    objectInteraction.PickupObject(hit.collider.gameObject);
-                }
+                ObjectInteraction oi = GetComponent<ObjectInteraction>();
+                if (oi != null)
+                    oi.PickupObject(hit.collider.gameObject);
             }
         }
     }
 
-    private bool IsDialogueActive(DialogueManager manager)
+    bool IsDialogueActive(DialogueManager manager)
     {
-        // Проверяем, активен ли диалог
         var field = typeof(DialogueManager).GetField("isDialogueActive", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         if (field != null)
-        {
             return (bool)field.GetValue(manager);
-        }
+
         return false;
     }
 }

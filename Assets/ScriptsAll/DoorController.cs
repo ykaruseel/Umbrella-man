@@ -1,5 +1,7 @@
-using UnityEngine;
+using FMOD.Studio;
+using FMODUnity;
 using System.Collections;
+using UnityEngine;
 
 public class DoorController : MonoBehaviour
 {
@@ -13,6 +15,8 @@ public class DoorController : MonoBehaviour
 
     [SerializeField] private float autoCloseMin = 10f;
     [SerializeField] private float autoCloseMax = 15f;
+
+    [SerializeField] private EventReference DoorAudio;
 
     private Quaternion closedRotation;
     private Quaternion openRotation;
@@ -28,7 +32,6 @@ public class DoorController : MonoBehaviour
         closedRotation = door.localRotation;
         openRotation = closedRotation * Quaternion.Euler(0, openAngle, 0);
 
-
         handleClosedRotation = handle.localRotation;
         handleOpenRotation = handleClosedRotation * Quaternion.AngleAxis(handleRotationAngle, handleRotationAxis);
     }
@@ -36,11 +39,17 @@ public class DoorController : MonoBehaviour
     public void TryOpenDoor()
     {
         if (isAnimating) return;
-        Debug.Log("Door interaction triggered.");
+
         if (!isOpen)
+        {
             StartCoroutine(OpenDoor());
+            PlayDoorSound(0);
+        }
         else
+        {
+            PlayDoorSound(1);
             StartCoroutine(CloseDoor());
+        }
     }
 
     IEnumerator OpenDoor()
@@ -49,18 +58,13 @@ public class DoorController : MonoBehaviour
 
         float handleTime = openDuration * 0.3f;
         float doorTime = openDuration;
-
         float t;
 
         t = 0f;
         while (t < 1f)
         {
             t += Time.deltaTime / handleTime;
-            handle.localRotation = Quaternion.Slerp(
-                handleClosedRotation,
-                handleOpenRotation,
-                t
-            );
+            handle.localRotation = Quaternion.Slerp(handleClosedRotation, handleOpenRotation, t);
             yield return null;
         }
 
@@ -71,17 +75,8 @@ public class DoorController : MonoBehaviour
         {
             t += Time.deltaTime / doorTime;
 
-            door.localRotation = Quaternion.Slerp(
-                closedRotation,
-                openRotation,
-                t
-            );
-
-            handle.localRotation = Quaternion.Slerp(
-                handleOpenRotation,
-                handleClosedRotation,
-                t
-            );
+            door.localRotation = Quaternion.Slerp(closedRotation, openRotation, t);
+            handle.localRotation = Quaternion.Slerp(handleOpenRotation, handleClosedRotation, t);
 
             yield return null;
         }
@@ -98,7 +93,6 @@ public class DoorController : MonoBehaviour
         autoCloseCoroutine = StartCoroutine(AutoCloseDoor());
     }
 
-
     private IEnumerator CloseDoor()
     {
         isAnimating = true;
@@ -112,6 +106,8 @@ public class DoorController : MonoBehaviour
         }
 
         door.localRotation = closedRotation;
+
+        PlayDoorSound(2);
 
         isOpen = false;
         isAnimating = false;
@@ -129,6 +125,21 @@ public class DoorController : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         if (!isAnimating && isOpen)
+        {
+            PlayDoorSound(1);
             StartCoroutine(CloseDoor());
+        }
+    }
+
+    private void PlayDoorSound(int state)
+    {
+        EventInstance inst = RuntimeManager.CreateInstance(DoorAudio);
+        RuntimeManager.AttachInstanceToGameObject(inst, transform);
+        inst.setParameterByName("Door", state);
+        inst.start();
+        inst.release();
     }
 }
+
+
+

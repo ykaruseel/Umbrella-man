@@ -5,10 +5,13 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class LoadingScreenController : MonoBehaviour
 {
     public static bool CanSwitchScenes = false;
+    public float musicFadeOutTime = 1.5f;
+
 
     [Header("UI")]
     public TMP_Text technicalText;
@@ -18,6 +21,9 @@ public class LoadingScreenController : MonoBehaviour
     [Header("Typewriter")]
     [SerializeField] private float typeSpeed = 0.05f;
     [SerializeField] private float deleteSpeed = 0.03f;
+    [SerializeField] private FMODUnity.EventReference typewriterEvent;
+
+
 
     [Header("Messages")]
     public List<string> technicalMessages;
@@ -51,10 +57,9 @@ public class LoadingScreenController : MonoBehaviour
 
     public IEnumerator TitleWrite()
     {
-        yield return new WaitForSeconds(titleDelay);
-        yield return TypeText(titleLine1, "Do you know");
+        yield return TypeText(titleLine1, "Do you know", true);
         yield return new WaitForSeconds(1.5f);
-        yield return TypeText(titleLine2, "The man with the umbrella?");
+        yield return TypeText(titleLine2, "The man with the umbrella?", true);
 
         yield return new WaitForSeconds(2f);
 
@@ -63,15 +68,37 @@ public class LoadingScreenController : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
+        StartCoroutine(FadeOutMenuMusic(musicFadeOutTime)); 
+
         CanSwitchScenes = true;
     }
 
-    IEnumerator TypeText(TMP_Text text, string content)
+    IEnumerator FadeOutMenuMusic(float duration)
     {
-        text.text = "";
-        foreach (char c in content)
+        var vca = FMODUnity.RuntimeManager.GetVCA("vca:/Music");
+        float t = 0f;
+        float start = 1f;
+
+        while (t < duration)
         {
-            text.text += c;
+            t += Time.deltaTime;
+            vca.setVolume(Mathf.Lerp(start, 0f, t / duration));
+            yield return null;
+        }
+
+        vca.setVolume(0f);
+    }
+    IEnumerator TypeText(TMP_Text targetText, string textToType, bool playSound = false)
+    {
+        targetText.text = "";
+
+        foreach (char c in textToType)
+        {
+            targetText.text += c;
+
+            if (playSound && c != ' ' && !typewriterEvent.IsNull)
+                RuntimeManager.PlayOneShot(typewriterEvent);
+
             yield return new WaitForSeconds(typeSpeed);
         }
     }

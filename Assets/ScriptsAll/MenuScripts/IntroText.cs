@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -16,15 +17,17 @@ public class IntroText : MonoBehaviour
     [SerializeField] private List<string> technicalMessages;
 
     [SerializeField] private GameObject IntroTextGO;
+    [SerializeField] private EventReference typewriterEvent;
+
 
     private void Start()
     {
-        StartCoroutine(SequenceRoutine());
+        //StartCoroutine(SequenceRoutine(2f));
     }
 
-    public IEnumerator SequenceRoutine()
+    public IEnumerator SequenceRoutine(float t)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(t);
 
         IntroTextGO.SetActive(true);
 
@@ -41,9 +44,14 @@ public class IntroText : MonoBehaviour
     IEnumerator TypeText(TMP_Text text, string content)
     {
         text.text = "";
+
         foreach (char c in content)
         {
             text.text += c;
+
+            if (!typewriterEvent.IsNull && c != ' ')
+                RuntimeManager.PlayOneShot(typewriterEvent);
+
             yield return new WaitForSeconds(typeSpeed);
         }
     }

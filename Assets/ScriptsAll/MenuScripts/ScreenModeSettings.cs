@@ -21,7 +21,15 @@ public class ScreenModeSettings : MonoBehaviour
 
     private void Start()
     {
-        currentIndex = PlayerPrefs.GetInt("ScreenMode", 0);
+        if (!PlayerPrefs.HasKey("ScreenMode"))
+        {
+            currentIndex = 2; 
+        }
+        else
+        {
+            currentIndex = PlayerPrefs.GetInt("ScreenMode");
+        }
+
         ApplyMode();
     }
 

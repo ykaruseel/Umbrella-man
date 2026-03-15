@@ -11,7 +11,7 @@ public class Door : MonoBehaviour
     public GameObject invKey;
     public GameObject fadeFX;
 
-    public string nextSceneName; // Name of the next scene to load
+    public string nextSceneName;
 
 
     private bool inReach;

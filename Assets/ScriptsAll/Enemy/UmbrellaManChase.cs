@@ -1,11 +1,14 @@
-﻿using UnityEngine;
-using UnityEngine.AI;
+﻿using UnityEngine.AI;
+using UnityEngine;
 using System.Collections;
 using FMODUnity;
 using FMOD.Studio;
 
 public class UmbrellaManChase : MonoBehaviour
 {
+    [Header("Animation Settings")]
+    public Animator anim;
+
     [Header("References")]
     public Transform player;
 
@@ -14,8 +17,6 @@ public class UmbrellaManChase : MonoBehaviour
     public float catchDistance = 1.0f;
 
     [Header("Game Over UI")]
-    // ЭТО ПОЛЕ БОЛЬШЕ НЕ НУЖНО ИСПОЛЬЗОВАТЬ ЗДЕСЬ, НО Я ОСТАВИЛ ЧТОБЫ НЕ СБИЛАСЬ ССЫЛКА
-    // ТЕПЕРЬ ЗА ЭКРАН ОТВЕЧАЕТ DeathHandler НА ИГРОКЕ
     public GameObject heGotYouUI; 
 
     [Header("FMOD – дыхание человека с зонтом")]
@@ -31,6 +32,7 @@ public class UmbrellaManChase : MonoBehaviour
     [Header("Chase Timing")]
     public float preChaseDelay = 2.0f;
     private Coroutine footstepCoroutine;
+    public PanelLightBeacon panelLightBeacon;
 
     [Header("FMOD – Heartbeat игрока")]
     [SerializeField] private EventReference heartbeatEvent;
@@ -41,9 +43,14 @@ public class UmbrellaManChase : MonoBehaviour
     private bool hasCaughtPlayer;
     private Coroutine chaseInitCoroutine;
 
+    public ChaseLightController chaseLightController;
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+
+        
+        if (anim == null) anim = GetComponentInChildren<Animator>();
 
         if (agent == null)
         {
@@ -58,6 +65,12 @@ public class UmbrellaManChase : MonoBehaviour
 
     public void StartChase()
     {
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.EnsureMusicPlaying();
+            MusicManager.Instance.SetSection("Value D");
+        }
+
         if (player == null)
         {
             Debug.LogError("[UmbrellaManChase] Player не назначен");
@@ -66,10 +79,17 @@ public class UmbrellaManChase : MonoBehaviour
 
         gameObject.SetActive(true);
 
+        if (panelLightBeacon != null)
+            panelLightBeacon.ActivateBeacon();
+
+
         if (chaseInitCoroutine != null)
             StopCoroutine(chaseInitCoroutine);
 
         chaseInitCoroutine = StartCoroutine(InitChaseRoutine());
+
+        if (chaseLightController != null)
+            chaseLightController.StartChaseLights();
     }
 
     private IEnumerator InitChaseRoutine()
@@ -87,6 +107,8 @@ public class UmbrellaManChase : MonoBehaviour
         StartBreathingLoop();
         StartFootsteps();
         StartHeartbeat();
+
+        if (anim != null) anim.SetBool("isMoving", true);
 
         yield return new WaitForSeconds(preChaseDelay);
 
@@ -111,6 +133,9 @@ public class UmbrellaManChase : MonoBehaviour
             agent.enabled = false;
         }
 
+        
+        if (anim != null) anim.SetBool("isMoving", false);
+
         StopBreathingLoop();
         StopFootsteps();
         StopHeartbeat();
@@ -123,11 +148,19 @@ public class UmbrellaManChase : MonoBehaviour
 
         agent.SetDestination(player.position);
 
+        
+        if (anim != null)
+        {
+            
+            bool isMoving = agent.velocity.sqrMagnitude > 0.1f;
+            anim.SetBool("isMoving", isMoving);
+        }
+        
+
         if (Vector3.Distance(transform.position, player.position) <= catchDistance)
             HandleCatch();
     }
 
-    // --- ВОТ ТУТ ГЛАВНЫЕ ИЗМЕНЕНИЯ ---
     private void HandleCatch()
     {
         if (hasCaughtPlayer) return;
@@ -135,28 +168,29 @@ public class UmbrellaManChase : MonoBehaviour
         hasCaughtPlayer = true;
         isChasing = false;
 
-        // 1. Останавливаем врага
+        
         if (agent != null)
             agent.isStopped = true;
 
-        // 2. Глушим звуки шагов и дыхания (чтобы не мешали звукам скримера, если будут)
+        
+        if (anim != null) anim.SetBool("isMoving", false);
+
+        
         StopBreathingLoop();
         StopFootsteps();
         StopHeartbeat();
 
-        // 3. ВМЕСТО ВКЛЮЧЕНИЯ ЭКРАНА НАПРЯМУЮ, ВЫЗЫВАЕМ DEATHHANDLER
+        
         if (player != null)
         {
             var deathHandler = player.GetComponent<DeathHandler>();
             
             if (deathHandler != null)
             {
-                // Передаем 'transform' (себя), чтобы камера игрока повернулась на нас
                 deathHandler.TriggerDeath(transform);
             }
             else
             {
-                // Если забыл повесить скрипт на игрока — сработает старый метод (как страховка)
                 Debug.LogWarning("DeathHandler не найден на игроке! Использую старый метод.");
                 if (heGotYouUI != null) heGotYouUI.SetActive(true);
                 var pc = player.GetComponent<PlayerController>();
@@ -166,8 +200,35 @@ public class UmbrellaManChase : MonoBehaviour
             }
         }
     }
-    // ---------------------------------
 
+    
+    public void ResetChase()
+    {
+        StopBreathingLoop();
+        StopFootsteps();
+        StopHeartbeat();
+        StopChase();
+
+        transform.position = new Vector3(-0.64f, 0.6480125f, -31.8f);
+        
+        hasCaughtPlayer = false;
+        isChasing = false;
+
+        if (agent != null)
+            agent.enabled = false;
+
+        
+        if (anim != null)
+        {
+            anim.Rebind(); 
+            anim.SetBool("isMoving", false);
+        }
+
+        
+        gameObject.SetActive(false); 
+    }
+
+    
     private void StartBreathingLoop()
     {
         if (breathingLoopEvent.IsNull) return;
@@ -230,28 +291,11 @@ public class UmbrellaManChase : MonoBehaviour
         heartbeatInstance.clearHandle();
     }
 
-    public void ResetChase()
-    {
-        StopBreathingLoop();
-        StopFootsteps();
-        StopHeartbeat();
-        StopChase();
-
-        transform.position = new Vector3(-0.64f, 0.6480125f, -31.8f);
-        hasCaughtPlayer = false;
-        isChasing = false;
-
-        if (agent != null)
-            agent.enabled = false;
-    }
-
     public void PauseChase()
     {
         if (!isChasing) return;
-
-        if (agent != null && agent.enabled)
-            agent.isStopped = true;
-
+        if (agent != null && agent.enabled) agent.isStopped = true;
+        if (anim != null) anim.speed = 0;
         PauseBreathing(true);
         PauseHeartbeat(true);
     }
@@ -259,29 +303,14 @@ public class UmbrellaManChase : MonoBehaviour
     public void ResumeChase()
     {
         if (!isChasing || hasCaughtPlayer) return;
-
-        if (agent != null && agent.enabled)
-            agent.isStopped = false;
-
+        if (agent != null && agent.enabled) agent.isStopped = false;
+        if (anim != null) anim.speed = 1;
         StartCoroutine(FootstepLoop());
         PauseBreathing(false);
         PauseHeartbeat(false);
     }
 
-    private void PauseBreathing(bool pause)
-    {
-        if (!breathingInstance.isValid()) return;
-        breathingInstance.setPaused(pause);
-    }
-
-    private void PauseHeartbeat(bool pause)
-    {
-        if (!heartbeatInstance.isValid()) return;
-        heartbeatInstance.setPaused(pause);
-    }
-
-    private void OnDestroy()
-    {
-        StopChase();
-    }
+    private void PauseBreathing(bool pause) { if (breathingInstance.isValid()) breathingInstance.setPaused(pause); }
+    private void PauseHeartbeat(bool pause) { if (heartbeatInstance.isValid()) heartbeatInstance.setPaused(pause); }
+    private void OnDestroy() { StopChase(); }
 }

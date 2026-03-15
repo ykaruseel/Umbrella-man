@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.UI;
-using TMPro; // ✅ ДОБАВЛЕНО: Нужно для работы с текстом
+using TMPro;
 
 public class QuestManager : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class QuestManager : MonoBehaviour
     [Header("Quests")]
     public Quest firstQuest;
     public Quest currentQuest;
-    public QuestUI questUI; // Это ссылка на скрипт QuestUI
+    public QuestUI questUI;
     public Quest repairPanelQuest;
 
     [Header("Game Objects")]
@@ -65,15 +65,14 @@ public class QuestManager : MonoBehaviour
 
     void Start()
     {
-        //FadeOut(playerController.GetComponent<CharacterController>());
+        
         if (umbrellaManNear) umbrellaManNear.SetActive(false);
         if (umbrellaManFar) umbrellaManFar.SetActive(false);
         
-        // ✅ ГАРАНТИЯ: Выключаем оба экрана при старте
         if (gameOverUI) gameOverUI.SetActive(false);
         if (prototypeCompleteUI) prototypeCompleteUI.SetActive(false);
 
-        if (firstQuest != null) StartQuest(firstQuest);
+       
         
         if (MusicManager.Instance != null)
         {
@@ -82,15 +81,21 @@ public class QuestManager : MonoBehaviour
         }
     }
 
-    // --- ✅ НОВЫЙ МЕТОД ДЛЯ СМЕНЫ ТЕКСТА (ВЫЗЫВАЕТСЯ ИЗ ДИАЛОГА) ---
+    public void StartFirstQuest()
+    {
+        if (firstQuest != null)
+        {
+            StartQuest(firstQuest);
+        }
+    }
+
+
     public void ForceUpdateQuestText(string text)
     {
         if (questUI != null)
         {
-            // Включаем сам объект UI, если он был выключен
             questUI.gameObject.SetActive(true);
 
-            // Ищем TextMeshPro внутри
             var textComp = questUI.GetComponentInChildren<TextMeshProUGUI>();
             if (textComp != null)
             {
@@ -99,14 +104,13 @@ public class QuestManager : MonoBehaviour
             }
             else
             {
-                // Запасной вариант для обычного Text
                 var oldText = questUI.GetComponentInChildren<Text>();
                 if (oldText != null) oldText.text = text;
                 oldText.color = Color.white;
             }
         }
     }
-    // -------------------------------------------------------------
+    
 
     public void StartQuest(Quest questToStart)
     {
@@ -249,7 +253,7 @@ public class QuestManager : MonoBehaviour
 
     public void OnQTESuccess()
     {
-        // ПОБЕДА
+        
         if (playerController) playerController.SetCanMove(false);
         if (MusicManager.Instance != null)
         {
@@ -278,7 +282,7 @@ public class QuestManager : MonoBehaviour
 
     public void OnQTEFailure()
     {
-        // ПРОИГРЫШ
+        
         if (enemyLightDistortion != null) enemyLightDistortion.SetChaseActive(false);
         if (MusicManager.Instance != null) MusicManager.Instance.FadeToVolume(0f, 0.5f);
         if (repairQTE != null) repairQTE.isQTEActive = false;
@@ -286,7 +290,7 @@ public class QuestManager : MonoBehaviour
         StartCoroutine(ShowGameOverAfterDelay(0.5f));
     }
 
-    // --- Метод для вызова Game Over извне (например, если монстр поймал) ---
+    
     public void TriggerGameOver()
     {
         StartCoroutine(ShowGameOverAfterDelay(0f));
@@ -296,7 +300,7 @@ public class QuestManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        // ✅ ГАРАНТИЯ: Выключаем Game Over перед показом победы
+        
         if (gameOverUI != null) gameOverUI.SetActive(false);
 
         if (prototypeCompleteUI != null)
@@ -324,7 +328,7 @@ public class QuestManager : MonoBehaviour
             MusicManager.Instance.FadeToVolume(MusicManager.Instance.defaultVolume, 3f);
         }
         
-        // Останавливаем время и показываем курсор для финала
+        
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
@@ -333,7 +337,7 @@ public class QuestManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        // ✅ ГАРАНТИЯ: Выключаем экран победы перед показом смерти
+        
         if (prototypeCompleteUI != null) prototypeCompleteUI.SetActive(false);
 
         if (gameOverUI != null) gameOverUI.SetActive(true);
