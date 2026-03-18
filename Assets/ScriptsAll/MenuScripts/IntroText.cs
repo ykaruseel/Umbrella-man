@@ -22,12 +22,12 @@ public class IntroText : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(SequenceRoutine());
+        //StartCoroutine(SequenceRoutine(2f));
     }
 
-    public IEnumerator SequenceRoutine()
+    public IEnumerator SequenceRoutine(float t)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(t);
 
         IntroTextGO.SetActive(true);
 

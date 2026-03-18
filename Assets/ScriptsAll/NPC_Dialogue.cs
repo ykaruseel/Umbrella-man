@@ -31,8 +31,12 @@ public class NPC_Dialogue : MonoBehaviour
     private PlayerController playerController;
     private bool dialogueTriggered = false;
 
+    string npcID;
+
     void Start()
     {
+        npcID = gameObject.name;
+
         dialogueManager = FindFirstObjectByType<DialogueManager>();
         questManager = QuestManager.instance;
         playerController = FindFirstObjectByType<PlayerController>();
@@ -57,15 +61,20 @@ public class NPC_Dialogue : MonoBehaviour
 
     public void TriggerDialogue()
     {
-        if (questManager == null || questManager.currentQuest == null)
-            return;
+        //if (questManager == null || questManager.currentQuest == null)
+        //    return;
 
-        QuestObjective objective = questManager.currentQuest.GetCurrentObjective();
-        if (objective == null)
-            return;
+        //QuestObjective objective = questManager.currentQuest.GetCurrentObjective();
+        //if (objective == null)
+        //    return;
 
-        if (objective.targetID != "door" || objective.objectiveType != ObjectiveType.Interact)
+        //if (objective.targetID != "door" || objective.objectiveType != ObjectiveType.Interact)
+        //    return;
+
+        if (!QuestManagerV2.Instance.IsGoalRequired(npcID, GoalType.TalkToNPC))
+        {
             return;
+        }
 
         if (dialogueTriggered)
             return;
@@ -119,6 +128,11 @@ public class NPC_Dialogue : MonoBehaviour
                 playerController.SetDialogueZoom(false);
             }
             playerController.SetCanMove(true);
+        }
+
+        if (QuestManagerV2.Instance.IsGoalRequired(npcID, GoalType.TalkToNPC))
+        {
+            QuestManagerV2.Instance.ProcessAction(npcID, GoalType.TalkToNPC);
         }
 
         if (questManager != null)
@@ -180,6 +194,3 @@ public class NPC_Dialogue : MonoBehaviour
         if (mainPlayerCamera != null) mainPlayerCamera.SetActive(true);
     }
 }
-
-
-

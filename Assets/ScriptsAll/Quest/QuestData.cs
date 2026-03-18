@@ -1,0 +1,45 @@
+using UnityEngine;
+using System.Collections.Generic;
+using System;
+
+[CreateAssetMenu(fileName = "New Quest", menuName = "Quests/Quest")]
+public class QuestData : ScriptableObject
+{
+    public string title;
+    public string questID;
+    public GoalType type;
+    public List<string> targetID;
+
+    [NonSerialized] public bool isActive;
+    [NonSerialized] public bool isCompleted;
+
+    [NonSerialized] private HashSet<string> completedTargets = new HashSet<string>();
+
+    public void Initialize(bool active)
+    {
+        isActive = active;
+        isCompleted = false;
+        completedTargets.Clear();
+    }
+
+    public void CheckTarget(string id)
+    {
+        if (!isActive || isCompleted) return;
+
+        if (targetID.Contains(id) && !completedTargets.Contains(id))
+        {
+            completedTargets.Add(id);
+        }
+
+        if (completedTargets.Count >= targetID.Count)
+        {
+            Complete();
+        }
+    }
+
+    private void Complete()
+    {
+        isCompleted = true;
+        isActive = false;
+    }
+}
