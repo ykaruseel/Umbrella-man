@@ -130,8 +130,6 @@ public class NPC_Dialogue : MonoBehaviour
             playerController.SetCanMove(true);
         }
 
-        string npcID = gameObject.name;
-
         if (QuestManagerV2.Instance.IsGoalRequired(npcID, GoalType.TalkToNPC))
         {
             QuestManagerV2.Instance.ProcessAction(npcID, GoalType.TalkToNPC);
@@ -196,6 +194,3 @@ public class NPC_Dialogue : MonoBehaviour
         if (mainPlayerCamera != null) mainPlayerCamera.SetActive(true);
     }
 }
-
-
-

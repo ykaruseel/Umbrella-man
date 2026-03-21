@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private EventReference footstepEvent;
     [SerializeField] private float walkStepInterval = 0.5f;
     [SerializeField] private float runStepInterval = 0.3f;
+    private int currentTerrain = 0;
 
     [Header("FMOD Ambient")]
     [SerializeField] private EventReference ambientEvent;
@@ -118,6 +119,16 @@ public class PlayerController : MonoBehaviour
             playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, Time.deltaTime * zoomSpeed);
         }
         
+    }
+
+    public void SetBasementFootsteps()
+    {
+        currentTerrain = 1;
+    }
+
+    public void SetNormalFootsteps()
+    {
+        currentTerrain = 0;
     }
     private void StopFootsteps()
     {
@@ -236,11 +247,15 @@ public class PlayerController : MonoBehaviour
             if (Mathf.Abs(delay - previousDelay) > 0.001f)
                 previousDelay = delay;
 
-            RuntimeManager.PlayOneShot(footstepEvent, transform.position);
+            var instance = RuntimeManager.CreateInstance(footstepEvent);
+            instance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+            instance.setParameterByName("Terrain", currentTerrain);
+            instance.start();
+            instance.release();
+
             yield return new WaitForSeconds(delay);
         }
 
-         
         footstepCoroutine = null;
     }
 

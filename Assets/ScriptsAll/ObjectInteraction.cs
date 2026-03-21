@@ -84,6 +84,11 @@ public class ObjectInteraction : MonoBehaviour
         if (placeable != null)
             placeable.isPlaced = true;
 
+        if (QuestManagerV2.Instance.IsGoalRequired(placeable.itemID, GoalType.ReturnItem))
+        {
+            QuestManagerV2.Instance.ProcessAction(placeable.itemID, GoalType.ReturnItem);
+        }
+
         OutlineInteractable outline = objTransform.GetComponent<OutlineInteractable>();
         if (outline != null)
             outline.Hide();

@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class ApartmentZoneTrigger : MonoBehaviour
+public class ApartmentTrigger : MonoBehaviour
 {
-    [SerializeField] private AmbientZoneController controller;
+    [SerializeField] private AmbientController controller;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            controller.EnterApartment();
+            controller.SetApartment();
         }
     }
 }

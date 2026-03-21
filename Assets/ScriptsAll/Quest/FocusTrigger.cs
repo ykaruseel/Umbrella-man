@@ -26,15 +26,29 @@ public class FocusTrigger : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (hasTriggered) return;
+
+        if (other.CompareTag("Player") && IsQuestActive(requiredQuestID))
+        {
+            other.TryGetComponent(out playerController);
+            hasTriggered = true;
+            StartCoroutine(OnTriggerEvent());
+        }
+    }
+
     private IEnumerator OnTriggerEvent()
     {
+        gameObject.GetComponent<Collider>().enabled = false;
+
         playerController.isCinematic = true;
         playerController.SetCanMove(false);
         playerController.StartCinematicPan(focusObject.transform, 0.5f);
         playerController.ZoomIn();
 
         StartCoroutine(text.SequenceRoutine(0f));
-        yield return new WaitForSeconds(3.9f);
+        yield return new WaitForSeconds(6.5f);
         //Change this time and introtext
 
         playerController.ZoomOut();

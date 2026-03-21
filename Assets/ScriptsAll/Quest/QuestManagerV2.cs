@@ -9,6 +9,7 @@ public class QuestManagerV2 : MonoBehaviour
 
     //Vremenno
     public PlayerController playerController;
+    public QuestUIV2 questUI;
 
     [SerializeField] private List<QuestData> questSequence;
     private int currentQuestIndex = 0;
@@ -28,6 +29,7 @@ public class QuestManagerV2 : MonoBehaviour
             questSequence[i].Initialize(i == 0);
         }
         Debug.Log($"<color=yellow>[Manager]</color> Следующий квест: {questSequence[currentQuestIndex].questID}");
+        questUI.ShowNewQuest(questSequence[currentQuestIndex]);
     }
 
     public bool IsGoalRequired(string id, GoalType type)
@@ -74,6 +76,7 @@ public class QuestManagerV2 : MonoBehaviour
         {
             questSequence[currentQuestIndex].isActive = true;
             Debug.Log($"<color=yellow>[Manager]</color> Следующий квест: {questSequence[currentQuestIndex].questID}");
+            StartCoroutine(questUI.CompleteAndSwitchRoutine(questSequence[currentQuestIndex - 1], questSequence[currentQuestIndex]));
         }
         else
         {
@@ -85,7 +88,7 @@ public class QuestManagerV2 : MonoBehaviour
         {
             if (playerController)
             {
-                CharacterController cc = playerController.GetComponent<CharacterController>();
+                CharacterController cc = playerController.transform.GetComponent<CharacterController>();
                 if (cc) cc.enabled = false;
 
                 playerController.SetCanMove(false);
@@ -93,10 +96,17 @@ public class QuestManagerV2 : MonoBehaviour
 
                 playerController.transform.position = new Vector3(-22.77f, -7.87f, -1.53f);
                 playerController.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-                playerController.SetRotation(0f, 0f);
+                playerController.SetRotation(180f, 0f);
 
                 QuestManager.instance.FadeOut(cc);
             }
+
+            QuestEvents.Instance.VremennoQ3();
+        }
+
+        if(questSequence[currentQuestIndex].questID == "Q5")
+        {
+            QuestEvents.Instance.VremennoQ5();
         }
     }
 }
