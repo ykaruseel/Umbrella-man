@@ -2,11 +2,14 @@ using FMOD.Studio;
 using FMODUnity;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class DoorController : MonoBehaviour
 {
-    
+    // ==========================================
+    // СТАРЫЕ НАСТРОЙКИ (ОБЫЧНАЯ ДВЕРЬ)
+    // ==========================================
     [Header("Normal Door Settings")]
     [SerializeField] private Transform door;
     [SerializeField] private Transform handle;
@@ -30,9 +33,15 @@ public class DoorController : MonoBehaviour
     private bool isAnimating = false;
     private Coroutine autoCloseCoroutine;
 
-    
+    // ==========================================
+    // НОВЫЕ НАСТРОЙКИ (QTE ДВЕРЬ)
+    // ==========================================
     [Header("QTE Settings")]
     [SerializeField] private bool isLockedWithQTE = false; 
+
+    [Header("QTE Events (Блокировка Игрока)")]
+    public UnityEvent onQteStart; // Сработает при начале QTE
+    public UnityEvent onQteEnd;   // Сработает, когда дверь выбьют
 
     [Header("QTE UI")]
     [SerializeField] private GameObject qtePanel;        
@@ -54,8 +63,9 @@ public class DoorController : MonoBehaviour
     [SerializeField] private float strongDamage = 50f; 
     
     [Header("QTE Visuals & Audio")]
-    [SerializeField] private ParticleSystem hitDust;  
-    [SerializeField] private ParticleSystem fallDust; 
+    [SerializeField] private ParticleSystem hitDust;        // Пыль при ударе
+    [SerializeField] private ParticleSystem fallDust;       // Пыль при падении
+    [SerializeField] private ParticleSystem breakParticles; // НОВОЕ: Эффект (щепки/пыль) прямо в момент выбивания
     [SerializeField] private EventReference qteHitSound;
 
     // Внутренние переменные QTE
@@ -91,15 +101,12 @@ public class DoorController : MonoBehaviour
 
             if (movingLine != null && barArea != null)
             {
-                
                 float barHeight = barArea.rect.height;
                 float lineHeight = movingLine.rect.height;
 
-                
                 float startY = lineHeight / 2f;
                 float endY = barHeight - (lineHeight / 2f);
 
-                
                 if (barArea.pivot.y == 0.5f)
                 {
                     startY -= barHeight / 2f;
@@ -107,8 +114,6 @@ public class DoorController : MonoBehaviour
                 }
 
                 float newY = Mathf.Lerp(startY, endY, linePos);
-                
-                
                 movingLine.localPosition = new Vector3(movingLine.localPosition.x, newY, 0);
             }
 
@@ -144,7 +149,9 @@ public class DoorController : MonoBehaviour
         }
     }
 
-    
+    // ==========================================
+    // ЛОГИКА МИНИ-ИГРЫ QTE
+    // ==========================================
     private void StartQTE()
     {
         currentHealth = 100f;
@@ -153,6 +160,9 @@ public class DoorController : MonoBehaviour
         isQteActive = true;
         isQteCooldown = false;
         if (qtePanel != null) qtePanel.SetActive(true);
+        
+        // --- БЛОКИРУЕМ ИГРОКА ---
+        onQteStart?.Invoke();
     }
 
     private void CheckQTEHit()
@@ -215,12 +225,17 @@ public class DoorController : MonoBehaviour
 
     private void BreakDownDoor()
     {
-        
         StopAllCoroutines(); 
 
         isQteActive = false;
         if (qtePanel != null) qtePanel.SetActive(false); 
+        
+        // --- ВОСПРОИЗВОДИМ НОВЫЕ ПАРТИКЛЫ ВЫБИВАНИЯ ---
+        if (breakParticles != null) breakParticles.Play();
         if (fallDust != null) fallDust.Play(); 
+
+        // --- РАЗБЛОКИРУЕМ ИГРОКА ---
+        onQteEnd?.Invoke();
 
         door.SetParent(null);
 
@@ -243,12 +258,13 @@ public class DoorController : MonoBehaviour
             pushDir.Normalize();
         }
 
-        
         rb.AddForce((pushDir + Vector3.up * 0.4f) * 6f, ForceMode.VelocityChange);
         rb.AddTorque((transform.right * 3f + transform.up * Random.Range(-1f, 1f)), ForceMode.VelocityChange);
     }
 
-    
+    // ==========================================
+    // ЛОГИКА ОБЫЧНЫХ ДВЕРЕЙ
+    // ==========================================
     private IEnumerator OpenDoor()
     {
         isAnimating = true;
@@ -324,6 +340,5 @@ public class DoorController : MonoBehaviour
         inst.release();
     }
 }
-
 
 
