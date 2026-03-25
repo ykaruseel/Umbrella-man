@@ -6,7 +6,7 @@ public class FocusTrigger : MonoBehaviour
 {
     public string requiredQuestID;
 
-    [SerializeField]private bool hasTriggered = false;
+    [SerializeField] private bool hasTriggered = false;
 
     public GameObject focusObject;
 
@@ -26,8 +26,22 @@ public class FocusTrigger : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (hasTriggered) return;
+
+        if (other.CompareTag("Player") && IsQuestActive(requiredQuestID))
+        {
+            other.TryGetComponent(out playerController);
+            hasTriggered = true;
+            StartCoroutine(OnTriggerEvent());
+        }
+    }
+
     private IEnumerator OnTriggerEvent()
     {
+        gameObject.GetComponent<Collider>().enabled = false;
+
         playerController.isCinematic = true;
         playerController.SetCanMove(false);
         playerController.StartCinematicPan(focusObject.transform, 0.5f);

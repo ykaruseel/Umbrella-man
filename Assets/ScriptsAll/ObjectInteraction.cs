@@ -23,6 +23,7 @@ public class ObjectInteraction : MonoBehaviour
 
     void Start()
     {
+        heldObject = null;
         playerController = GetComponent<CharacterController>();
         if (playerCamera == null) playerCamera = Camera.main;
     }
@@ -83,6 +84,11 @@ public class ObjectInteraction : MonoBehaviour
         PlaceableItem placeable = objTransform.GetComponent<PlaceableItem>();
         if (placeable != null)
             placeable.isPlaced = true;
+
+        if (QuestManagerV2.Instance.IsGoalRequired(placeable.itemID, GoalType.ReturnItem))
+        {
+            QuestManagerV2.Instance.ProcessAction(placeable.itemID, GoalType.ReturnItem);
+        }
 
         OutlineInteractable outline = objTransform.GetComponent<OutlineInteractable>();
         if (outline != null)
@@ -177,6 +183,7 @@ public class ObjectInteraction : MonoBehaviour
     
     public bool IsHoldingObject()
     {
+        Debug.Log(heldObject);
         return heldObject != null;
     }
 

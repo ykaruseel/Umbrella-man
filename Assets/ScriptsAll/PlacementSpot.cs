@@ -24,6 +24,11 @@ public class PlacementSpot : MonoBehaviour
         placeable.isPlaced = true;
         placeable.SetState(PlaceableItem.ItemState.Placed);
 
+        if (QuestManagerV2.Instance.IsGoalRequired(placeable.itemID, GoalType.ReturnItem))
+        {
+            QuestManagerV2.Instance.ProcessAction(placeable.itemID, GoalType.ReturnItem);
+        }
+
         if (highlightEffect != null)
             highlightEffect.SetActive(false);
 

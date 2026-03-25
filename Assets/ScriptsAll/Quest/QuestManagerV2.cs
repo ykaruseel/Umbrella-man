@@ -103,5 +103,10 @@ public class QuestManagerV2 : MonoBehaviour
 
             QuestEvents.Instance.VremennoQ3();
         }
+
+        if(questSequence[currentQuestIndex].questID == "Q5")
+        {
+            QuestEvents.Instance.VremennoQ5();
+        }
     }
 }

@@ -10,7 +10,16 @@ public class QuestTrigger : MonoBehaviour
         if (other.CompareTag("Player") && QuestManagerV2.Instance.IsGoalRequired(targetID, type))
         {
             QuestManagerV2.Instance.ProcessAction(targetID, type);
-            //if (type == GoalType.ReachPoint) gameObject.SetActive(false);
+            gameObject.GetComponent<Collider>().enabled = false;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player") && QuestManagerV2.Instance.IsGoalRequired(targetID, type))
+        {
+            QuestManagerV2.Instance.ProcessAction(targetID, type);
+            gameObject.GetComponent<Collider>().enabled = false;
         }
     }
 }

@@ -8,6 +8,10 @@ public class QuestEvents : MonoBehaviour
 
     public List<GameObject> objectsToDisable;
 
+    public GameObject tvToEndable;
+
+    public GameObject tvToDisable;
+
     public static QuestEvents Instance;
 
     private void Awake()
@@ -28,5 +32,12 @@ public class QuestEvents : MonoBehaviour
             if (obj != null)
                 obj.SetActive(false);
         }
+    }
+
+
+    public void VremennoQ5()
+    {
+        tvToEndable.SetActive(true);
+        tvToDisable.SetActive(false);
     }
 }
