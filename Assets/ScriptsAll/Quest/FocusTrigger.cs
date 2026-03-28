@@ -6,7 +6,7 @@ public class FocusTrigger : MonoBehaviour
 {
     public string requiredQuestID;
 
-    [SerializeField]private bool hasTriggered = false;
+    [SerializeField] private bool hasTriggered = false;
 
     public GameObject focusObject;
 
@@ -44,10 +44,12 @@ public class FocusTrigger : MonoBehaviour
 
         playerController.isCinematic = true;
         playerController.SetCanMove(false);
-        playerController.StartCinematicPan(focusObject.transform, 0.5f);
+        playerController.StartCinematicPan(focusObject.transform, 2f);
         playerController.ZoomIn();
 
-        StartCoroutine(text.SequenceRoutine(0f));
+        if (text != null)
+            StartCoroutine(text.SequenceRoutine(0f));
+
         yield return new WaitForSeconds(6.5f);
         //Change this time and introtext
 

@@ -23,6 +23,7 @@ public class ObjectInteraction : MonoBehaviour
 
     void Start()
     {
+        heldObject = null;
         playerController = GetComponent<CharacterController>();
         if (playerCamera == null) playerCamera = Camera.main;
     }
@@ -182,6 +183,7 @@ public class ObjectInteraction : MonoBehaviour
     
     public bool IsHoldingObject()
     {
+        Debug.Log(heldObject);
         return heldObject != null;
     }
 

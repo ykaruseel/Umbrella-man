@@ -287,17 +287,14 @@ public class PlayerController : MonoBehaviour
     
     void CheckInteractionInput()
     {
-        
         DialogueManager dm = FindFirstObjectByType<DialogueManager>();
         if (dm != null && dm.IsDialogueActive())
             return;
 
-        
         RepairQTE qte = FindFirstObjectByType<RepairQTE>();
         if (qte != null && qte.isQTEActive)
             return;
 
-        
         if (!Input.GetKeyDown(KeyCode.E))
             return;
 
@@ -312,7 +309,6 @@ public class PlayerController : MonoBehaviour
             ray, out hit, interactionDistance, interactionLayerMask
         );
 
-        
         if (objectInteraction.IsHoldingObject())
         {
             if (hitSomething)
@@ -340,7 +336,6 @@ public class PlayerController : MonoBehaviour
         
         if (hitSomething)
         {
-            
             NPC_Dialogue npcDialogue = hit.collider.GetComponent<NPC_Dialogue>();
             if (npcDialogue != null)
             {
@@ -352,7 +347,6 @@ public class PlayerController : MonoBehaviour
             
             if (hit.collider.CompareTag("Pickable"))
             {
-                Debug.Log("[PlayerController] Pickup Pickable");
                 objectInteraction.PickupObject(hit.collider.gameObject);
                 return;
             }
@@ -361,7 +355,6 @@ public class PlayerController : MonoBehaviour
             InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
             if (interactable != null)
             {
-                Debug.Log("[PlayerController] Interact with " + hit.collider.name);
                 interactable.Interact();
                 return;
             }

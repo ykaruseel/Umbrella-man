@@ -94,7 +94,7 @@ public class QuestManagerV2 : MonoBehaviour
                 playerController.SetCanMove(false);
                 playerController.isCinematic = true;
 
-                playerController.transform.position = new Vector3(-22.77f, -7.87f, -1.53f);
+                playerController.transform.position = new Vector3(-22.77f, -8.31f, -1.53f);
                 playerController.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
                 playerController.SetRotation(180f, 0f);
 
@@ -107,6 +107,21 @@ public class QuestManagerV2 : MonoBehaviour
         if(questSequence[currentQuestIndex].questID == "Q5")
         {
             QuestEvents.Instance.VremennoQ5();
+        }
+
+        if(questSequence[currentQuestIndex].questID == "Q9")
+        {
+            StartCoroutine(QuestEvents.Instance.VremennoQ9());
+        }
+
+        if(questSequence[currentQuestIndex].questID == "Q10")
+        {
+            QuestEvents.Instance.VremennoQ10();
+        }
+
+        if(questSequence[currentQuestIndex].questID == "Q11")
+        {
+            QuestEvents.Instance.VremennoQ11();
         }
     }
 }
