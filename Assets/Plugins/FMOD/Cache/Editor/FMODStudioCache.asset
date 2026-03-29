@@ -259,10 +259,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639094229841468253
+  lastModified: 639103941746747345
   FileSizes:
   - Name: Desktop
-    Value: 2598
+    Value: 2878
   Exists: 1
 --- !u!114 &-5818334718709818027
 MonoBehaviour:
@@ -443,10 +443,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639094229841458414
+  lastModified: 639103941746701694
   FileSizes:
   - Name: Desktop
-    Value: 10624416
+    Value: 13439104
   Exists: 1
 --- !u!114 &-2389006954385351409
 MonoBehaviour:
@@ -475,6 +475,35 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 190
+--- !u!114 &-2014328235258690208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/UM_music_theme/MusicSwitch
+  m_EditorClassIdentifier: 
+  Name: MusicSwitch
+  StudioPath: 
+  Min: 0
+  Max: 4
+  Default: 0
+  ID:
+    data1: 3599626145
+    data2: 804981421
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
+  - Value B
+  - Value C
+  - Value D
+  - Value E
+  Exists: 1
 --- !u!114 &-652392336417160354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,6 +532,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 8.2
   Length: 6153
+--- !u!114 &-572209480123246358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/knife_man/km_footsteps
+  m_EditorClassIdentifier: 
+  Path: event:/knife_man/km_footsteps
+  Guid:
+    Data1: -1478574368
+    Data2: 1257948998
+    Data3: 1457675949
+    Data4: -72526616
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &-510329170306464809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,6 +613,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 30
   Length: 10022
+--- !u!114 &-46516875194188036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/knife_man/km_attack
+  m_EditorClassIdentifier: 
+  Path: event:/knife_man/km_attack
+  Guid:
+    Data1: -548831467
+    Data2: 1168734847
+    Data3: -316439162
+    Data4: -370351358
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 950
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,7 +666,6 @@ MonoBehaviour:
   - {fileID: -7564691878189669179}
   - {fileID: -5407427112694301759}
   - {fileID: -5818334718709818027}
-  - {fileID: 1560016646503773559}
   - {fileID: 7739967697791764525}
   - {fileID: 4905784084465355001}
   - {fileID: -8425182334455012934}
@@ -603,13 +685,74 @@ MonoBehaviour:
   - {fileID: -5614174638821245946}
   - {fileID: 8522200406122772373}
   - {fileID: 4109090468557301954}
+  - {fileID: -46516875194188036}
+  - {fileID: 1640218311125157843}
+  - {fileID: 613605572934301170}
+  - {fileID: 330100266741039646}
+  - {fileID: -572209480123246358}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2609684373490591824}
   StringsBanks:
   - {fileID: -6018097725551979117}
-  cacheTime: 639094229841468253
+  cacheTime: 639103941746747345
   cacheVersion: 131632
+--- !u!114 &330100266741039646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/you_keep_the_rain_away_vinyl
+  m_EditorClassIdentifier: 
+  Path: event:/Music/you_keep_the_rain_away_vinyl
+  Guid:
+    Data1: 1483169155
+    Data2: 1185695023
+    Data3: -1292116045
+    Data4: 597096635
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 2381775644501132153}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 129767
+--- !u!114 &613605572934301170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/UM_music_theme
+  m_EditorClassIdentifier: 
+  Path: event:/Music/UM_music_theme
+  Guid:
+    Data1: -1760517789
+    Data2: 1291410756
+    Data3: -1905415776
+    Data4: -1363321436
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -2014328235258690208}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 112000
 --- !u!114 &770276145981077245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,36 +777,7 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
---- !u!114 &1368022522580965473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/UM_music_theme/MusicSwitch
-  m_EditorClassIdentifier: 
-  Name: MusicSwitch
-  StudioPath: 
-  Min: 0
-  Max: 4
-  Default: 0
-  ID:
-    data1: 3599626145
-    data2: 804981421
-  Type: 2
-  IsGlobal: 0
-  Labels:
-  - Value A
-  - Value B
-  - Value C
-  - Value D
-  - Value E
-  Exists: 1
---- !u!114 &1560016646503773559
+--- !u!114 &1640218311125157843
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -673,24 +787,47 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/UM_music_theme
+  m_Name: event:/knife_man/km_voice
   m_EditorClassIdentifier: 
-  Path: event:/UM_music_theme
+  Path: event:/knife_man/km_voice
   Guid:
-    Data1: -1760517789
-    Data2: 1291410756
-    Data3: -1905415776
-    Data4: -1363321436
+    Data1: -433330370
+    Data2: 1087238010
+    Data3: -1859321425
+    Data4: -17889504
   Banks:
   - {fileID: -2609684373490591824}
   IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters:
-  - {fileID: 1368022522580965473}
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 112000
+  Length: 15000
+--- !u!114 &2381775644501132153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/you_keep_the_rain_away_vinyl/Occlusion
+  m_EditorClassIdentifier: 
+  Name: Occlusion
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3174077425
+    data2: 3073365663
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &4109090468557301954
 MonoBehaviour:
   m_ObjectHideFlags: 0
