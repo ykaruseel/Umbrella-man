@@ -1,4 +1,4 @@
 public enum GoalType 
 { 
-    ReachPoint, TalkToNPC, ReturnItem 
+    ReachPoint, TalkToNPC, ReturnItem, Door
 }

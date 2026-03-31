@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public float lookXLimit = 75f;
     public float cameraRotationSmooth = 5f;
     public bool isCinematic = false;
+    public Flashlight flashlight;
 
     [Header("Interaction Settings")]
     public Camera playerCam;
@@ -63,7 +64,8 @@ public class PlayerController : MonoBehaviour
     
     public static bool isGameEnded = false;
 
-    
+    public static PlayerComments playerComments;
+
     private ObjectInteraction objectInteraction;
 
     void Start()
@@ -107,11 +109,20 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        if(playerComments != null)
+        {
+            if (Input.GetKeyDown(KeyCode.E) && !Pause.isPaused)
+                playerComments.DisplayNextSentence();
+        }
+
         HandleMovement();
         HandleCameraRotation();
         HandleDialogueZoom();
         HandleFootsteps();
-        CheckInteractionInput();
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            CheckInteractionInput();
+        }
         
         if (playerCamera != null)
         {
@@ -190,20 +201,20 @@ public class PlayerController : MonoBehaviour
     }
 
     
-    public void ZoomIn()
+    public void ZoomIn(float value = 0.8f)
     {
         if (currentZoomCoroutine != null)
             StopCoroutine(currentZoomCoroutine);
 
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView*0.8f));
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView* value));
     }
 
-    public void ZoomOut()
+    public void ZoomOut(float value = 0.8f)
     {
         if (currentZoomCoroutine != null)
             StopCoroutine(currentZoomCoroutine);
 
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView/0.8f));
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView/ value));
     }
 
     private IEnumerator SmoothZoom(float from, float to)
@@ -295,9 +306,6 @@ public class PlayerController : MonoBehaviour
         if (qte != null && qte.isQTEActive)
             return;
 
-        if (!Input.GetKeyDown(KeyCode.E))
-            return;
-
         if (Pause.isPaused)
             return;
 
@@ -308,15 +316,14 @@ public class PlayerController : MonoBehaviour
         bool hitSomething = Physics.Raycast(
             ray, out hit, interactionDistance, interactionLayerMask
         );
-
         if (objectInteraction.IsHoldingObject())
         {
             if (hitSomething)
             {
+                Debug.Log(hitSomething);
                 PlacementSpot spot = hit.collider.GetComponent<PlacementSpot>();
                 if (spot != null && spot.requiredItemID == objectInteraction.GetHeldItemID())
                 {
-                    
                     objectInteraction.PlaceObject(spot);
                     return;
                 }
@@ -328,7 +335,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            
             objectInteraction.DropObject();
             return;
         }
@@ -336,6 +342,12 @@ public class PlayerController : MonoBehaviour
         
         if (hitSomething)
         {
+            if(hit.collider.CompareTag("Flashlight") && QuestManagerV2.Instance.IsGoalRequired("flashlight", GoalType.ReturnItem))
+            {
+                hit.transform.gameObject.SetActive(false);
+                flashlight.enabled = true;
+            }
+
             NPC_Dialogue npcDialogue = hit.collider.GetComponent<NPC_Dialogue>();
             if (npcDialogue != null)
             {

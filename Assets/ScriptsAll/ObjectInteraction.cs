@@ -140,6 +140,7 @@ public class ObjectInteraction : MonoBehaviour
 
     public void DropObject()
     {
+        Debug.Log("Бросил объект: " + heldObject.name);
         if (heldItemID != null)
         {
             UpdateHighlights(false);
@@ -183,7 +184,6 @@ public class ObjectInteraction : MonoBehaviour
     
     public bool IsHoldingObject()
     {
-        Debug.Log(heldObject);
         return heldObject != null;
     }
 

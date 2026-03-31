@@ -12,7 +12,7 @@ public class QuestUIV2 : MonoBehaviour
 
     public void ShowNewQuest(QuestData quest)
     {
-        questText.text = quest.title;
+        questText.text = quest.GetTitleWithProgress();
         questText.color = Color.white;
         StopAllCoroutines();
         StartCoroutine(FadeSequence());
@@ -79,6 +79,18 @@ public class QuestUIV2 : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             ToggleQuest();
+        }
+    }
+
+    public void UpdateProgressUI(QuestData quest)
+    {
+        questText.text = quest.GetTitleWithProgress();
+
+        if (canvasGroup.alpha < 0.1f)
+        {
+            StopAllCoroutines();
+            StartCoroutine(Fade(1, 0.3f));
+            isVisible = true;
         }
     }
 }

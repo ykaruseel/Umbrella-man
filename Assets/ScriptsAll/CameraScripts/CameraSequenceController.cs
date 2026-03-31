@@ -30,7 +30,7 @@ public class CameraSequenceController : MonoBehaviour
         playerController.isCinematic = true;
         playerController.SetCanMove(false);
 
-        fade.SetFadeImageActive(true);
+        //fade.SetFadeImageActive(true);
 
         float savedFOV = PlayerPrefs.GetFloat(FOV, defaultFOV);
 
@@ -102,7 +102,7 @@ public class CameraSequenceController : MonoBehaviour
         }
 
 
-        fade.SetFadeImageActive(false);
+        //fade.SetFadeImageActive(false);
 
         yield return fade.FadeIn();
     }

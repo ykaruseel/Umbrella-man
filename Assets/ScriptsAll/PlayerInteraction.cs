@@ -81,12 +81,12 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
-            if (hit.collider.CompareTag("Pickable"))
-            {
-                ObjectInteraction oi = GetComponent<ObjectInteraction>();
-                if (oi != null)
-                    oi.PickupObject(hit.collider.gameObject);
-            }
+            //if (hit.collider.CompareTag("Pickable"))
+            //{
+            //    ObjectInteraction oi = GetComponent<ObjectInteraction>();
+            //    if (oi != null)
+            //        oi.PickupObject(hit.collider.gameObject);
+            //}
         }
     }
 

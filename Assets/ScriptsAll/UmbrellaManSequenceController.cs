@@ -120,7 +120,7 @@ public class UmbrellaManSequenceController : MonoBehaviour
 
         enemyCollider.enabled = true;
 
-        QuestManager.instance.TriggerChaseScene();
+        //QuestManager.instance.TriggerChaseScene();
     }
 
     private IEnumerator PlaySparkParticles()
