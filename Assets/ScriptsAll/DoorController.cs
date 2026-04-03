@@ -125,6 +125,17 @@ public class DoorController : MonoBehaviour
         }
     }
 
+    private void PlayQTEHit(int hitType)
+    {
+        if (qteHitSound.IsNull) return;
+
+        var instance = RuntimeManager.CreateInstance(qteHitSound);
+        instance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+        instance.setParameterByName("HitType", hitType);
+        instance.start();
+        instance.release();
+    }
+
     public void TryOpenDoor()
     {
         if (isAnimating) return;
@@ -169,18 +180,32 @@ public class DoorController : MonoBehaviour
     private void CheckQTEHit()
     {
         float damageDone = 0f;
+        int hitType = -1;
 
-        if (linePos >= strongZone.x && linePos <= strongZone.y) damageDone = strongDamage;
-        else if (linePos >= mediumZone.x && linePos <= mediumZone.y) damageDone = mediumDamage;
-        else if (linePos >= weakZone.x && linePos <= weakZone.y) damageDone = weakDamage;
+        if (linePos >= strongZone.x && linePos <= strongZone.y)
+        {
+            damageDone = strongDamage;
+            hitType = 2;
+        }
+        else if (linePos >= mediumZone.x && linePos <= mediumZone.y)
+        {
+            damageDone = mediumDamage;
+            hitType = 1;
+        }
+        else if (linePos >= weakZone.x && linePos <= weakZone.y)
+        {
+            damageDone = weakDamage;
+            hitType = 0;
+        }
 
         if (damageDone > 0)
         {
+            PlayQTEHit(hitType);
             StartCoroutine(RegisterQTEHit(damageDone));
         }
         else
         {
-            StartCoroutine(QTECooldown(0.5f)); 
+            StartCoroutine(QTECooldown(0.5f));
         }
     }
 
@@ -266,6 +291,8 @@ public class DoorController : MonoBehaviour
         {
             QuestManagerV2.Instance.ProcessAction(transform.name, GoalType.Door);
         }
+        PlayQTEHit(3);
+
     }
 
     // ==========================================

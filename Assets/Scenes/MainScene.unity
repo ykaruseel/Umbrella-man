@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.022
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 1}
+  m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1.2
@@ -4389,6 +4389,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 920288763}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ede0aaa01a004bd0992fe7002638985,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 920288767}
   m_SourcePrefab: {fileID: 100100000, guid: 1ede0aaa01a004bd0992fe7002638985, type: 3}
 --- !u!4 &146091852 stripped
 Transform:
@@ -9145,6 +9149,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pulseMaterial: {fileID: 2100000, guid: 96b60543769f1194c9473587635bf42d, type: 2}
+--- !u!114 &285454682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285454670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4fdd08375310c143b87d58d157fbbdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactEvent:
+    Guid:
+      Data1: -338840380
+      Data2: 1173135148
+      Data3: -483299435
+      Data4: -371106792
+    Path: event:/item_drop
+  minVelocity: 1.5
+  maxVelocity: 10
+  cooldown: 0.1
+  itemWeight: 2
 --- !u!1 &287185995
 GameObject:
   m_ObjectHideFlags: 0
@@ -25747,6 +25774,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pulseMaterial: {fileID: 2100000, guid: 96b60543769f1194c9473587635bf42d, type: 2}
+--- !u!114 &651635703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651635687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4fdd08375310c143b87d58d157fbbdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactEvent:
+    Guid:
+      Data1: -338840380
+      Data2: 1173135148
+      Data3: -483299435
+      Data4: -371106792
+    Path: event:/item_drop
+  minVelocity: 1.5
+  maxVelocity: 10
+  cooldown: 0.1
+  itemWeight: 1
 --- !u!1001 &654521476
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30975,7 +31025,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 0.90850025, b: 0.6924528, a: 1}
-  m_Intensity: 0.1
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -39125,6 +39175,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pulseMaterial: {fileID: 2100000, guid: 96b60543769f1194c9473587635bf42d, type: 2}
+--- !u!114 &920288767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920288752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4fdd08375310c143b87d58d157fbbdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactEvent:
+    Guid:
+      Data1: -338840380
+      Data2: 1173135148
+      Data3: -483299435
+      Data4: -371106792
+    Path: event:/item_drop
+  minVelocity: 1.5
+  maxVelocity: 10
+  cooldown: 0.1
+  itemWeight: 0
 --- !u!1 &923257478
 GameObject:
   m_ObjectHideFlags: 0
@@ -44670,6 +44743,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 651635700}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 37062ac09f8e84b45b1b23a90a454251,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 651635703}
   m_SourcePrefab: {fileID: 100100000, guid: 37062ac09f8e84b45b1b23a90a454251, type: 3}
 --- !u!1 &1118562255
 GameObject:
@@ -48458,6 +48535,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pulseMaterial: {fileID: 2100000, guid: 96b60543769f1194c9473587635bf42d, type: 2}
+--- !u!114 &1241455900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241455888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4fdd08375310c143b87d58d157fbbdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactEvent:
+    Guid:
+      Data1: -338840380
+      Data2: 1173135148
+      Data3: -483299435
+      Data4: -371106792
+    Path: event:/item_drop
+  minVelocity: 1.5
+  maxVelocity: 10
+  cooldown: 0.1
+  itemWeight: 1
 --- !u!1 &1242857699
 GameObject:
   m_ObjectHideFlags: 0
@@ -83744,6 +83844,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1241455896}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2895cae8df3010846b21e90e59834508,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1241455900}
   m_SourcePrefab: {fileID: 100100000, guid: 2895cae8df3010846b21e90e59834508, type: 3}
 --- !u!4 &1783121576 stripped
 Transform:
@@ -91095,6 +91199,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 285454678}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: df9d567a7b833f442a2726396ac6a275,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 285454682}
   m_SourcePrefab: {fileID: 100100000, guid: df9d567a7b833f442a2726396ac6a275, type: 3}
 --- !u!1 &1990112835
 GameObject:
@@ -98216,11 +98324,11 @@ MonoBehaviour:
   breakParticles: {fileID: 1517595568}
   qteHitSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1434432211
+      Data2: 1158932801
+      Data3: 1786654851
+      Data4: 1338062814
+    Path: event:/door_QTE
 --- !u!65 &7836256896010017577
 BoxCollider:
   m_ObjectHideFlags: 0
