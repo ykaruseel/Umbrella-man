@@ -42,4 +42,14 @@ public class QuestData : ScriptableObject
         isCompleted = true;
         isActive = false;
     }
+
+    public string GetTitleWithProgress()
+    {
+        if (type == GoalType.ReturnItem && targetID != null && targetID.Count > 1)
+        {
+            return $"{title} ({completedTargets.Count}/{targetID.Count})";
+        }
+
+        return title;
+    }
 }

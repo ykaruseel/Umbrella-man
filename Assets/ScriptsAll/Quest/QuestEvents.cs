@@ -1,20 +1,26 @@
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
 public class QuestEvents : MonoBehaviour
 {
-    // Versia prototip, perenesti vse eventy siuda potom i dielat vizov iz QMV2 czerez switch i ID kvesta
+    [Header("Quest 3")]
     public List<GameObject> objectsToEnable;
 
     public List<GameObject> objectsToDisable;
 
+    [Header("Quest 5")]
     public GameObject tvToEndable;
 
     public GameObject tvToDisable;
 
+    [Header("Quest 7")]
+    public List<Light> lightsToDisable;
+
+    [Header("Quest 9-11")]
     public PlayerController player;
 
     public GameObject knifeMan;
@@ -23,23 +29,31 @@ public class QuestEvents : MonoBehaviour
 
     public NPC_Dialogue knifeManDialogue;
 
-    public Camera cinematicCamera1;
-    public Camera cinematicCamera2;
+    public CameraFade cameraFade;
 
-    public Camera playerCamera;
+    public Camera playerCamera1;
+    public Camera playerCamera2;
+
+    public Camera cinematicCamera;
 
     public Transform retreatPoint;
 
-    public float waitTimeBeforeStop = 5f;
-
     public static QuestEvents Instance;
+
+    public List<DoorController> doors;
+
+    [Header("Quest 11")]
+    public PlayerComments comments;
+    
+    public Light flickerLight;
+
 
     private void Awake()
     {
         Instance = this;
     }
 
-    public void VremennoQ3()
+    public IEnumerator QuestEvent3()
     {
         foreach (GameObject obj in objectsToEnable)
         {
@@ -52,68 +66,129 @@ public class QuestEvents : MonoBehaviour
             if (obj != null)
                 obj.SetActive(false);
         }
+
+        if (player)
+        {
+            CharacterController cc = player.transform.GetComponent<CharacterController>();
+            if (cc) cc.enabled = false;
+
+            player.SetCanMove(false);
+            player.isCinematic = true;
+
+            StartCoroutine(cameraFade.FadeOut());
+
+            yield return new WaitForSeconds(1.25f);
+
+            player.transform.position = new Vector3(-22.77f, -8.31f, -1.53f);
+            player.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            player.SetRotation(180f, 0f);
+
+            yield return new WaitForSeconds(0.25f);
+
+            StartCoroutine(cameraFade.FadeIn());
+
+            yield return new WaitForSeconds(1f);
+
+            player.SetCanMove(true);
+            player.isCinematic = false;
+            if (cc) cc.enabled = true;
+            player.enabled = true;
+        }
     }
 
 
-    public void VremennoQ5()
+    public void QuestEvent5()
     {
+        foreach (GameObject obj in objectsToEnable)
+        {
+            if (obj != null)
+                obj.tag = "Pickable";
+        }
+
         tvToEndable.SetActive(true);
         tvToDisable.SetActive(false);
     }
 
-    public IEnumerator VremennoQ9()
+    public void QuestEvent7()
+    {
+        foreach (Light light in lightsToDisable)
+        {
+            if (light != null)
+                light.enabled = false;
+        }
+    }
+
+    public IEnumerator QuestEvent9()
     {
         player.SetCanMove(false);
 
         player.isCinematic = true;
 
+
+        StartCoroutine(cameraFade.FadeOut());
+
+        yield return new WaitForSeconds(1.25f);
+
+        cinematicCamera.gameObject.SetActive(true);
+        playerCamera1.gameObject.SetActive(false);
+        playerCamera2.gameObject.SetActive(false);
         knifeMan.SetActive(true);
 
-        playerCamera.gameObject.SetActive(true);
-        cinematicCamera1.gameObject.SetActive(false);
-        cinematicCamera2.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.25f);
 
-
-
-        yield return new WaitForSeconds(waitTimeBeforeStop);
-
-        
-        // Здесь можно вызвать метод поворота в твоем PlayerController
+        StartCoroutine(cameraFade.FadeIn());
 
         CharacterController cc = player.transform.GetComponent<CharacterController>();
         if (cc) cc.enabled = false;
 
-        player.transform.rotation = Quaternion.Euler(0f, 48.611f, 0f);
-        player.SetRotation(48.611f, 0f);
+        player.transform.rotation = Quaternion.Euler(0f, -0.853f, 0f);
+        player.SetRotation(-0.853f, 0f);
 
         float elapsed = 0;
         Vector3 startPos = player.transform.position;
-        while (elapsed < 1f)
+        while (elapsed < 2.5f)
         {
             player.transform.position = Vector3.Lerp(startPos, retreatPoint.position, elapsed);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        cinematicCamera1.gameObject.SetActive(true);
-        cinematicCamera2.gameObject.SetActive(true);
-        playerCamera.gameObject.SetActive(false);
+        StartCoroutine(cameraFade.FadeOut());
+
+        yield return new WaitForSeconds(1.25f);
+
+        playerCamera1.gameObject.SetActive(true);
+        playerCamera2.gameObject.SetActive(true);
+        cinematicCamera.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(0.25f);
+
+        StartCoroutine(cameraFade.FadeIn());
+
+        yield return new WaitForSeconds(1.25f);
 
         knifeManDialogue.TriggerDialogue();
     }
 
-    public void VremennoQ10()
+    public IEnumerator QuestEvent10()
     {
         CharacterController cc = player.transform.GetComponent<CharacterController>();
         if (cc) cc.enabled = true;
         player.SetCanMove(true);
         player.isCinematic = false;
 
+        yield return new WaitForSeconds(2f);
 
-        knifeManDialogue.gameObject.GetComponent<KnifeManAI>().StartChase();
+        knifeManDialogue.gameObject.GetComponent<KnifeManAI>().StartChasing();
+
+        foreach (DoorController door in doors)
+        {
+            if (door != null)
+                door.isLockedWithQTE = true;
+        }
     }
 
-    public void VremennoQ11() 
+    public IEnumerator QuestEvent11() 
     {
         knifeMan.SetActive(false);
 
@@ -122,7 +197,76 @@ public class QuestEvents : MonoBehaviour
         player.SetCanMove(false);
 
         player.isCinematic = true;
+        
+        flickerLight.enabled = true;
 
-        Debug.Log("Конец прототипа");
+        player.StartCinematicPan(umbrellaMan.transform, 2f);
+
+        yield return new WaitForSeconds(2f);
+
+        StartCoroutine(LightFlickerRoutine());
+
+        player.ZoomIn(0.4f);        
+
+        yield return new WaitForSeconds(2f);
+
+        StartCoroutine(cameraFade.FadeOut());
+
+        yield return new WaitForSeconds(1.25f);
+
+        flickerLight.enabled = false;
+
+        if (comments != null)
+        {
+            comments.StartDialogue();
+
+            while (comments != null && comments.IsDialogueActive())
+            {
+                yield return null;
+            }
+        }
+    }
+
+    private IEnumerator LightFlickerRoutine()
+    {
+        if (flickerLight == null) yield break;
+
+        flickerLight.enabled = true;
+
+        float minDuration = 0.5f;
+        float maxDuration = 1f;
+        float decreaseFactor = 0.6f;
+
+        float targetMin = 1.5f;
+        float targetMax = 4f;
+
+        while (flickerLight.enabled)
+        {
+            float startIntensity = flickerLight.intensity;
+            float targetIntensity = Random.Range(targetMin, targetMax);
+
+            float duration = Random.Range(minDuration, maxDuration);
+
+            float t = 0f;
+            while (t < 1f)
+            {
+                t += Time.deltaTime / duration;
+                flickerLight.intensity = Mathf.Lerp(
+                    startIntensity,
+                    targetIntensity,
+                    Mathf.SmoothStep(0f, 1f, t)
+                );
+
+                yield return null;
+            }
+
+            flickerLight.intensity = targetIntensity;
+
+            minDuration *= decreaseFactor;
+            maxDuration *= decreaseFactor;
+
+            minDuration = Mathf.Max(minDuration, 0.05f);
+            maxDuration = Mathf.Max(maxDuration, 0.1f);
+        }
     }
 }

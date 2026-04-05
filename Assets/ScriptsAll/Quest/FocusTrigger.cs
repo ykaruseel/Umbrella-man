@@ -10,7 +10,10 @@ public class FocusTrigger : MonoBehaviour
 
     public GameObject focusObject;
 
-    public IntroText text;
+    [Range(0.1f,1f)]
+    [SerializeField] private float focusPower = 0.8f;
+
+    public PlayerComments comments;
 
     private PlayerController playerController;
 
@@ -45,15 +48,19 @@ public class FocusTrigger : MonoBehaviour
         playerController.isCinematic = true;
         playerController.SetCanMove(false);
         playerController.StartCinematicPan(focusObject.transform, 2f);
-        playerController.ZoomIn();
+        playerController.ZoomIn(focusPower);
 
-        if (text != null)
-            StartCoroutine(text.SequenceRoutine(0f));
+        if (comments != null)
+        {
+            comments.StartDialogue();
 
-        yield return new WaitForSeconds(6.5f);
-        //Change this time and introtext
+            while (comments != null && comments.IsDialogueActive())
+            {
+                yield return null;
+            }
+        }
 
-        playerController.ZoomOut();
+        playerController.ZoomOut(focusPower);
         playerController.isCinematic = false;
         playerController.SetCanMove(true);
 

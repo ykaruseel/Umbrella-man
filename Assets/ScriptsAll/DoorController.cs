@@ -3,6 +3,7 @@ using FMODUnity;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class DoorController : MonoBehaviour
@@ -37,7 +38,7 @@ public class DoorController : MonoBehaviour
     // НОВЫЕ НАСТРОЙКИ (QTE ДВЕРЬ)
     // ==========================================
     [Header("QTE Settings")]
-    [SerializeField] private bool isLockedWithQTE = false; 
+    [SerializeField] public bool isLockedWithQTE = false; 
 
     [Header("QTE Events (Блокировка Игрока)")]
     public UnityEvent onQteStart; // Сработает при начале QTE
@@ -124,6 +125,17 @@ public class DoorController : MonoBehaviour
         }
     }
 
+    private void PlayQTEHit(int hitType)
+    {
+        if (qteHitSound.IsNull) return;
+
+        var instance = RuntimeManager.CreateInstance(qteHitSound);
+        instance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+        instance.setParameterByName("HitType", hitType);
+        instance.start();
+        instance.release();
+    }
+
     public void TryOpenDoor()
     {
         if (isAnimating) return;
@@ -168,18 +180,32 @@ public class DoorController : MonoBehaviour
     private void CheckQTEHit()
     {
         float damageDone = 0f;
+        int hitType = -1;
 
-        if (linePos >= strongZone.x && linePos <= strongZone.y) damageDone = strongDamage;
-        else if (linePos >= mediumZone.x && linePos <= mediumZone.y) damageDone = mediumDamage;
-        else if (linePos >= weakZone.x && linePos <= weakZone.y) damageDone = weakDamage;
+        if (linePos >= strongZone.x && linePos <= strongZone.y)
+        {
+            damageDone = strongDamage;
+            hitType = 2;
+        }
+        else if (linePos >= mediumZone.x && linePos <= mediumZone.y)
+        {
+            damageDone = mediumDamage;
+            hitType = 1;
+        }
+        else if (linePos >= weakZone.x && linePos <= weakZone.y)
+        {
+            damageDone = weakDamage;
+            hitType = 0;
+        }
 
         if (damageDone > 0)
         {
+            PlayQTEHit(hitType);
             StartCoroutine(RegisterQTEHit(damageDone));
         }
         else
         {
-            StartCoroutine(QTECooldown(0.5f)); 
+            StartCoroutine(QTECooldown(0.5f));
         }
     }
 
@@ -260,6 +286,14 @@ public class DoorController : MonoBehaviour
 
         rb.AddForce((pushDir + Vector3.up * 0.4f) * 6f, ForceMode.VelocityChange);
         rb.AddTorque((transform.right * 3f + transform.up * Random.Range(-1f, 1f)), ForceMode.VelocityChange);
+
+        if (QuestManagerV2.Instance.IsGoalRequired(transform.name, GoalType.Door))
+        {
+            QuestManagerV2.Instance.ProcessAction(transform.name, GoalType.Door);
+        }
+        Debug.Log(transform.name);
+        PlayQTEHit(3);
+
     }
 
     // ==========================================

@@ -1,5 +1,8 @@
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class KnifeManAI : MonoBehaviour
@@ -7,34 +10,60 @@ public class KnifeManAI : MonoBehaviour
     public Transform playerTransform;
     
     private NavMeshAgent agent;
+    private Animator animator;
     private bool isChasing = false;
 
-    void Start()
+    private float stopDistance = 2f; // Дистанция, на которой враг остановится
+
+    [SerializeField] private EventReference attackSound;
+    [SerializeField] private float attackCooldown = 2f;
+
+    private float lastAttackTime;
+
+    private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+
+        animator = GetComponent<Animator>();
+
+        agent.stoppingDistance = stopDistance;
     }
 
-    void Update()
+    private void Update()
     {
         if (isChasing)
         {
             agent.SetDestination(playerTransform.position);
+            float currentSpeed = agent.velocity.magnitude;
+            animator.SetFloat("Speed", currentSpeed);
+            TryAttack();
         }
     }
 
-    public void StartChase() => isChasing = true;
-    public void StopChase() => isChasing = false;
-
-    private void OnCollisionEnter(Collision collision)
+    private void TryAttack()
     {
-        if (collision.gameObject.CompareTag("Player"))
+        float distance = Vector3.Distance(transform.position, playerTransform.position);
+
+        if (distance <= stopDistance + 0.1f)
         {
-            AttackPlayer();
+            Attack();
         }
     }
 
-    void AttackPlayer()
+    private void Attack()
     {
-           // hz kak pokazat` czto nas udarili
+        if (Time.time >= lastAttackTime + attackCooldown)
+        {
+            EventInstance inst = RuntimeManager.CreateInstance(attackSound);
+            RuntimeManager.AttachInstanceToGameObject(inst, transform);
+            inst.start();
+            inst.release();
+            lastAttackTime = Time.time;
+        }
+    }
+
+    public void StartChasing()
+    {
+        isChasing = true;
     }
 }

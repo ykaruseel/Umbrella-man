@@ -45,14 +45,19 @@ public class QuestManagerV2 : MonoBehaviour
         if (currentQuestIndex >= questSequence.Count) return;
 
         QuestData current = questSequence[currentQuestIndex];
-
+        Debug.Log($"<color=yellow>[Manager]</color> Получено действие: {id} для типа {type} в квесте {current.questID}");
         if (current.isActive && current.type == type)
         {
             current.CheckTarget(id);
 
             if (current.isCompleted)
             {
+                Debug.Log($"<color=yellow>[Manager]</color> Квест {current.questID} завершён!");
                 StartCoroutine(ActivateNextQuest());
+            }
+            else
+            {
+                questUI.UpdateProgressUI(current);
             }
         }
     }
@@ -83,45 +88,31 @@ public class QuestManagerV2 : MonoBehaviour
             // All quests completed
         }
 
-        //torze nado peredelat
-        if(questSequence[currentQuestIndex].questID == "Q3")
+        switch (questSequence[currentQuestIndex].questID)
         {
-            if (playerController)
-            {
-                CharacterController cc = playerController.transform.GetComponent<CharacterController>();
-                if (cc) cc.enabled = false;
+            case "Q3":
+                StartCoroutine(QuestEvents.Instance.QuestEvent3());
+                break;
 
-                playerController.SetCanMove(false);
-                playerController.isCinematic = true;
+            case "Q5":
+                QuestEvents.Instance.QuestEvent5();
+                break;
 
-                playerController.transform.position = new Vector3(-22.77f, -8.31f, -1.53f);
-                playerController.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-                playerController.SetRotation(180f, 0f);
+            case "Q7":
+                QuestEvents.Instance.QuestEvent7();
+                break;
 
-                QuestManager.instance.FadeOut(cc);
-            }
+            case "Q9":
+                StartCoroutine(QuestEvents.Instance.QuestEvent9());
+                break;
 
-            QuestEvents.Instance.VremennoQ3();
-        }
+            case "Q10":
+                StartCoroutine(QuestEvents.Instance.QuestEvent10());
+                break;
 
-        if(questSequence[currentQuestIndex].questID == "Q5")
-        {
-            QuestEvents.Instance.VremennoQ5();
-        }
-
-        if(questSequence[currentQuestIndex].questID == "Q9")
-        {
-            StartCoroutine(QuestEvents.Instance.VremennoQ9());
-        }
-
-        if(questSequence[currentQuestIndex].questID == "Q10")
-        {
-            QuestEvents.Instance.VremennoQ10();
-        }
-
-        if(questSequence[currentQuestIndex].questID == "Q11")
-        {
-            QuestEvents.Instance.VremennoQ11();
+            case "Q11":
+                StartCoroutine(QuestEvents.Instance.QuestEvent11());
+                break;
         }
     }
 }
