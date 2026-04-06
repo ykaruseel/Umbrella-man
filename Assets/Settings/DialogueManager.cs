@@ -10,25 +10,29 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager instance;
 
     [Header("UI")]
-    public GameObject dialoguePanel;    // панель с диалогом
+    public GameObject dialoguePanel;   
     public TMP_Text nameText;
     public TMP_Text dialogueText;       
 
     [Header("Settings")]
-    public float typingSpeed = 0.03f;   // скорость печати
-    public float fadeDuration = 0.2f;   // чуть ускорил появление (было 0.5)
+    public float typingSpeed = 0.03f;  
+    public float fadeDuration = 0.2f;   
 
     [Header("FMOD Voices")]
     [SerializeField] private EventReference danielVoiceEvent;
     [SerializeField] private EventReference lesterVoiceEvent;
+    [SerializeField] private Transform danielTransform;
+    [SerializeField] private Transform lesterTransform;
+    [SerializeField] private EventReference knifeManVoiceEvent;
+    [SerializeField] private Transform knifeManTransform;
 
     private Queue<DialogueLine> linesQueue = new Queue<DialogueLine>();
     private bool isDialogueActive = false;
     
-    // --- НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ ПРОПУСКА ---
-    private bool isTyping = false;       // Печатается ли текст сейчас?
-    private string currentSentence = ""; // Храним полную фразу здесь
-    // -------------------------------------
+   
+    private bool isTyping = false;       
+    private string currentSentence = ""; 
+  
 
     private Coroutine typingCoroutine;
     private Coroutine fadeCoroutine; 
@@ -77,22 +81,22 @@ public class DialogueManager : MonoBehaviour
         DisplayNextSentence();
     }
 
-    // --- ОБНОВЛЕННАЯ ЛОГИКА ОТОБРАЖЕНИЯ ---
+   
     public void DisplayNextSentence()
     {
-        // 1. Если текст ЕЩЁ печатается — завершаем его мгновенно
+       
         if (isTyping)
         {
             if (typingCoroutine != null) StopCoroutine(typingCoroutine);
             
             if (dialogueText != null) 
-                dialogueText.text = currentSentence; // Показываем всю фразу сразу
+                dialogueText.text = currentSentence; 
             
             isTyping = false;
-            return; // ВАЖНО: Выходим, не запуская следующую фразу
+            return; 
         }
 
-        // 2. Если текст УЖЕ написан полностью — переходим к следующему
+        
         StopCurrentVoice(); 
 
         if (linesQueue.Count == 0)
@@ -103,7 +107,7 @@ public class DialogueManager : MonoBehaviour
 
         DialogueLine line = linesQueue.Dequeue();
         
-        // Сохраняем полную фразу для пропуска
+        
         currentSentence = line.sentence;
 
         if (nameText != null) nameText.text = line.speakerName;
@@ -113,7 +117,7 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator TypeSentence(DialogueLine line)
     {
-        isTyping = true; // Начали печать
+        isTyping = true; 
         
         if (dialogueText != null) dialogueText.text = "";
 
@@ -121,19 +125,19 @@ public class DialogueManager : MonoBehaviour
 
         foreach (char letter in line.sentence.ToCharArray())
         {
-            // Учитываем паузу (твоя старая логика)
+            
             while (Pause.isPaused)
             {
-                SetPaused(); // ставим звук на паузу
+                SetPaused(); 
                 yield return null;
             }
-            SetPaused(); // снимаем звук с паузы
+            SetPaused(); 
 
             if (dialogueText != null) dialogueText.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        isTyping = false; // Закончили печать
+        isTyping = false; 
         StopCurrentVoice();
         typingCoroutine = null;
     }
@@ -175,19 +179,41 @@ public class DialogueManager : MonoBehaviour
         return isDialogueActive;
     }
 
-    // ---------- FMOD ГОЛОСА ----------
+   
     private void StartVoiceForSpeaker(string speakerName)
     {
         StopCurrentVoice();
-        EventReference voiceEvent = new EventReference();
 
-        if (speakerName == "Daniel") voiceEvent = danielVoiceEvent;
-        else if (speakerName == "Lester") voiceEvent = lesterVoiceEvent;
+        EventReference voiceEvent = new EventReference();
+        Transform speakerTransform = null;
+
+        if (speakerName == "Daniel")
+        {
+            voiceEvent = danielVoiceEvent;
+            speakerTransform = danielTransform;
+        }
+        else if (speakerName == "Lester")
+        {
+            voiceEvent = lesterVoiceEvent;
+            speakerTransform = lesterTransform;
+        }
+        else if (speakerName == "Suspicious man with a knife")
+        {
+            voiceEvent = knifeManVoiceEvent;
+            speakerTransform = knifeManTransform;
+        }
         else return;
 
-        if (voiceEvent.IsNull) return;
+        if (voiceEvent.IsNull || speakerTransform == null) return;
 
         currentVoiceInstance = RuntimeManager.CreateInstance(voiceEvent);
+
+        RuntimeManager.AttachInstanceToGameObject(
+            currentVoiceInstance,
+            speakerTransform,
+            speakerTransform.GetComponent<Rigidbody>()
+        );
+
         currentVoiceInstance.start();
         hasActiveVoice = true;
     }
