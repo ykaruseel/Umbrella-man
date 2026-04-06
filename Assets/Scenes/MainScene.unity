@@ -6899,6 +6899,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2065794293531001828, guid: 05f2ba6e476af274d8d395f669b6be2f,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9ad640a52f6c80d47ba03eba12605c97, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 05f2ba6e476af274d8d395f669b6be2f,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d2fb5e2c00886634abae75699eefd826, type: 2}
     - target: {fileID: -8679921383154817045, guid: 67e7d6b75b74142419537e21ed5161fb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6969,16 +6979,6 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 696eb422f4794884986351f63f0f9024, type: 2}
-    - target: {fileID: 2065794293531001828, guid: 05f2ba6e476af274d8d395f669b6be2f,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 9ad640a52f6c80d47ba03eba12605c97, type: 2}
-    - target: {fileID: 5866666021909216657, guid: 05f2ba6e476af274d8d395f669b6be2f,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: d2fb5e2c00886634abae75699eefd826, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17734,6 +17734,7 @@ MonoBehaviour:
       Data3: -1836718149
       Data4: 2116357876
     Path: event:/daniel_voice
+  playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
 --- !u!4 &382806858 stripped
 Transform:
@@ -18152,6 +18153,16 @@ MonoBehaviour:
       Data3: -2026549598
       Data4: 1506929119
     Path: event:/lester_voice
+  danielTransform: {fileID: 332663625}
+  lesterTransform: {fileID: 2000125788}
+  knifeManVoiceEvent:
+    Guid:
+      Data1: -433330370
+      Data2: 1087238010
+      Data3: -1859321425
+      Data4: -17889504
+    Path: event:/knife_man/km_voice
+  knifeManTransform: {fileID: 567076527}
   dialogueCanvasGroup: {fileID: 1075412036}
 --- !u!1 &407413226
 GameObject:
@@ -23535,20 +23546,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueLines:
   - speakerName: Daniel
-    sentence: "Wait\u2014don\u2019t!"
+    sentence: "Wait - don\u2019t!"
   - speakerName: Daniel
     sentence: "I\u2019m not here for trouble\u2026 I was just looking for my gramophone."
-  - speakerName: SUSPICIOUS MAN WITH A KNIFE
+  - speakerName: Suspicious man with a knife
     sentence: "Nice gramophone\u2026"
-  - speakerName: SUSPICIOUS MAN WITH A KNIFE
+  - speakerName: Suspicious man with a knife
     sentence: "You\u2019ve got nice ears too."
-  - speakerName: SUSPICIOUS MAN WITH A KNIFE
+  - speakerName: Suspicious man with a knife
     sentence: Mind if I borrow them?
   - speakerName: Daniel
     sentence: "Yeah\u2026 I think I\u2019m gonna leave. You can keep the gramophone."
-  - speakerName: SUSPICIOUS MAN WITH A KNIFE
+  - speakerName: Suspicious man with a knife
     sentence: "No, no, no\u2026"
-  - speakerName: SUSPICIOUS MAN WITH A KNIFE
+  - speakerName: Suspicious man with a knife
     sentence: "You\u2019ve seen me."
   interactionPrompt: {fileID: 0}
   knockSound:
@@ -23627,6 +23638,12 @@ MonoBehaviour:
       Data4: -370351358
     Path: event:/knife_man/km_attack
   attackCooldown: 2
+--- !u!4 &567076527 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6425f23c9b52a874b95f40e5c4bbd91f,
+    type: 3}
+  m_PrefabInstance: {fileID: 567076518}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &567635608
 GameObject:
   m_ObjectHideFlags: 0
@@ -24830,6 +24847,7 @@ MonoBehaviour:
       Data3: -1836718149
       Data4: 2116357876
     Path: event:/daniel_voice
+  playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
 --- !u!1 &614190212
 GameObject:
@@ -70875,6 +70893,7 @@ MonoBehaviour:
       Data3: -1836718149
       Data4: 2116357876
     Path: event:/daniel_voice
+  playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
 --- !u!4 &1698071086 stripped
 Transform:
@@ -91163,7 +91182,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: df9d567a7b833f442a2726396ac6a275,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: df9d567a7b833f442a2726396ac6a275,
         type: 3}
@@ -91451,6 +91470,12 @@ MonoBehaviour:
   minAlpha: 0.2
   maxAlpha: 0.7
   fadeInDuration: 1.5
+--- !u!4 &2000125788 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 67e7d6b75b74142419537e21ed5161fb,
+    type: 3}
+  m_PrefabInstance: {fileID: 217853423}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2002254889
 GameObject:
   m_ObjectHideFlags: 0
@@ -96855,6 +96880,7 @@ MonoBehaviour:
       Data3: -1836718149
       Data4: 2116357876
     Path: event:/daniel_voice
+  playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
 --- !u!1 &4940524018853296068
 GameObject:
@@ -98097,6 +98123,7 @@ MonoBehaviour:
       Data3: -1836718149
       Data4: 2116357876
     Path: event:/daniel_voice
+  playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
 --- !u!23 &7093743073930907723
 MeshRenderer:
@@ -98222,6 +98249,7 @@ MonoBehaviour:
       Data3: -1836718149
       Data4: 2116357876
     Path: event:/daniel_voice
+  playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
 --- !u!1 &7695419835232237437
 GameObject:
@@ -98483,6 +98511,7 @@ MonoBehaviour:
       Data3: -1836718149
       Data4: 2116357876
     Path: event:/daniel_voice
+  playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
 --- !u!114 &8654259632810341594
 MonoBehaviour:
@@ -98771,11 +98800,11 @@ MonoBehaviour:
   breakParticles: {fileID: 1733303685}
   qteHitSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1434432211
+      Data2: 1158932801
+      Data3: 1786654851
+      Data4: 1338062814
+    Path: event:/door_QTE
 --- !u!65 &8898129693783578906
 BoxCollider:
   m_ObjectHideFlags: 0
