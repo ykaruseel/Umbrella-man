@@ -17,6 +17,7 @@ public class KnifeManAI : MonoBehaviour
 
     [SerializeField] private EventReference attackSound;
     [SerializeField] private float attackCooldown = 2f;
+    [SerializeField] private EventReference footstepEvent;
 
     private float lastAttackTime;
 
@@ -60,6 +61,13 @@ public class KnifeManAI : MonoBehaviour
             inst.release();
             lastAttackTime = Time.time;
         }
+    }
+
+    public void PlayFootstep()
+    {
+        if (footstepEvent.IsNull) return;
+
+        RuntimeManager.PlayOneShotAttached(footstepEvent, gameObject);
     }
 
     public void StartChasing()
