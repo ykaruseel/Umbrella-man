@@ -3,8 +3,6 @@ using FMODUnity;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Playables;
-using UnityEngine.UI;
 
 public class DoorController : MonoBehaviour
 {
@@ -41,39 +39,39 @@ public class DoorController : MonoBehaviour
     [SerializeField] public bool isLockedWithQTE = false; 
 
     [Header("QTE Events (Блокировка Игрока)")]
-    public UnityEvent onQteStart; // Сработает при начале QTE
-    public UnityEvent onQteEnd;   // Сработает, когда дверь выбьют
+    public UnityEvent onQteStart; 
+    public UnityEvent onQteEnd;   
 
     [Header("QTE UI")]
     [SerializeField] private GameObject qtePanel;        
     [SerializeField] private RectTransform movingLine;   
     [SerializeField] private RectTransform barArea;      
 
-    [Header("QTE Zones (0.0 to 1.0)")]
-    [SerializeField] private Vector2 weakZone = new Vector2(0.2f, 0.4f);   
-    [SerializeField] private Vector2 mediumZone = new Vector2(0.45f, 0.7f);
-    [SerializeField] private Vector2 strongZone = new Vector2(0.75f, 0.95f);
+    [Header("QTE Zones (Согласно PDF: только верхняя половина)")]
+    [SerializeField] private Vector2 weakZone = new Vector2(0.45f, 0.65f);   
+    [SerializeField] private Vector2 mediumZone = new Vector2(0.65f, 0.85f);
+    [SerializeField] private Vector2 strongZone = new Vector2(0.85f, 1.0f);
 
     [Header("QTE Difficulty")]
     [SerializeField] private float lineSpeed = 1.2f;  
     [SerializeField] private float qteCooldown = 0.5f; 
 
-    [Header("QTE Damage (Need 100 HP)")]
+    [Header("QTE Damage (100 HP = 2 сильных, 3 средних, 5 слабых)")]
     [SerializeField] private float weakDamage = 20f;   
     [SerializeField] private float mediumDamage = 34f; 
     [SerializeField] private float strongDamage = 50f; 
     
     [Header("QTE Visuals & Audio")]
-    [SerializeField] private ParticleSystem hitDust;        // Пыль при ударе
-    [SerializeField] private ParticleSystem fallDust;       // Пыль при падении
-    [SerializeField] private ParticleSystem breakParticles; // НОВОЕ: Эффект (щепки/пыль) прямо в момент выбивания
+    [SerializeField] private ParticleSystem hitDust;        
+    [SerializeField] private ParticleSystem fallDust;       
+    [SerializeField] private ParticleSystem breakParticles; 
     [SerializeField] private EventReference qteHitSound;
 
     // Внутренние переменные QTE
     private float currentHealth = 100f;
     private bool isQteActive = false;
     private bool isQteCooldown = false;
-    private float linePos = 0f;
+    private float linePos = 0f; // 0 = dół (Start point)
     private int lineDir = 1;
     private Vector3 originalLocalPos;
 
@@ -93,6 +91,7 @@ public class DoorController : MonoBehaviour
     {
         if (isQteActive && !isQteCooldown)
         {
+            // Линия бегает от 0 до 1
             linePos += lineSpeed * lineDir * Time.deltaTime;
             if (linePos >= 1f || linePos <= 0f)
             {
@@ -104,7 +103,6 @@ public class DoorController : MonoBehaviour
             {
                 float barHeight = barArea.rect.height;
                 float lineHeight = movingLine.rect.height;
-
                 float startY = lineHeight / 2f;
                 float endY = barHeight - (lineHeight / 2f);
 
@@ -167,13 +165,12 @@ public class DoorController : MonoBehaviour
     private void StartQTE()
     {
         currentHealth = 100f;
-        linePos = 0f;
+        linePos = 0f; // Линия стартует снизу, как в PDF (Start point)
         lineDir = 1;
         isQteActive = true;
         isQteCooldown = false;
         if (qtePanel != null) qtePanel.SetActive(true);
         
-        // --- БЛОКИРУЕМ ИГРОКА ---
         onQteStart?.Invoke();
     }
 
@@ -182,29 +179,31 @@ public class DoorController : MonoBehaviour
         float damageDone = 0f;
         int hitType = -1;
 
+        // Проверяем попадание по зонам
         if (linePos >= strongZone.x && linePos <= strongZone.y)
         {
             damageDone = strongDamage;
-            hitType = 2;
+            hitType = 2; // Передаем параметр FMOD для сильного удара
         }
         else if (linePos >= mediumZone.x && linePos <= mediumZone.y)
         {
             damageDone = mediumDamage;
-            hitType = 1;
+            hitType = 1; // Средний удар
         }
         else if (linePos >= weakZone.x && linePos <= weakZone.y)
         {
             damageDone = weakDamage;
-            hitType = 0;
+            hitType = 0; // Слабый удар
         }
 
         if (damageDone > 0)
         {
-            PlayQTEHit(hitType);
+            PlayQTEHit(hitType); // Проигрываем правильный звук
             StartCoroutine(RegisterQTEHit(damageDone));
         }
         else
         {
+            // Промах - просто даем кулдаун, без урона
             StartCoroutine(QTECooldown(0.5f));
         }
     }
@@ -214,7 +213,6 @@ public class DoorController : MonoBehaviour
         isQteCooldown = true;
         currentHealth -= damage;
 
-        if (!qteHitSound.IsNull) RuntimeManager.PlayOneShot(qteHitSound, transform.position);
         if (hitDust != null) hitDust.Play();
         StartCoroutine(ShakeDoor());
 
@@ -256,11 +254,9 @@ public class DoorController : MonoBehaviour
         isQteActive = false;
         if (qtePanel != null) qtePanel.SetActive(false); 
         
-        // --- ВОСПРОИЗВОДИМ НОВЫЕ ПАРТИКЛЫ ВЫБИВАНИЯ ---
         if (breakParticles != null) breakParticles.Play();
         if (fallDust != null) fallDust.Play(); 
 
-        // --- РАЗБЛОКИРУЕМ ИГРОКА ---
         onQteEnd?.Invoke();
 
         door.SetParent(null);
@@ -287,12 +283,12 @@ public class DoorController : MonoBehaviour
         rb.AddForce((pushDir + Vector3.up * 0.4f) * 6f, ForceMode.VelocityChange);
         rb.AddTorque((transform.right * 3f + transform.up * Random.Range(-1f, 1f)), ForceMode.VelocityChange);
 
-        if (QuestManagerV2.Instance.IsGoalRequired(transform.name, GoalType.Door))
+        // Интеграция с системой квестов
+        if (QuestManagerV2.Instance != null && QuestManagerV2.Instance.IsGoalRequired(transform.name, GoalType.Door))
         {
             QuestManagerV2.Instance.ProcessAction(transform.name, GoalType.Door);
         }
-        PlayQTEHit(3);
-
+        PlayQTEHit(3); // Звук падения/выбивания
     }
 
     // ==========================================
