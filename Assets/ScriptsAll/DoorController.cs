@@ -47,19 +47,19 @@ public class DoorController : MonoBehaviour
     [SerializeField] private RectTransform movingLine;   
     [SerializeField] private RectTransform barArea;      
 
-    [Header("QTE Zones (Согласно PDF: только верхняя половина)")]
+    [Header("QTE Zones (Только верхняя половина)")]
     [SerializeField] private Vector2 weakZone = new Vector2(0.45f, 0.65f);   
     [SerializeField] private Vector2 mediumZone = new Vector2(0.65f, 0.85f);
     [SerializeField] private Vector2 strongZone = new Vector2(0.85f, 1.0f);
 
-    [Header("QTE Difficulty")]
-    [SerializeField] private float lineSpeed = 1.2f;  
-    [SerializeField] private float qteCooldown = 0.5f; 
+    [Header("QTE Difficulty (ХАРДКОР)")]
+    [SerializeField] private float lineSpeed = 2.0f;  // Ускорили бегунок, чтобы было сложнее!
+    [SerializeField] private float qteCooldown = 0.4f; 
 
-    [Header("QTE Damage (100 HP = 2 сильных, 3 средних, 5 слабых)")]
-    [SerializeField] private float weakDamage = 20f;   
-    [SerializeField] private float mediumDamage = 34f; 
-    [SerializeField] private float strongDamage = 50f; 
+    [Header("QTE Damage (100 HP = 3 сильных, 5 средних, 10 слабых)")]
+    [SerializeField] private float weakDamage = 10f;   // Нужно 10 ударов
+    [SerializeField] private float mediumDamage = 20f; // Нужно 5 ударов
+    [SerializeField] private float strongDamage = 34f; // Нужно 3 удара
     
     [Header("QTE Visuals & Audio")]
     [SerializeField] private ParticleSystem hitDust;        
@@ -71,7 +71,7 @@ public class DoorController : MonoBehaviour
     private float currentHealth = 100f;
     private bool isQteActive = false;
     private bool isQteCooldown = false;
-    private float linePos = 0f; // 0 = dół (Start point)
+    private float linePos = 0f; 
     private int lineDir = 1;
     private Vector3 originalLocalPos;
 
@@ -91,7 +91,7 @@ public class DoorController : MonoBehaviour
     {
         if (isQteActive && !isQteCooldown)
         {
-            // Линия бегает от 0 до 1
+            // Линия бегает от 0 до 1 туда-сюда
             linePos += lineSpeed * lineDir * Time.deltaTime;
             if (linePos >= 1f || linePos <= 0f)
             {
@@ -165,7 +165,7 @@ public class DoorController : MonoBehaviour
     private void StartQTE()
     {
         currentHealth = 100f;
-        linePos = 0f; // Линия стартует снизу, как в PDF (Start point)
+        linePos = 0f; 
         lineDir = 1;
         isQteActive = true;
         isQteCooldown = false;
@@ -198,12 +198,12 @@ public class DoorController : MonoBehaviour
 
         if (damageDone > 0)
         {
-            PlayQTEHit(hitType); // Проигрываем правильный звук
+            PlayQTEHit(hitType); 
             StartCoroutine(RegisterQTEHit(damageDone));
         }
         else
         {
-            // Промах - просто даем кулдаун, без урона
+            // Промах - просто даем кулдаун
             StartCoroutine(QTECooldown(0.5f));
         }
     }
