@@ -13,7 +13,7 @@ public class KnifeManAI : MonoBehaviour
     private Animator animator;
     private bool isChasing = false;
 
-    private float stopDistance = 2f; // Дистанция, на которой враг остановится
+    private float stopDistance = 2f;
 
     [SerializeField] private EventReference attackSound;
     [SerializeField] private float attackCooldown = 2f;

@@ -333,6 +333,18 @@ public class PlayerController : MonoBehaviour
                     hit.collider.GetComponent<DoorController>().TryOpenDoor();
                     return;
                 }
+
+                if (hit.collider.CompareTag("Switch"))
+                {
+                    hit.collider.GetComponent<LightSwitch>().Interact();
+                    return;
+                }
+
+                if (hit.collider.CompareTag("LesterDoor") && QuestManagerV2.Instance.IsGoalRequired("Trigger Q2 (Door vremenaja)", GoalType.TalkToNPC))
+                {
+                    hit.collider.GetComponent<LesterDoor>().Interact();
+                    return;
+                }
             }
 
             objectInteraction.DropObject();
@@ -356,14 +368,24 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
-            
+            if (hit.collider.CompareTag("LesterDoor") && QuestManagerV2.Instance.IsGoalRequired("Trigger Q2 (Door vremenaja)", GoalType.TalkToNPC))
+            {
+                hit.collider.GetComponent<LesterDoor>().Interact();
+                return;
+            }
+
             if (hit.collider.CompareTag("Pickable"))
             {
                 objectInteraction.PickupObject(hit.collider.gameObject);
                 return;
             }
 
-            
+            if (hit.collider.CompareTag("Switch"))
+            {
+                hit.collider.GetComponent<LightSwitch>().Interact();
+                return;
+            }
+
             InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
             if (interactable != null)
             {

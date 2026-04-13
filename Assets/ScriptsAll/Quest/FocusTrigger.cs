@@ -61,6 +61,7 @@ public class FocusTrigger : MonoBehaviour
         }
 
         playerController.ZoomOut(focusPower);
+        yield return new WaitForSeconds(1f);
         playerController.isCinematic = false;
         playerController.SetCanMove(true);
 

@@ -111,7 +111,7 @@ public class QuestManagerV2 : MonoBehaviour
                 break;
 
             case "Q11":
-                QuestEvents.Instance.QuestEvent11();
+                StartCoroutine(QuestEvents.Instance.QuestEvent11());
                 break;
         }
     }

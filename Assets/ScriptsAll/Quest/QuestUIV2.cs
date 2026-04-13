@@ -51,10 +51,12 @@ public class QuestUIV2 : MonoBehaviour
     {
         if (canvasGroup.alpha < 0.1f)
         {
-            questText.text = completedQuest.title;
+            questText.text = completedQuest.GetTitleWithProgress();
             questText.color = Color.white;
             yield return StartCoroutine(Fade(1, 0.5f));
         }
+
+        questText.text = completedQuest.GetTitleWithProgress();
 
         questText.color = Color.green;
 

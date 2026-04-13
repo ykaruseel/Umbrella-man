@@ -283,8 +283,7 @@ public class DoorController : MonoBehaviour
         rb.AddForce((pushDir + Vector3.up * 0.4f) * 6f, ForceMode.VelocityChange);
         rb.AddTorque((transform.right * 3f + transform.up * Random.Range(-1f, 1f)), ForceMode.VelocityChange);
 
-        // Интеграция с системой квестов
-        if (QuestManagerV2.Instance != null && QuestManagerV2.Instance.IsGoalRequired(transform.name, GoalType.Door))
+        if (QuestManagerV2.Instance.IsGoalRequired(transform.name, GoalType.Door))
         {
             QuestManagerV2.Instance.ProcessAction(transform.name, GoalType.Door);
         }
