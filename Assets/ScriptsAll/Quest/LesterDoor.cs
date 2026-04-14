@@ -20,6 +20,7 @@ public class LesterDoor : MonoBehaviour
 
     public void Interact()
     {
+        gameObject.tag = "Untagged";
         closedRotation = door.localRotation;
         openRotation = closedRotation * Quaternion.Euler(0, -90, 0);
         StartCoroutine(OpenDoor());
