@@ -3,15 +3,15 @@ using System.Collections;
 
 public class PlaceholderDialogueTrigger : MonoBehaviour
 {
-    [Header("Ссылка на систему камер")]
+    [Header("Ссылка на систему камер (DialogueCameraSystem)")]
     public DialogueCameraSystem cameraSystem;
 
     private bool hasTriggered = false;
 
-    private void OnTriggerEnter(Collider other)
+    // Эту функцию вызывает дверь при нажатии "E"
+    public void StartDialogueSequence()
     {
-        // Как только игрок касается кубика
-        if (other.CompareTag("Player") && !hasTriggered)
+        if (!hasTriggered)
         {
             hasTriggered = true;
             StartCoroutine(RunTestDialogue());
@@ -20,19 +20,25 @@ public class PlaceholderDialogueTrigger : MonoBehaviour
 
     private IEnumerator RunTestDialogue()
     {
-        // 1. Старт диалога (Главная камера отключится, включится Камера 1)
-        cameraSystem.StartDialogue();
+        
+        yield return new WaitForSeconds(7f);
 
-        // Имитируем, что персонаж говорит первую фразу 3 секунды
+        
+        if (cameraSystem != null) cameraSystem.StartDialogue();
+
+        
         yield return new WaitForSeconds(3f);
 
-        // 2. Смена реплики (Мгновенный Cut на Камеру 2)
-        cameraSystem.NextLine();
+        
+        if (cameraSystem != null) cameraSystem.NextLine();
 
-        // Имитируем, что персонаж говорит вторую фразу 3 секунды
+        
         yield return new WaitForSeconds(3f);
 
-        // 3. Конец диалога (Камеры выключаются, возвращаемся к игроку)
-        cameraSystem.EndDialogue();
+        
+        if (cameraSystem != null) cameraSystem.EndDialogue();
+        
+        
+        hasTriggered = false; 
     }
 }

@@ -1,7 +1,6 @@
 using FMODUnity;
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class LesterDoor : MonoBehaviour
 {
@@ -15,6 +14,9 @@ public class LesterDoor : MonoBehaviour
 
     [SerializeField] private NPC_Dialogue lester;
 
+    [Header("Таймер Камер (Тестер)")]
+    public PlaceholderDialogueTrigger cameraTester;
+
     private Quaternion closedRotation;
     private Quaternion openRotation;
 
@@ -23,14 +25,20 @@ public class LesterDoor : MonoBehaviour
         gameObject.tag = "Untagged";
         closedRotation = door.localRotation;
         openRotation = closedRotation * Quaternion.Euler(0, -90, 0);
+        
+        
+        if (cameraTester != null) 
+        {
+            cameraTester.StartDialogueSequence();
+        }
+        
+        
         StartCoroutine(OpenDoor());
     }
 
     private IEnumerator OpenDoor()
     {
-
         player.SetCanMove(false);
-
         player.isCinematic = true;
 
         CharacterController cc = player.transform.GetComponent<CharacterController>();
@@ -48,31 +56,38 @@ public class LesterDoor : MonoBehaviour
             yield return null;
         }
 
-        RuntimeManager.PlayOneShotAttached(knockSound, gameObject);
+        if (!knockSound.IsNull) 
+        {
+            RuntimeManager.PlayOneShotAttached(knockSound, gameObject);
+        }
 
         yield return new WaitForSeconds(2f);
 
         var instance = emitter.EventInstance;
 
-        if (!instance.isValid()) yield break;
-
-        float startVolume;
-        instance.getVolume(out startVolume);
-
-        float currentTime = 0;
-
-        while (currentTime < 2f)
+        
+        if (instance.isValid()) 
         {
-            currentTime += Time.deltaTime;
-            float newVolume = Mathf.Lerp(startVolume, 0f, currentTime / 2f);
+            float startVolume;
+            instance.getVolume(out startVolume);
+            float currentTime = 0;
 
-            instance.setVolume(newVolume);
+            while (currentTime < 2f)
+            {
+                currentTime += Time.deltaTime;
+                float newVolume = Mathf.Lerp(startVolume, 0f, currentTime / 2f);
+                instance.setVolume(newVolume);
+                yield return null;
+            }
 
-            yield return null;
+            instance.setVolume(0f);
+            emitter.Stop();
         }
-
-        instance.setVolume(0f);
-        emitter.Stop();
+        else
+        {
+            
+            yield return new WaitForSeconds(2f);
+        }
 
         float t = 0f;
         while (t < 1f)
@@ -83,6 +98,9 @@ public class LesterDoor : MonoBehaviour
         }
         door.localRotation = openRotation;
 
-        lester.TriggerDialogue();
+        if (lester != null)
+        {
+            lester.TriggerDialogue();
+        }
     }
 }
