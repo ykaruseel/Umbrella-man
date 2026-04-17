@@ -22,6 +22,8 @@ public class DoorController : MonoBehaviour
     [SerializeField] private float autoCloseMax = 15f;
 
     [SerializeField] private EventReference DoorAudio;
+    [SerializeField] private EventReference metalDoorAudio;
+    [SerializeField] private bool isMetalDoor = false;
 
     private Quaternion closedRotation;
     private Quaternion openRotation;
@@ -361,7 +363,11 @@ public class DoorController : MonoBehaviour
 
     private void PlayDoorSound(int state)
     {
-        EventInstance inst = RuntimeManager.CreateInstance(DoorAudio);
+        EventReference chosenEvent = isMetalDoor ? metalDoorAudio : DoorAudio;
+
+        if (chosenEvent.IsNull) return;
+
+        EventInstance inst = RuntimeManager.CreateInstance(chosenEvent);
         RuntimeManager.AttachInstanceToGameObject(inst, transform);
         inst.setParameterByName("Door", state);
         inst.start();

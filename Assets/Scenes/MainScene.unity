@@ -13477,6 +13477,20 @@ MonoBehaviour:
   chargePerClick: 0.09
   chargePerHold: 0.2
   smoothness: 4
+  handleEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  reelEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   handleIdlePos: {x: 6.574399, y: 0.9165109, z: -4.139363}
   handlePressedPos: {x: 6.574399, y: 0.941, z: -4.139363}
 --- !u!1001 &336772756
@@ -19088,6 +19102,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
         type: 3}
+      propertyPath: switchSound.Path
+      value: event:/QTE_success
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
       propertyPath: lights.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -19106,6 +19125,26 @@ PrefabInstance:
       propertyPath: 'lights.Array.data[2]'
       value: 
       objectReference: {fileID: 1666145917}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data1
+      value: 1083465206
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data2
+      value: 1172304315
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data3
+      value: -22473282
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data4
+      value: -141364541
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20312,6 +20351,14 @@ MonoBehaviour:
       Data3: -196000835
       Data4: 1889739155
     Path: event:/door_open
+  metalDoorAudio:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  isMetalDoor: 0
   isLockedWithQTE: 0
   onQteStart:
     m_PersistentCalls:
@@ -62678,6 +62725,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
         type: 3}
+      propertyPath: switchSound.Path
+      value: event:/QTE_success
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
       propertyPath: lights.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -62696,6 +62748,26 @@ PrefabInstance:
       propertyPath: 'lights.Array.data[2]'
       value: 
       objectReference: {fileID: 1666145917}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data1
+      value: 1083465206
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data2
+      value: 1172304315
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data3
+      value: -22473282
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data4
+      value: -141364541
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -74157,6 +74229,14 @@ MonoBehaviour:
       Data3: -196000835
       Data4: 1889739155
     Path: event:/door_open
+  metalDoorAudio:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  isMetalDoor: 0
   isLockedWithQTE: 0
   onQteStart:
     m_PersistentCalls:
@@ -83716,6 +83796,14 @@ MonoBehaviour:
       Data3: -196000835
       Data4: 1889739155
     Path: event:/door_open
+  metalDoorAudio:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  isMetalDoor: 0
   isLockedWithQTE: 1
   onQteStart:
     m_PersistentCalls:
@@ -84360,6 +84448,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
         type: 3}
+      propertyPath: switchSound.Path
+      value: event:/QTE_success
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
       propertyPath: lights.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -84378,6 +84471,26 @@ PrefabInstance:
       propertyPath: 'lights.Array.data[2]'
       value: 
       objectReference: {fileID: 1666145917}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data1
+      value: 1083465206
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data2
+      value: 1172304315
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data3
+      value: -22473282
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data4
+      value: -141364541
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -107367,6 +107480,14 @@ MonoBehaviour:
       Data3: -196000835
       Data4: 1889739155
     Path: event:/door_open
+  metalDoorAudio:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  isMetalDoor: 0
   isLockedWithQTE: 0
   onQteStart:
     m_PersistentCalls:
@@ -107893,6 +108014,20 @@ MonoBehaviour:
   chargePerClick: 0.12
   chargePerHold: 0.2
   smoothness: 4
+  handleEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  reelEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   handleIdlePos: {x: 0, y: 0, z: 0}
   handlePressedPos: {x: 0, y: 0, z: 0}
 --- !u!114 &1969243945
@@ -116197,6 +116332,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
         type: 3}
+      propertyPath: switchSound.Path
+      value: event:/QTE_success
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
       propertyPath: 'lights.Array.data[0]'
       value: 
       objectReference: {fileID: 1839285909}
@@ -116210,6 +116350,26 @@ PrefabInstance:
       propertyPath: 'lights.Array.data[2]'
       value: 
       objectReference: {fileID: 1666145917}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data1
+      value: 1083465206
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data2
+      value: 1172304315
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data3
+      value: -22473282
+      objectReference: {fileID: 0}
+    - target: {fileID: 5464786265226014115, guid: 7b0b7954b86d931469ec3bc5daac1bf5,
+        type: 3}
+      propertyPath: switchSound.Guid.Data4
+      value: -141364541
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -117628,6 +117788,14 @@ MonoBehaviour:
       Data3: -196000835
       Data4: 1889739155
     Path: event:/door_open
+  metalDoorAudio:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  isMetalDoor: 0
   isLockedWithQTE: 0
   onQteStart:
     m_PersistentCalls:
@@ -117955,7 +118123,15 @@ MonoBehaviour:
       Data2: 1194232949
       Data3: -196000835
       Data4: 1889739155
-    Path: event:/door_open
+    Path: event:/doors/door_open
+  metalDoorAudio:
+    Guid:
+      Data1: -645376733
+      Data2: 1100381163
+      Data3: 1157869242
+      Data4: 241342507
+    Path: event:/doors/metal_door_open
+  isMetalDoor: 1
   isLockedWithQTE: 0
   onQteStart:
     m_PersistentCalls:
@@ -118075,7 +118251,15 @@ MonoBehaviour:
       Data2: 1194232949
       Data3: -196000835
       Data4: 1889739155
-    Path: event:/door_open
+    Path: event:/doors/door_open
+  metalDoorAudio:
+    Guid:
+      Data1: -645376733
+      Data2: 1100381163
+      Data3: 1157869242
+      Data4: 241342507
+    Path: event:/doors/metal_door_open
+  isMetalDoor: 1
   isLockedWithQTE: 0
   onQteStart:
     m_PersistentCalls:
