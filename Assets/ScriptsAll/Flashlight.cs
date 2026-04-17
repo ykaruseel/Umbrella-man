@@ -10,7 +10,6 @@ public class Flashlight : MonoBehaviour
     [SerializeField] private GameObject flashLight;
     [SerializeField] private Transform triggerHandle;
 
-
     [Range(0, 1)][SerializeField] private float currentEnergy = 0f;
     [SerializeField] private float maxIntensity = 5f;
     [SerializeField] private float maxRange = 25f;
@@ -19,10 +18,14 @@ public class Flashlight : MonoBehaviour
     [SerializeField] private float chargePerHold = 0.2f;
     [SerializeField] private float smoothness = 4f;
 
+    [Header("FMOD")]
+    [SerializeField] private EventReference handleEvent;
+    [SerializeField] private EventReference reelEvent;
+
+    private FMOD.Studio.EventInstance reelInstance;
 
     [SerializeField] private Vector3 handleIdlePos;
     [SerializeField] private Vector3 handlePressedPos;
-
 
     private bool isEquipped = false;
     private bool isBlocked = false;
@@ -37,6 +40,15 @@ public class Flashlight : MonoBehaviour
 
     private void Start()
     {
+        reelInstance = RuntimeManager.CreateInstance(reelEvent);
+        reelInstance.start();
+
+        RuntimeManager.AttachInstanceToGameObject(
+            reelInstance,
+            flashLight.transform,
+            flashLight.GetComponent<Rigidbody>()
+        );
+
         if (lightSource != null)
         {
             lightSource.intensity = 0;
@@ -51,6 +63,7 @@ public class Flashlight : MonoBehaviour
         HandleInput();
         CalculateEnergy();
         ApplyVisuals();
+        UpdateSound();
     }
 
     private void HandleInput()
@@ -67,17 +80,33 @@ public class Flashlight : MonoBehaviour
         {
             currentEnergy += chargePerHold * Time.deltaTime;
 
-            triggerHandle.localPosition = Vector3.Lerp(triggerHandle.localPosition, handlePressedPos, Time.deltaTime * 25f);
+            triggerHandle.localPosition = Vector3.Lerp(
+                triggerHandle.localPosition,
+                handlePressedPos,
+                Time.deltaTime * 25f
+            );
         }
         else
         {
-            triggerHandle.localPosition = Vector3.Lerp(triggerHandle.localPosition, handleIdlePos, Time.deltaTime * 12f);
+            triggerHandle.localPosition = Vector3.Lerp(
+                triggerHandle.localPosition,
+                handleIdlePos,
+                Time.deltaTime * 12f
+            );
         }
 
         if (Input.GetMouseButtonDown(0))
         {
             currentEnergy += chargePerClick;
+
+            RuntimeManager.PlayOneShot(handleEvent, flashLight.transform.position);
         }
+    }
+
+    private void UpdateSound()
+    {
+        float target = isEquipped ? currentEnergy : 0f;
+        reelInstance.setParameterByName("Intensity", target);
     }
 
     private void CalculateEnergy()
@@ -95,10 +124,18 @@ public class Flashlight : MonoBehaviour
         float targetIntensity = currentEnergy * maxIntensity;
         float targetRange = currentEnergy * maxRange;
 
-        lightSource.intensity = Mathf.Lerp(lightSource.intensity, targetIntensity, Time.deltaTime * smoothness);
-        lightSource.range = Mathf.Lerp(lightSource.range, targetRange, Time.deltaTime * smoothness);
-    }
+        lightSource.intensity = Mathf.Lerp(
+            lightSource.intensity,
+            targetIntensity,
+            Time.deltaTime * smoothness
+        );
 
+        lightSource.range = Mathf.Lerp(
+            lightSource.range,
+            targetRange,
+            Time.deltaTime * smoothness
+        );
+    }
 
     public void SetBlocked(bool state)
     {
@@ -111,5 +148,11 @@ public class Flashlight : MonoBehaviour
         currentEnergy = 0;
         isEquipped = false;
         lightSource.intensity = 0;
+    }
+
+    private void OnDisable()
+    {
+        reelInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        reelInstance.release();
     }
 }

@@ -244,6 +244,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 10
   Length: 2000
+--- !u!114 &-6039467583724207767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/flashlight/flashlight_handle
+  m_EditorClassIdentifier: 
+  Path: event:/flashlight/flashlight_handle
+  Guid:
+    Data1: 633969955
+    Data2: 1216874721
+    Data3: 512681909
+    Data4: -1986583387
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 626
 --- !u!114 &-6018097725551979117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,10 +286,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639116916254800048
+  lastModified: 639119595880934456
   FileSizes:
   - Name: Desktop
-    Value: 3042
+    Value: 3210
   Exists: 1
 --- !u!114 &-5818334718709818027
 MonoBehaviour:
@@ -424,6 +451,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 227
+--- !u!114 &-3078105967771063671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/flashlight/flashlight_reel
+  m_EditorClassIdentifier: 
+  Path: event:/flashlight/flashlight_reel
+  Guid:
+    Data1: -246740067
+    Data2: 1173067487
+    Data3: 713973905
+    Data4: 923274676
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 2652333277483351673}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 9500
 --- !u!114 &-2699777285015492189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -467,10 +522,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639116916254800048
+  lastModified: 639119595880859805
   FileSizes:
   - Name: Desktop
-    Value: 15068960
+    Value: 15302976
   Exists: 1
 --- !u!114 &-2389006954385351409
 MonoBehaviour:
@@ -716,12 +771,14 @@ MonoBehaviour:
   - {fileID: -572209480123246358}
   - {fileID: 1294322144103862331}
   - {fileID: 5160099728156394433}
+  - {fileID: -6039467583724207767}
+  - {fileID: -3078105967771063671}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2609684373490591824}
   StringsBanks:
   - {fileID: -6018097725551979117}
-  cacheTime: 639116916254800048
+  cacheTime: 639119595880934456
   cacheVersion: 131632
 --- !u!114 &330100266741039646
 MonoBehaviour:
@@ -878,6 +935,30 @@ MonoBehaviour:
   ID:
     data1: 3174077425
     data2: 3073365663
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &2652333277483351673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/flashlight_reel/Intensity
+  m_EditorClassIdentifier: 
+  Name: Intensity
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3120786180
+    data2: 2708363497
   Type: 0
   IsGlobal: 0
   Labels: []
