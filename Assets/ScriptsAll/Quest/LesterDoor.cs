@@ -14,8 +14,9 @@ public class LesterDoor : MonoBehaviour
 
     [SerializeField] private NPC_Dialogue lester;
 
-    [Header("Таймер Камер (Тестер)")]
-    public PlaceholderDialogueTrigger cameraTester;
+    
+    [Header("Система Камер")]
+    public DialogueCameraSystem cameraSystem;
 
     private Quaternion closedRotation;
     private Quaternion openRotation;
@@ -25,12 +26,6 @@ public class LesterDoor : MonoBehaviour
         gameObject.tag = "Untagged";
         closedRotation = door.localRotation;
         openRotation = closedRotation * Quaternion.Euler(0, -90, 0);
-        
-        
-        if (cameraTester != null) 
-        {
-            cameraTester.StartDialogueSequence();
-        }
         
         
         StartCoroutine(OpenDoor());
@@ -65,7 +60,6 @@ public class LesterDoor : MonoBehaviour
 
         var instance = emitter.EventInstance;
 
-        
         if (instance.isValid()) 
         {
             float startVolume;
@@ -85,7 +79,6 @@ public class LesterDoor : MonoBehaviour
         }
         else
         {
-            
             yield return new WaitForSeconds(2f);
         }
 
@@ -97,6 +90,12 @@ public class LesterDoor : MonoBehaviour
             yield return null;
         }
         door.localRotation = openRotation;
+
+        
+        if (cameraSystem != null)
+        {
+            cameraSystem.StartDialogue();
+        }
 
         if (lester != null)
         {

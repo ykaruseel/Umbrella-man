@@ -26,20 +26,24 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private EventReference knifeManVoiceEvent;
     [SerializeField] private Transform knifeManTransform;
 
+    [Header("Cinematic Cameras")]
+    public DialogueCameraSystem currentCameraSystem;
+
     private Queue<DialogueLine> linesQueue = new Queue<DialogueLine>();
     private bool isDialogueActive = false;
     
-   
     private bool isTyping = false;       
     private string currentSentence = ""; 
   
-
     private Coroutine typingCoroutine;
     private Coroutine fadeCoroutine; 
 
     private FMOD.Studio.EventInstance currentVoiceInstance;
     private bool hasActiveVoice = false;
     public CanvasGroup dialogueCanvasGroup; 
+
+    
+    private float lastClickTime = 0f;
 
     void Awake()
     {
@@ -81,22 +85,20 @@ public class DialogueManager : MonoBehaviour
         DisplayNextSentence();
     }
 
-   
     public void DisplayNextSentence()
     {
-       
+        
+        if (Time.unscaledTime - lastClickTime < 0.1f) return;
+        lastClickTime = Time.unscaledTime;
+
         if (isTyping)
         {
             if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-            
-            if (dialogueText != null) 
-                dialogueText.text = currentSentence; 
-            
+            if (dialogueText != null) dialogueText.text = currentSentence; 
             isTyping = false;
             return; 
         }
 
-        
         StopCurrentVoice(); 
 
         if (linesQueue.Count == 0)
@@ -105,27 +107,26 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
+        // Переключаем камеру
+        if (currentCameraSystem != null)
+        {
+            currentCameraSystem.NextLine();
+        }
+
         DialogueLine line = linesQueue.Dequeue();
-        
-        
         currentSentence = line.sentence;
-
         if (nameText != null) nameText.text = line.speakerName;
-
         typingCoroutine = StartCoroutine(TypeSentence(line));
     }
 
     private IEnumerator TypeSentence(DialogueLine line)
     {
         isTyping = true; 
-        
         if (dialogueText != null) dialogueText.text = "";
-
         StartVoiceForSpeaker(line.speakerName);
 
         foreach (char letter in line.sentence.ToCharArray())
         {
-            
             while (Pause.isPaused)
             {
                 SetPaused(); 
@@ -146,6 +147,11 @@ public class DialogueManager : MonoBehaviour
     {
         isDialogueActive = false;
         StopCurrentVoice();
+
+        if (currentCameraSystem != null)
+        {
+            currentCameraSystem.EndDialogue();
+        }
 
         if (dialoguePanel != null && dialogueCanvasGroup != null)
         {
@@ -179,11 +185,9 @@ public class DialogueManager : MonoBehaviour
         return isDialogueActive;
     }
 
-   
     private void StartVoiceForSpeaker(string speakerName)
     {
         StopCurrentVoice();
-
         EventReference voiceEvent = new EventReference();
         Transform speakerTransform = null;
 
@@ -205,15 +209,8 @@ public class DialogueManager : MonoBehaviour
         else return;
 
         if (voiceEvent.IsNull || speakerTransform == null) return;
-
         currentVoiceInstance = RuntimeManager.CreateInstance(voiceEvent);
-
-        RuntimeManager.AttachInstanceToGameObject(
-            currentVoiceInstance,
-            speakerTransform,
-            speakerTransform.GetComponent<Rigidbody>()
-        );
-
+        RuntimeManager.AttachInstanceToGameObject(currentVoiceInstance, speakerTransform, speakerTransform.GetComponent<Rigidbody>());
         currentVoiceInstance.start();
         hasActiveVoice = true;
     }
