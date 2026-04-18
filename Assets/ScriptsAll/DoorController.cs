@@ -6,9 +6,6 @@ using UnityEngine.Events;
 
 public class DoorController : MonoBehaviour
 {
-    // ==========================================
-    // СТАРЫЕ НАСТРОЙКИ (ОБЫЧНАЯ ДВЕРЬ)
-    // ==========================================
     [Header("Normal Door Settings")]
     [SerializeField] private Transform door;
     [SerializeField] private Transform handle;
@@ -34,9 +31,7 @@ public class DoorController : MonoBehaviour
     private bool isAnimating = false;
     private Coroutine autoCloseCoroutine;
 
-    // ==========================================
-    // НОВЫЕ НАСТРОЙКИ (QTE ДВЕРЬ)
-    // ==========================================
+    
     [Header("QTE Settings")]
     [SerializeField] public bool isLockedWithQTE = false; 
 
@@ -54,14 +49,14 @@ public class DoorController : MonoBehaviour
     [SerializeField] private Vector2 mediumZone = new Vector2(0.65f, 0.85f);
     [SerializeField] private Vector2 strongZone = new Vector2(0.85f, 1.0f);
 
-    [Header("QTE Difficulty (ХАРДКОР)")]
-    [SerializeField] private float lineSpeed = 2.0f;  // Ускорили бегунок, чтобы было сложнее!
-    [SerializeField] private float qteCooldown = 0.4f; 
-
-    [Header("QTE Damage (100 HP = 3 сильных, 5 средних, 10 слабых)")]
-    [SerializeField] private float weakDamage = 10f;   // Нужно 10 ударов
-    [SerializeField] private float mediumDamage = 20f; // Нужно 5 ударов
-    [SerializeField] private float strongDamage = 34f; // Нужно 3 удара
+    [Header("QTE Difficulty")]
+    [SerializeField] private float lineSpeed = 0.3f;
+    
+    
+    [Header("QTE Damage (Total HP = 100)")]
+    [SerializeField] private float weakDamage = 20f;   
+    [SerializeField] private float mediumDamage = 34f; 
+    [SerializeField] private float strongDamage = 50f; 
     
     [Header("QTE Visuals & Audio")]
     [SerializeField] private ParticleSystem hitDust;        
@@ -69,13 +64,13 @@ public class DoorController : MonoBehaviour
     [SerializeField] private ParticleSystem breakParticles; 
     [SerializeField] private EventReference qteHitSound;
 
-    // Внутренние переменные QTE
+    
     private float currentHealth = 100f;
     private bool isQteActive = false;
-    private bool isQteCooldown = false;
     private float linePos = 0f; 
     private int lineDir = 1;
     private Vector3 originalLocalPos;
+    private Coroutine shakeCoroutine;
 
     private void Start()
     {
@@ -91,16 +86,24 @@ public class DoorController : MonoBehaviour
 
     private void Update()
     {
-        if (isQteActive && !isQteCooldown)
+        if (isQteActive)
         {
-            // Линия бегает от 0 до 1 туда-сюда
+            
             linePos += lineSpeed * lineDir * Time.deltaTime;
+            
             if (linePos >= 1f || linePos <= 0f)
             {
                 lineDir *= -1;
                 linePos = Mathf.Clamp(linePos, 0f, 1f);
+
+                
+                if (linePos <= 0f)
+                {
+                    currentHealth = 100f;
+                }
             }
 
+            
             if (movingLine != null && barArea != null)
             {
                 float barHeight = barArea.rect.height;
@@ -118,7 +121,8 @@ public class DoorController : MonoBehaviour
                 movingLine.localPosition = new Vector3(movingLine.localPosition.x, newY, 0);
             }
 
-            if (Input.GetKeyDown(KeyCode.Space))
+           
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E))
             {
                 CheckQTEHit();
             }
@@ -161,16 +165,13 @@ public class DoorController : MonoBehaviour
         }
     }
 
-    // ==========================================
-    // ЛОГИКА МИНИ-ИГРЫ QTE
-    // ==========================================
+    
     private void StartQTE()
     {
         currentHealth = 100f;
         linePos = 0f; 
         lineDir = 1;
         isQteActive = true;
-        isQteCooldown = false;
         if (qtePanel != null) qtePanel.SetActive(true);
         
         onQteStart?.Invoke();
@@ -181,60 +182,51 @@ public class DoorController : MonoBehaviour
         float damageDone = 0f;
         int hitType = -1;
 
-        // Проверяем попадание по зонам
+        
         if (linePos >= strongZone.x && linePos <= strongZone.y)
         {
             damageDone = strongDamage;
-            hitType = 2; // Передаем параметр FMOD для сильного удара
+            hitType = 2; 
         }
         else if (linePos >= mediumZone.x && linePos <= mediumZone.y)
         {
             damageDone = mediumDamage;
-            hitType = 1; // Средний удар
+            hitType = 1; 
         }
         else if (linePos >= weakZone.x && linePos <= weakZone.y)
         {
             damageDone = weakDamage;
-            hitType = 0; // Слабый удар
+            hitType = 0; 
         }
 
         if (damageDone > 0)
         {
             PlayQTEHit(hitType); 
-            StartCoroutine(RegisterQTEHit(damageDone));
+            RegisterQTEHit(damageDone);
         }
         else
         {
-            // Промах - просто даем кулдаун
-            StartCoroutine(QTECooldown(0.5f));
+            
+            currentHealth = 100f; 
+            Debug.Log("Промах! Начинай заново.");
         }
     }
 
-    private IEnumerator RegisterQTEHit(float damage)
+    
+    private void RegisterQTEHit(float damage)
     {
-        isQteCooldown = true;
         currentHealth -= damage;
 
         if (hitDust != null) hitDust.Play();
-        StartCoroutine(ShakeDoor());
-
-        yield return new WaitForSeconds(qteCooldown); 
+        
+        
+        if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
+        shakeCoroutine = StartCoroutine(ShakeDoor());
 
         if (currentHealth <= 0)
         {
             BreakDownDoor(); 
         }
-        else
-        {
-            isQteCooldown = false; 
-        }
-    }
-
-    private IEnumerator QTECooldown(float time)
-    {
-        isQteCooldown = true;
-        yield return new WaitForSeconds(time);
-        isQteCooldown = false;
     }
 
     private IEnumerator ShakeDoor()
@@ -285,16 +277,17 @@ public class DoorController : MonoBehaviour
         rb.AddForce((pushDir + Vector3.up * 0.4f) * 6f, ForceMode.VelocityChange);
         rb.AddTorque((transform.right * 3f + transform.up * Random.Range(-1f, 1f)), ForceMode.VelocityChange);
 
-        if (QuestManagerV2.Instance.IsGoalRequired(transform.name, GoalType.Door))
+        if (QuestManagerV2.Instance != null)
         {
-            QuestManagerV2.Instance.ProcessAction(transform.name, GoalType.Door);
+            if (QuestManagerV2.Instance.IsGoalRequired(transform.name, GoalType.Door))
+            {
+                QuestManagerV2.Instance.ProcessAction(transform.name, GoalType.Door);
+            }
         }
-        PlayQTEHit(3); // Звук падения/выбивания
+        
+        PlayQTEHit(3);
     }
 
-    // ==========================================
-    // ЛОГИКА ОБЫЧНЫХ ДВЕРЕЙ
-    // ==========================================
     private IEnumerator OpenDoor()
     {
         isAnimating = true;
