@@ -52,6 +52,8 @@ public class DoorController : MonoBehaviour
     [Header("QTE Difficulty")]
     [SerializeField] private float lineSpeed = 0.3f;
     
+    [SerializeField] private float qteCooldown = 0.4f; 
+    
     
     [Header("QTE Damage (Total HP = 100)")]
     [SerializeField] private float weakDamage = 20f;   
@@ -67,6 +69,8 @@ public class DoorController : MonoBehaviour
     
     private float currentHealth = 100f;
     private bool isQteActive = false;
+    
+    private bool isQteCooldown = false; 
     private float linePos = 0f; 
     private int lineDir = 1;
     private Vector3 originalLocalPos;
@@ -86,7 +90,8 @@ public class DoorController : MonoBehaviour
 
     private void Update()
     {
-        if (isQteActive)
+        
+        if (isQteActive && !isQteCooldown) 
         {
             
             linePos += lineSpeed * lineDir * Time.deltaTime;
@@ -172,6 +177,7 @@ public class DoorController : MonoBehaviour
         linePos = 0f; 
         lineDir = 1;
         isQteActive = true;
+        isQteCooldown = false;
         if (qtePanel != null) qtePanel.SetActive(true);
         
         onQteStart?.Invoke();
@@ -202,31 +208,48 @@ public class DoorController : MonoBehaviour
         if (damageDone > 0)
         {
             PlayQTEHit(hitType); 
-            RegisterQTEHit(damageDone);
+            
+            StartCoroutine(RegisterQTEHit(damageDone));
         }
         else
         {
-            
             currentHealth = 100f; 
             Debug.Log("Промах! Начинай заново.");
+            
+            StartCoroutine(ApplyCooldown(qteCooldown)); 
         }
     }
 
     
-    private void RegisterQTEHit(float damage)
+    private IEnumerator RegisterQTEHit(float damage)
     {
+        isQteCooldown = true;
         currentHealth -= damage;
 
         if (hitDust != null) hitDust.Play();
         
-        
         if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
         shakeCoroutine = StartCoroutine(ShakeDoor());
+
+        
+        yield return new WaitForSeconds(qteCooldown);
 
         if (currentHealth <= 0)
         {
             BreakDownDoor(); 
         }
+        else
+        {
+            isQteCooldown = false;
+        }
+    }
+
+    
+    private IEnumerator ApplyCooldown(float time)
+    {
+        isQteCooldown = true;
+        yield return new WaitForSeconds(time);
+        isQteCooldown = false;
     }
 
     private IEnumerator ShakeDoor()
