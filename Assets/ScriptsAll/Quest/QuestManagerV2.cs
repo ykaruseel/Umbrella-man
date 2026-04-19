@@ -28,8 +28,14 @@ public class QuestManagerV2 : MonoBehaviour
         {
             questSequence[i].Initialize(i == 0);
         }
-        Debug.Log($"<color=yellow>[Manager]</color> Следующий квест: {questSequence[currentQuestIndex].questID}");
+        Debug.Log($"<color=yellow>[Manager]</color> Р’С‹РґР°С‡Р° РєРІРµСЃС‚Р°: {questSequence[currentQuestIndex].questID}");
         questUI.ShowNewQuest(questSequence[currentQuestIndex]);
+
+        
+        if (TutorialManager.Instance != null)
+        {
+            TutorialManager.Instance.ShowHint(TutorialManager.HintType.Task_Q);
+        }
     }
 
     public bool IsGoalRequired(string id, GoalType type)
@@ -45,14 +51,14 @@ public class QuestManagerV2 : MonoBehaviour
         if (currentQuestIndex >= questSequence.Count) return;
 
         QuestData current = questSequence[currentQuestIndex];
-        Debug.Log($"<color=yellow>[Manager]</color> Получено действие: {id} для типа {type} в квесте {current.questID}");
+        Debug.Log($"<color=yellow>[Manager]</color> пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {id} пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ {type} пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ {current.questID}");
         if (current.isActive && current.type == type)
         {
             current.CheckTarget(id);
 
             if (current.isCompleted)
             {
-                Debug.Log($"<color=yellow>[Manager]</color> Квест {current.questID} завершён!");
+                Debug.Log($"<color=yellow>[Manager]</color> пїЅпїЅпїЅпїЅпїЅ {current.questID} пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
                 StartCoroutine(ActivateNextQuest());
             }
             else
@@ -80,7 +86,7 @@ public class QuestManagerV2 : MonoBehaviour
         if (currentQuestIndex < questSequence.Count)
         {
             questSequence[currentQuestIndex].isActive = true;
-            Debug.Log($"<color=yellow>[Manager]</color> Следующий квест: {questSequence[currentQuestIndex].questID}");
+            Debug.Log($"<color=yellow>[Manager]</color> пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ: {questSequence[currentQuestIndex].questID}");
             StartCoroutine(questUI.CompleteAndSwitchRoutine(questSequence[currentQuestIndex - 1], questSequence[currentQuestIndex]));
         }
         else

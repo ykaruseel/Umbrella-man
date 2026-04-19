@@ -70,7 +70,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        
         isGameEnded = false;
         
         if (playerCamera == null) playerCamera = Camera.main;
@@ -92,6 +91,12 @@ public class PlayerController : MonoBehaviour
 
         if (virtualCam != null)
             initialFOV = virtualCam.Lens.FieldOfView;
+
+        
+        if (TutorialManager.Instance != null)
+        {
+            TutorialManager.Instance.ShowHint(TutorialManager.HintType.Movement_WASD);
+        }
     }
 
     void Update()

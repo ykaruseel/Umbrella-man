@@ -30,7 +30,7 @@ public class CameraSequenceController : MonoBehaviour
         playerController.isCinematic = true;
         playerController.SetCanMove(false);
 
-        //fade.SetFadeImageActive(true);
+        
 
         float savedFOV = PlayerPrefs.GetFloat(FOV, defaultFOV);
 
@@ -81,18 +81,19 @@ public class CameraSequenceController : MonoBehaviour
         cam3.gameObject.SetActive(true);
         cam4.gameObject.SetActive(true);
 
+        
         playerController.isCinematic = false;
         playerController.SetCanMove(true);
+
+        
+        if (TutorialManager.Instance != null)
+        {
+            TutorialManager.Instance.ShowHint(TutorialManager.HintType.Movement_WASD);
+        }
 
         if (QuestManager.instance != null)
         {
             QuestManager.instance.StartFirstQuest();
-        }
-
-
-        if (TutorialManager.instance != null)
-        {
-            TutorialManager.instance.StartTutorial();
         }
 
         if (MusicManager.Instance != null)
@@ -100,7 +101,6 @@ public class CameraSequenceController : MonoBehaviour
             MusicManager.Instance.EnsureMusicPlaying();
             MusicManager.Instance.FadeToVolume(1f, 1.2f);
         }
-
 
         //fade.SetFadeImageActive(false);
 

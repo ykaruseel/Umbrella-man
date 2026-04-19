@@ -130,6 +130,12 @@ public class QuestManager : MonoBehaviour
 
         Debug.Log("Начат квест: " + questToStart.questTitle);
         questUI.ShowQuestUpdate(currentQuest);
+
+        
+        if (TutorialManager.Instance != null)
+        {
+            TutorialManager.Instance.ShowHint(TutorialManager.HintType.Task_Q);
+        }
     }
 
     public void UpdateQuestProgress(string itemID_or_TargetID, ObjectiveType type)
