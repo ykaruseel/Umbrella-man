@@ -66,7 +66,11 @@ public class DoorController : MonoBehaviour
     [SerializeField] private ParticleSystem breakParticles; 
     [SerializeField] private EventReference qteHitSound;
 
-    
+    [SerializeField] private RectTransform[] weakZones;
+    [SerializeField] private RectTransform[] mediumZones;
+    [SerializeField] private RectTransform[] strongZones;
+    private bool inputLocked = false;
+
     private float currentHealth = 100f;
     private bool isQteActive = false;
     
@@ -95,20 +99,19 @@ public class DoorController : MonoBehaviour
         {
             
             linePos += lineSpeed * lineDir * Time.deltaTime;
-            
+
             if (linePos >= 1f || linePos <= 0f)
             {
                 lineDir *= -1;
                 linePos = Mathf.Clamp(linePos, 0f, 1f);
 
-                
                 if (linePos <= 0f)
                 {
                     currentHealth = 100f;
+                    inputLocked = false;
                 }
             }
 
-            
             if (movingLine != null && barArea != null)
             {
                 float barHeight = barArea.rect.height;
@@ -123,13 +126,17 @@ public class DoorController : MonoBehaviour
                 }
 
                 float newY = Mathf.Lerp(startY, endY, linePos);
-                movingLine.localPosition = new Vector3(movingLine.localPosition.x, newY, 0);
+                movingLine.anchoredPosition = new Vector2(
+    movingLine.anchoredPosition.x,
+    newY
+);
             }
 
-           
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E))
+
+            if (!inputLocked && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E)))
             {
                 CheckQTEHit();
+                inputLocked = true;
             }
         }
     }
@@ -185,42 +192,56 @@ public class DoorController : MonoBehaviour
 
     private void CheckQTEHit()
     {
-        float damageDone = 0f;
-        int hitType = -1;
-
-        
-        if (linePos >= strongZone.x && linePos <= strongZone.y)
+        if (IsInsideAnyZone(movingLine, strongZones))
         {
-            damageDone = strongDamage;
-            hitType = 2; 
+            PlayQTEHit(2);
+            StartCoroutine(RegisterQTEHit(strongDamage));
         }
-        else if (linePos >= mediumZone.x && linePos <= mediumZone.y)
+        else if (IsInsideAnyZone(movingLine, mediumZones))
         {
-            damageDone = mediumDamage;
-            hitType = 1; 
+            PlayQTEHit(1);
+            StartCoroutine(RegisterQTEHit(mediumDamage));
         }
-        else if (linePos >= weakZone.x && linePos <= weakZone.y)
+        else if (IsInsideAnyZone(movingLine, weakZones))
         {
-            damageDone = weakDamage;
-            hitType = 0; 
-        }
-
-        if (damageDone > 0)
-        {
-            PlayQTEHit(hitType); 
-            
-            StartCoroutine(RegisterQTEHit(damageDone));
+            PlayQTEHit(0);
+            StartCoroutine(RegisterQTEHit(weakDamage));
         }
         else
         {
-            currentHealth = 100f; 
-            Debug.Log("Промах! Начинай заново.");
-            
-            StartCoroutine(ApplyCooldown(qteCooldown)); 
+            currentHealth = 100f;
         }
     }
 
-    
+    private bool IsInsideAnyZone(RectTransform line, RectTransform[] zones)
+    {
+        Rect lineRect = GetWorldRect(line);
+
+        for (int i = 0; i < zones.Length; i++)
+        {
+            Rect zoneRect = GetWorldRect(zones[i]);
+
+            if (lineRect.Overlaps(zoneRect))
+                return true;
+        }
+
+        return false;
+    }
+    private Rect GetWorldRect(RectTransform rt)
+    {
+        Vector3[] corners = new Vector3[4];
+        rt.GetWorldCorners(corners);
+
+        Vector3 bottomLeft = corners[0];
+        Vector3 topRight = corners[2];
+
+        return new Rect(
+            bottomLeft.x,
+            bottomLeft.y,
+            topRight.x - bottomLeft.x,
+            topRight.y - bottomLeft.y
+        );
+    }
     private IEnumerator RegisterQTEHit(float damage)
     {
         isQteCooldown = true;
