@@ -52,9 +52,10 @@ public class DoorController : MonoBehaviour
     [Header("QTE Difficulty")]
     [SerializeField] private float lineSpeed = 0.3f;
     
-    [SerializeField] private float qteCooldown = 0.4f; 
-    
-    
+    [SerializeField] private float qteCooldown = 0.4f;
+    [SerializeField] private float baseLineSpeed = 0.3f;
+    [SerializeField] private float boostedLineSpeed = 0.5f;
+
     [Header("QTE Damage (Total HP = 100)")]
     [SerializeField] private float weakDamage = 20f;   
     [SerializeField] private float mediumDamage = 34f; 
@@ -69,6 +70,14 @@ public class DoorController : MonoBehaviour
     [SerializeField] private RectTransform[] weakZones;
     [SerializeField] private RectTransform[] mediumZones;
     [SerializeField] private RectTransform[] strongZones;
+
+    [SerializeField] private float hitScale = 0.85f;
+    [SerializeField] private float hitAnimTime = 0.08f;
+    [SerializeField] private bool useBrokenModel = false;
+    [SerializeField] private GameObject intactDoorModel;
+    [SerializeField] private GameObject brokenDoorModel;
+
+    private Vector3 originalScale;
     private bool inputLocked = false;
 
     private float currentHealth = 100f;
@@ -90,6 +99,10 @@ public class DoorController : MonoBehaviour
 
         originalLocalPos = door.localPosition;
         if (qtePanel != null) qtePanel.SetActive(false);
+        originalScale = movingLine.localScale;
+        linePos = 0f;
+        lineDir = 1;
+        inputLocked = false;
     }
 
     private void Update()
@@ -97,17 +110,17 @@ public class DoorController : MonoBehaviour
         
         if (isQteActive && !isQteCooldown) 
         {
-            
-            linePos += lineSpeed * lineDir * Time.deltaTime;
+
+            float currentSpeed = inputLocked ? boostedLineSpeed : baseLineSpeed;
+linePos += currentSpeed * lineDir * Time.deltaTime;
 
             if (linePos >= 1f || linePos <= 0f)
             {
                 lineDir *= -1;
                 linePos = Mathf.Clamp(linePos, 0f, 1f);
 
-                if (linePos <= 0f)
+                if (linePos <= 0f && lineDir == 1)
                 {
-                    currentHealth = 100f;
                     inputLocked = false;
                 }
             }
@@ -133,7 +146,7 @@ public class DoorController : MonoBehaviour
             }
 
 
-            if (!inputLocked && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E)))
+            if (!inputLocked && (Input.GetKeyDown(KeyCode.Space)))  
             {
                 CheckQTEHit();
                 inputLocked = true;
@@ -180,7 +193,8 @@ public class DoorController : MonoBehaviour
     
     private void StartQTE()
     {
-        currentHealth = 100f;
+        currentHealth += 20f;
+        currentHealth = Mathf.Clamp(currentHealth, 0f, 100f);
         linePos = 0f; 
         lineDir = 1;
         isQteActive = true;
@@ -192,6 +206,8 @@ public class DoorController : MonoBehaviour
 
     private void CheckQTEHit()
     {
+        StartCoroutine(AnimateHit());
+
         if (IsInsideAnyZone(movingLine, strongZones))
         {
             PlayQTEHit(2);
@@ -209,7 +225,10 @@ public class DoorController : MonoBehaviour
         }
         else
         {
-            currentHealth = 100f;
+            PlayQTEHit(4);
+
+            currentHealth += 20f;
+            currentHealth = Mathf.Clamp(currentHealth, 0f, 100f);
         }
     }
 
@@ -287,6 +306,13 @@ public class DoorController : MonoBehaviour
 
     private void BreakDownDoor()
     {
+        if (useBrokenModel && brokenDoorModel != null && intactDoorModel != null)
+        {
+            intactDoorModel.SetActive(false);
+            brokenDoorModel.SetActive(true);
+
+            door = brokenDoorModel.transform;
+        }
         StopAllCoroutines(); 
 
         isQteActive = false;
@@ -365,6 +391,30 @@ public class DoorController : MonoBehaviour
         autoCloseCoroutine = StartCoroutine(AutoCloseDoor());
     }
 
+    private IEnumerator AnimateHit()
+    {
+        float t = 0f;
+
+        Vector3 target = new Vector3(originalScale.x, originalScale.y * hitScale, originalScale.z);
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / hitAnimTime;
+            movingLine.localScale = Vector3.Lerp(originalScale, target, t);
+            yield return null;
+        }
+
+        t = 0f;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / hitAnimTime;
+            movingLine.localScale = Vector3.Lerp(target, originalScale, t);
+            yield return null;
+        }
+
+        movingLine.localScale = originalScale;
+    }
     private IEnumerator CloseDoor()
     {
         isAnimating = true;
