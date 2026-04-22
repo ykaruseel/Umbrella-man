@@ -11,6 +11,8 @@ public class CameraSequenceController : MonoBehaviour
 
     [SerializeField] private CameraFade fade;
 
+    public IntroText introText;
+
     private CameraPathFly fly1;
     private CameraPathFly fly2;
 
@@ -19,6 +21,7 @@ public class CameraSequenceController : MonoBehaviour
     [SerializeField] private float defaultFOV = 50f;
 
     private const string FOV = "CameraFOV";
+
 
     void Start()
     {
@@ -30,7 +33,7 @@ public class CameraSequenceController : MonoBehaviour
         playerController.isCinematic = true;
         playerController.SetCanMove(false);
 
-        
+        introText.StartIntroText();        
 
         float savedFOV = PlayerPrefs.GetFloat(FOV, defaultFOV);
 
@@ -93,8 +96,10 @@ public class CameraSequenceController : MonoBehaviour
 
         if (QuestManager.instance != null)
         {
-            QuestManager.instance.StartFirstQuest();
+            //QuestManager.instance.StartFirstQuest();
         }
+
+        introText.EndIntroText();
 
         if (MusicManager.Instance != null)
         {

@@ -17,6 +17,8 @@ public class Flashlight : MonoBehaviour
     [SerializeField] private float chargePerClick = 0.12f;
     [SerializeField] private float chargePerHold = 0.2f;
     [SerializeField] private float smoothness = 4f;
+    [SerializeField] private float timerValue = 0.5f;
+    [SerializeField] private float currentTimer;
 
     [Header("FMOD")]
     [SerializeField] private EventReference handleEvent;
@@ -76,28 +78,52 @@ public class Flashlight : MonoBehaviour
 
         if (!isEquipped) return;
 
-        if (Input.GetMouseButton(0))
-        {
-            currentEnergy += chargePerHold * Time.deltaTime;
+        //if (Input.GetMouseButton(0))
+        //{
+        //    currentEnergy += chargePerHold * Time.deltaTime;
 
-            triggerHandle.localPosition = Vector3.Lerp(
-                triggerHandle.localPosition,
-                handlePressedPos,
-                Time.deltaTime * 25f
-            );
-        }
-        else
+        //    triggerHandle.localPosition = Vector3.Lerp(
+        //        triggerHandle.localPosition,
+        //        handlePressedPos,
+        //        Time.deltaTime * 25f
+        //    );
+        //}
+        //else
+        //{
+        //    triggerHandle.localPosition = Vector3.Lerp(
+        //        triggerHandle.localPosition,
+        //        handleIdlePos,
+        //        Time.deltaTime * 12f
+        //    );
+        //}
+
+        if (currentTimer > 0)
         {
-            triggerHandle.localPosition = Vector3.Lerp(
-                triggerHandle.localPosition,
-                handleIdlePos,
-                Time.deltaTime * 12f
+            currentTimer -= Time.deltaTime;
+
+            if(currentTimer >= (timerValue/2f)) 
+            { 
+                triggerHandle.localPosition = Vector3.Lerp(
+                    triggerHandle.localPosition,
+                    handlePressedPos,
+                    (timerValue - currentTimer) / (timerValue / 2f)
             );
+            }
+            else
+            {
+                triggerHandle.localPosition = Vector3.Lerp(
+                    triggerHandle.localPosition,
+                    handleIdlePos,
+                    (timerValue / 2f - currentTimer) / (timerValue / 2f)
+                );
+            }            
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && currentTimer <= 0)
         {
             currentEnergy += chargePerClick;
+
+            currentTimer = timerValue;
 
             RuntimeManager.PlayOneShot(handleEvent, flashLight.transform.position);
         }

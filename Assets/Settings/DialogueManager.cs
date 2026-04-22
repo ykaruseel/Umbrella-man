@@ -26,6 +26,10 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private EventReference knifeManVoiceEvent;
     [SerializeField] private Transform knifeManTransform;
 
+    [SerializeField] private Animator danielAnimator;
+    [SerializeField] private Animator lesterAnimator;
+    [SerializeField] private Animator currentAnimator;
+
     [Header("Cinematic Cameras")]
     public DialogueCameraSystem currentCameraSystem;
 
@@ -99,7 +103,7 @@ public class DialogueManager : MonoBehaviour
             return; 
         }
 
-        StopCurrentVoice(); 
+        StopCurrentVoice(currentAnimator); 
 
         if (linesQueue.Count == 0)
         {
@@ -139,14 +143,14 @@ public class DialogueManager : MonoBehaviour
         }
 
         isTyping = false; 
-        StopCurrentVoice();
+        StopCurrentVoice(currentAnimator);
         typingCoroutine = null;
     }
 
     private void EndDialogue()
     {
         isDialogueActive = false;
-        StopCurrentVoice();
+        StopCurrentVoice(currentAnimator);
 
         if (currentCameraSystem != null)
         {
@@ -187,22 +191,25 @@ public class DialogueManager : MonoBehaviour
 
     private void StartVoiceForSpeaker(string speakerName)
     {
-        StopCurrentVoice();
+        StopCurrentVoice(currentAnimator);
         EventReference voiceEvent = new EventReference();
         Transform speakerTransform = null;
 
         if (speakerName == "Daniel")
         {
+            currentAnimator = danielAnimator;
             voiceEvent = danielVoiceEvent;
             speakerTransform = danielTransform;
         }
         else if (speakerName == "Lester")
         {
+            currentAnimator = lesterAnimator;
             voiceEvent = lesterVoiceEvent;
             speakerTransform = lesterTransform;
         }
         else if (speakerName == "Suspicious man with a knife")
         {
+            currentAnimator = null;
             voiceEvent = knifeManVoiceEvent;
             speakerTransform = knifeManTransform;
         }
@@ -213,10 +220,12 @@ public class DialogueManager : MonoBehaviour
         RuntimeManager.AttachInstanceToGameObject(currentVoiceInstance, speakerTransform, speakerTransform.GetComponent<Rigidbody>());
         currentVoiceInstance.start();
         hasActiveVoice = true;
+        if (currentAnimator != null) currentAnimator.SetBool("Talk", true);
     }
 
-    private void StopCurrentVoice()
+    private void StopCurrentVoice(Animator animator)
     {
+        if (animator != null) animator.SetBool("Talk", false);
         if (!hasActiveVoice) return;
         if (currentVoiceInstance.isValid())
         {

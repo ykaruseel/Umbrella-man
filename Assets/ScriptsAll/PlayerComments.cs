@@ -38,13 +38,13 @@ public class PlayerComments : MonoBehaviour
         if (commentsGO != null)
         {
             dialogueCanvasGroup = commentsGO.GetComponent<CanvasGroup>();
-            if (dialogueCanvasGroup == null)
-            {
-                dialogueCanvasGroup = commentsGO.AddComponent<CanvasGroup>();
-            }
+            //if (dialogueCanvasGroup == null)
+            //{
+            //    dialogueCanvasGroup = commentsGO.AddComponent<CanvasGroup>();
+            //}
 
-            commentsGO.SetActive(false);
-            dialogueCanvasGroup.alpha = 0f;
+            //commentsGO.SetActive(false);
+            //dialogueCanvasGroup.alpha = 0f;
         }
     }
 

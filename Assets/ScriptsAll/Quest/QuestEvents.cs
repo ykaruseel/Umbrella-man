@@ -24,6 +24,8 @@ public class QuestEvents : MonoBehaviour
     [Header("Quest 7")]
     public List<Light> lightsToDisable;
 
+    public PulseHighlight pulseHighlightsToEnable;
+
     [Header("Quest 9-11")]
     public PlayerController player;
 
@@ -53,6 +55,8 @@ public class QuestEvents : MonoBehaviour
 
     public Volume postProcessVolume;
 
+    public GameObject DanielsModel;
+
     private void Awake()
     {
         Instance = this;
@@ -60,6 +64,7 @@ public class QuestEvents : MonoBehaviour
 
     public IEnumerator QuestEvent3()
     {
+        DanielsModel.SetActive(false);
         foreach (GameObject obj in objectsToEnable)
         {
             if (obj != null)
@@ -123,6 +128,8 @@ public class QuestEvents : MonoBehaviour
             if (light != null)
                 light.enabled = false;
         }
+
+        pulseHighlightsToEnable.enabled = true;
     }
 
     public IEnumerator QuestEvent9()
@@ -130,6 +137,8 @@ public class QuestEvents : MonoBehaviour
         player.SetCanMove(false);
 
         player.isCinematic = true;
+
+        DanielsModel.SetActive(true);
 
 
         StartCoroutine(cameraFade.FadeOut());
@@ -174,6 +183,8 @@ public class QuestEvents : MonoBehaviour
 
         yield return new WaitForSeconds(1.25f);
 
+        DanielsModel.SetActive(false);
+
         knifeManDialogue.TriggerDialogue();
     }
 
@@ -213,11 +224,11 @@ public class QuestEvents : MonoBehaviour
 
         StartCoroutine(LightFlickerRoutine());
 
-        StartCoroutine(SmoothPostProcess(2f));
+        StartCoroutine(SmoothPostProcess(6f));
 
-        player.ZoomIn(0.4f);
+        player.ZoomIn(5f);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(6f);
 
         StartCoroutine(cameraFade.FadeOut());
 

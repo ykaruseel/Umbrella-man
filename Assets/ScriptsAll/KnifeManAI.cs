@@ -21,6 +21,8 @@ public class KnifeManAI : MonoBehaviour
 
     private float lastAttackTime;
 
+    private HitEffect hitEffect;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -28,6 +30,8 @@ public class KnifeManAI : MonoBehaviour
         animator = GetComponent<Animator>();
 
         agent.stoppingDistance = stopDistance;
+
+        hitEffect = GetComponent<HitEffect>();
     }
 
     private void Update()
@@ -60,6 +64,7 @@ public class KnifeManAI : MonoBehaviour
             inst.start();
             inst.release();
             lastAttackTime = Time.time;
+            hitEffect.TakeDamageEffect();
         }
     }
 

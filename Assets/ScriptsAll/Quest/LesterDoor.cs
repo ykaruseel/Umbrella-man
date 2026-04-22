@@ -95,6 +95,7 @@ public class LesterDoor : MonoBehaviour
         if (cameraSystem != null)
         {
             cameraSystem.StartDialogue();
+            QuestEvents.Instance.DanielsModel.SetActive(true);
         }
 
         if (lester != null)
