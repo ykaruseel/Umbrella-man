@@ -24,11 +24,7 @@ public class CreepyDoorEvent : MonoBehaviour
     [Tooltip("How fast the door slams shut (higher is faster)")]
     public float slamSpeed = 15f;
 
-    [Header("FMOD Audio")]
-    [Tooltip("Sound of a creaky door opening")]
-    public EventReference creakSound;
-    [Tooltip("Loud jump-scare slam sound")]
-    public EventReference slamSound;
+    [SerializeField] private EventReference doorEvent;
 
     private bool hasTriggeredOpen = false;
     private bool hasSlammed = false;
@@ -56,12 +52,9 @@ public class CreepyDoorEvent : MonoBehaviour
         if (dist <= triggerDistance && !hasTriggeredOpen)
         {
             hasTriggeredOpen = true;
-            
-            if (!creakSound.IsNull)
-            {
-                RuntimeManager.PlayOneShot(creakSound, doorTransform.position);
-            }
-            
+
+            PlayDoorSound(1);
+
             StartCoroutine(OpenDoorSlowly());
         }
 
@@ -89,13 +82,10 @@ public class CreepyDoorEvent : MonoBehaviour
         
         StopAllCoroutines();
 
-        
-        if (!slamSound.IsNull)
-        {
-            RuntimeManager.PlayOneShot(slamSound, doorTransform.position);
-        }
 
-        
+        PlayDoorSound(2);
+
+
         StartCoroutine(SlamDoorFast());
     }
 
@@ -115,5 +105,15 @@ public class CreepyDoorEvent : MonoBehaviour
         
         
         doorTransform.localRotation = closedRotation;
+    }
+    private void PlayDoorSound(int state)
+    {
+        if (doorEvent.IsNull) return;
+
+        var instance = RuntimeManager.CreateInstance(doorEvent);
+        instance.set3DAttributes(RuntimeUtils.To3DAttributes(doorTransform.position));
+        instance.setParameterByName("Door", state);
+        instance.start();
+        instance.release();
     }
 }
