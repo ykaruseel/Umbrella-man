@@ -64,6 +64,8 @@ public class QuestEvents : MonoBehaviour
 
     public IEnumerator QuestEvent3()
     {
+        MusicManagerv2.Instance.StartMusic();
+        MusicManagerv2.Instance.SetMusicState(0);
         DanielsModel.SetActive(false);
         foreach (GameObject obj in objectsToEnable)
         {
@@ -91,8 +93,8 @@ public class QuestEvents : MonoBehaviour
 
             yield return new WaitForSeconds(1.25f);
 
-            player.transform.position = new Vector3(-22.77f, -8.31f, -1.53f);
-            player.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            player.transform.position = new Vector3(-41f, -10f, -36f);
+            player.transform.rotation = Quaternion.Euler(0f, 45f, 0f);
             player.SetRotation(180f, 0f);
 
             yield return new WaitForSeconds(0.25f);

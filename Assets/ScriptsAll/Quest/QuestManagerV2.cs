@@ -58,7 +58,11 @@ public class QuestManagerV2 : MonoBehaviour
 
             if (current.isCompleted)
             {
-                Debug.Log($"<color=yellow>[Manager]</color> ����� {current.questID} ��������!");
+                if (current.questID == "Q5")
+                {
+                    MusicManagerv2.Instance.SetMusicState(1);
+                }
+
                 StartCoroutine(ActivateNextQuest());
             }
             else
@@ -105,18 +109,23 @@ public class QuestManagerV2 : MonoBehaviour
                 break;
 
             case "Q7":
+                MusicManagerv2.Instance.StopMusic();
                 QuestEvents.Instance.QuestEvent7();
                 break;
 
             case "Q9":
+                MusicManagerv2.Instance.StartMusic();
+                MusicManagerv2.Instance.SetMusicState(4);
                 StartCoroutine(QuestEvents.Instance.QuestEvent9());
                 break;
 
             case "Q10":
+                MusicManagerv2.Instance.SetMusicState(3);
                 StartCoroutine(QuestEvents.Instance.QuestEvent10());
                 break;
 
             case "Q11":
+                MusicManagerv2.Instance.StopMusic();
                 StartCoroutine(QuestEvents.Instance.QuestEvent11());
                 break;
         }
