@@ -3810,6 +3810,70 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 102435882}
   m_CullTransparentMesh: 1
+--- !u!1 &103490689
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 103490691}
+  - component: {fileID: 103490690}
+  m_Layer: 0
+  m_Name: SaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &103490690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103490689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88c17879e1c264d4d8afc52cc9bc37bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 332663618}
+  tvDec: {fileID: 754843266}
+  tv: {fileID: 285454670}
+  plant: {fileID: 1241455888}
+  art: {fileID: 920288752}
+  lamp: {fileID: 651635687}
+  firstDayTV: {fileID: 1689943062}
+  firstDayPlant: {fileID: 253490741}
+  firstDayArt: {fileID: 1011994313}
+  firstDayTableLamp: {fileID: 1401737734}
+  flashlightGO: {fileID: 1881585750}
+  flashlight: {fileID: 332663632}
+  enemy: {fileID: 567076519}
+  TriggerQ1: {fileID: 381261695}
+  TriggerQ3TV: {fileID: 1696588601}
+  TriggerQ3: {fileID: 613100748}
+  TriggerQ4: {fileID: 3882426658633763674}
+  TriggerQ5: {fileID: 6060474980826113764}
+  TriggerQ6: {fileID: 3767988261865291886}
+  TriggerQ8: {fileID: 6840108532432401920}
+--- !u!4 &103490691
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103490689}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 13.44516, y: 3.7711792, z: -7.261471}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &107026332 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5aba33d269f904b8b8175f048afea7a1,
@@ -127570,6 +127634,7 @@ SceneRoots:
   - {fileID: 1417980367}
   - {fileID: 844610441}
   - {fileID: 5399866}
+  - {fileID: 103490691}
   - {fileID: 1131948798}
   - {fileID: 238876128}
   - {fileID: 612807013}

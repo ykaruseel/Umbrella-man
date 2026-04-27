@@ -52,4 +52,27 @@ public class QuestData : ScriptableObject
 
         return title;
     }
+
+    public List<string> GetCompletedTargetsList()
+    {
+        return new List<string>(completedTargets);
+    }
+
+    public void RestoreProgress(List<string> savedGoals)
+    {
+        completedTargets.Clear();
+        if (savedGoals != null)
+        {
+            foreach (string id in savedGoals)
+            {
+                completedTargets.Add(id);
+            }
+        }
+
+        if (completedTargets.Count >= targetID.Count && targetID.Count > 0)
+        {
+            isCompleted = true;
+            isActive = false;
+        }
+    }
 }

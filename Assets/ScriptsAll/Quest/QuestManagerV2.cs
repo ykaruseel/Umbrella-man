@@ -12,7 +12,7 @@ public class QuestManagerV2 : MonoBehaviour
     public QuestUIV2 questUI;
 
     [SerializeField] private List<QuestData> questSequence;
-    private int currentQuestIndex = 0;
+    [SerializeField] private int currentQuestIndex = 0;
 
     private void Awake()
     {
@@ -128,6 +128,36 @@ public class QuestManagerV2 : MonoBehaviour
                 MusicManagerv2.Instance.StopMusic();
                 StartCoroutine(QuestEvents.Instance.QuestEvent11());
                 break;
+        }
+    }
+
+    public int GetCurrentQuest()
+    {
+        return currentQuestIndex;
+    }
+
+    public List<string> GetCompletedGoals()
+    {
+        if (currentQuestIndex < questSequence.Count)
+        {
+            return questSequence[currentQuestIndex].GetCompletedTargetsList();
+        }
+        return new List<string>();
+    }
+
+    public void SetQuestFromLoad(int index, List<string> completedGoals)
+    {
+        currentQuestIndex = index;
+
+        for (int i = 0; i < questSequence.Count; i++)
+        {
+            questSequence[i].Initialize(i == currentQuestIndex);
+        }
+
+        if (currentQuestIndex < questSequence.Count)
+        {
+            questSequence[currentQuestIndex].RestoreProgress(completedGoals);
+            questUI.ShowNewQuest(questSequence[currentQuestIndex]);
         }
     }
 }

@@ -126,27 +126,32 @@ public class CameraSequenceController : MonoBehaviour
     {
         if (intro && Input.GetKeyDown(KeyCode.Space))
         {
-            StopAllCoroutines();
-            intro = false;
+            Skip();
+        }
+    }
 
-            fade.SetFadeAlpha(0f);
-            fade.SetFadeImageActive(false);   
+    private void Skip()
+    {
+        StopAllCoroutines();
+        intro = false;
 
-            cam1.gameObject.SetActive(false);
-            cam2.gameObject.SetActive(false);
+        fade.SetFadeAlpha(0f);
+        fade.SetFadeImageActive(false);
 
-            cam3.gameObject.SetActive(true);
-            cam4.gameObject.SetActive(true);
+        cam1.gameObject.SetActive(false);
+        cam2.gameObject.SetActive(false);
+
+        cam3.gameObject.SetActive(true);
+        cam4.gameObject.SetActive(true);
 
 
-            playerController.isCinematic = false;
-            playerController.SetCanMove(true);
+        playerController.isCinematic = false;
+        playerController.SetCanMove(true);
 
-            if (MusicManager.Instance != null)
-            {
-                MusicManager.Instance.EnsureMusicPlaying();
-                MusicManager.Instance.FadeToVolume(1f, 1.2f);
-            }
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.EnsureMusicPlaying();
+            MusicManager.Instance.FadeToVolume(1f, 1.2f);
         }
     }
 }

@@ -471,4 +471,10 @@ public class PlayerController : MonoBehaviour
         if (virtualCam != null)
             virtualCam.transform.localRotation = Quaternion.Euler(rotationX, 0f, 0f);
     }
+
+    public void GetRotation(out float yaw, out float pitch)
+    {
+        yaw = rotationY;
+        pitch = rotationX;
+    }
 }
