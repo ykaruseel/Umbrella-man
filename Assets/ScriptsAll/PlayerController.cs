@@ -205,50 +205,24 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    
-    public void ZoomIn(float value = 0.8f)
+    public void ZoomIn(float value = 0.8f, float t = -1f)
     {
         if (currentZoomCoroutine != null)
             StopCoroutine(currentZoomCoroutine);
 
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView* value));
+        float duration = (t < 0) ? dialogueZoomSpeed : t;
+
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView * value, duration));
     }
 
-    public void ZoomOut(float value = 0.8f)
+    public void ZoomOut(float value = 0.8f, float t = -1f)
     {
         if (currentZoomCoroutine != null)
             StopCoroutine(currentZoomCoroutine);
 
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView/ value));
-    }
+        float duration = (t < 0) ? dialogueZoomSpeed : t;
 
-    private IEnumerator SmoothZoom(float from, float to)
-    {
-        float elapsed = 0f;
-        while (elapsed < dialogueZoomSpeed)
-        {
-            elapsed += Time.deltaTime;
-            float t = Mathf.SmoothStep(0f, 1f, elapsed / dialogueZoomSpeed);
-            virtualCam.Lens.FieldOfView = Mathf.Lerp(from, to, t);
-            yield return null;
-        }
-        virtualCam.Lens.FieldOfView = to;
-    }
-
-    public void ZoomIn(float value = 0.8f, float t = 1f)
-    {
-        if (currentZoomCoroutine != null)
-            StopCoroutine(currentZoomCoroutine);
-
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView * value, t));
-    }
-
-    public void ZoomOut(float value = 0.8f, float t = 1f)
-    {
-        if (currentZoomCoroutine != null)
-            StopCoroutine(currentZoomCoroutine);
-
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView / value, t));
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView / value, duration));
     }
 
     private IEnumerator SmoothZoom(float from, float to, float time)
