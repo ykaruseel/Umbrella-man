@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraSequenceController : MonoBehaviour
 {
@@ -22,18 +23,19 @@ public class CameraSequenceController : MonoBehaviour
 
     private const string FOV = "CameraFOV";
 
+    private bool intro;
+
 
     void Start()
     {
+        intro = true;
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.SetVolumeImmediate(0f);
         }
 
         playerController.isCinematic = true;
-        playerController.SetCanMove(false);
-
-        introText.StartIntroText();        
+        playerController.SetCanMove(false);    
 
         float savedFOV = PlayerPrefs.GetFloat(FOV, defaultFOV);
 
@@ -99,8 +101,6 @@ public class CameraSequenceController : MonoBehaviour
             //QuestManager.instance.StartFirstQuest();
         }
 
-        introText.EndIntroText();
-
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.EnsureMusicPlaying();
@@ -108,7 +108,7 @@ public class CameraSequenceController : MonoBehaviour
         }
 
         //fade.SetFadeImageActive(false);
-
+        intro = false;
         yield return fade.FadeIn();
     }
 
@@ -118,5 +118,35 @@ public class CameraSequenceController : MonoBehaviour
         cam2.gameObject.SetActive(false);
         cam3.gameObject.SetActive(false);
         cam4.gameObject.SetActive(false);
+    }
+
+    //dla debuga
+
+    private void Update()
+    {
+        if (intro && Input.GetKeyDown(KeyCode.Space))
+        {
+            StopAllCoroutines();
+            intro = false;
+
+            fade.SetFadeAlpha(0f);
+            fade.SetFadeImageActive(false);   
+
+            cam1.gameObject.SetActive(false);
+            cam2.gameObject.SetActive(false);
+
+            cam3.gameObject.SetActive(true);
+            cam4.gameObject.SetActive(true);
+
+
+            playerController.isCinematic = false;
+            playerController.SetCanMove(true);
+
+            if (MusicManager.Instance != null)
+            {
+                MusicManager.Instance.EnsureMusicPlaying();
+                MusicManager.Instance.FadeToVolume(1f, 1.2f);
+            }
+        }
     }
 }
