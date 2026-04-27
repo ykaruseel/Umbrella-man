@@ -35,6 +35,8 @@ public class QuestEvents : MonoBehaviour
 
     public GameObject umbrellaMan;
 
+    public GameObject umbrellaManTarget;
+
     public NPC_Dialogue knifeManDialogue;
 
     public CameraFade cameraFade;
@@ -77,28 +79,6 @@ public class QuestEvents : MonoBehaviour
         {
             if (obj != null)
                 obj.SetActive(false);
-        }
-
-        lesterDoor.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-
-        var instance = emitter.EventInstance;
-
-        if (instance.isValid())
-        {
-            float startVolume;
-            instance.getVolume(out startVolume);
-            float currentTime = 0;
-
-            while (currentTime < 2f)
-            {
-                currentTime += Time.deltaTime;
-                float newVolume = Mathf.Lerp(startVolume, 0f, currentTime / 2f);
-                instance.setVolume(newVolume);
-                yield return null;
-            }
-
-            instance.setVolume(0f);
-            emitter.Stop();
         }
 
         if (player)
@@ -226,6 +206,8 @@ public class QuestEvents : MonoBehaviour
             if (door != null)
                 door.isLockedWithQTE = true;
         }
+
+        TutorialManager.Instance.ShowHint(HintType.Sprint);
     }
 
     public IEnumerator QuestEvent11()
@@ -240,7 +222,7 @@ public class QuestEvents : MonoBehaviour
 
         flickerLight.enabled = true;
 
-        player.StartCinematicPan(umbrellaMan.transform, 2f);
+        player.StartCinematicPan(umbrellaManTarget.transform, 2f);
 
         yield return new WaitForSeconds(2f);
 

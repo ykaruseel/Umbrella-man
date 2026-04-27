@@ -121,6 +121,8 @@ public class SaveManager : MonoBehaviour
         data.currentQuestIndex = QuestManagerV2.Instance.GetCurrentQuest();
         data.completedGoalIDs = QuestManagerV2.Instance.GetCompletedGoals();
 
+        data.savedShownHints = new List<HintType>(TutorialManager.Instance.GetShownHints());
+
         data.isEnemyActive = enemy.activeSelf;
         data.isChasing = enemy.GetComponent<KnifeManAI>().isChasing;
         data.enemyPosition = enemy.transform.position;
@@ -272,6 +274,8 @@ public class SaveManager : MonoBehaviour
             TriggerQ8.GetComponent<BoxCollider>().enabled = data.isBoxColliderOnQ8;
 
             QuestManagerV2.Instance.SetQuestFromLoad(data.currentQuestIndex, data.completedGoalIDs);
+
+            TutorialManager.Instance.LoadShownHints(data.savedShownHints);
         }
         catch (System.Exception e)
         {

@@ -91,12 +91,6 @@ public class PlayerController : MonoBehaviour
 
         if (virtualCam != null)
             initialFOV = virtualCam.Lens.FieldOfView;
-
-        
-        if (TutorialManager.Instance != null)
-        {
-            TutorialManager.Instance.ShowHint(TutorialManager.HintType.Movement_WASD);
-        }
     }
 
     void Update()
@@ -368,6 +362,7 @@ public class PlayerController : MonoBehaviour
             {
                 hit.transform.gameObject.SetActive(false);
                 flashlight.enabled = true;
+                TutorialManager.Instance.ShowHint(HintType.Flashlight);
             }
 
             NPC_Dialogue npcDialogue = hit.collider.GetComponent<NPC_Dialogue>();

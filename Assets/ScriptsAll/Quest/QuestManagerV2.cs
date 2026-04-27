@@ -30,12 +30,6 @@ public class QuestManagerV2 : MonoBehaviour
         }
         Debug.Log($"<color=yellow>[Manager]</color> Выдача квеста: {questSequence[currentQuestIndex].questID}");
         questUI.ShowNewQuest(questSequence[currentQuestIndex]);
-
-        
-        if (TutorialManager.Instance != null)
-        {
-            TutorialManager.Instance.ShowHint(TutorialManager.HintType.Task_Q);
-        }
     }
 
     public bool IsGoalRequired(string id, GoalType type)
@@ -75,7 +69,7 @@ public class QuestManagerV2 : MonoBehaviour
     public bool IsQuestActive(string id)
     {
         QuestData current = questSequence[currentQuestIndex];
-        if (id == current.questID) 
+        if (id == current.questID)
         {
             return true;
         }
@@ -100,6 +94,9 @@ public class QuestManagerV2 : MonoBehaviour
 
         switch (questSequence[currentQuestIndex].questID)
         {
+            case "Q2":
+                TutorialManager.Instance.ShowHint(HintType.Interact);
+                break;
             case "Q3":
                 StartCoroutine(QuestEvents.Instance.QuestEvent3());
                 break;

@@ -58,6 +58,9 @@ public class SaveData
     public int currentQuestIndex;
     public List<string> completedGoalIDs = new List<string>();
 
+    //Tutorial
+    public List<HintType> savedShownHints;
+
     //Enemy
     public bool isEnemyActive;
     public bool isChasing;
