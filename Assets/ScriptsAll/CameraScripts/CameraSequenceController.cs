@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraSequenceController : MonoBehaviour
 {
@@ -125,7 +126,12 @@ public class CameraSequenceController : MonoBehaviour
     {
         if (intro && Input.GetKeyDown(KeyCode.Space))
         {
+            StopAllCoroutines();
             intro = false;
+
+            fade.SetFadeAlpha(0f);
+            fade.SetFadeImageActive(false);   
+
             cam1.gameObject.SetActive(false);
             cam2.gameObject.SetActive(false);
 

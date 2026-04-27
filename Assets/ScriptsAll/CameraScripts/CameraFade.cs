@@ -43,7 +43,15 @@ public class CameraFade : MonoBehaviour
 
     public void SetFadeImageActive(bool value)
     {
+        StopAllCoroutines();
         fadeImage.gameObject.SetActive(value);
+    }
+
+    public void SetFadeAlpha(float alpha)
+    {
+        Color c = fadeImage.color;
+        c.a = Mathf.Clamp01(alpha);
+        fadeImage.color = c;
     }
 }
 
