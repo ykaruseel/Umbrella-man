@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.022
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 1}
+  m_AmbientSkyColor: {r: 0.11698109, g: 0.11698109, b: 0.11698109, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 0.1
@@ -8570,16 +8570,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2065794293531001828, guid: 05f2ba6e476af274d8d395f669b6be2f,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 9ad640a52f6c80d47ba03eba12605c97, type: 2}
-    - target: {fileID: 5866666021909216657, guid: 05f2ba6e476af274d8d395f669b6be2f,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: d2fb5e2c00886634abae75699eefd826, type: 2}
     - target: {fileID: -8679921383154817045, guid: 67e7d6b75b74142419537e21ed5161fb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8655,6 +8645,16 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 696eb422f4794884986351f63f0f9024, type: 2}
+    - target: {fileID: 2065794293531001828, guid: 05f2ba6e476af274d8d395f669b6be2f,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9ad640a52f6c80d47ba03eba12605c97, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 05f2ba6e476af274d8d395f669b6be2f,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d2fb5e2c00886634abae75699eefd826, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14052,7 +14052,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 332663618}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5b23e38bdf2e4c44ba39fa282d7d111, type: 3}
   m_Name: 
@@ -14062,10 +14062,10 @@ MonoBehaviour:
   flashLight: {fileID: 1738559601206880806}
   triggerHandle: {fileID: 5076004314306383002}
   currentEnergy: 0
-  maxIntensity: 17
+  maxIntensity: 23
   maxRange: 30
   decayRate: 0.1
-  chargePerClick: 0.09
+  chargePerClick: 0.11
   chargePerHold: 0.2
   smoothness: 4
   timerValue: 0.5
@@ -120563,7 +120563,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 5aba33d269f904b8b8175f048afea7a1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.22611347
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5aba33d269f904b8b8175f048afea7a1,
         type: 3}
@@ -120573,7 +120573,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 5aba33d269f904b8b8175f048afea7a1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.97410107
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5aba33d269f904b8b8175f048afea7a1,
         type: 3}
@@ -120588,7 +120588,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 5aba33d269f904b8b8175f048afea7a1,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 206.137
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5aba33d269f904b8b8175f048afea7a1,
         type: 3}

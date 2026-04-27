@@ -68,6 +68,8 @@ public class QuestEvents : MonoBehaviour
 
     public IEnumerator QuestEvent3()
     {
+        MusicManagerv2.Instance.StartMusic();
+        MusicManagerv2.Instance.SetMusicState(0);
         DanielsModel.SetActive(false);
         foreach (GameObject obj in objectsToEnable)
         {
