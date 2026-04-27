@@ -19,16 +19,6 @@ public class IntroText : MonoBehaviour
     [SerializeField] private GameObject IntroTextGO;
     [SerializeField] private EventReference typewriterEvent;
 
-
-    public void StartIntroText()
-    {
-        StartCoroutine(SequenceRoutine(2f));
-        IntroTextGO.GetComponent<CanvasGroup>().alpha = 1f;
-    }
-    public void EndIntroText()
-    {
-        IntroTextGO.GetComponent<CanvasGroup>().alpha = 0f;
-    }
     public IEnumerator SequenceRoutine(float t)
     {
         yield return new WaitForSeconds(t);

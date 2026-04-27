@@ -235,6 +235,37 @@ public class PlayerController : MonoBehaviour
         virtualCam.Lens.FieldOfView = to;
     }
 
+    public void ZoomIn(float value = 0.8f, float t = 1f)
+    {
+        if (currentZoomCoroutine != null)
+            StopCoroutine(currentZoomCoroutine);
+
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView * value, t));
+    }
+
+    public void ZoomOut(float value = 0.8f, float t = 1f)
+    {
+        if (currentZoomCoroutine != null)
+            StopCoroutine(currentZoomCoroutine);
+
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView / value, t));
+    }
+
+    private IEnumerator SmoothZoom(float from, float to, float time)
+    {
+        float elapsed = 0f;
+        while (elapsed < time)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / time);
+            virtualCam.Lens.FieldOfView = Mathf.Lerp(from, to, t);
+            yield return null;
+        }
+        virtualCam.Lens.FieldOfView = to;
+    }
+
+
+
     private void HandleFootsteps()
     {
         bool isMoving = (Input.GetAxis("Vertical") != 0f || Input.GetAxis("Horizontal") != 0f) && canMove;
