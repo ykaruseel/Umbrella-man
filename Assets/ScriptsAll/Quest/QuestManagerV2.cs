@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -13,6 +14,8 @@ public class QuestManagerV2 : MonoBehaviour
 
     [SerializeField] private List<QuestData> questSequence;
     [SerializeField] private int currentQuestIndex = 0;
+
+    [SerializeField] private EventReference questCompletedSound;
 
     private void Awake()
     {
@@ -85,6 +88,7 @@ public class QuestManagerV2 : MonoBehaviour
         {
             questSequence[currentQuestIndex].isActive = true;
             Debug.Log($"<color=yellow>[Manager]</color> ��������� �����: {questSequence[currentQuestIndex].questID}");
+            RuntimeManager.PlayOneShot(questCompletedSound);
             StartCoroutine(questUI.CompleteAndSwitchRoutine(questSequence[currentQuestIndex - 1], questSequence[currentQuestIndex]));
         }
         else
