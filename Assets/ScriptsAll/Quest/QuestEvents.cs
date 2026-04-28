@@ -83,6 +83,28 @@ public class QuestEvents : MonoBehaviour
                 obj.SetActive(false);
         }
 
+        lesterDoor.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+
+        var instance = emitter.EventInstance;
+
+        if (instance.isValid())
+        {
+            float startVolume;
+            instance.getVolume(out startVolume);
+            float currentTime = 0;
+
+            while (currentTime < 2f)
+            {
+                currentTime += Time.deltaTime;
+                float newVolume = Mathf.Lerp(startVolume, 0f, currentTime / 2f);
+                instance.setVolume(newVolume);
+                yield return null;
+            }
+
+            instance.setVolume(0f);
+            emitter.Stop();
+        }
+
         if (player)
         {
             CharacterController cc = player.transform.GetComponent<CharacterController>();
