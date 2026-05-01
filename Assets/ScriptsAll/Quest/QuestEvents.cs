@@ -29,6 +29,7 @@ public class QuestEvents : MonoBehaviour
     public PulseHighlight pulseHighlightsToEnable;
 
     [Header("Quest 9-11")]
+    [SerializeField] private FMODUnity.EventReference umbrellaAppearSound;
     public PlayerController player;
 
     public GameObject knifeMan;
@@ -237,6 +238,8 @@ public class QuestEvents : MonoBehaviour
     public IEnumerator QuestEvent11()
     {
         knifeMan.SetActive(false);
+
+        FMODUnity.RuntimeManager.PlayOneShot(umbrellaAppearSound);
 
         umbrellaMan.SetActive(true);
 
