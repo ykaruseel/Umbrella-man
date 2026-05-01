@@ -11,7 +11,7 @@ public class KnifeManAI : MonoBehaviour
     
     private NavMeshAgent agent;
     private Animator animator;
-    private bool isChasing = false;
+    public bool isChasing = false;
 
     private float stopDistance = 2f;
 

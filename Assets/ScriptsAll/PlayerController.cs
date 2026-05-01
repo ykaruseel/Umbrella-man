@@ -91,12 +91,6 @@ public class PlayerController : MonoBehaviour
 
         if (virtualCam != null)
             initialFOV = virtualCam.Lens.FieldOfView;
-
-        
-        if (TutorialManager.Instance != null)
-        {
-            TutorialManager.Instance.ShowHint(TutorialManager.HintType.Movement_WASD);
-        }
     }
 
     void Update()
@@ -205,35 +199,40 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    
-    public void ZoomIn(float value = 0.8f)
+    public void ZoomIn(float value = 0.8f, float t = -1f)
     {
         if (currentZoomCoroutine != null)
             StopCoroutine(currentZoomCoroutine);
 
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView* value));
+        float duration = (t < 0) ? dialogueZoomSpeed : t;
+
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView * value, duration));
     }
 
-    public void ZoomOut(float value = 0.8f)
+    public void ZoomOut(float value = 0.8f, float t = -1f)
     {
         if (currentZoomCoroutine != null)
             StopCoroutine(currentZoomCoroutine);
 
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView/ value));
+        float duration = (t < 0) ? dialogueZoomSpeed : t;
+
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView / value, duration));
     }
 
-    private IEnumerator SmoothZoom(float from, float to)
+    private IEnumerator SmoothZoom(float from, float to, float time)
     {
         float elapsed = 0f;
-        while (elapsed < dialogueZoomSpeed)
+        while (elapsed < time)
         {
             elapsed += Time.deltaTime;
-            float t = Mathf.SmoothStep(0f, 1f, elapsed / dialogueZoomSpeed);
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / time);
             virtualCam.Lens.FieldOfView = Mathf.Lerp(from, to, t);
             yield return null;
         }
         virtualCam.Lens.FieldOfView = to;
     }
+
+
 
     private void HandleFootsteps()
     {
@@ -363,6 +362,7 @@ public class PlayerController : MonoBehaviour
             {
                 hit.transform.gameObject.SetActive(false);
                 flashlight.enabled = true;
+                TutorialManager.Instance.ShowHint(HintType.Flashlight);
             }
 
             NPC_Dialogue npcDialogue = hit.collider.GetComponent<NPC_Dialogue>();
@@ -465,5 +465,11 @@ public class PlayerController : MonoBehaviour
 
         if (virtualCam != null)
             virtualCam.transform.localRotation = Quaternion.Euler(rotationX, 0f, 0f);
+    }
+
+    public void GetRotation(out float yaw, out float pitch)
+    {
+        yaw = rotationY;
+        pitch = rotationX;
     }
 }

@@ -10,7 +10,7 @@ public class LesterDoor : MonoBehaviour
     [SerializeField] private Transform door;
 
     [SerializeField] private EventReference knockSound;
-    [SerializeField] private StudioEventEmitter emitter;
+    //[SerializeField] private StudioEventEmitter emitter;
 
     [SerializeField] private NPC_Dialogue lester;
 
@@ -58,29 +58,29 @@ public class LesterDoor : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        var instance = emitter.EventInstance;
+        //var instance = emitter.EventInstance;
 
-        if (instance.isValid()) 
-        {
-            float startVolume;
-            instance.getVolume(out startVolume);
-            float currentTime = 0;
+        //if (instance.isValid()) 
+        //{
+        //    float startVolume;
+        //    instance.getVolume(out startVolume);
+        //    float currentTime = 0;
 
-            while (currentTime < 2f)
-            {
-                currentTime += Time.deltaTime;
-                float newVolume = Mathf.Lerp(startVolume, 0f, currentTime / 2f);
-                instance.setVolume(newVolume);
-                yield return null;
-            }
+        //    while (currentTime < 2f)
+        //    {
+        //        currentTime += Time.deltaTime;
+        //        float newVolume = Mathf.Lerp(startVolume, 0f, currentTime / 2f);
+        //        instance.setVolume(newVolume);
+        //        yield return null;
+        //    }
 
-            instance.setVolume(0f);
-            emitter.Stop();
-        }
-        else
-        {
-            yield return new WaitForSeconds(2f);
-        }
+        //    instance.setVolume(0f);
+        //    emitter.Stop();
+        //}
+        //else
+        //{
+        //    yield return new WaitForSeconds(2f);
+        //}
 
         float t = 0f;
         while (t < 1f)

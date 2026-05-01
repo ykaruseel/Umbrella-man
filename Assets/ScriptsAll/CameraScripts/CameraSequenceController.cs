@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraSequenceController : MonoBehaviour
 {
@@ -22,18 +23,19 @@ public class CameraSequenceController : MonoBehaviour
 
     private const string FOV = "CameraFOV";
 
+    private bool intro;
+
 
     void Start()
     {
+        intro = true;
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.SetVolumeImmediate(0f);
         }
 
         playerController.isCinematic = true;
-        playerController.SetCanMove(false);
-
-        introText.StartIntroText();        
+        playerController.SetCanMove(false);    
 
         float savedFOV = PlayerPrefs.GetFloat(FOV, defaultFOV);
 
@@ -42,6 +44,8 @@ public class CameraSequenceController : MonoBehaviour
 
         fly1 = cam1.GetComponent<CameraPathFly>();
         fly2 = cam2.GetComponent<CameraPathFly>();
+
+        TutorialManager.Instance.ShowHint(HintType.Move);
 
         DisableAllCameras();
 
@@ -63,6 +67,8 @@ public class CameraSequenceController : MonoBehaviour
 
         cam1.gameObject.SetActive(false);
         cam2.gameObject.SetActive(true);
+
+        TutorialManager.Instance.ShowHint(HintType.ViewQuest);
 
         fly2.OnPathFinished += OnSecondFinished;
 
@@ -88,18 +94,10 @@ public class CameraSequenceController : MonoBehaviour
         playerController.isCinematic = false;
         playerController.SetCanMove(true);
 
-        
-        if (TutorialManager.Instance != null)
-        {
-            TutorialManager.Instance.ShowHint(TutorialManager.HintType.Movement_WASD);
-        }
-
         if (QuestManager.instance != null)
         {
             //QuestManager.instance.StartFirstQuest();
         }
-
-        introText.EndIntroText();
 
         if (MusicManager.Instance != null)
         {
@@ -108,7 +106,7 @@ public class CameraSequenceController : MonoBehaviour
         }
 
         //fade.SetFadeImageActive(false);
-
+        intro = false;
         yield return fade.FadeIn();
     }
 
@@ -118,5 +116,40 @@ public class CameraSequenceController : MonoBehaviour
         cam2.gameObject.SetActive(false);
         cam3.gameObject.SetActive(false);
         cam4.gameObject.SetActive(false);
+    }
+
+    //dla debuga
+
+    private void Update()
+    {
+        if (intro && Input.GetKeyDown(KeyCode.Space))
+        {
+            Skip();
+        }
+    }
+
+    private void Skip()
+    {
+        StopAllCoroutines();
+        intro = false;
+
+        fade.SetFadeAlpha(0f);
+        fade.SetFadeImageActive(false);
+
+        cam1.gameObject.SetActive(false);
+        cam2.gameObject.SetActive(false);
+
+        cam3.gameObject.SetActive(true);
+        cam4.gameObject.SetActive(true);
+
+
+        playerController.isCinematic = false;
+        playerController.SetCanMove(true);
+
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.EnsureMusicPlaying();
+            MusicManager.Instance.FadeToVolume(1f, 1.2f);
+        }
     }
 }

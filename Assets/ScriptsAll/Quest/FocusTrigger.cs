@@ -6,7 +6,7 @@ public class FocusTrigger : MonoBehaviour
 {
     public string requiredQuestID;
 
-    [SerializeField] private bool hasTriggered = false;
+    public bool hasTriggered = false;
 
     public GameObject focusObject;
 

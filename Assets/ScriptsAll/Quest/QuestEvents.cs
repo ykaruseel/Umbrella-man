@@ -16,6 +16,8 @@ public class QuestEvents : MonoBehaviour
 
     public GameObject lesterDoor;
 
+    public StudioEventEmitter emitter;
+
     [Header("Quest 5")]
     public GameObject tvToEndable;
 
@@ -27,11 +29,14 @@ public class QuestEvents : MonoBehaviour
     public PulseHighlight pulseHighlightsToEnable;
 
     [Header("Quest 9-11")]
+    [SerializeField] private FMODUnity.EventReference umbrellaAppearSound;
     public PlayerController player;
 
     public GameObject knifeMan;
 
     public GameObject umbrellaMan;
+
+    public GameObject umbrellaManTarget;
 
     public NPC_Dialogue knifeManDialogue;
 
@@ -64,6 +69,8 @@ public class QuestEvents : MonoBehaviour
 
     public IEnumerator QuestEvent3()
     {
+        MusicManagerv2.Instance.StartMusic();
+        MusicManagerv2.Instance.SetMusicState(0);
         DanielsModel.SetActive(false);
         foreach (GameObject obj in objectsToEnable)
         {
@@ -79,6 +86,26 @@ public class QuestEvents : MonoBehaviour
 
         lesterDoor.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 
+        var instance = emitter.EventInstance;
+
+        if (instance.isValid())
+        {
+            float startVolume;
+            instance.getVolume(out startVolume);
+            float currentTime = 0;
+
+            while (currentTime < 2f)
+            {
+                currentTime += Time.deltaTime;
+                float newVolume = Mathf.Lerp(startVolume, 0f, currentTime / 2f);
+                instance.setVolume(newVolume);
+                yield return null;
+            }
+
+            instance.setVolume(0f);
+            emitter.Stop();
+        }
+
         if (player)
         {
             CharacterController cc = player.transform.GetComponent<CharacterController>();
@@ -91,9 +118,9 @@ public class QuestEvents : MonoBehaviour
 
             yield return new WaitForSeconds(1.25f);
 
-            player.transform.position = new Vector3(-22.77f, -8.31f, -1.53f);
-            player.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-            player.SetRotation(180f, 0f);
+            player.transform.position = new Vector3(-41.4f, -10f, -36.6f);
+            player.transform.rotation = Quaternion.Euler(0f, 40f, 0f);
+            player.SetRotation(40f, 0f);
 
             yield return new WaitForSeconds(0.25f);
 
@@ -204,11 +231,15 @@ public class QuestEvents : MonoBehaviour
             if (door != null)
                 door.isLockedWithQTE = true;
         }
+
+        TutorialManager.Instance.ShowHint(HintType.Sprint);
     }
 
     public IEnumerator QuestEvent11()
     {
         knifeMan.SetActive(false);
+
+        FMODUnity.RuntimeManager.PlayOneShot(umbrellaAppearSound);
 
         umbrellaMan.SetActive(true);
 
@@ -218,7 +249,7 @@ public class QuestEvents : MonoBehaviour
 
         flickerLight.enabled = true;
 
-        player.StartCinematicPan(umbrellaMan.transform, 2f);
+        player.StartCinematicPan(umbrellaManTarget.transform, 2f);
 
         yield return new WaitForSeconds(2f);
 
@@ -226,7 +257,7 @@ public class QuestEvents : MonoBehaviour
 
         StartCoroutine(SmoothPostProcess(6f));
 
-        player.ZoomIn(5f);
+        player.ZoomIn(0.5f, 4f);
 
         yield return new WaitForSeconds(6f);
 
