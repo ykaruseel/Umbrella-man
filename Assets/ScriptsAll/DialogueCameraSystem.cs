@@ -1,93 +1,96 @@
 using UnityEngine;
-using Unity.Cinemachine; // Используем новую систему Cinemachine
+using Unity.Cinemachine;
 
 public class DialogueCameraSystem : MonoBehaviour
 {
-    [Header("Камера игрока (Standard Perspective)")]
-    [Tooltip("Основная камера игрока, к которой мы вернемся после диалога")]
+    [Header("Player Camera (Standard Perspective)")]
     public CinemachineCamera playerCamera;
 
-    [Header("Камеры диалога (от 1 до 3)")]
-    [Tooltip("Перетащи сюда заранее расставленные виртуальные камеры")]
-    public CinemachineCamera[] dialogueCameras;
+    [Header("Character Cameras (0 = Daniel, 1 = Lester)")]
+    public CinemachineCamera[] characterCameras = new CinemachineCamera[2];
 
-    [Header("Настройки переключения (Częstotliwość)")]
-    [Tooltip("1 = менять при каждой фразе, 2 = каждые две фразы и т.д.")]
-    public int switchFrequency = 1;
+    [Header("B-Roll Cameras (Random Shots)")]
+    public CinemachineCamera[] bRollCameras;
 
-    private int currentCameraIndex = 0;
-    private int linesPlayed = 0;
+    [Header("Randomness Settings")]
+    [Range(0, 100)] public int bRollChancePercent = 30;
+    public int minLinesBetweenBRoll = 2;
+
+    private int linesSinceLastBRoll = 0;
     private bool isDialogueActive = false;
 
     private void Start()
     {
-        // Инициализация: жестко выключаем все диалоговые камеры при старте сцены
-        foreach (var cam in dialogueCameras)
-        {
-            if (cam != null) cam.Priority = 0;
-        }
+        TurnOffAllCameras();
     }
 
-    // 1. ВЫЗЫВАТЬ ПРИ СТАРТЕ ДИАЛОГА
     public void StartDialogue()
     {
-        if (dialogueCameras.Length == 0)
-        {
-            Debug.LogWarning("Brak kamer dialogowych! (Нет камер для диалога)");
-            return;
-        }
-
         isDialogueActive = true;
-        linesPlayed = 0;
-        currentCameraIndex = 0;
-
-        // Опускаем приоритет камеры игрока
+        linesSinceLastBRoll = minLinesBetweenBRoll; 
         if (playerCamera != null) playerCamera.Priority = 0;
-
-        // Включаем первую камеру диалога
-        UpdateCameras();
     }
 
-    // 2. ВЫЗЫВАТЬ ПРИ КАЖДОМ ПЕРЕКЛЮЧЕНИИ ФРАЗЫ В UI
-    public void NextLine()
+    public void NextLine(string speakerName)
     {
-        if (!isDialogueActive || dialogueCameras.Length == 0) return;
+        if (!isDialogueActive) return;
 
-        linesPlayed++;
+        TurnOffAllCameras();
+        linesSinceLastBRoll++;
 
-        // Проверяем интервал переключения (switchFrequency)
-        if (linesPlayed % switchFrequency == 0)
+        // Логика перебивки (Третья камера)
+        if (bRollCameras.Length > 0 && linesSinceLastBRoll >= minLinesBetweenBRoll)
         {
-            // Переходим к следующей камере по кругу
-            currentCameraIndex = (currentCameraIndex + 1) % dialogueCameras.Length;
-            UpdateCameras();
+            int roll = Random.Range(0, 100);
+            if (roll < bRollChancePercent)
+            {
+                int randomBRoll = Random.Range(0, bRollCameras.Length);
+                if (bRollCameras[randomBRoll] != null)
+                {
+                    bRollCameras[randomBRoll].Priority = 100;
+                    linesSinceLastBRoll = 0; 
+                    return; 
+                }
+            }
+        }
+
+        // Логика основных камер
+        if (speakerName == "Daniel" && characterCameras[0] != null)
+        {
+            characterCameras[0].Priority = 100;
+        }
+        else if (speakerName == "Lester" && characterCameras[1] != null)
+        {
+            characterCameras[1].Priority = 100;
+        }
+        else 
+        {
+            if (characterCameras[0] != null) characterCameras[0].Priority = 100;
         }
     }
 
-    // 3. ВЫЗЫВАТЬ ПРИ ЗАВЕРШЕНИИ ДИАЛОГА
     public void EndDialogue()
     {
         isDialogueActive = false;
-
-        // Выключаем все кинокамеры
-        foreach (var cam in dialogueCameras)
-        {
-            if (cam != null) cam.Priority = 0;
-        }
-
-        // Возвращаем приоритет камере игрока
+        TurnOffAllCameras();
         if (playerCamera != null) playerCamera.Priority = 100;
     }
 
-    // Внутренняя функция переключения приоритетов
-    private void UpdateCameras()
+    private void TurnOffAllCameras()
     {
-        for (int i = 0; i < dialogueCameras.Length; i++)
+        if (characterCameras != null)
         {
-            if (dialogueCameras[i] != null)
+            foreach (var cam in characterCameras)
             {
-                // Главной становится только текущая камера (Priority = 100), остальные гаснут (0)
-                dialogueCameras[i].Priority = (i == currentCameraIndex) ? 100 : 0;
+                if (cam != null) cam.Priority = 0;
+            }
+        }
+        
+        if (bRollCameras != null)
+        {
+            foreach (var cam in bRollCameras)
+            {
+                if (cam != null) cam.Priority = 0;
             }
         }
     }

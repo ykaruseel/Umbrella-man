@@ -8,7 +8,7 @@ public class PlaceholderDialogueTrigger : MonoBehaviour
 
     private bool hasTriggered = false;
 
-    // Эту функцию вызывает дверь при нажатии "E"
+    
     public void StartDialogueSequence()
     {
         if (!hasTriggered)
@@ -20,24 +20,18 @@ public class PlaceholderDialogueTrigger : MonoBehaviour
 
     private IEnumerator RunTestDialogue()
     {
-        
         yield return new WaitForSeconds(7f);
 
-        
         if (cameraSystem != null) cameraSystem.StartDialogue();
 
-        
         yield return new WaitForSeconds(3f);
 
         
-        if (cameraSystem != null) cameraSystem.NextLine();
+        if (cameraSystem != null) cameraSystem.NextLine("Lester");
 
-        
         yield return new WaitForSeconds(3f);
 
-        
         if (cameraSystem != null) cameraSystem.EndDialogue();
-        
         
         hasTriggered = false; 
     }

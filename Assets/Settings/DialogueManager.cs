@@ -91,7 +91,6 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNextSentence()
     {
-        
         if (Time.unscaledTime - lastClickTime < 0.1f) return;
         lastClickTime = Time.unscaledTime;
 
@@ -111,14 +110,16 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // Переключаем камеру
-        if (currentCameraSystem != null)
-        {
-            currentCameraSystem.NextLine();
-        }
-
+        
         DialogueLine line = linesQueue.Dequeue();
         currentSentence = line.sentence;
+        
+        
+        if (currentCameraSystem != null)
+        {
+            currentCameraSystem.NextLine(line.speakerName);
+        }
+
         if (nameText != null) nameText.text = line.speakerName;
         typingCoroutine = StartCoroutine(TypeSentence(line));
     }
