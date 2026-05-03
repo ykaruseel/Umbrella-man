@@ -95,7 +95,6 @@ public class CreepyDoorEvent : MonoBehaviour
         
         Quaternion currentRot = doorTransform.localRotation;
         
-        
         while (t < 1f)
         {
             t += Time.deltaTime * slamSpeed;
@@ -105,6 +104,9 @@ public class CreepyDoorEvent : MonoBehaviour
         
         
         doorTransform.localRotation = closedRotation;
+
+        
+        this.enabled = false;
     }
     private void PlayDoorSound(int state)
     {

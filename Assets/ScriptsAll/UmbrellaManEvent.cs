@@ -38,14 +38,23 @@ public class UmbrellaManEvent : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (eventTriggered) return; 
+        if (eventTriggered) return;
 
         if (other.CompareTag("Player"))
         {
+            eventTriggered = true;
+            
+            
+            Collider myCollider = GetComponent<Collider>();
+            if (myCollider != null)
+            {
+                myCollider.enabled = false; 
+            }
+
+            
             int roll = Random.Range(1, 101);
             if (roll <= spawnChance)
             {
-                eventTriggered = true;
                 SpawnShadow();
             }
         }
