@@ -3,6 +3,7 @@ using FMODUnity;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class DoorController : MonoBehaviour
 {
@@ -31,7 +32,9 @@ public class DoorController : MonoBehaviour
     private bool isAnimating = false;
     private Coroutine autoCloseCoroutine;
 
-    
+    private bool doorEvent = false;
+
+
     [Header("QTE Settings")]
     [SerializeField] public bool isLockedWithQTE = false; 
 
@@ -176,6 +179,13 @@ linePos += currentSpeed * lineDir * Time.deltaTime;
                 StartQTE(); 
             }
             return; 
+        }
+
+        if (doorEvent) 
+        {
+            StartCoroutine(OpenDoorAfterEvent());
+            PlayDoorSound(0);
+            return;
         }
 
         if (!isOpen)
@@ -435,6 +445,38 @@ linePos += currentSpeed * lineDir * Time.deltaTime;
             StopCoroutine(autoCloseCoroutine);
             autoCloseCoroutine = null;
         }
+    }
+
+    private IEnumerator OpenDoorAfterEvent()
+    {
+        isAnimating = true;
+        float doorTime = openDuration;
+
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / doorTime;
+            door.localRotation = Quaternion.Slerp(Quaternion.Euler(0f, -22f, 0f), openRotation, t);
+            yield return null;
+        }
+        door.localRotation = openRotation;
+
+        isOpen = true;
+        isAnimating = false;
+        doorEvent = false;
+
+        if (autoCloseCoroutine != null) StopCoroutine(autoCloseCoroutine);
+        autoCloseCoroutine = StartCoroutine(AutoCloseDoor());
+    }
+
+    public void DoorEvent()
+    {
+        StopAllCoroutines();
+        isOpen = false;
+        isAnimating = false;
+        doorEvent = true;
+        handle.localRotation = handleClosedRotation;
+        door.localRotation = Quaternion.Euler(0f, -22f, 0f);
     }
 
     private IEnumerator AutoCloseDoor()

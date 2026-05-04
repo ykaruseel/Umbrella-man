@@ -10,12 +10,15 @@ public class CameraSequenceController : MonoBehaviour
     [SerializeField] private Camera cam3;
     [SerializeField] private Camera cam4;
 
+    [SerializeField] private Camera cam5;
+
     [SerializeField] private CameraFade fade;
 
     public IntroText introText;
 
     private CameraPathFly fly1;
     private CameraPathFly fly2;
+    private CameraPathFly fly3;
 
     [SerializeField] private PlayerController playerController;
 
@@ -41,9 +44,11 @@ public class CameraSequenceController : MonoBehaviour
 
         cam1.fieldOfView = savedFOV;
         cam2.fieldOfView = savedFOV;
+        cam5.fieldOfView = savedFOV;
 
         fly1 = cam1.GetComponent<CameraPathFly>();
         fly2 = cam2.GetComponent<CameraPathFly>();
+        fly3 = cam5.GetComponent<CameraPathFly>();
 
         TutorialManager.Instance.ShowHint(HintType.Move);
 
@@ -116,6 +121,7 @@ public class CameraSequenceController : MonoBehaviour
         cam2.gameObject.SetActive(false);
         cam3.gameObject.SetActive(false);
         cam4.gameObject.SetActive(false);
+        cam5.gameObject.SetActive(false);
     }
 
     //dla debuga
@@ -126,6 +132,38 @@ public class CameraSequenceController : MonoBehaviour
         {
             Skip();
         }
+    }
+
+    public void StartThirdAnim()
+    {
+        DisableAllCameras();
+
+        cam5.gameObject.SetActive(true);
+        StartCoroutine(fade.FadeIn());
+
+        fly3.OnPathFinished += OnThirdFinished;
+    }
+
+    private void OnThirdFinished()
+    {
+        fly3.OnPathFinished -= OnThirdFinished;
+        StartCoroutine(ThirdAnimFinish());
+    }
+
+    private IEnumerator ThirdAnimFinish()
+    {
+        yield return fade.FadeOut();
+        
+        cam5.gameObject.SetActive(false);
+
+        cam3.gameObject.SetActive(true);
+        cam4.gameObject.SetActive(true);
+
+        yield return fade.FadeIn();
+
+        playerController.isCinematic = false;
+        playerController.SetCanMove(true);
+
     }
 
     private void Skip()

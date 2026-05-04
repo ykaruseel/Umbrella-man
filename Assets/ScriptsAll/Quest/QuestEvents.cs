@@ -18,6 +18,10 @@ public class QuestEvents : MonoBehaviour
 
     public StudioEventEmitter emitter;
 
+    public DoorController doorController;
+
+    public CameraSequenceController cameraSequenceController;
+
     [Header("Quest 5")]
     public GameObject tvToEndable;
 
@@ -122,17 +126,13 @@ public class QuestEvents : MonoBehaviour
             player.transform.rotation = Quaternion.Euler(0f, 40f, 0f);
             player.SetRotation(40f, 0f);
 
-            yield return new WaitForSeconds(0.25f);
-
-            StartCoroutine(cameraFade.FadeIn());
-
-            yield return new WaitForSeconds(1f);
-
-            player.SetCanMove(true);
-            player.isCinematic = false;
             if (cc) cc.enabled = true;
             player.enabled = true;
+
+            cameraSequenceController.StartThirdAnim();
         }
+
+        doorController.DoorEvent();
     }
 
 
