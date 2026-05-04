@@ -122,7 +122,7 @@ public class QuestEvents : MonoBehaviour
 
             yield return new WaitForSeconds(1.25f);
 
-            player.transform.position = new Vector3(-41.4f, -10f, -36.6f);
+            player.transform.position = new Vector3(-41.4f, -10.17f, -36.6f);
             player.transform.rotation = Quaternion.Euler(0f, 40f, 0f);
             player.SetRotation(40f, 0f);
 

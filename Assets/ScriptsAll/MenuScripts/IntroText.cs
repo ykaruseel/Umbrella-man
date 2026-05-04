@@ -18,7 +18,7 @@ public class IntroText : MonoBehaviour
 
     [SerializeField] private GameObject IntroTextGO;
     [SerializeField] private EventReference typewriterEvent;
-
+    
     public IEnumerator SequenceRoutine(float t)
     {
         yield return new WaitForSeconds(t);
@@ -47,7 +47,9 @@ public class IntroText : MonoBehaviour
             text.text += c;
 
             if (!typewriterEvent.IsNull && c != ' ')
-                RuntimeManager.PlayOneShot(typewriterEvent);
+            {
+                RuntimeManager.PlayOneShot(typewriterEvent, Camera.main.transform.position);
+            }
 
             yield return new WaitForSeconds(typeSpeed);
         }

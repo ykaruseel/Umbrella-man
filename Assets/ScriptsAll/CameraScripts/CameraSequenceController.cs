@@ -154,12 +154,16 @@ public class CameraSequenceController : MonoBehaviour
     {
         yield return fade.FadeOut();
         
-        cam5.gameObject.SetActive(false);
+        //cam5.gameObject.SetActive(false);
+
+        cam5.enabled = false;
 
         cam3.gameObject.SetActive(true);
         cam4.gameObject.SetActive(true);
 
         yield return fade.FadeIn();
+
+        yield return cam5.GetComponent<IntroText>().SequenceRoutine(0f);
 
         playerController.isCinematic = false;
         playerController.SetCanMove(true);
