@@ -9,6 +9,14 @@ using UnityEngine.Rendering.Universal;
 
 public class QuestEvents : MonoBehaviour
 {
+    
+    [Header("Jumpscares")]
+        public GameObject pictureJumpscare;
+        public GameObject shadowJumpscare; 
+        public GameObject bulbJumpscare;
+        public GameObject doorJumpscare;
+        
+    
     [Header("Quest 3")]
     public List<GameObject> objectsToEnable;
 
@@ -73,6 +81,8 @@ public class QuestEvents : MonoBehaviour
 
     public IEnumerator QuestEvent3()
     {
+        
+        
         MusicManagerv2.Instance.StartMusic();
         MusicManagerv2.Instance.SetMusicState(0);
         DanielsModel.SetActive(false);
@@ -138,6 +148,15 @@ public class QuestEvents : MonoBehaviour
 
     public void QuestEvent5()
     {
+        if (pictureJumpscare != null) pictureJumpscare.SetActive(true);
+        if (shadowJumpscare != null) shadowJumpscare.SetActive(true);
+        if (bulbJumpscare != null) bulbJumpscare.SetActive(true);
+        if (doorJumpscare != null) doorJumpscare.SetActive(true);
+        
+        
+        if (bulbJumpscare != null) bulbJumpscare.SetActive(true);
+        if (doorJumpscare != null) doorJumpscare.SetActive(true);
+        
         foreach (GameObject obj in objectsToEnable)
         {
             if (obj != null)
