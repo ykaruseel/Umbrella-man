@@ -13,6 +13,8 @@ public class Pause : MonoBehaviour
     [SerializeField] private List<GameObject> _UIElements = new();
     [SerializeField] private EnemyLookDistortionSingleVolume _enemyLookDistortionSingleVolume;
 
+    [SerializeField] private KnifeManAI _knifeManAI;
+
     private float fadeDuration = 0.5f;
 
     private bool isTransitioning = false;
@@ -34,6 +36,7 @@ public class Pause : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
+            if(_knifeManAI.isChasing) return;
             foreach (GameObject obj in _UIElements)
             {
                 if (obj == null) continue;

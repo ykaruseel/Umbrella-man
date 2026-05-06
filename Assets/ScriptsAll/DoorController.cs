@@ -90,6 +90,9 @@ public class DoorController : MonoBehaviour
     private float linePos = 0f; 
     private int lineDir = 1;
     private Vector3 originalLocalPos;
+
+    private Vector3 originalGlobalPos;
+    private Quaternion originalGlobalRot;
     private Coroutine shakeCoroutine;
 
     private void Start()
@@ -101,6 +104,10 @@ public class DoorController : MonoBehaviour
         handleOpenRotation = handleClosedRotation * Quaternion.AngleAxis(handleRotationAngle, handleRotationAxis);
 
         originalLocalPos = door.localPosition;
+
+        originalGlobalPos = door.position;
+        originalGlobalRot = door.rotation;
+
         if (qtePanel != null) qtePanel.SetActive(false);
         originalScale = movingLine.localScale;
         linePos = 0f;
@@ -501,6 +508,57 @@ linePos += currentSpeed * lineDir * Time.deltaTime;
         inst.setParameterByName("Door", state);
         inst.start();
         inst.release();
+    }
+
+    public void ResetDoor()
+    {
+        StopAllCoroutines();
+        isAnimating = false;
+        isQteActive = false;
+        isQteCooldown = false;
+        inputLocked = false;
+
+        currentHealth = 100f;
+        if (qtePanel != null) qtePanel.SetActive(false);
+
+        if (useBrokenModel && intactDoorModel != null && brokenDoorModel != null)
+        {
+            brokenDoorModel.SetActive(false);
+            intactDoorModel.SetActive(true);
+            door = intactDoorModel.transform;
+        }
+
+        Rigidbody rb = door.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        door.position = originalGlobalPos;
+        door.rotation = originalGlobalRot;
+
+        originalScale = movingLine.localScale;
+        linePos = 0f;
+        lineDir = 1;
+
+        closedRotation = door.localRotation;
+        openRotation = closedRotation * Quaternion.Euler(0, openAngle, 0);
+
+        handleClosedRotation = handle.localRotation;
+        handleOpenRotation = handleClosedRotation * Quaternion.AngleAxis(handleRotationAngle, handleRotationAxis);
+
+        originalLocalPos = door.localPosition;
+
+        if (handle != null)
+        {
+            handle.localRotation = handleClosedRotation;
+        }
+
+        isOpen = false;
+        doorEvent = false;
     }
 }
 

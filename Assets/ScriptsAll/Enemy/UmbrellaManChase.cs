@@ -187,7 +187,7 @@ public class UmbrellaManChase : MonoBehaviour
             
             if (deathHandler != null)
             {
-                deathHandler.TriggerDeath(transform);
+                //deathHandler.TriggerDeath(transform);
             }
             else
             {

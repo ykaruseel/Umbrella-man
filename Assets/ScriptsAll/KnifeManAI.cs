@@ -1,5 +1,6 @@
 using FMOD.Studio;
 using FMODUnity;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Audio;
@@ -19,9 +20,16 @@ public class KnifeManAI : MonoBehaviour
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private EventReference footstepEvent;
 
+    [SerializeField] private DeathHandler deathHandler;
+
+    private int playerHealth = 3;
+
     private float lastAttackTime;
 
     private HitEffect hitEffect;
+
+    private Vector3 originalLocalPos;
+    private Quaternion originalLocalRot;
 
     private void Awake()
     {
@@ -32,6 +40,9 @@ public class KnifeManAI : MonoBehaviour
         agent.stoppingDistance = stopDistance;
 
         hitEffect = GetComponent<HitEffect>();
+
+        originalLocalPos = transform.localPosition;
+        originalLocalRot = transform.localRotation;
     }
 
     private void Update()
@@ -65,6 +76,13 @@ public class KnifeManAI : MonoBehaviour
             inst.release();
             lastAttackTime = Time.time;
             hitEffect.TakeDamageEffect();
+            playerHealth--;
+            if(playerHealth <= 0)
+            {
+                deathHandler.TriggerDeath();
+                isChasing = false;
+                playerHealth = 3;
+            }
         }
     }
 
@@ -78,5 +96,11 @@ public class KnifeManAI : MonoBehaviour
     public void StartChasing()
     {
         isChasing = true;
+    }
+
+    public void ResetChasing()
+    {
+        agent.Warp(originalLocalPos);
+        transform.rotation = originalLocalRot;
     }
 }
