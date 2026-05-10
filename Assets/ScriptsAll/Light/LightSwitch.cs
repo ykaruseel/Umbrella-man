@@ -10,7 +10,8 @@ public class LightSwitch : MonoBehaviour
     [SerializeField] private Animator animator;
 
     [Header("FMOD")]
-    [SerializeField] private EventReference switchSound;
+    [SerializeField] private EventReference switchOnSound;
+    [SerializeField] private EventReference switchOffSound;
 
     private bool isAnimating = false;
 
@@ -24,14 +25,16 @@ public class LightSwitch : MonoBehaviour
     {
         isAnimating = true;
 
-        RuntimeManager.PlayOneShot(switchSound, transform.position);
+        bool lightsAreOn = lights[0].activeSelf;
 
-        if (lights[0].activeSelf)
+        if (lightsAreOn)
         {
+            RuntimeManager.PlayOneShot(switchOffSound, transform.position);
             animator.SetBool("lightOn", false);
         }
         else
         {
+            RuntimeManager.PlayOneShot(switchOnSound, transform.position);
             animator.SetBool("lightOn", true);
         }
 

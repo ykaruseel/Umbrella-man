@@ -57,6 +57,18 @@ public class AmbientController : MonoBehaviour
 
     private void OnDestroy()
     {
-        ambientInstance.release();
+        if (ambientInstance.isValid())
+        {
+            ambientInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            ambientInstance.release();
+        }
+    }
+
+    public void StopAmbient()
+    {
+        if (!ambientInstance.isValid())
+            return;
+
+        ambientInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
 }
