@@ -17,6 +17,10 @@ public class QuestEvents : MonoBehaviour
         public GameObject doorJumpscare;
         
     
+    [Header("Soft Boundaries")]
+        public GameObject lesterStairsBlock; 
+        public GameObject basementBlock;    
+        
     [Header("Quest 3")]
     public List<GameObject> objectsToEnable;
 
@@ -81,7 +85,7 @@ public class QuestEvents : MonoBehaviour
 
     public IEnumerator QuestEvent3()
     {
-        
+        if (lesterStairsBlock != null) lesterStairsBlock.SetActive(false);
         
         MusicManagerv2.Instance.StartMusic();
         MusicManagerv2.Instance.SetMusicState(0);
@@ -148,6 +152,8 @@ public class QuestEvents : MonoBehaviour
 
     public void QuestEvent5()
     {
+        if (basementBlock != null) basementBlock.SetActive(false);
+        
         if (pictureJumpscare != null) pictureJumpscare.SetActive(true);
         if (shadowJumpscare != null) shadowJumpscare.SetActive(true);
         if (bulbJumpscare != null) bulbJumpscare.SetActive(true);
