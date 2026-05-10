@@ -23,7 +23,7 @@ public class PlayAndQuit : MonoBehaviour
     }
 
 
-
+    [SerializeField] private AmbientController ambientController;
     [Header("Camera Zoom")]
     public Camera cam;
     public Transform zoomTarget;
@@ -141,7 +141,11 @@ public class PlayAndQuit : MonoBehaviour
         blackScreen.alpha = 1f;
 
         StartCoroutine(loadingScreen.SequenceRoutine());
-
+        if (ambientController != null)
+        {
+            ambientController.StopAmbient();
+        }
+        MusicManagerv2.Instance?.StopMusic();
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
         op.allowSceneActivation = false;
 

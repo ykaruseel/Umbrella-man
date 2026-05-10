@@ -17,16 +17,37 @@ public class MusicManagerv2 : MonoBehaviour
 
     public void StartMusic()
     {
+        if (musicInstance.isValid())
+            return;
+
         musicInstance = RuntimeManager.CreateInstance(musicEvent);
         musicInstance.start();
     }
 
     public void SetMusicState(int value)
     {
-        musicInstance.setParameterByName("MusicSwitch", value);
+        if (musicInstance.isValid())
+        {
+            musicInstance.setParameterByName("MusicSwitch", value);
+        }
     }
+
     public void StopMusic()
     {
-        musicInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        if (musicInstance.isValid())
+        {
+            musicInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            musicInstance.release();
+            musicInstance.clearHandle();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (musicInstance.isValid())
+        {
+            musicInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            musicInstance.release();
+        }
     }
 }
