@@ -9,18 +9,18 @@ using UnityEngine.Rendering.Universal;
 
 public class QuestEvents : MonoBehaviour
 {
-    
+
     [Header("Jumpscares")]
-        public GameObject pictureJumpscare;
-        public GameObject shadowJumpscare; 
-        public GameObject bulbJumpscare;
-        public GameObject doorJumpscare;
-        
-    
+    public GameObject pictureJumpscare;
+    public GameObject shadowJumpscare;
+    public GameObject bulbJumpscare;
+    public GameObject doorJumpscare;
+
+
     [Header("Soft Boundaries")]
-        public GameObject lesterStairsBlock; 
-        public GameObject basementBlock;    
-        
+    public GameObject lesterStairsBlock;
+    public GameObject basementBlock;
+
     [Header("Quest 3")]
     public List<GameObject> objectsToEnable;
 
@@ -28,7 +28,7 @@ public class QuestEvents : MonoBehaviour
 
     public GameObject lesterDoor;
 
-    public StudioEventEmitter emitter;
+    public StudioEventEmitter emitterLester;
 
     public DoorController doorController;
 
@@ -47,6 +47,10 @@ public class QuestEvents : MonoBehaviour
     [Header("Quest 9-11")]
     [SerializeField] private FMODUnity.EventReference umbrellaAppearSound;
     public PlayerController player;
+
+    public Light knifemanLight;
+
+    public StudioEventEmitter emitterKnifeman;
 
     public GameObject knifeMan;
 
@@ -69,6 +73,8 @@ public class QuestEvents : MonoBehaviour
 
     public List<DoorController> doors;
 
+    public Flashlight flashlight;
+
     [Header("Quest 11")]
     public PlayerComments comments;
 
@@ -86,7 +92,7 @@ public class QuestEvents : MonoBehaviour
     public IEnumerator QuestEvent3()
     {
         if (lesterStairsBlock != null) lesterStairsBlock.SetActive(false);
-        
+
         MusicManagerv2.Instance.StartMusic();
         MusicManagerv2.Instance.SetMusicState(0);
         DanielsModel.SetActive(false);
@@ -104,7 +110,7 @@ public class QuestEvents : MonoBehaviour
 
         lesterDoor.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 
-        var instance = emitter.EventInstance;
+        var instance = emitterLester.EventInstance;
 
         if (instance.isValid())
         {
@@ -121,7 +127,7 @@ public class QuestEvents : MonoBehaviour
             }
 
             instance.setVolume(0f);
-            emitter.Stop();
+            emitterLester.Stop();
         }
 
         if (player)
@@ -153,16 +159,16 @@ public class QuestEvents : MonoBehaviour
     public void QuestEvent5()
     {
         if (basementBlock != null) basementBlock.SetActive(false);
-        
+
         if (pictureJumpscare != null) pictureJumpscare.SetActive(true);
         if (shadowJumpscare != null) shadowJumpscare.SetActive(true);
         if (bulbJumpscare != null) bulbJumpscare.SetActive(true);
         if (doorJumpscare != null) doorJumpscare.SetActive(true);
-        
-        
+
+
         if (bulbJumpscare != null) bulbJumpscare.SetActive(true);
         if (doorJumpscare != null) doorJumpscare.SetActive(true);
-        
+
         foreach (GameObject obj in objectsToEnable)
         {
             if (obj != null)
@@ -190,40 +196,43 @@ public class QuestEvents : MonoBehaviour
 
         player.isCinematic = true;
 
-        DanielsModel.SetActive(true);
-
-
         StartCoroutine(cameraFade.FadeOut());
 
         yield return new WaitForSeconds(1.25f);
 
-        cinematicCamera.gameObject.SetActive(true);
-        playerCamera1.gameObject.SetActive(false);
-        playerCamera2.gameObject.SetActive(false);
-        knifeMan.SetActive(true);
-
-        yield return new WaitForSeconds(0.25f);
-
-        StartCoroutine(cameraFade.FadeIn());
+        flashlight.SetBlocked(true);
 
         CharacterController cc = player.transform.GetComponent<CharacterController>();
         if (cc) cc.enabled = false;
 
-        player.transform.rotation = Quaternion.Euler(0f, -0.853f, 0f);
-        player.SetRotation(-0.853f, 0f);
+        player.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+        player.SetRotation(180f, 0f);
 
-        float elapsed = 0;
-        Vector3 startPos = player.transform.position;
-        while (elapsed < 2.5f)
-        {
-            player.transform.position = Vector3.Lerp(startPos, retreatPoint.position, elapsed);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
+        player.transform.position = retreatPoint.position;
+
+        DanielsModel.SetActive(true);
+
+        knifeMan.SetActive(true);
+
+        cinematicCamera.gameObject.SetActive(true);
+        playerCamera1.gameObject.SetActive(false);
+        playerCamera2.gameObject.SetActive(false);
+        knifeMan.transform.position = new Vector3(-13.768f, -13.51372f, -19.388f);
+
+        GramophoneRotation.GramophoneIsPlaying = false;
+        emitterKnifeman.Stop();
+
+        StartCoroutine(cameraFade.FadeIn());
+
+        yield return new WaitForSeconds(3f);
 
         StartCoroutine(cameraFade.FadeOut());
 
         yield return new WaitForSeconds(1.25f);
+
+        knifeMan.transform.position = new Vector3(-13.905f, -13.51372f, -17.796f);
+        player.transform.rotation = Quaternion.Euler(0f, -0.853f, 0f);
+        player.SetRotation(-0.853f, 0f);
 
         playerCamera1.gameObject.SetActive(true);
         playerCamera2.gameObject.SetActive(true);
@@ -231,13 +240,15 @@ public class QuestEvents : MonoBehaviour
 
         yield return new WaitForSeconds(0.25f);
 
+        DanielsModel.SetActive(false);
+
         StartCoroutine(cameraFade.FadeIn());
 
         yield return new WaitForSeconds(1.25f);
 
-        DanielsModel.SetActive(false);
-
         knifeManDialogue.TriggerDialogue();
+
+        knifemanLight.enabled = true;
     }
 
     public IEnumerator QuestEvent10()
@@ -246,6 +257,8 @@ public class QuestEvents : MonoBehaviour
         if (cc) cc.enabled = true;
         player.SetCanMove(true);
         player.isCinematic = false;
+        flashlight.SetBlocked(false);
+        knifemanLight.enabled = false;
 
         yield return new WaitForSeconds(2f);
 

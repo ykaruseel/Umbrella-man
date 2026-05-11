@@ -62,7 +62,7 @@ public class SaveManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.F5))
+        if (Input.GetKeyDown(KeyCode.F5))
         {
             SaveGame();
         }
@@ -128,7 +128,7 @@ public class SaveManager : MonoBehaviour
         data.enemyPosition = enemy.transform.position;
         data.enemyRotation = enemy.transform.rotation;
 
-        data.isLesterGramophoneOn = QuestEvents.Instance.emitter.IsPlaying();
+        data.isLesterGramophoneOn = QuestEvents.Instance.emitterLester.IsPlaying();
 
         data.isBoxColliderOnQ1 = TriggerQ1.GetComponent<BoxCollider>().enabled;
         data.isFocusTriggerOnQ1 = TriggerQ1.GetComponent<FocusTrigger>().enabled;
@@ -152,7 +152,7 @@ public class SaveManager : MonoBehaviour
 
         data.isBoxColliderOnQ6 = TriggerQ6.GetComponent<BoxCollider>().enabled;
         data.isFocusTriggerOnQ6 = TriggerQ6.GetComponent<FocusTrigger>().enabled;
-        data.isFocusTriggerHasTriggeredQ6 = TriggerQ6.GetComponent<FocusTrigger>().hasTriggered;    
+        data.isFocusTriggerHasTriggeredQ6 = TriggerQ6.GetComponent<FocusTrigger>().hasTriggered;
 
         data.isBoxColliderOnQ8 = TriggerQ8.GetComponent<BoxCollider>().enabled;
 
@@ -196,7 +196,7 @@ public class SaveManager : MonoBehaviour
             cc.enabled = false;
             player.transform.position = data.playerPosition;
             player.transform.rotation = data.playerRotation;
-            player.GetComponent<PlayerController>().SetRotation(data.playerRotationY,data.playerRotationX);
+            player.GetComponent<PlayerController>().SetRotation(data.playerRotationY, data.playerRotationX);
             cc.enabled = true;
 
 
@@ -243,9 +243,9 @@ public class SaveManager : MonoBehaviour
             enemy.transform.rotation = data.enemyRotation;
 
             if (data.isLesterGramophoneOn)
-                QuestEvents.Instance.emitter.Play();
+                QuestEvents.Instance.emitterLester.Play();
             else
-                QuestEvents.Instance.emitter.Stop();
+                QuestEvents.Instance.emitterLester.Stop();
 
             TriggerQ1.GetComponent<BoxCollider>().enabled = data.isBoxColliderOnQ1;
             TriggerQ1.GetComponent<FocusTrigger>().enabled = data.isFocusTriggerOnQ1;
