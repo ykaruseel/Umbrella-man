@@ -101,8 +101,8 @@ public class Flashlight : MonoBehaviour
         {
             currentTimer -= Time.deltaTime;
 
-            if(currentTimer >= (timerValue/2f)) 
-            { 
+            if (currentTimer >= (timerValue / 2f))
+            {
                 triggerHandle.localPosition = Vector3.Lerp(
                     triggerHandle.localPosition,
                     handlePressedPos,
@@ -116,7 +116,7 @@ public class Flashlight : MonoBehaviour
                     handleIdlePos,
                     (timerValue / 2f - currentTimer) / (timerValue / 2f)
                 );
-            }            
+            }
         }
 
         if (Input.GetMouseButtonDown(0) && currentTimer <= 0)
@@ -131,6 +131,7 @@ public class Flashlight : MonoBehaviour
 
     private void UpdateSound()
     {
+        if (isBlocked) return;
         float target = isEquipped ? currentEnergy : 0f;
         reelInstance.setParameterByName("Intensity", target);
     }
@@ -166,7 +167,12 @@ public class Flashlight : MonoBehaviour
     public void SetBlocked(bool state)
     {
         isBlocked = state;
-        if (isBlocked) isEquipped = false;
+        if (isBlocked)
+        {
+            currentEnergy = 0;
+            lightSource.intensity = 0;
+            reelInstance.setParameterByName("Intensity", 0f);
+        }
     }
 
     public void ResetState()

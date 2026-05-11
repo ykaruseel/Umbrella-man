@@ -50532,10 +50532,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc332d8f6a475ee48a8699570cac155a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hintCanvasGroup: {fileID: 222534508}
-  hintText: {fileID: 222534509}
-  fadeDuration: 0.5
-  displayDuration: 7
 --- !u!4 &923257480
 Transform:
   m_ObjectHideFlags: 0
@@ -78703,7 +78699,7 @@ MonoBehaviour:
   - {fileID: 1689943062}
   - {fileID: 2090738843}
   lesterDoor: {fileID: 504078559}
-  emitter: {fileID: 124471437}
+  emitterLester: {fileID: 124471437}
   doorController: {fileID: 7836256896010017576}
   cameraSequenceController: {fileID: 187578441}
   tvToEndable: {fileID: 285454670}
@@ -78740,6 +78736,8 @@ MonoBehaviour:
       Data4: -581647841
     Path: event:/UM_new_appear
   player: {fileID: 332663620}
+  knifemanLight: {fileID: 1879467078}
+  emitterKnifeman: {fileID: 16791136}
   knifeMan: {fileID: 567076519}
   umbrellaMan: {fileID: 1251283707}
   umbrellaManTarget: {fileID: 275558511}
@@ -78753,6 +78751,7 @@ MonoBehaviour:
   - {fileID: 7836256896010017576}
   - {fileID: 8898129693684511701}
   - {fileID: 8898129693783578905}
+  flashlight: {fileID: 332663632}
   comments: {fileID: 1417256170}
   flickerLight: {fileID: 614190217}
   postProcessVolume: {fileID: 1143986533}

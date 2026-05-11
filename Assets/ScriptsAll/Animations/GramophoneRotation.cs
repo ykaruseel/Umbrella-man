@@ -11,8 +11,12 @@ public class GramophoneRotation : MonoBehaviour
     [SerializeField] private Vector3 plateAxis = Vector3.up;
     [SerializeField] private Vector3 handleAxis = Vector3.right;
 
+    public static bool GramophoneIsPlaying;
+
     private void Update()
     {
+        if (!GramophoneIsPlaying) return;
+
         if (plate != null)
             plate.Rotate(plateAxis * plateSpeed * Time.deltaTime, Space.Self);
 

@@ -64,7 +64,7 @@ public class KnifeManAI : MonoBehaviour
 
             float currentSpeed = agent.velocity.magnitude;
             animator.SetFloat("Speed", currentSpeed);
-                
+
             TryAttack();
 
             StartBreathing();
@@ -161,6 +161,8 @@ public class KnifeManAI : MonoBehaviour
     {
         if (Time.time >= lastAttackTime + attackCooldown)
         {
+            animator.SetTrigger("Attack");
+
             EventInstance inst = RuntimeManager.CreateInstance(attackSound);
 
             RuntimeManager.AttachInstanceToGameObject(inst, transform);
@@ -181,6 +183,8 @@ public class KnifeManAI : MonoBehaviour
                 isChasing = false;
 
                 playerHealth = 3;
+
+                animator.ResetTrigger("Attack");
             }
         }
     }
@@ -201,7 +205,7 @@ public class KnifeManAI : MonoBehaviour
     {
         isChasing = false;
 
-        agent.Warp(originalLocalPos);
+        agent.Warp(new Vector3(-13.905f, -13.51372f, -17.796f));
 
         transform.rotation = originalLocalRot;
     }
