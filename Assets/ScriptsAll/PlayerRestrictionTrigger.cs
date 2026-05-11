@@ -65,6 +65,9 @@ public class PlayerRestrictionTrigger : MonoBehaviour
         player.SetRotation(player.transform.eulerAngles.y, 0f);
 
         
+        GetComponent<Collider>().isTrigger = false; 
+
+        
         if (cc != null) cc.enabled = true;
         player.SetCanMove(true);
 

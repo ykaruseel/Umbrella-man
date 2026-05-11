@@ -7553,7 +7553,7 @@ MonoBehaviour:
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
   interactionDistance: 3
-  zoomDistance: 0.4
+  zoomDistance: 0.15
 --- !u!65 &190234526
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11436,7 +11436,7 @@ MonoBehaviour:
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
   interactionDistance: 3
-  zoomDistance: 0.4
+  zoomDistance: 0.15
 --- !u!4 &268681384 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5aba33d269f904b8b8175f048afea7a1,
@@ -21199,7 +21199,7 @@ MonoBehaviour:
   skipPromptUI: {fileID: 0}
   playerCamera: {fileID: 308851623}
   interactionDistance: 3
-  zoomDistance: 0.4
+  zoomDistance: 0.15
 --- !u!65 &369629131
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -50532,6 +50532,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc332d8f6a475ee48a8699570cac155a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hintCanvasGroup: {fileID: 0}
+  hintText: {fileID: 0}
+  fadeDuration: 1
+  displayDuration: 7
 --- !u!4 &923257480
 Transform:
   m_ObjectHideFlags: 0
@@ -53402,7 +53406,7 @@ MonoBehaviour:
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
   interactionDistance: 3
-  zoomDistance: 0.4
+  zoomDistance: 0.15
 --- !u!1 &1008991139 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7e127ebea22e5824cb0b010730366e78,
@@ -57995,6 +57999,7 @@ GameObject:
   - component: {fileID: 1148691254}
   - component: {fileID: 1148691256}
   - component: {fileID: 1148691255}
+  - component: {fileID: 1148691257}
   m_Layer: 5
   m_Name: SkipPromptText
   m_TagString: Untagged
@@ -58018,7 +58023,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -523}
+  m_AnchoredPosition: {x: 72, y: -512}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1148691255
@@ -58041,9 +58046,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[Space] - Skip'
+  m_text: '[E] - Skip'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8e0ef1e5e5e0cbe41b060b541f824e03, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f311b50c9302e974aa2ee3115f9a3db3, type: 2}
   m_sharedMaterial: {fileID: -1744588423887588587, guid: 8e0ef1e5e5e0cbe41b060b541f824e03,
     type: 2}
   m_fontSharedMaterials: []
@@ -58110,7 +58115,7 @@ MonoBehaviour:
   m_margin: {x: -54.734184, y: 0, z: -53.051994, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1148691256
@@ -58121,6 +58126,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1148691253}
   m_CullTransparentMesh: 1
+--- !u!114 &1148691257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148691253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 874030ca54e2c4f4597652164f2e5916, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textComponent: {fileID: 1148691255}
+  speed: 2
+  minAlpha: 0.2
+  maxAlpha: 0.7
+  fadeInDuration: 1.5
 --- !u!1 &1149889244
 GameObject:
   m_ObjectHideFlags: 0
@@ -79609,7 +79631,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -403}
+  m_AnchoredPosition: {x: 0, y: -431}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1447303117
@@ -79660,8 +79682,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 42
+  m_fontSizeBase: 42
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -79698,7 +79720,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -158.10443, y: 0, z: -113.3197, w: 0}
+  m_margin: {x: -457.23895, y: 0, z: -535.56274, w: -25.873093}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -92381,7 +92403,7 @@ MonoBehaviour:
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
   interactionDistance: 3
-  zoomDistance: 0.4
+  zoomDistance: 0.15
 --- !u!65 &1666787707
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -93678,22 +93700,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1381187174}
     m_Modifications:
-    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 0c9ccb2a975d5c44fb8ce2017b01f4cc, type: 2}
-    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
-      value: 
-      objectReference: {fileID: -7067887647009988459, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
     - target: {fileID: -8679921383154817045, guid: 7e4f8b13f42e2bc41be65b7d5433d769,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -93759,6 +93765,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0c9ccb2a975d5c44fb8ce2017b01f4cc, type: 2}
+    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: -7067887647009988459, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -99414,7 +99436,7 @@ MonoBehaviour:
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
   interactionDistance: 3
-  zoomDistance: 0.4
+  zoomDistance: 0.15
 --- !u!65 &1715591416
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -113747,7 +113769,7 @@ MonoBehaviour:
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
   interactionDistance: 3
-  zoomDistance: 0.4
+  zoomDistance: 0.15
 --- !u!65 &1932540640
 BoxCollider:
   m_ObjectHideFlags: 0
