@@ -92,6 +92,8 @@ public class QuestEvents : MonoBehaviour
     public IEnumerator QuestEvent3()
     {
         if (lesterStairsBlock != null) lesterStairsBlock.SetActive(false);
+        
+        if (shadowJumpscare != null) shadowJumpscare.SetActive(true);
 
         MusicManagerv2.Instance.StartMusic();
         MusicManagerv2.Instance.SetMusicState(0);
@@ -161,7 +163,7 @@ public class QuestEvents : MonoBehaviour
         if (basementBlock != null) basementBlock.SetActive(false);
 
         if (pictureJumpscare != null) pictureJumpscare.SetActive(true);
-        if (shadowJumpscare != null) shadowJumpscare.SetActive(true);
+        
         if (bulbJumpscare != null) bulbJumpscare.SetActive(true);
         if (doorJumpscare != null) doorJumpscare.SetActive(true);
 
