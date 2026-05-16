@@ -27048,6 +27048,13 @@ MonoBehaviour:
       Data3: -10705483
       Data4: -1040821612
     Path: event:/knocking
+  doorSoundEvent:
+    Guid:
+      Data1: 765916491
+      Data2: 1194232949
+      Data3: -196000835
+      Data4: 1889739155
+    Path: event:/doors/door_open
   lester: {fileID: 1981603758}
   cameraSystem: {fileID: 177506520}
 --- !u!1001 &511143747
@@ -32477,6 +32484,58 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c6854d99b8ba4e08bfb978565e80da6, type: 3}
+--- !u!1 &591568597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 591568599}
+  - component: {fileID: 591568598}
+  m_Layer: 0
+  m_Name: NeighbourAmbience (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &591568598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591568597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34b0ae701a7de104e9c47170198cc4a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ambientEvent:
+    Guid:
+      Data1: -1914133351
+      Data2: 1147999060
+      Data3: 1883490183
+      Data4: -471399543
+    Path: event:/neighbour_ambient
+  ambienceLabel: Value C
+--- !u!4 &591568599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591568597}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -25.869, y: 1.207, z: -9.376}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &593008077
 GameObject:
   m_ObjectHideFlags: 0
@@ -55313,6 +55372,58 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.432075, y: 0.051601134, z: 0.10217333}
   m_Center: {x: 0.21497905, y: -0.000000022351742, z: -0.017957449}
+--- !u!1 &1064450937
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1064450938}
+  - component: {fileID: 1064450939}
+  m_Layer: 0
+  m_Name: NeighbourAmbience
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1064450938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064450937}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -25.869, y: 1.207, z: -33.861}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1064450939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064450937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34b0ae701a7de104e9c47170198cc4a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ambientEvent:
+    Guid:
+      Data1: -1914133351
+      Data2: 1147999060
+      Data3: 1883490183
+      Data4: -471399543
+    Path: event:/neighbour_ambient
+  ambienceLabel: Value A
 --- !u!1 &1067634155 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 116a8459b4c1c2f4089c0e75cd6eab82,
@@ -107467,7 +107578,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2895cae8df3010846b21e90e59834508,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2895cae8df3010846b21e90e59834508,
         type: 3}
@@ -126369,6 +126480,58 @@ Transform:
   - {fileID: 1945604208}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 48.836, y: -90, z: -90}
+--- !u!1 &2092822939
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2092822941}
+  - component: {fileID: 2092822940}
+  m_Layer: 0
+  m_Name: NeighbourAmbience (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2092822940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092822939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34b0ae701a7de104e9c47170198cc4a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ambientEvent:
+    Guid:
+      Data1: -1914133351
+      Data2: 1147999060
+      Data3: 1883490183
+      Data4: -471399543
+    Path: event:/neighbour_ambient
+  ambienceLabel: Value B
+--- !u!4 &2092822941
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092822939}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -25.869, y: 1.207, z: -18.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2093293694
 GameObject:
   m_ObjectHideFlags: 0
@@ -131963,3 +132126,6 @@ SceneRoots:
   - {fileID: 698979461}
   - {fileID: 238064171}
   - {fileID: 904425075}
+  - {fileID: 1064450938}
+  - {fileID: 2092822941}
+  - {fileID: 591568599}

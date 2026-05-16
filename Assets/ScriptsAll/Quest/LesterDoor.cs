@@ -1,4 +1,5 @@
 using FMODUnity;
+using FMOD.Studio;
 using System.Collections;
 using UnityEngine;
 
@@ -9,12 +10,14 @@ public class LesterDoor : MonoBehaviour
 
     [SerializeField] private Transform door;
 
+    [Header("FMOD")]
     [SerializeField] private EventReference knockSound;
-    //[SerializeField] private StudioEventEmitter emitter;
+    [SerializeField] private EventReference doorSoundEvent;
+
+    private EventInstance doorSoundInstance;
 
     [SerializeField] private NPC_Dialogue lester;
 
-    
     [Header("Система Камер")]
     public DialogueCameraSystem cameraSystem;
 
@@ -24,10 +27,10 @@ public class LesterDoor : MonoBehaviour
     public void Interact()
     {
         gameObject.tag = "Untagged";
+
         closedRotation = door.localRotation;
         openRotation = closedRotation * Quaternion.Euler(0, -90, 0);
-        
-        
+
         StartCoroutine(OpenDoor());
     }
 
@@ -37,64 +40,84 @@ public class LesterDoor : MonoBehaviour
         player.isCinematic = true;
 
         CharacterController cc = player.transform.GetComponent<CharacterController>();
-        if (cc) cc.enabled = false;
+
+        if (cc)
+            cc.enabled = false;
 
         player.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         player.SetRotation(0f, 0f);
 
-        float elapsed = 0;
+        float elapsed = 0f;
+
         Vector3 startPos = player.transform.position;
+
         while (elapsed < 1.5f)
         {
-            player.transform.position = Vector3.Lerp(startPos, retreatPoint.position, elapsed);
+            player.transform.position = Vector3.Lerp(
+                startPos,
+                retreatPoint.position,
+                elapsed / 1.5f
+            );
+
             elapsed += Time.deltaTime;
+
             yield return null;
         }
 
-        if (!knockSound.IsNull) 
+        player.transform.position = retreatPoint.position;
+
+        if (!knockSound.IsNull)
         {
             RuntimeManager.PlayOneShotAttached(knockSound, gameObject);
         }
 
         yield return new WaitForSeconds(2f);
 
-        //var instance = emitter.EventInstance;
+        if (!doorSoundEvent.IsNull)
+        {
+            doorSoundInstance = RuntimeManager.CreateInstance(doorSoundEvent);
 
-        //if (instance.isValid()) 
-        //{
-        //    float startVolume;
-        //    instance.getVolume(out startVolume);
-        //    float currentTime = 0;
+            RuntimeManager.AttachInstanceToGameObject(
+                doorSoundInstance,
+                door
+            );
 
-        //    while (currentTime < 2f)
-        //    {
-        //        currentTime += Time.deltaTime;
-        //        float newVolume = Mathf.Lerp(startVolume, 0f, currentTime / 2f);
-        //        instance.setVolume(newVolume);
-        //        yield return null;
-        //    }
+            doorSoundInstance.start();
 
-        //    instance.setVolume(0f);
-        //    emitter.Stop();
-        //}
-        //else
-        //{
-        //    yield return new WaitForSeconds(2f);
-        //}
+            doorSoundInstance.setParameterByName("Door", 0f);
+
+            yield return new WaitForSeconds(0.15f);
+
+            doorSoundInstance.setParameterByName("Door", 1f);
+        }
 
         float t = 0f;
+
         while (t < 1f)
         {
             t += Time.deltaTime / 1f;
-            door.localRotation = Quaternion.Slerp(closedRotation, openRotation, t);
+
+            door.localRotation = Quaternion.Slerp(
+                closedRotation,
+                openRotation,
+                t
+            );
+
             yield return null;
         }
+
         door.localRotation = openRotation;
 
-        
+        if (doorSoundInstance.isValid())
+        {
+            doorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            doorSoundInstance.release();
+        }
+
         if (cameraSystem != null)
         {
             cameraSystem.StartDialogue();
+
             QuestEvents.Instance.DanielsModel.SetActive(true);
         }
 
