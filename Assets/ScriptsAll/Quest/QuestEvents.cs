@@ -34,10 +34,18 @@ public class QuestEvents : MonoBehaviour
 
     public CameraSequenceController cameraSequenceController;
 
+    public MeshRenderer entranceDoorMR;
+
+    public GameObject brokenDoor;
+
     [Header("Quest 5")]
     public GameObject tvToEndable;
 
     public GameObject tvToDisable;
+
+    public List<PulseHighlight> pulseHighlights;
+
+    public List<OutlineInteractable> outlineInteractables;
 
     [Header("Quest 7")]
     public List<Light> lightsToDisable;
@@ -76,7 +84,7 @@ public class QuestEvents : MonoBehaviour
     public Flashlight flashlight;
 
     [Header("Quest 11")]
-    public PlayerComments comments;
+    public GameObject endGame;
 
     public Light flickerLight;
 
@@ -87,6 +95,12 @@ public class QuestEvents : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
+        foreach (OutlineInteractable interactable in outlineInteractables)
+        {
+            if (interactable != null)
+                interactable.isBlocked = true;
+        }
     }
 
     public IEnumerator QuestEvent3()
@@ -155,6 +169,9 @@ public class QuestEvents : MonoBehaviour
         }
 
         doorController.DoorEvent();
+
+        entranceDoorMR.enabled = true;
+        brokenDoor.SetActive(false);
     }
 
 
@@ -175,6 +192,18 @@ public class QuestEvents : MonoBehaviour
         {
             if (obj != null)
                 obj.tag = "Pickable";
+        }
+
+        foreach (OutlineInteractable interactable in outlineInteractables)
+        {
+            if (interactable != null)
+                interactable.isBlocked = false;
+        }
+
+        foreach (PulseHighlight highlight in pulseHighlights)
+        {
+            if (highlight != null)
+                highlight.Show();
         }
 
         tvToEndable.SetActive(true);
@@ -275,6 +304,13 @@ public class QuestEvents : MonoBehaviour
         TutorialManager.Instance.ShowHint(HintType.Sprint);
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            StartCoroutine(QuestEvent11());
+        }
+    }
     public IEnumerator QuestEvent11()
     {
         knifeMan.SetActive(false);
@@ -307,15 +343,7 @@ public class QuestEvents : MonoBehaviour
 
         flickerLight.enabled = false;
 
-        if (comments != null)
-        {
-            comments.StartDialogue();
-
-            while (comments != null && comments.IsDialogueActive())
-            {
-                yield return null;
-            }
-        }
+        endGame.SetActive(true);
     }
 
     private IEnumerator LightFlickerRoutine()
