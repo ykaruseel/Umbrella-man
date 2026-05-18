@@ -4,45 +4,60 @@ using TMPro;
 
 public class PlayerRestrictionTrigger : MonoBehaviour
 {
-    [Header("Настройки камеры")]
-    [Tooltip("Скорость разворота игрока")]
+    [Header("camera")]
+    [Tooltip("spedd return")]
     public float turnSpeed = 1.2f; 
-    [Tooltip("Скорость затухания текста (чем больше, тем быстрее исчезает)")]
+    [Tooltip("fade text")]
     public float fadeSpeed = 2f;
 
-    [Header("Текст ограничения")]
+    [Header("text")]
     [TextArea(2, 4)]
     public string commentText = "I'm sure Lester lives on my floor in apartment 307.";
-    [Tooltip("Перетащи сюда твой текстовый объект с Canvas")]
+    [Tooltip("Canvas")]
     public TMP_Text subtitleUI;
-    [Tooltip("Скорость печатания текста")]
+    [Tooltip("speed text")]
     public float typingSpeed = 0.03f;
 
-    private bool isTriggered = false;
+    [Header("Настройки блокировки")]
+    [Tooltip("На сколько секунд стена становится твердой (каменной) после разворота")]
+    public float solidTime = 3.0f;
 
+    private bool isProcessing = false;
+    private BoxCollider myCollider;
+
+    void Start()
+    {
+        
+        myCollider = GetComponent<BoxCollider>();
+        if (myCollider != null)
+        {
+            myCollider.isTrigger = true;
+        }
+    }
+
+    
     private void OnTriggerEnter(Collider other)
     {
-        // Проверяем игрока и что скример-разворот не активен прямо в эту секунду
-        if (other.CompareTag("Player") && !isTriggered)
+        if (other.CompareTag("Player") && !isProcessing)
         {
             PlayerController player = other.GetComponent<PlayerController>();
             if (player != null)
             {
-                StartCoroutine(TurnAndShowText(player));
+                StartCoroutine(TurnAndBlockProcess(player));
             }
         }
     }
 
-    private IEnumerator TurnAndShowText(PlayerController player)
+    private IEnumerator TurnAndBlockProcess(PlayerController player)
     {
-        isTriggered = true;
+        isProcessing = true;
 
-        // 1. Блокируем управление игрока
+        
         CharacterController cc = player.GetComponent<CharacterController>();
         if (cc != null) cc.enabled = false;
         player.SetCanMove(false);
         
-        // 2. Включаем текст и сбрасываем прозрачность на 100% (чтобы он не был невидимым)
+        
         if (subtitleUI != null)
         {
             Color c = subtitleUI.color;
@@ -52,7 +67,7 @@ public class PlayerRestrictionTrigger : MonoBehaviour
             StartCoroutine(TypeText());
         }
 
-        // 3. Плавный поворот камеры на 180 градусов
+        
         Quaternion startRot = player.transform.rotation;
         Quaternion targetRot = startRot * Quaternion.Euler(0, 180, 0);
 
@@ -68,14 +83,23 @@ public class PlayerRestrictionTrigger : MonoBehaviour
         player.transform.rotation = targetRot;
         player.SetRotation(player.transform.eulerAngles.y, 0f);
 
-        // 4. СРАЗУ возвращаем управление (чтобы игрок мог уйти в обратную сторону)
+        
+        player.transform.position += player.transform.forward * 0.4f;
+
+        
+        if (myCollider != null)
+        {
+            myCollider.isTrigger = false;
+        }
+
+        
         if (cc != null) cc.enabled = true;
         player.SetCanMove(true);
 
-        // 5. Ждем пару секунд, пока текст горит на экране
-        yield return new WaitForSeconds(2.5f);
         
-        // 6. ИСПРАВЛЕНИЕ: Плавный Fade Out (затухание) текста
+        yield return new WaitForSeconds(2.0f);
+        
+        
         if (subtitleUI != null)
         {
             float alpha = 1f;
@@ -89,10 +113,17 @@ public class PlayerRestrictionTrigger : MonoBehaviour
             }
             subtitleUI.gameObject.SetActive(false);
         }
+
         
-        // --- ИСПРАВЛЕНИЕ 2: НЕ выключаем скрипт! Переменная возвращается в false, ---
-        // поэтому при следующем наступлении в куб комментарий ПОВТОРИТСЯ снова.
-        isTriggered = false; 
+        yield return new WaitForSeconds(solidTime - 2.0f);
+
+        
+        if (myCollider != null)
+        {
+            myCollider.isTrigger = true;
+        }
+
+        isProcessing = false; 
     }
 
     private IEnumerator TypeText()
