@@ -177,6 +177,9 @@ public class QuestEvents : MonoBehaviour
 
     public void QuestEvent5()
     {
+        tvToEndable.SetActive(true);
+        tvToDisable.SetActive(false);
+
         if (basementBlock != null) basementBlock.SetActive(false);
 
         if (pictureJumpscare != null) pictureJumpscare.SetActive(true);
@@ -205,9 +208,6 @@ public class QuestEvents : MonoBehaviour
             if (highlight != null)
                 highlight.Show();
         }
-
-        tvToEndable.SetActive(true);
-        tvToDisable.SetActive(false);
     }
 
     public void QuestEvent7()
@@ -218,7 +218,8 @@ public class QuestEvents : MonoBehaviour
                 light.enabled = false;
         }
 
-        pulseHighlightsToEnable.enabled = true;
+        pulseHighlightsToEnable.Show();
+        pulseHighlightsToEnable.transform.GetComponent<OutlineInteractable>().isBlocked = false;
     }
 
     public IEnumerator QuestEvent9()

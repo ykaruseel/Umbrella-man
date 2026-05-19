@@ -50,8 +50,6 @@ public class CameraSequenceController : MonoBehaviour
         fly2 = cam2.GetComponent<CameraPathFly>();
         fly3 = cam5.GetComponent<CameraPathFly>();
 
-        TutorialManager.Instance.ShowHint(HintType.Move);
-
         DisableAllCameras();
 
         cam1.gameObject.SetActive(true);
@@ -72,8 +70,6 @@ public class CameraSequenceController : MonoBehaviour
 
         cam1.gameObject.SetActive(false);
         cam2.gameObject.SetActive(true);
-
-        TutorialManager.Instance.ShowHint(HintType.ViewQuest);
 
         fly2.OnPathFinished += OnSecondFinished;
 
@@ -113,6 +109,8 @@ public class CameraSequenceController : MonoBehaviour
         //fade.SetFadeImageActive(false);
         intro = false;
         yield return fade.FadeIn();
+
+        TutorialManager.Instance.ShowHint(HintType.Move);
     }
 
     void DisableAllCameras()

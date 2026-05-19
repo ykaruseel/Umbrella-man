@@ -21,6 +21,7 @@ public class QuestManagerV2 : MonoBehaviour
     {
         Instance = this;
         SetupQuests();
+        TutorialManager.Instance.ShowHint(HintType.ViewQuest);
     }
 
     private void SetupQuests()
