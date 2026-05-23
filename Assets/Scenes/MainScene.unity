@@ -7725,6 +7725,89 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &185781761 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -6329570113058943855, guid: ad59007a4792e0d4089a997b3624f0b4,
+    type: 3}
+  m_PrefabInstance: {fileID: 2062510340}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &185781765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185781761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &185781766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185781761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!65 &185781767
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185781761}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.96978414, y: 2.1561937, z: 0.82612157}
+  m_Center: {x: -0.034154117, y: -0.04065615, z: 0.044701964}
+--- !u!114 &185781768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185781761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: "Yeah, I sure wouldn\u2019t want to run into him"
+  typingSpeed: 0.03
+  isNeighborDoor: 0
+  knockSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
 --- !u!1 &187199225
 GameObject:
   m_ObjectHideFlags: 0
@@ -7941,7 +8024,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &187578439
 Transform:
   m_ObjectHideFlags: 0
@@ -10506,6 +10589,89 @@ Transform:
   - {fileID: 1971413421}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &234493917 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7029999739028179856, guid: e274de676857b794c8f362d76a26f1ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1220983720}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &234493921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234493917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!114 &234493922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234493917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &234493923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234493917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
+  typingSpeed: 0.03
+  isNeighborDoor: 0
+  knockSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
+--- !u!65 &234493924
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234493917}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.31619495, y: 0.090039276, z: 0.34163207}
+  m_Center: {x: 0, y: 0.000000026077032, z: -0.033216648}
 --- !u!1001 &234908793
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11962,6 +12128,35 @@ MonoBehaviour:
   playerCamera: {fileID: 308851623}
   interactionDistance: 3
   zoomDistance: 0.15
+--- !u!114 &268391998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 268391989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &268391999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 268391989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!4 &268681384 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5aba33d269f904b8b8175f048afea7a1,
@@ -26475,7 +26670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commentText: 
+  commentText: Who's there?
   typingSpeed: 0.03
   isNeighborDoor: 1
   knockSound:
@@ -26511,6 +26706,35 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.374414, y: 1.4280378, z: 0.09763439}
   m_Center: {x: 0.5256796, y: 0.29713708, z: 0.10456105}
+--- !u!114 &369629135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369629126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &369629136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369629126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1001 &371587573
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30578,12 +30802,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: ebe5f3fe21a14485ab3c70324495b261,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.47687435
+      value: -0.476
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ebe5f3fe21a14485ab3c70324495b261,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.2375145
+      value: -8.234
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ebe5f3fe21a14485ab3c70324495b261,
         type: 3}
@@ -32517,6 +32741,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e9b0f6ea14040214d80ccfba696ee671,
         type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e9b0f6ea14040214d80ccfba696ee671,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -32532,6 +32761,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1715591416}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e9b0f6ea14040214d80ccfba696ee671,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1715591420}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e9b0f6ea14040214d80ccfba696ee671,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1715591419}
   m_SourcePrefab: {fileID: 100100000, guid: e9b0f6ea14040214d80ccfba696ee671, type: 3}
 --- !u!1 &504078559
 GameObject:
@@ -44206,6 +44443,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 606022370}
   m_CullTransparentMesh: 1
+--- !u!1 &608642927 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -573683516237805757, guid: e274de676857b794c8f362d76a26f1ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1220983720}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &608642931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608642927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!114 &608642932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608642927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &608642933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608642927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
+  typingSpeed: 0.03
+  isNeighborDoor: 0
+  knockSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
+--- !u!65 &608642934
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608642927}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.31679088, y: 0.092676796, z: 0.34163204}
+  m_Center: {x: 0.000000044703484, y: 0.000000063329935, z: -0.03321664}
 --- !u!1001 &609977849
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45231,6 +45551,89 @@ MonoBehaviour:
       Data3: -196000835
       Data4: 1889739155
     Path: event:/doors/door_open
+--- !u!1 &629388239 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7524397622504383802, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &629388243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629388239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &629388244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629388239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!114 &629388245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629388239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: text
+  typingSpeed: 0.03
+  isNeighborDoor: 1
+  knockSound:
+    Guid:
+      Data1: 26153199
+      Data2: 1088351809
+      Data3: -10705483
+      Data4: -1040821612
+    Path: event:/knocking
+  subtitleText: {fileID: 0}
+  skipPromptUI: {fileID: 0}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
+--- !u!65 &629388246
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629388239}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.09763439, y: 2.359789, z: 1.374414}
+  m_Center: {x: 0.10456107, y: 0.057475865, z: -0.5256796}
 --- !u!1 &630248823
 GameObject:
   m_ObjectHideFlags: 0
@@ -47932,6 +48335,89 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1 &696724210 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8482687519533582771, guid: e274de676857b794c8f362d76a26f1ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1220983720}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &696724214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696724210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!114 &696724215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696724210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &696724216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696724210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
+  typingSpeed: 0.03
+  isNeighborDoor: 0
+  knockSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
+--- !u!65 &696724217
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696724210}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.32364255, y: 0.13962981, z: 0.3416321}
+  m_Center: {x: 0.000000022351742, y: 0.000000052154064, z: -0.033216655}
 --- !u!1 &697054234
 GameObject:
   m_ObjectHideFlags: 0
@@ -51945,6 +52431,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 268391993}
+    - targetCorrespondingSourceObject: {fileID: 7520790070739891303, guid: 3355ef7e9f4590143a2f5535178d8e81,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 268391999}
+    - targetCorrespondingSourceObject: {fileID: 7520790070739891303, guid: 3355ef7e9f4590143a2f5535178d8e81,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 268391998}
   m_SourcePrefab: {fileID: 100100000, guid: 3355ef7e9f4590143a2f5535178d8e81, type: 3}
 --- !u!1 &765728557
 GameObject:
@@ -60698,6 +61192,89 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2d99aa5e2dfb9f42bddc39e6c77e1e2, type: 3}
+--- !u!1 &861553077 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7944214027222647542, guid: e274de676857b794c8f362d76a26f1ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1220983720}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &861553081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861553077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!114 &861553082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861553077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &861553083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861553077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
+  typingSpeed: 0.03
+  isNeighborDoor: 0
+  knockSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
+--- !u!65 &861553084
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861553077}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.32404, y: 0.16560386, z: 0.34163213}
+  m_Center: {x: -0.000000052154064, y: 0.000000074505806, z: -0.033216663}
 --- !u!4 &867836250 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d2d99aa5e2dfb9f42bddc39e6c77e1e2,
@@ -66157,6 +66734,35 @@ MonoBehaviour:
   playerCamera: {fileID: 308851623}
   interactionDistance: 3
   zoomDistance: 0.15
+--- !u!114 &1008007063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008007054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &1008007064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008007054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!4 &1008132007 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d2d99aa5e2dfb9f42bddc39e6c77e1e2,
@@ -67732,6 +68338,89 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53b77036b14b7614689c586cd7941801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1033392548 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -829711281606141907, guid: e274de676857b794c8f362d76a26f1ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1220983720}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1033392552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033392548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!114 &1033392553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033392548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &1033392554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033392548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
+  typingSpeed: 0.03
+  isNeighborDoor: 0
+  knockSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
+--- !u!65 &1033392555
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033392548}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.31870311, y: 0.10188487, z: 0.34163243}
+  m_Center: {x: -0.000000022351742, y: 0.00000012479722, z: -0.033216648}
 --- !u!1001 &1036012021
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72721,6 +73410,89 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6637f4cbebc34ce58e6812757e045af, type: 3}
+--- !u!1 &1186854200 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7999697074019641835, guid: e274de676857b794c8f362d76a26f1ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1220983720}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1186854204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186854200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!114 &1186854205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186854200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &1186854206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186854200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
+  typingSpeed: 0.03
+  isNeighborDoor: 0
+  knockSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
+--- !u!65 &1186854207
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186854200}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.31870311, y: 0.10188487, z: 0.34163243}
+  m_Center: {x: -0.000000059604645, y: 0.00000012479722, z: -0.033216648}
 --- !u!1001 &1187746418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -78600,6 +79372,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1932540640}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cad354cf595794d17b14ed6cff9fa448,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1932540644}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cad354cf595794d17b14ed6cff9fa448,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1932540643}
   m_SourcePrefab: {fileID: 100100000, guid: cad354cf595794d17b14ed6cff9fa448, type: 3}
 --- !u!4 &1213765939 stripped
 Transform:
@@ -79119,7 +79899,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e274de676857b794c8f362d76a26f1ff,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.488929
+      value: 15.492
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e274de676857b794c8f362d76a26f1ff,
         type: 3}
@@ -79254,7 +80034,151 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7920382307920185342, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1769918612}
+    - targetCorrespondingSourceObject: {fileID: 7920382307920185342, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1769918611}
+    - targetCorrespondingSourceObject: {fileID: 7920382307920185342, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1769918610}
+    - targetCorrespondingSourceObject: {fileID: 7920382307920185342, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1769918609}
+    - targetCorrespondingSourceObject: {fileID: -8482687519533582771, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 696724217}
+    - targetCorrespondingSourceObject: {fileID: -8482687519533582771, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 696724216}
+    - targetCorrespondingSourceObject: {fileID: -8482687519533582771, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 696724215}
+    - targetCorrespondingSourceObject: {fileID: -8482687519533582771, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 696724214}
+    - targetCorrespondingSourceObject: {fileID: 4911163311476822980, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1439740985}
+    - targetCorrespondingSourceObject: {fileID: 4911163311476822980, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1439740984}
+    - targetCorrespondingSourceObject: {fileID: 4911163311476822980, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1439740983}
+    - targetCorrespondingSourceObject: {fileID: 4911163311476822980, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1439740982}
+    - targetCorrespondingSourceObject: {fileID: 7944214027222647542, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 861553084}
+    - targetCorrespondingSourceObject: {fileID: 7944214027222647542, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 861553083}
+    - targetCorrespondingSourceObject: {fileID: 7944214027222647542, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 861553082}
+    - targetCorrespondingSourceObject: {fileID: 7944214027222647542, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 861553081}
+    - targetCorrespondingSourceObject: {fileID: -573683516237805757, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 608642934}
+    - targetCorrespondingSourceObject: {fileID: -573683516237805757, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 608642933}
+    - targetCorrespondingSourceObject: {fileID: -573683516237805757, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 608642932}
+    - targetCorrespondingSourceObject: {fileID: -573683516237805757, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 608642931}
+    - targetCorrespondingSourceObject: {fileID: -7029999739028179856, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 234493924}
+    - targetCorrespondingSourceObject: {fileID: -7029999739028179856, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 234493923}
+    - targetCorrespondingSourceObject: {fileID: -7029999739028179856, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 234493922}
+    - targetCorrespondingSourceObject: {fileID: -7029999739028179856, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 234493921}
+    - targetCorrespondingSourceObject: {fileID: -2248464222751201453, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1850685633}
+    - targetCorrespondingSourceObject: {fileID: -2248464222751201453, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1850685632}
+    - targetCorrespondingSourceObject: {fileID: -2248464222751201453, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1850685631}
+    - targetCorrespondingSourceObject: {fileID: -2248464222751201453, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1850685630}
+    - targetCorrespondingSourceObject: {fileID: 7999697074019641835, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1186854207}
+    - targetCorrespondingSourceObject: {fileID: 7999697074019641835, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1186854206}
+    - targetCorrespondingSourceObject: {fileID: 7999697074019641835, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1186854205}
+    - targetCorrespondingSourceObject: {fileID: 7999697074019641835, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1186854204}
+    - targetCorrespondingSourceObject: {fileID: -829711281606141907, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1033392555}
+    - targetCorrespondingSourceObject: {fileID: -829711281606141907, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1033392554}
+    - targetCorrespondingSourceObject: {fileID: -829711281606141907, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1033392553}
+    - targetCorrespondingSourceObject: {fileID: -829711281606141907, guid: e274de676857b794c8f362d76a26f1ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1033392552}
   m_SourcePrefab: {fileID: 100100000, guid: e274de676857b794c8f362d76a26f1ff, type: 3}
 --- !u!1001 &1221580975
 PrefabInstance:
@@ -85305,11 +86229,21 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 0f5a730f7e179dc4a8919078251f25ac, type: 2}
+    - target: {fileID: 7524397622504383802, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7605023739531418194, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7cfcd36cfd5ed7c4c85d2017b4554629, type: 2}
+    - target: {fileID: 7761388384637616405, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8233567717789983795, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -85360,6 +86294,30 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 369629130}
+    - targetCorrespondingSourceObject: {fileID: 7761388384637616405, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 369629136}
+    - targetCorrespondingSourceObject: {fileID: 7761388384637616405, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 369629135}
+    - targetCorrespondingSourceObject: {fileID: 7524397622504383802, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 629388246}
+    - targetCorrespondingSourceObject: {fileID: 7524397622504383802, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 629388245}
+    - targetCorrespondingSourceObject: {fileID: 7524397622504383802, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 629388244}
+    - targetCorrespondingSourceObject: {fileID: 7524397622504383802, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 629388243}
   m_SourcePrefab: {fileID: 100100000, guid: 2f26a709f18c94b4a9bcb2e4a525e11f, type: 3}
 --- !u!1 &1350577285
 GameObject:
@@ -93710,6 +94668,89 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1437493683}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1439740978 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4911163311476822980, guid: e274de676857b794c8f362d76a26f1ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1220983720}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1439740982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439740978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!114 &1439740983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439740978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &1439740984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439740978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
+  typingSpeed: 0.03
+  isNeighborDoor: 0
+  knockSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
+--- !u!65 &1439740985
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439740978}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.31951398, y: 0.10623753, z: 0.34163207}
+  m_Center: {x: -0.000000007450581, y: 0.000000016763806, z: -0.033216663}
 --- !u!1 &1441029278
 GameObject:
   m_ObjectHideFlags: 0
@@ -107416,6 +108457,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1599826595754709761, guid: ed0e96a189d63e64ea9e6ae27af1e9a4,
         type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: -1599826595754709761, guid: ed0e96a189d63e64ea9e6ae27af1e9a4,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -107460,6 +108506,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1666787706}
+    - targetCorrespondingSourceObject: {fileID: -1599826595754709761, guid: ed0e96a189d63e64ea9e6ae27af1e9a4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1666787712}
+    - targetCorrespondingSourceObject: {fileID: -1599826595754709761, guid: ed0e96a189d63e64ea9e6ae27af1e9a4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1666787711}
   m_SourcePrefab: {fileID: 100100000, guid: ed0e96a189d63e64ea9e6ae27af1e9a4, type: 3}
 --- !u!1 &1666787705 stripped
 GameObject:
@@ -107515,6 +108569,35 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0105825225, y: 0.2103728, z: 0.21851349}
   m_Center: {x: -0.005305148, y: -0.0055535436, z: 0.008232117}
+--- !u!114 &1666787711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666787705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &1666787712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666787705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1001 &1670449252
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -114706,6 +115789,35 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.05555467, y: 0.906397, z: 0.9168129}
   m_Center: {x: 0.027784964, y: 0.022537768, z: 0.014554977}
+--- !u!114 &1715591419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715591412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &1715591420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715591412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1001 &1718431518
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -122302,6 +123414,89 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1768588417}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1769918605 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7920382307920185342, guid: e274de676857b794c8f362d76a26f1ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1220983720}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1769918609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769918605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!114 &1769918610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769918605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &1769918611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769918605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
+  typingSpeed: 0.03
+  isNeighborDoor: 0
+  knockSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
+--- !u!65 &1769918612
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769918605}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.32249388, y: 0.1849212, z: 0.3416321}
+  m_Center: {x: 0, y: 0.000000007450581, z: -0.033216655}
 --- !u!4 &1774850702 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e325ad7fca5e6fa4cbe0cfa34795772b,
@@ -129983,6 +131178,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1844148172}
   m_CullTransparentMesh: 1
+--- !u!1 &1850685626 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -2248464222751201453, guid: e274de676857b794c8f362d76a26f1ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1220983720}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1850685630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850685626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!114 &1850685631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850685626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &1850685632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850685626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
+  typingSpeed: 0.03
+  isNeighborDoor: 0
+  knockSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
+--- !u!65 &1850685633
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850685626}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.42806756, y: 0.10188494, z: 0.44052058}
+  m_Center: {x: 0.014452927, y: 0.00000009313226, z: -0.030907892}
 --- !u!1 &1853145110
 GameObject:
   m_ObjectHideFlags: 0
@@ -132697,6 +133975,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1008007058}
+    - targetCorrespondingSourceObject: {fileID: -6458684943681080231, guid: 4ac9fffcc1244734b9da3770130bd15b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1008007064}
+    - targetCorrespondingSourceObject: {fileID: -6458684943681080231, guid: 4ac9fffcc1244734b9da3770130bd15b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1008007063}
   m_SourcePrefab: {fileID: 100100000, guid: 4ac9fffcc1244734b9da3770130bd15b, type: 3}
 --- !u!1 &1894892076 stripped
 GameObject:
@@ -134015,8 +135301,37 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.36621678, y: 0.15326317, z: 0.35158548}
-  m_Center: {x: -0.045235813, y: 0.07672932, z: 0.04523082}
+  m_Size: {x: 0.66579497, y: 0.15326317, z: 0.41610727}
+  m_Center: {x: -0.19502491, y: 0.07672932, z: 0.077491716}
+--- !u!114 &1932540643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932540636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &1932540644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932540636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1 &1934707144
 GameObject:
   m_ObjectHideFlags: 0
@@ -145434,6 +146749,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6329570113058943855, guid: ad59007a4792e0d4089a997b3624f0b4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: -5267562041880706645, guid: ad59007a4792e0d4089a997b3624f0b4,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -145457,7 +146777,23 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -6329570113058943855, guid: ad59007a4792e0d4089a997b3624f0b4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 185781768}
+    - targetCorrespondingSourceObject: {fileID: -6329570113058943855, guid: ad59007a4792e0d4089a997b3624f0b4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 185781767}
+    - targetCorrespondingSourceObject: {fileID: -6329570113058943855, guid: ad59007a4792e0d4089a997b3624f0b4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 185781766}
+    - targetCorrespondingSourceObject: {fileID: -6329570113058943855, guid: ad59007a4792e0d4089a997b3624f0b4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 185781765}
   m_SourcePrefab: {fileID: 100100000, guid: ad59007a4792e0d4089a997b3624f0b4, type: 3}
 --- !u!1 &2065307571 stripped
 GameObject:
