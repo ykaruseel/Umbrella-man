@@ -5,52 +5,36 @@ using TMPro;
 public class PlayerRestrictionTrigger : MonoBehaviour
 {
     [Header("camera")]
-    [Tooltip("spedd return")]
+    [Tooltip("speed return")]
     public float turnSpeed = 1.2f; 
-    [Tooltip("fade text")]
+    [Tooltip("speed text")]
     public float fadeSpeed = 2f;
 
     [Header("text")]
     [TextArea(2, 4)]
     public string commentText = "I'm sure Lester lives on my floor in apartment 307.";
-    [Tooltip("Canvas")]
+    [Tooltip("obiekt z Canvas")]
     public TMP_Text subtitleUI;
-    [Tooltip("speed text")]
+    [Tooltip("typing speed text")]
     public float typingSpeed = 0.03f;
 
-    [Header("Настройки блокировки")]
-    [Tooltip("На сколько секунд стена становится твердой (каменной) после разворота")]
-    public float solidTime = 3.0f;
+    private bool isTriggered = false;
 
-    private bool isProcessing = false;
-    private BoxCollider myCollider;
-
-    void Start()
-    {
-        
-        myCollider = GetComponent<BoxCollider>();
-        if (myCollider != null)
-        {
-            myCollider.isTrigger = true;
-        }
-    }
-
-    
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !isProcessing)
+        if (other.CompareTag("Player") && !isTriggered)
         {
             PlayerController player = other.GetComponent<PlayerController>();
             if (player != null)
             {
-                StartCoroutine(TurnAndBlockProcess(player));
+                StartCoroutine(TurnAndShowText(player));
             }
         }
     }
 
-    private IEnumerator TurnAndBlockProcess(PlayerController player)
+    private IEnumerator TurnAndShowText(PlayerController player)
     {
-        isProcessing = true;
+        isTriggered = true;
 
         
         CharacterController cc = player.GetComponent<CharacterController>();
@@ -68,6 +52,16 @@ public class PlayerRestrictionTrigger : MonoBehaviour
         }
 
         
+        float startPitch = 0f;
+        if (player.playerCamera != null)
+        {
+            
+            startPitch = player.playerCamera.transform.localEulerAngles.x;
+            
+            if (startPitch > 180) startPitch -= 360;
+        }
+
+        
         Quaternion startRot = player.transform.rotation;
         Quaternion targetRot = startRot * Quaternion.Euler(0, 180, 0);
 
@@ -77,27 +71,23 @@ public class PlayerRestrictionTrigger : MonoBehaviour
             t += Time.deltaTime * turnSpeed;
             float smoothT = Mathf.SmoothStep(0f, 1f, t);
             player.transform.rotation = Quaternion.Slerp(startRot, targetRot, smoothT);
+            
+            
+            player.SetRotation(player.transform.eulerAngles.y, startPitch);
+            
             yield return null;
         }
         
+        
         player.transform.rotation = targetRot;
-        player.SetRotation(player.transform.eulerAngles.y, 0f);
-
-        
-        player.transform.position += player.transform.forward * 0.4f;
-
-        
-        if (myCollider != null)
-        {
-            myCollider.isTrigger = false;
-        }
+        player.SetRotation(targetRot.eulerAngles.y, startPitch);
 
         
         if (cc != null) cc.enabled = true;
         player.SetCanMove(true);
 
         
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(2.5f);
         
         
         if (subtitleUI != null)
@@ -113,17 +103,8 @@ public class PlayerRestrictionTrigger : MonoBehaviour
             }
             subtitleUI.gameObject.SetActive(false);
         }
-
         
-        yield return new WaitForSeconds(solidTime - 2.0f);
-
-        
-        if (myCollider != null)
-        {
-            myCollider.isTrigger = true;
-        }
-
-        isProcessing = false; 
+        isTriggered = false; 
     }
 
     private IEnumerator TypeText()
