@@ -5,24 +5,24 @@ using FMODUnity;
 
 public class SimpleCommentary : MonoBehaviour
 {
-    [Header("Текст комментария")]
+    [Header("Comment text")]
     [TextArea(2, 3)]
     public string commentText = "text";
     public float typingSpeed = 0.03f;
 
-    [Header("Двери соседей")]
+    [Header("Neighbors' doors")]
     public bool isNeighborDoor = false;
     public EventReference knockSound;
 
-    [Header("UI и Камера")]
+    [Header("UI and Camera")]
     public TMP_Text subtitleText;
     public GameObject skipPromptUI;
     public Camera playerCamera;
     
-    [Header("Настройки")]
+    [Header("Settings")]
     public float interactionDistance = 3f;
-    [Tooltip("На сколько МЕТРОВ камера подастся вперед (маленькое значение = легкий фокус)")]
-    public float zoomDistance = 0.15f; // ВЕРНУЛИ ФИЗИЧЕСКИЙ ЗУМ, НО СДЕЛАЛИ ЕГО КРОШЕЧНЫМ
+    [Tooltip("How many METERS will the camera move forward (small value = easy focus)")]
+    public float zoomDistance = 0.15f;
 
     private bool isUsed = false;
     private PlayerController player;
@@ -67,7 +67,7 @@ public class SimpleCommentary : MonoBehaviour
         player.SetCanMove(false);
         player.isCinematic = true;
 
-        // --- ЛЕГКАЯ ФИЗИЧЕСКАЯ ФОКУСИРОВКА (Двигаем на 15 см вперед) ---
+        
         Vector3 startPos = playerCamera.transform.localPosition;
         Vector3 targetPos = startPos + new Vector3(0, 0, zoomDistance);
         float t = 0;
@@ -86,7 +86,7 @@ public class SimpleCommentary : MonoBehaviour
             textToShow = neighborPhrases[Random.Range(0, neighborPhrases.Length)];
         }
 
-        // --- ПОКАЗ ТЕКСТА ---
+        
         if (subtitleText != null) 
         { 
             Color c = subtitleText.color;
@@ -97,18 +97,18 @@ public class SimpleCommentary : MonoBehaviour
         }
         if (skipPromptUI != null) skipPromptUI.SetActive(true);
 
-        // Ждем 4 секунды или пропускаем только на "E"
+        
         float timer = 0;
         while (timer < 4f)
         {
             timer += Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.E)) break; // Пропуск только на 'E'
+            if (Input.GetKeyDown(KeyCode.E)) break;
             yield return null;
         }
 
         if (skipPromptUI != null) skipPromptUI.SetActive(false);
 
-        // --- ФЭЙД-АУТ (Плавное затухание текста) ---
+        
         if (subtitleText != null)
         {
             float alpha = 1f;
@@ -123,7 +123,7 @@ public class SimpleCommentary : MonoBehaviour
             subtitleText.gameObject.SetActive(false);
         }
 
-        // --- ВОЗВРАТ КАМЕРЫ НАЗАД ---
+        
         t = 0;
         while (t < 1f)
         {

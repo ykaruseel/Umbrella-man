@@ -5,11 +5,13 @@ public class Flashlight : MonoBehaviour
 {
     public string ID;
 
-    [Header("Основные компоненты")]
+    [Header("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ")]
     [SerializeField] private Light lightSource;
     [SerializeField] private GameObject flashLight;
     [SerializeField] private Transform triggerHandle;
 
+    [SerializeField] private GameObject ghostTrigger;
+    
     [Range(0, 1)][SerializeField] private float currentEnergy = 0f;
     [SerializeField] private float maxIntensity = 5f;
     [SerializeField] private float maxRange = 25f;
@@ -38,6 +40,11 @@ public class Flashlight : MonoBehaviour
 
         flashLight.SetActive(true);
         isEquipped = true;
+        
+        if (ghostTrigger != null)
+        {
+            ghostTrigger.SetActive(true);
+        }
     }
 
     private void Start()
