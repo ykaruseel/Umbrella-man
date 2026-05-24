@@ -3188,7 +3188,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &89992907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4807,6 +4807,89 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2043237853}
   m_SourcePrefab: {fileID: 100100000, guid: 7f6e3c33a7a6559439b0d47488a431a5, type: 3}
+--- !u!1 &130937631 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7551032802325529967, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &130937635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130937631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &130937636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130937631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!114 &130937637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130937631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: Please leave me alone!
+  typingSpeed: 0.03
+  knockSound:
+    Guid:
+      Data1: 26153199
+      Data2: 1088351809
+      Data3: -10705483
+      Data4: -1040821612
+    Path: event:/knocking
+  delayAfterKnock: 0.001
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
+--- !u!65 &130937638
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130937631}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.09763439, y: 1.5748034, z: 1.374414}
+  m_Center: {x: 0.10456107, y: 0.027033925, z: -0.5256796}
 --- !u!1 &131357513
 GameObject:
   m_ObjectHideFlags: 0
@@ -7795,7 +7878,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentText: "Yeah, I sure wouldn\u2019t want to run into him"
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -7803,6 +7885,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -8024,7 +8107,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &187578439
 Transform:
   m_ObjectHideFlags: 0
@@ -10638,7 +10721,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -10646,6 +10728,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -12239,7 +12322,6 @@ MonoBehaviour:
   commentText: "The view from the window isn\u2019t much different from the view
     of my future."
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -12247,6 +12329,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -12267,20 +12350,6 @@ MonoBehaviour:
   itemID: 
   isPlaced: 0
   CurrentState: 0
---- !u!114 &268391999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 268391989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!4 &268681384 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5aba33d269f904b8b8175f048afea7a1,
@@ -26795,9 +26864,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commentText: Who's there?
+  commentText: '                     Get lost, lunatic!'
   typingSpeed: 0.03
-  isNeighborDoor: 1
   knockSound:
     Guid:
       Data1: 26153199
@@ -26805,8 +26873,9 @@ MonoBehaviour:
       Data3: -10705483
       Data4: -1040821612
     Path: event:/knocking
-  subtitleText: {fileID: 0}
-  skipPromptUI: {fileID: 0}
+  delayAfterKnock: 1
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
   interactionDistance: 3
   zoomDistance: 0.15
@@ -33006,12 +33075,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: ebe5f3fe21a14485ab3c70324495b261,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.2219064
+      value: 1.219
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ebe5f3fe21a14485ab3c70324495b261,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.476
+      value: -0.475
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ebe5f3fe21a14485ab3c70324495b261,
         type: 3}
@@ -46701,7 +46770,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -46709,6 +46777,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -47807,9 +47876,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commentText: text
+  commentText: Find something more interesting to do.
   typingSpeed: 0.03
-  isNeighborDoor: 1
   knockSound:
     Guid:
       Data1: 26153199
@@ -47817,8 +47885,9 @@ MonoBehaviour:
       Data3: -10705483
       Data4: -1040821612
     Path: event:/knocking
-  subtitleText: {fileID: 0}
-  skipPromptUI: {fileID: 0}
+  delayAfterKnock: 1
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
   interactionDistance: 3
   zoomDistance: 0.15
@@ -47841,8 +47910,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.09763439, y: 2.359789, z: 1.374414}
-  m_Center: {x: 0.10456107, y: 0.057475865, z: -0.5256796}
+  m_Size: {x: 0.09763439, y: 1.5037265, z: 1.374414}
+  m_Center: {x: 0.10456107, y: 0.21731135, z: -0.5256796}
 --- !u!1 &630248823
 GameObject:
   m_ObjectHideFlags: 0
@@ -50593,7 +50662,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -50601,6 +50669,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -54639,10 +54708,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 268391993}
-    - targetCorrespondingSourceObject: {fileID: 7520790070739891303, guid: 3355ef7e9f4590143a2f5535178d8e81,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 268391999}
     - targetCorrespondingSourceObject: {fileID: 7520790070739891303, guid: 3355ef7e9f4590143a2f5535178d8e81,
         type: 3}
       insertIndex: -1
@@ -63449,7 +63514,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -63457,6 +63521,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -68928,7 +68993,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentText: "I don\u2019t want to go outside yet."
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -68936,6 +69000,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -70594,7 +70659,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -70602,6 +70666,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -75666,7 +75731,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -75674,6 +75738,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -81570,23 +81635,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cad354cf595794d17b14ed6cff9fa448,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1932540639}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cad354cf595794d17b14ed6cff9fa448,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1932540640}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cad354cf595794d17b14ed6cff9fa448,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1932540644}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cad354cf595794d17b14ed6cff9fa448,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1932540643}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cad354cf595794d17b14ed6cff9fa448, type: 3}
 --- !u!4 &1213765939 stripped
 Transform:
@@ -83469,6 +83518,89 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1243607654}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1246115337 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2996440234352468966, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1246115341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246115337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &1246115342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246115337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!114 &1246115343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246115337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: "Knock again and you\u2019re gonna regret it."
+  typingSpeed: 0.03
+  knockSound:
+    Guid:
+      Data1: 26153199
+      Data2: 1088351809
+      Data3: -10705483
+      Data4: -1040821612
+    Path: event:/knocking
+  delayAfterKnock: 1
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
+--- !u!65 &1246115344
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246115337}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.097634405, y: 1.3676974, z: 1.374414}
+  m_Center: {x: -0.104561046, y: 0.045744717, z: 0.5256796}
 --- !u!4 &1247771802 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5d19e63d2527bb64c8ce29ad18d4ee2b,
@@ -88371,6 +88503,11 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f27a95cbca89cbf458509351d4245448, type: 2}
+    - target: {fileID: 2996440234352468966, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4293438987659584730, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -88437,6 +88574,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 0f5a730f7e179dc4a8919078251f25ac, type: 2}
     - target: {fileID: 7524397622504383802, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7551032802325529967, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       propertyPath: m_Layer
       value: 6
@@ -88525,6 +88667,38 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 629388243}
+    - targetCorrespondingSourceObject: {fileID: 2996440234352468966, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1246115344}
+    - targetCorrespondingSourceObject: {fileID: 2996440234352468966, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1246115343}
+    - targetCorrespondingSourceObject: {fileID: 2996440234352468966, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1246115342}
+    - targetCorrespondingSourceObject: {fileID: 2996440234352468966, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1246115341}
+    - targetCorrespondingSourceObject: {fileID: 7551032802325529967, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 130937638}
+    - targetCorrespondingSourceObject: {fileID: 7551032802325529967, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 130937637}
+    - targetCorrespondingSourceObject: {fileID: 7551032802325529967, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 130937636}
+    - targetCorrespondingSourceObject: {fileID: 7551032802325529967, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 130937635}
   m_SourcePrefab: {fileID: 100100000, guid: 2f26a709f18c94b4a9bcb2e4a525e11f, type: 3}
 --- !u!1 &1350577285
 GameObject:
@@ -96924,7 +97098,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -96932,6 +97105,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -98972,6 +99146,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1506464511}
     m_Modifications:
+    - target: {fileID: -7511558181221131132, guid: 37062ac09f8e84b45b1b23a90a454251,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7d799ddef46fadd42bb98aefcb6ed6a9, type: 2}
     - target: {fileID: -8679921383154817045, guid: 90d32e8114f919342a952e5fbfdceaf9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -99052,11 +99231,6 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: 37062ac09f8e84b45b1b23a90a454251,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 7d799ddef46fadd42bb98aefcb6ed6a9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -105861,7 +106035,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1549829275
 Transform:
   m_ObjectHideFlags: 0
@@ -107379,7 +107553,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1599020540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110742,7 +110916,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentText: "I don\u2019t think I\u2019ll forget this trip anytime soon."
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -110750,6 +110923,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -112226,6 +112400,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1381187174}
     m_Modifications:
+    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0c9ccb2a975d5c44fb8ce2017b01f4cc, type: 2}
+    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: -7067887647009988459, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
     - target: {fileID: -8679921383154817045, guid: 7e4f8b13f42e2bc41be65b7d5433d769,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112291,22 +112481,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 0c9ccb2a975d5c44fb8ce2017b01f4cc, type: 2}
-    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
-      value: 
-      objectReference: {fileID: -7067887647009988459, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -117962,7 +118136,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentText: Buying a cheap mirror was definitely a mistake
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -117970,6 +118143,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -125670,7 +125844,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -125678,6 +125851,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -133434,7 +133608,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentText: "I\u2019d be lying if I said I\u2019d read even a third of it"
   typingSpeed: 0.03
-  isNeighborDoor: 0
   knockSound:
     Guid:
       Data1: 0
@@ -133442,6 +133615,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  delayAfterKnock: 1
   subtitleText: {fileID: 1447303117}
   skipPromptUI: {fileID: 1148691253}
   playerCamera: {fileID: 308851623}
@@ -136982,13 +137156,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ff9e6fc3c0e8349a68f8a2d3d79dbc21,
         type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ff9e6fc3c0e8349a68f8a2d3d79dbc21,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff9e6fc3c0e8349a68f8a2d3d79dbc21,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1915976347}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff9e6fc3c0e8349a68f8a2d3d79dbc21,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1915976346}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff9e6fc3c0e8349a68f8a2d3d79dbc21,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1915976345}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff9e6fc3c0e8349a68f8a2d3d79dbc21,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1915976344}
   m_SourcePrefab: {fileID: 100100000, guid: ff9e6fc3c0e8349a68f8a2d3d79dbc21, type: 3}
 --- !u!4 &1915976342 stripped
 Transform:
@@ -136996,6 +137191,89 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1915976341}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1915976343 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ff9e6fc3c0e8349a68f8a2d3d79dbc21,
+    type: 3}
+  m_PrefabInstance: {fileID: 1915976341}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1915976344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915976343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 
+  isPlaced: 0
+  CurrentState: 0
+--- !u!114 &1915976345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915976343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+--- !u!114 &1915976346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915976343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentText: "Someone should\u2019ve invented a machine for this by now."
+  typingSpeed: 0.03
+  knockSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  delayAfterKnock: 1
+  subtitleText: {fileID: 1447303117}
+  skipPromptUI: {fileID: 1148691253}
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 3
+  zoomDistance: 0.15
+--- !u!65 &1915976347
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915976343}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5044538, y: 0.05643529, z: 0.43810117}
+  m_Center: {x: -0.08245106, y: 0.028221237, z: 0.04937997}
 --- !u!4 &1916854039 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b11fc3ffe19fc9a49a5b825f9901b616,
@@ -137456,89 +137734,6 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
---- !u!1 &1932540636 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cad354cf595794d17b14ed6cff9fa448,
-    type: 3}
-  m_PrefabInstance: {fileID: 1209101104}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1932540639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1932540636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff413aa2f1aefd345995a8bbdbe36ba7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  commentText: "Someone should\u2019ve invented a machine for this by now."
-  typingSpeed: 0.03
-  isNeighborDoor: 0
-  knockSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  subtitleText: {fileID: 1447303117}
-  skipPromptUI: {fileID: 1148691253}
-  playerCamera: {fileID: 308851623}
-  interactionDistance: 3
-  zoomDistance: 0.15
---- !u!65 &1932540640
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1932540636}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.66579497, y: 0.15326317, z: 0.41610727}
-  m_Center: {x: -0.19502491, y: 0.07672932, z: 0.077491716}
---- !u!114 &1932540643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1932540636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3586f80e0be53541b7430ee05a22140, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemID: 
-  isPlaced: 0
-  CurrentState: 0
---- !u!114 &1932540644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1932540636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!1 &1934707144
 GameObject:
   m_ObjectHideFlags: 0
@@ -146844,7 +147039,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2007755347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147025,7 +147220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2011344200
 Transform:
   m_ObjectHideFlags: 0

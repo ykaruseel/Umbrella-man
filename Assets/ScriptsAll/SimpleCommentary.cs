@@ -10,8 +10,8 @@ public class SimpleCommentary : MonoBehaviour
     public string commentText = "text";
     public float typingSpeed = 0.03f;
 
-    [Header("Neighbors' doors")]
-    public bool isNeighborDoor = false;
+    [Header("Audio Settings (FMOD)")]
+    [Tooltip("Если сюда закинут звук стука, он автоматически проиграется одновременно с текстом")]
     public EventReference knockSound;
 
     [Header("UI and Camera")]
@@ -26,21 +26,21 @@ public class SimpleCommentary : MonoBehaviour
 
     private bool isUsed = false;
     private PlayerController player;
-
-    private string[] neighborPhrases = {
-        "Get lost, lunatic!",
-        "Find something more interesting to do.",
-        "Knock again and you're gonna regret it.",
-        "Please leave me alone!"
-    };
+    
+    
+    private OutlineInteractable myOutline; 
 
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
+        
+        
+        myOutline = GetComponentInChildren<OutlineInteractable>();
     }
 
     void Update()
     {
+        
         if (isUsed || playerCamera == null) return;
 
         Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
@@ -60,7 +60,14 @@ public class SimpleCommentary : MonoBehaviour
 
     private IEnumerator PlayCommentary()
     {
-        isUsed = true;
+        isUsed = true; 
+
+        
+        if (myOutline != null)
+        {
+            myOutline.Hide();  
+            myOutline.isBlocked = true; 
+        }
 
         CharacterController cc = player.GetComponent<CharacterController>();
         if (cc != null) cc.enabled = false;
@@ -78,22 +85,22 @@ public class SimpleCommentary : MonoBehaviour
             yield return null;
         }
 
-        string textToShow = commentText;
-        if (isNeighborDoor)
+        
+        if (!knockSound.IsNull)
         {
-            if (!knockSound.IsNull) RuntimeManager.PlayOneShot(knockSound, transform.position);
-            yield return new WaitForSeconds(1f);
-            textToShow = neighborPhrases[Random.Range(0, neighborPhrases.Length)];
+            RuntimeManager.PlayOneShot(knockSound, transform.position);
         }
 
         
+        string textToShow = commentText;
+
         if (subtitleText != null) 
         { 
             Color c = subtitleText.color;
             c.a = 1f;
             subtitleText.color = c;
             subtitleText.gameObject.SetActive(true); 
-            StartCoroutine(TypeText(textToShow));
+            StartCoroutine(TypeText(textToShow)); 
         }
         if (skipPromptUI != null) skipPromptUI.SetActive(true);
 
