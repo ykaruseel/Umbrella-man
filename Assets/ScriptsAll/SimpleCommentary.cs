@@ -11,7 +11,7 @@ public class SimpleCommentary : MonoBehaviour
     public float typingSpeed = 0.03f;
 
     [Header("Audio Settings (FMOD)")]
-    [Tooltip("Если сюда закинут звук стука, он автоматически проиграется одновременно с текстом")]
+    [Tooltip("If you add a knocking sound here, it will automatically play along with the text.")]
     public EventReference knockSound;
 
     [Header("UI and Camera")]

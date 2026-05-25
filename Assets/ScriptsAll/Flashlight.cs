@@ -12,6 +12,8 @@ public class Flashlight : MonoBehaviour
 
     [SerializeField] private GameObject ghostTrigger;
     
+    [SerializeField] private GameObject triggerToDisable;
+    
     [Range(0, 1)][SerializeField] private float currentEnergy = 0f;
     [SerializeField] private float maxIntensity = 5f;
     [SerializeField] private float maxRange = 25f;
@@ -44,6 +46,11 @@ public class Flashlight : MonoBehaviour
         if (ghostTrigger != null)
         {
             ghostTrigger.SetActive(true);
+        }
+        
+        if (triggerToDisable != null)
+        {
+            triggerToDisable.SetActive(false);
         }
     }
 

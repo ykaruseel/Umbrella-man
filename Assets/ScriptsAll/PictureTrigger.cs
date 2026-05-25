@@ -4,10 +4,10 @@ using System.Collections;
 
 public class PictureTrigger : MonoBehaviour
 {
-    [Header("Что должно упасть?")]
+    [Header("What should fall?")]
     public FallingPicture picture;
 
-    [Header("Эффект испуга (PostProcess Volume)")]
+    [Header("Fright Effect (PostProcess Volume)")]
     public Volume scareVolume; 
 
     private bool triggered = false;
