@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -22,7 +23,7 @@ public class ChangeColorAndHoverText : MonoBehaviour, IPointerEnterHandler, IPoi
         text = GetComponent<TMP_Text>();
         rectTransform = GetComponent<RectTransform>();
 
-        startPos = rectTransform.localPosition;
+        startPos = rectTransform.anchoredPosition;
         startColor = text.color;
     }
 
@@ -47,7 +48,7 @@ public class ChangeColorAndHoverText : MonoBehaviour, IPointerEnterHandler, IPoi
     private IEnumerator Animate(Vector3 targetPos, Color targetColor)
     {
         float t = 0f;
-        Vector3 fromPos = rectTransform.localPosition;
+        Vector3 fromPos = rectTransform.anchoredPosition;
         Color fromColor = text.color;
 
         while (t < animationTime)
@@ -56,7 +57,7 @@ public class ChangeColorAndHoverText : MonoBehaviour, IPointerEnterHandler, IPoi
             float lerp = t / animationTime;
 
             if (needHover)
-                rectTransform.localPosition = Vector3.Lerp(fromPos, targetPos, lerp);
+                rectTransform.anchoredPosition = Vector2.Lerp(fromPos, targetPos, lerp);
 
             text.color = Color.Lerp(fromColor, targetColor, lerp);
 
@@ -64,14 +65,14 @@ public class ChangeColorAndHoverText : MonoBehaviour, IPointerEnterHandler, IPoi
         }
 
         if (needHover)
-            rectTransform.localPosition = targetPos;
+            rectTransform.anchoredPosition = targetPos;
 
         text.color = targetColor;
     }
 
     private void OnDisable()
     {
-        rectTransform.localPosition = startPos;
+        rectTransform.anchoredPosition = startPos;
         text.color = startColor;
     }
 }
