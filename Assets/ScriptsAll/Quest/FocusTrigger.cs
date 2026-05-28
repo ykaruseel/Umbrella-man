@@ -15,7 +15,7 @@ public class FocusTrigger : MonoBehaviour
 
     public PlayerComments comments;
 
-    private PlayerController playerController;
+    private PlayerController _playerController;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -23,7 +23,7 @@ public class FocusTrigger : MonoBehaviour
 
         if (other.CompareTag("Player") && IsQuestActive(requiredQuestID))
         {
-            other.TryGetComponent(out playerController);
+            other.TryGetComponent(out _playerController);
             hasTriggered = true;
             StartCoroutine(OnTriggerEvent());
         }
@@ -35,20 +35,32 @@ public class FocusTrigger : MonoBehaviour
 
         if (other.CompareTag("Player") && IsQuestActive(requiredQuestID))
         {
-            other.TryGetComponent(out playerController);
+            other.TryGetComponent(out _playerController);
             hasTriggered = true;
             StartCoroutine(OnTriggerEvent());
         }
+    }
+
+    public void TriggerFocus(PlayerController playerController)
+    {
+        if (hasTriggered) return;
+        _playerController = playerController;
+        hasTriggered = true;
+        if (TryGetComponent<OutlineInteractable>(out var outline))
+        {
+            outline.isBlocked = true;
+        }
+        StartCoroutine(OnTriggerEvent());
     }
 
     private IEnumerator OnTriggerEvent()
     {
         gameObject.GetComponent<Collider>().enabled = false;
 
-        playerController.isCinematic = true;
-        playerController.SetCanMove(false);
-        playerController.StartCinematicPan(focusObject.transform, 2f);
-        playerController.ZoomIn(focusPower);
+        _playerController.isCinematic = true;
+        _playerController.SetCanMove(false);
+        _playerController.StartCinematicPan(focusObject.transform, 2f);
+        _playerController.ZoomIn(focusPower);
 
         if (comments != null)
         {
@@ -60,10 +72,10 @@ public class FocusTrigger : MonoBehaviour
             }
         }
 
-        playerController.ZoomOut(focusPower);
+        _playerController.ZoomOut(focusPower);
         yield return new WaitForSeconds(1f);
-        playerController.isCinematic = false;
-        playerController.SetCanMove(true);
+        _playerController.isCinematic = false;
+        _playerController.SetCanMove(true);
 
         enabled = false;
     }
