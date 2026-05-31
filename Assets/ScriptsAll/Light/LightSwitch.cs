@@ -27,6 +27,8 @@ public class LightSwitch : MonoBehaviour
 
         bool lightsAreOn = lights[0].activeSelf;
 
+        Debug.Log("Toggling lights. Current state: " + (lightsAreOn ? "On" : "Off"));
+
         if (lightsAreOn)
         {
             RuntimeManager.PlayOneShot(switchOffSound, transform.position);
@@ -42,6 +44,7 @@ public class LightSwitch : MonoBehaviour
         {
             if (light != null)
                 light.SetActive(!light.activeSelf);
+            Debug.Log("Toggled light: " + light.name + " to " + (light.activeSelf ? "On" : "Off"));
         }
 
         yield return new WaitForSeconds(0.5f);

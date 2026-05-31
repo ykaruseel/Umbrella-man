@@ -111,6 +111,16 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
 
+            if(hit.collider.CompareTag("NeighborDoor"))
+            {
+                NeighborDoor neighborDoor = hit.collider.GetComponentInParent<NeighborDoor>();
+                if (neighborDoor != null)
+                {
+                    neighborDoor.Interact(playerController);
+                    return;
+                }
+            }
+
             //if (hit.collider.CompareTag("Pickable"))
             //{
             //    ObjectInteraction oi = GetComponent<ObjectInteraction>();

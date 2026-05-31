@@ -18,6 +18,8 @@ public class PlayerRestrictionTrigger : MonoBehaviour
     [Tooltip("typing speed text")]
     public float typingSpeed = 0.03f;
 
+    public GameObject collider;
+
     private bool isTriggered = false;
 
     private void OnTriggerEnter(Collider other)
@@ -115,5 +117,11 @@ public class PlayerRestrictionTrigger : MonoBehaviour
             subtitleUI.text += c;
             yield return new WaitForSeconds(typingSpeed);
         }
+    }
+
+    private void OnDisable()
+    {
+        if(collider != null)
+            collider.SetActive(false);
     }
 }
