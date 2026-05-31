@@ -126,6 +126,9 @@ public class QuestEvents : MonoBehaviour
         }
 
         lesterDoor.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        DoorOutline doorOutline = lesterDoor.GetComponent<DoorOutline>();
+        doorOutline.Hide();
+        doorOutline.enabled = false;
 
         var instance = emitterLester.EventInstance;
 
