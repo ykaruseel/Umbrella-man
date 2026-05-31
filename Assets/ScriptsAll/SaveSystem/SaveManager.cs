@@ -60,17 +60,17 @@ public class SaveManager : MonoBehaviour
         savePath = Path.Combine(Application.persistentDataPath, "save.json");
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F5))
-        {
-            SaveGame();
-        }
-        else if (Input.GetKeyDown(KeyCode.F9))
-        {
-            LoadGame();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.F5))
+    //    {
+    //        SaveGame();
+    //    }
+    //    else if (Input.GetKeyDown(KeyCode.F9))
+    //    {
+    //        LoadGame();
+    //    }
+    //}
 
     public void SaveGame()
     {

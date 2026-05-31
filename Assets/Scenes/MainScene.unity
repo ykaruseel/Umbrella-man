@@ -1591,7 +1591,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: I said no, thank you! Not interested!
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -1603,20 +1603,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &46370626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 46370620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &46370627
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1660,6 +1646,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &46370631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46370620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 1446050005}
 --- !u!1 &47673004
 GameObject:
   m_ObjectHideFlags: 0
@@ -2414,7 +2413,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: Please leave me alone!
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -2426,20 +2425,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &62561821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 62561815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &62561822
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2483,6 +2468,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &62561826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62561815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 872308839}
 --- !u!4 &65143458 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5ea184dcf09a7884fb6c7a3883119739,
@@ -3325,7 +3323,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: ...
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -3337,20 +3335,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &86507259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 86507253}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &86507260
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3394,6 +3378,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &86507264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86507253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 437701344}
 --- !u!1 &87899249
 GameObject:
   m_ObjectHideFlags: 0
@@ -4742,6 +4739,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.09022379, y: 0.20039248, z: 0.21689224}
   m_Center: {x: -0.18319784, y: -0.0004992485, z: 0.00016403198}
+--- !u!114 &117057277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117057266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 0}
+  isBlocked: 0
 --- !u!1 &124112890
 GameObject:
   m_ObjectHideFlags: 0
@@ -5211,20 +5222,6 @@ MonoBehaviour:
   itemID: 
   isPlaced: 0
   CurrentState: 0
---- !u!114 &130937636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 130937631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!114 &130937637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5294,7 +5291,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: ...
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -5349,6 +5346,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &130937648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130937631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 2117704712}
 --- !u!1 &131357513
 GameObject:
   m_ObjectHideFlags: 0
@@ -7972,6 +7982,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!1 &178030366 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3538657962099885104, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &178030370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178030366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1001 &181066568
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27054,7 +27084,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: ...
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -27066,20 +27096,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &362265886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 362265880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &362265887
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27123,6 +27139,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &362265891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362265880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 912615860}
 --- !u!1 &362726814
 GameObject:
   m_ObjectHideFlags: 0
@@ -27464,20 +27493,6 @@ MonoBehaviour:
   itemID: 
   isPlaced: 0
   CurrentState: 0
---- !u!114 &369629136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 369629126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!4 &369629137 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -5973672724498966315, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
@@ -27500,7 +27515,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: Get lost, lunatic!
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -27555,6 +27570,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &369629146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369629126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 1349856477}
 --- !u!1001 &371587573
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32607,6 +32635,26 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb5af102f753c0e479e796c28ffd0c2e, type: 3}
+--- !u!1 &423106185 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -5812668430759777755, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &423106189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423106185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!4 &431784947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 50853e7fa6044b245ad137712e3d3723,
@@ -32799,6 +32847,26 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7694ef03b3f304b4199d35d56a29519f, type: 3}
+--- !u!1 &437701340 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7807165947744839099, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &437701344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437701340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!4 &440546487 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c6854d99b8ba4e08bfb978565e80da6,
@@ -35260,7 +35328,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: ...
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -35272,20 +35340,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &488528697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 488528691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &488528698
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -35329,6 +35383,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &488528702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488528691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 178030370}
 --- !u!1001 &493383700
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47969,6 +48036,7 @@ MonoBehaviour:
   - {fileID: 1178692455}
   - {fileID: 80121497}
   - {fileID: 65674600}
+  - {fileID: 1075412032}
   _enemyLookDistortionSingleVolume: {fileID: 1408144452}
   _knifeManAI: {fileID: 567076525}
   _pauseMenu: {fileID: 2073067000}
@@ -48742,7 +48810,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: Go away!
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -48754,20 +48822,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &628798903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 628798897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &628798904
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -48811,6 +48865,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &628798908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628798897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 1890314961}
 --- !u!1 &629388239 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7524397622504383802, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
@@ -48832,20 +48899,6 @@ MonoBehaviour:
   itemID: 
   isPlaced: 0
   CurrentState: 0
---- !u!114 &629388244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 629388239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!114 &629388245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48915,7 +48968,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: ...
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -48970,6 +49023,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &629388256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629388239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 1508644909}
 --- !u!1 &630248823
 GameObject:
   m_ObjectHideFlags: 0
@@ -64517,21 +64583,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: looping
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4409011625575948860, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5878142233136804078, guid: 7c4bb9b6288baf344987f64fa54a0d52,
         type: 3}
       propertyPath: m_Name
@@ -64590,6 +64641,21 @@ PrefabInstance:
     - target: {fileID: 7036836734124335007, guid: 7c4bb9b6288baf344987f64fa54a0d52,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4409011625575948860, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -64738,6 +64804,26 @@ Transform:
   - {fileID: 1068323624}
   m_Father: {fileID: 1441304031}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &854665365 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7913338054218641591, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &854665369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854665365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1001 &860637848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65153,6 +65239,26 @@ PrefabInstance:
       addedObject: {fileID: 744152446}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5aba33d269f904b8b8175f048afea7a1, type: 3}
+--- !u!1 &872308835 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6427047113594693313, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &872308839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872308835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1001 &874667403
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66965,6 +67071,26 @@ PrefabInstance:
       addedObject: {fileID: 1312271777}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5aba33d269f904b8b8175f048afea7a1, type: 3}
+--- !u!1 &912615856 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4122780843808050305, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &912615860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912615856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1 &914861383
 GameObject:
   m_ObjectHideFlags: 0
@@ -74191,7 +74317,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: ...
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -74203,20 +74329,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &1113126299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1113126293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &1113126300
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -74260,6 +74372,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &1113126304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113126293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 1136855885}
 --- !u!1 &1113936960
 GameObject:
   m_ObjectHideFlags: 0
@@ -75765,6 +75890,26 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1136442006}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1136855881 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2490312750197242499, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1136855885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136855881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!4 &1140091286 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 312dcd85d62de1f459c07cf2ed66f238,
@@ -75872,7 +76017,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: ...
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -75884,20 +76029,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &1142985699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1142985693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &1142985700
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -75941,6 +76072,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &1142985704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142985693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 1198035429}
 --- !u!1 &1143986532
 GameObject:
   m_ObjectHideFlags: 0
@@ -78148,6 +78292,26 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1810268472}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1198035425 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4242259050100049281, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1198035429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198035425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1 &1199695035
 GameObject:
   m_ObjectHideFlags: 0
@@ -84019,6 +84183,26 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1 &1220654785 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -4683226717572813181, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1220654789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220654785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1001 &1221580975
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85159,20 +85343,6 @@ MonoBehaviour:
   itemID: 
   isPlaced: 0
   CurrentState: 0
---- !u!114 &1246115342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1246115337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!114 &1246115343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85242,7 +85412,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: Find something more interesting to do.
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -85297,6 +85467,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &1246115354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246115337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 117057271}
 --- !u!4 &1247771802 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5d19e63d2527bb64c8ce29ad18d4ee2b,
@@ -85662,7 +85845,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -86892,6 +87075,26 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1542617314582971449, guid: d84adbd2356507b4f8e66094198a5689, type: 3}
+--- !u!1 &1269158349 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7845952790159075588, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1269158353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269158349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1 &1272709741
 GameObject:
   m_ObjectHideFlags: 0
@@ -90930,6 +91133,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1349856476}
+    - targetCorrespondingSourceObject: {fileID: -729056989805065393, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1349856483}
     - targetCorrespondingSourceObject: {fileID: 3084729179471440395, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -90942,6 +91149,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 117057270}
+    - targetCorrespondingSourceObject: {fileID: 3084729179471440395, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 117057277}
     - targetCorrespondingSourceObject: {fileID: -5095054810996611082, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -90954,6 +91165,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1508644908}
+    - targetCorrespondingSourceObject: {fileID: -5095054810996611082, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1508644915}
     - targetCorrespondingSourceObject: {fileID: -1647385065780720360, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -90966,6 +91181,70 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2117704711}
+    - targetCorrespondingSourceObject: {fileID: -1647385065780720360, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2117704718}
+    - targetCorrespondingSourceObject: {fileID: 3787140455439842100, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1593234028}
+    - targetCorrespondingSourceObject: {fileID: 2490312750197242499, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1136855885}
+    - targetCorrespondingSourceObject: {fileID: 7807165947744839099, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 437701344}
+    - targetCorrespondingSourceObject: {fileID: -7798046196820658455, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1952192322}
+    - targetCorrespondingSourceObject: {fileID: 4122780843808050305, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 912615860}
+    - targetCorrespondingSourceObject: {fileID: -5812668430759777755, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 423106189}
+    - targetCorrespondingSourceObject: {fileID: -3538657962099885104, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 178030370}
+    - targetCorrespondingSourceObject: {fileID: 6427047113594693313, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 872308839}
+    - targetCorrespondingSourceObject: {fileID: 8892682870000928186, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1446050005}
+    - targetCorrespondingSourceObject: {fileID: -4683226717572813181, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1220654789}
+    - targetCorrespondingSourceObject: {fileID: 7845952790159075588, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1269158353}
+    - targetCorrespondingSourceObject: {fileID: 8407717839455708693, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1890314961}
+    - targetCorrespondingSourceObject: {fileID: -2881887588053286608, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2008601954}
+    - targetCorrespondingSourceObject: {fileID: 4242259050100049281, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1198035429}
+    - targetCorrespondingSourceObject: {fileID: -7913338054218641591, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 854665369}
     - targetCorrespondingSourceObject: {fileID: 7761388384637616405, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -90974,10 +91253,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 369629130}
-    - targetCorrespondingSourceObject: {fileID: 7761388384637616405, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 369629136}
     - targetCorrespondingSourceObject: {fileID: 7761388384637616405, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -90994,6 +91269,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 369629143}
+    - targetCorrespondingSourceObject: {fileID: 7761388384637616405, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 369629146}
     - targetCorrespondingSourceObject: {fileID: 7524397622504383802, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91002,10 +91281,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 629388245}
-    - targetCorrespondingSourceObject: {fileID: 7524397622504383802, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 629388244}
     - targetCorrespondingSourceObject: {fileID: 7524397622504383802, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91022,6 +91297,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 629388253}
+    - targetCorrespondingSourceObject: {fileID: 7524397622504383802, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 629388256}
     - targetCorrespondingSourceObject: {fileID: 2996440234352468966, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91030,10 +91309,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1246115343}
-    - targetCorrespondingSourceObject: {fileID: 2996440234352468966, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1246115342}
     - targetCorrespondingSourceObject: {fileID: 2996440234352468966, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91050,6 +91325,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1246115351}
+    - targetCorrespondingSourceObject: {fileID: 2996440234352468966, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1246115354}
     - targetCorrespondingSourceObject: {fileID: 7551032802325529967, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91058,10 +91337,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 130937637}
-    - targetCorrespondingSourceObject: {fileID: 7551032802325529967, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 130937636}
     - targetCorrespondingSourceObject: {fileID: 7551032802325529967, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91078,14 +91353,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 130937645}
+    - targetCorrespondingSourceObject: {fileID: 7551032802325529967, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 130937648}
     - targetCorrespondingSourceObject: {fileID: 5337676423343597677, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2127175169}
-    - targetCorrespondingSourceObject: {fileID: 5337676423343597677, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2127175168}
     - targetCorrespondingSourceObject: {fileID: 5337676423343597677, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91094,14 +91369,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2127175170}
+    - targetCorrespondingSourceObject: {fileID: 5337676423343597677, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2127175173}
     - targetCorrespondingSourceObject: {fileID: 2534661723404398428, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1142985700}
-    - targetCorrespondingSourceObject: {fileID: 2534661723404398428, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1142985699}
     - targetCorrespondingSourceObject: {fileID: 2534661723404398428, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91110,14 +91385,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1142985701}
+    - targetCorrespondingSourceObject: {fileID: 2534661723404398428, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1142985704}
     - targetCorrespondingSourceObject: {fileID: -4162837354492284976, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1113126300}
-    - targetCorrespondingSourceObject: {fileID: -4162837354492284976, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1113126299}
     - targetCorrespondingSourceObject: {fileID: -4162837354492284976, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91126,14 +91401,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1113126301}
+    - targetCorrespondingSourceObject: {fileID: -4162837354492284976, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1113126304}
     - targetCorrespondingSourceObject: {fileID: 3053494062247372535, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1787820712}
-    - targetCorrespondingSourceObject: {fileID: 3053494062247372535, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1787820711}
     - targetCorrespondingSourceObject: {fileID: 3053494062247372535, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91142,14 +91417,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1787820713}
+    - targetCorrespondingSourceObject: {fileID: 3053494062247372535, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1787820716}
     - targetCorrespondingSourceObject: {fileID: 227094392162809941, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 86507260}
-    - targetCorrespondingSourceObject: {fileID: 227094392162809941, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 86507259}
     - targetCorrespondingSourceObject: {fileID: 227094392162809941, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91158,14 +91433,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 86507261}
+    - targetCorrespondingSourceObject: {fileID: 227094392162809941, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 86507264}
     - targetCorrespondingSourceObject: {fileID: -2992880691755608646, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1379571850}
-    - targetCorrespondingSourceObject: {fileID: -2992880691755608646, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1379571849}
     - targetCorrespondingSourceObject: {fileID: -2992880691755608646, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91174,14 +91449,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1379571851}
+    - targetCorrespondingSourceObject: {fileID: -2992880691755608646, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1379571854}
     - targetCorrespondingSourceObject: {fileID: 530515009682351328, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 362265887}
-    - targetCorrespondingSourceObject: {fileID: 530515009682351328, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 362265886}
     - targetCorrespondingSourceObject: {fileID: 530515009682351328, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91190,14 +91465,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 362265888}
+    - targetCorrespondingSourceObject: {fileID: 530515009682351328, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 362265891}
     - targetCorrespondingSourceObject: {fileID: 2001141571201544838, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 488528698}
-    - targetCorrespondingSourceObject: {fileID: 2001141571201544838, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 488528697}
     - targetCorrespondingSourceObject: {fileID: 2001141571201544838, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91206,14 +91481,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 488528699}
+    - targetCorrespondingSourceObject: {fileID: 2001141571201544838, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 488528702}
     - targetCorrespondingSourceObject: {fileID: -2770411591417737241, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 62561822}
-    - targetCorrespondingSourceObject: {fileID: -2770411591417737241, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 62561821}
     - targetCorrespondingSourceObject: {fileID: -2770411591417737241, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91222,14 +91497,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 62561823}
+    - targetCorrespondingSourceObject: {fileID: -2770411591417737241, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 62561826}
     - targetCorrespondingSourceObject: {fileID: -4518367890690063912, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1753607659}
-    - targetCorrespondingSourceObject: {fileID: -4518367890690063912, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1753607658}
     - targetCorrespondingSourceObject: {fileID: -4518367890690063912, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91238,14 +91513,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1753607660}
+    - targetCorrespondingSourceObject: {fileID: -4518367890690063912, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1753607663}
     - targetCorrespondingSourceObject: {fileID: -6031073394900013779, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 46370627}
-    - targetCorrespondingSourceObject: {fileID: -6031073394900013779, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 46370626}
     - targetCorrespondingSourceObject: {fileID: -6031073394900013779, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91254,14 +91529,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 46370628}
+    - targetCorrespondingSourceObject: {fileID: -6031073394900013779, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 46370631}
     - targetCorrespondingSourceObject: {fileID: -5000673508184628334, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1556537936}
-    - targetCorrespondingSourceObject: {fileID: -5000673508184628334, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1556537935}
     - targetCorrespondingSourceObject: {fileID: -5000673508184628334, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91270,14 +91545,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1556537937}
+    - targetCorrespondingSourceObject: {fileID: -5000673508184628334, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1556537940}
     - targetCorrespondingSourceObject: {fileID: -4494028247009902241, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 628798904}
-    - targetCorrespondingSourceObject: {fileID: -4494028247009902241, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 628798903}
     - targetCorrespondingSourceObject: {fileID: -4494028247009902241, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91286,14 +91561,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 628798905}
+    - targetCorrespondingSourceObject: {fileID: -4494028247009902241, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 628798908}
     - targetCorrespondingSourceObject: {fileID: 9000826122983567302, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1610129535}
-    - targetCorrespondingSourceObject: {fileID: 9000826122983567302, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1610129534}
     - targetCorrespondingSourceObject: {fileID: 9000826122983567302, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91302,14 +91577,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1610129536}
+    - targetCorrespondingSourceObject: {fileID: 9000826122983567302, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1610129539}
     - targetCorrespondingSourceObject: {fileID: -5812597723162680539, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1404153159}
-    - targetCorrespondingSourceObject: {fileID: -5812597723162680539, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1404153158}
     - targetCorrespondingSourceObject: {fileID: -5812597723162680539, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
         type: 3}
       insertIndex: -1
@@ -91318,6 +91593,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1404153160}
+    - targetCorrespondingSourceObject: {fileID: -5812597723162680539, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1404153163}
   m_SourcePrefab: {fileID: 100100000, guid: 2f26a709f18c94b4a9bcb2e4a525e11f, type: 3}
 --- !u!1 &1349856475 stripped
 GameObject:
@@ -91375,6 +91654,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.31101704, y: 0.20757031, z: 0.115550995}
   m_Center: {x: 0.013809681, y: 0.0030677319, z: 0.26397896}
+--- !u!114 &1349856483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349856475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 0}
+  isBlocked: 0
 --- !u!1 &1350577285
 GameObject:
   m_ObjectHideFlags: 0
@@ -97489,7 +97782,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: Nobody's home! Check back next year.
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -97501,20 +97794,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &1379571849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1379571843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &1379571850
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -97558,6 +97837,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &1379571854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1379571843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 423106189}
 --- !u!1 &1381187173
 GameObject:
   m_ObjectHideFlags: 0
@@ -98500,7 +98792,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: ...
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -98512,20 +98804,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &1404153158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1404153152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &1404153159
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -98569,6 +98847,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &1404153163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1404153152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 1220654789}
 --- !u!1 &1404547444
 GameObject:
   m_ObjectHideFlags: 0
@@ -100218,6 +100509,26 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7875148217973345780, guid: 5ea184dcf09a7884fb6c7a3883119739, type: 3}
+--- !u!1 &1446050001 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8892682870000928186, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1446050005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446050001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1 &1447303115
 GameObject:
   m_ObjectHideFlags: 0
@@ -102011,6 +102322,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1506464511}
     m_Modifications:
+    - target: {fileID: -7511558181221131132, guid: 37062ac09f8e84b45b1b23a90a454251,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7d799ddef46fadd42bb98aefcb6ed6a9, type: 2}
     - target: {fileID: -8679921383154817045, guid: 90d32e8114f919342a952e5fbfdceaf9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -102091,11 +102407,6 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: 37062ac09f8e84b45b1b23a90a454251,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 7d799ddef46fadd42bb98aefcb6ed6a9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -102452,6 +102763,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.08468819, y: 0.21341062, z: 0.26328278}
   m_Center: {x: 0.21069622, y: 0.0032416582, z: -0.0027046204}
+--- !u!114 &1508644915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508644904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 0}
+  isBlocked: 0
 --- !u!1001 &1510723161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -109037,7 +109362,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: ...
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -109049,20 +109374,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &1556537935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1556537929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &1556537936
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -109106,6 +109417,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &1556537940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556537929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 1269158353}
 --- !u!1001 &1558289982
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -110559,6 +110883,26 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 704413188}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1593234024 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3787140455439842100, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1593234028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593234024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!4 &1595596893 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a9f332e6f5acd2e489d8582fe1b4fbc3,
@@ -111865,7 +112209,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: ...
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -111877,20 +112221,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &1610129534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1610129528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &1610129535
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -111934,6 +112264,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &1610129539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610129528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 2008601954}
 --- !u!1 &1612992991
 GameObject:
   m_ObjectHideFlags: 0
@@ -115952,6 +116295,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1381187174}
     m_Modifications:
+    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0c9ccb2a975d5c44fb8ce2017b01f4cc, type: 2}
+    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: -7067887647009988459, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
     - target: {fileID: -8679921383154817045, guid: 7e4f8b13f42e2bc41be65b7d5433d769,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -116017,22 +116376,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 0c9ccb2a975d5c44fb8ce2017b01f4cc, type: 2}
-    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
-      value: 
-      objectReference: {fileID: -7067887647009988459, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -128627,7 +128970,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: Just leave it by the door!
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -128639,20 +128982,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &1753607658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753607652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &1753607659
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -128696,6 +129025,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &1753607663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753607652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 854665369}
 --- !u!1001 &1753858842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -130460,7 +130802,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: "Who is it? I\u2019m not expecting anyone."
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -130472,20 +130814,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &1787820711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1787820705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &1787820712
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -130529,6 +130857,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &1787820716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787820705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 1952192322}
 --- !u!1 &1789569538
 GameObject:
   m_ObjectHideFlags: 0
@@ -140082,6 +140423,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1889648774}
   m_Mesh: {fileID: 7768757500298153253, guid: ca89d888973059649b42ac8eb73e77bb, type: 3}
+--- !u!1 &1890314957 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8407717839455708693, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1890314961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890314957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1 &1892586742
 GameObject:
   m_ObjectHideFlags: 0
@@ -143167,6 +143528,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1949495038}
   m_CullTransparentMesh: 1
+--- !u!1 &1952192318 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7798046196820658455, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1952192322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1952192318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1 &1953907608 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a80c14f09b3d99488d9a5f1e0171e12,
@@ -151303,6 +151684,26 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 602381112}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2008601950 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -2881887588053286608, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349856474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2008601954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008601950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
 --- !u!1 &2011344199
 GameObject:
   m_ObjectHideFlags: 0
@@ -155889,6 +156290,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.06660092, y: 0.20010662, z: 0.27733994}
   m_Center: {x: 0.19500929, y: 0.0046337843, z: 0.016490936}
+--- !u!114 &2117704718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2117704707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 0}
+  isBlocked: 0
 --- !u!4 &2120161301 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c6854d99b8ba4e08bfb978565e80da6,
@@ -156195,7 +156610,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1844148174}
   dialogueLines:
   - speakerName: 
-    sentence: Buying a cheap mirror was definitely a mistake.
+    sentence: "Knock again and you\u2019re gonna regret it."
   typingSpeed: 0.03
   fadeDuration: 1.5
   danielVoiceEvent:
@@ -156207,20 +156622,6 @@ MonoBehaviour:
     Path: event:/daniel_voice
   playerTransform: {fileID: 332663625}
   dialogueCanvasGroup: {fileID: 0}
---- !u!114 &2127175168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2127175162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
-  isBlocked: 0
 --- !u!65 &2127175169
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -156264,6 +156665,19 @@ MonoBehaviour:
       Data4: -1040821612
     Path: event:/knocking
   focusPower: 0.9
+--- !u!114 &2127175173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127175162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39751f9e594f8ed42aa2735c0facb416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineInteractable: {fileID: 1593234028}
 --- !u!4 &2127642402 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d2d99aa5e2dfb9f42bddc39e6c77e1e2,

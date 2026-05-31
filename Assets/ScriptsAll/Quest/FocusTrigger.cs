@@ -55,6 +55,7 @@ public class FocusTrigger : MonoBehaviour
 
     private IEnumerator OnTriggerEvent()
     {
+        Pause.canPause = false;
         gameObject.GetComponent<Collider>().enabled = false;
 
         _playerController.isCinematic = true;
@@ -78,6 +79,7 @@ public class FocusTrigger : MonoBehaviour
         _playerController.SetCanMove(true);
 
         enabled = false;
+        Pause.canPause = true;
     }
 
     private bool IsQuestActive(string id)

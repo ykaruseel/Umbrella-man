@@ -38,7 +38,7 @@ public class PlayerInteraction : MonoBehaviour
             PlaceableItem item = hit.collider.GetComponentInParent<PlaceableItem>();
             DoorOutline doorOutline = hit.collider.GetComponentInParent<DoorOutline>();
 
-            if (doorOutline != null)
+            if (doorOutline != null && doorOutline.enabled)
             {
                 if (currentOutline != doorOutline)
                 {

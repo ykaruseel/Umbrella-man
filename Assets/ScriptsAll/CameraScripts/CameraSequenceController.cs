@@ -31,6 +31,7 @@ public class CameraSequenceController : MonoBehaviour
 
     void Start()
     {
+        Pause.canPause = false;
         intro = true;
         if (MusicManager.Instance != null)
         {
@@ -111,6 +112,7 @@ public class CameraSequenceController : MonoBehaviour
         yield return fade.FadeIn();
 
         TutorialManager.Instance.ShowHint(HintType.Move);
+        Pause.canPause = true;
     }
 
     void DisableAllCameras()
@@ -122,18 +124,17 @@ public class CameraSequenceController : MonoBehaviour
         cam5.gameObject.SetActive(false);
     }
 
-    //dla debuga
-
-    private void Update()
-    {
-        if (intro && Input.GetKeyDown(KeyCode.Space))
-        {
-            Skip();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (intro && Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        Skip();
+    //    }
+    //}
 
     public void StartThirdAnim()
     {
+        Pause.canPause = false;
         DisableAllCameras();
 
         cam5.gameObject.SetActive(true);
@@ -165,6 +166,7 @@ public class CameraSequenceController : MonoBehaviour
 
         playerController.isCinematic = false;
         playerController.SetCanMove(true);
+        Pause.canPause = true;
 
     }
 

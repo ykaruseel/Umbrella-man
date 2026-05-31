@@ -7,6 +7,8 @@ public class Pause : MonoBehaviour
 {
     public static bool isPaused = false;
 
+    public static bool canPause;
+
     [SerializeField] private PlayerController _playerController;
     [SerializeField] private UmbrellaManChase _umbrellaManChase;
     //[SerializeField] private GameObject _pauseMenuUI;
@@ -36,6 +38,7 @@ public class Pause : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
+            if (!canPause) return;
             if(_knifeManAI.isChasing) return;
             foreach (GameObject obj in _UIElements)
             {

@@ -105,6 +105,7 @@ public class QuestEvents : MonoBehaviour
 
     public IEnumerator QuestEvent3()
     {
+        Pause.canPause = false;
         if (lesterStairsBlock != null) lesterStairsBlock.SetActive(false);
         
         if (shadowJumpscare != null) shadowJumpscare.SetActive(true);
@@ -224,6 +225,8 @@ public class QuestEvents : MonoBehaviour
 
     public IEnumerator QuestEvent9()
     {
+        Pause.canPause = false;
+
         player.SetCanMove(false);
 
         player.isCinematic = true;
@@ -305,15 +308,9 @@ public class QuestEvents : MonoBehaviour
         TutorialManager.Instance.ShowHint(HintType.Sprint);
     }
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            StartCoroutine(QuestEvent11());
-        }
-    }
     public IEnumerator QuestEvent11()
     {
+        Pause.canPause = false;
         knifeMan.SetActive(false);
 
         FMODUnity.RuntimeManager.PlayOneShot(umbrellaAppearSound);

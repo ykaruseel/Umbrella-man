@@ -17,6 +17,8 @@ public class NeighborDoor : MonoBehaviour
     [SerializeField] private float focusPower = 0.9f;
 
     private PlayerComments comments;
+
+    private DoorOutline doorOutline;
     public void Interact(PlayerController playerController)
     {
         if (hasTriggered) return;
@@ -24,10 +26,14 @@ public class NeighborDoor : MonoBehaviour
         player = playerController;
 
         comments = GetComponent<PlayerComments>();
+        doorOutline = GetComponent<DoorOutline>();
 
         player.SetCanMove(false);
         player.isCinematic = true;
-      
+
+        doorOutline.Hide();
+        doorOutline.enabled = false;
+
         hasTriggered = true;
 
         if (TryGetComponent<OutlineInteractable>(out var outline))

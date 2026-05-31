@@ -8,7 +8,6 @@ public class QuestManagerV2 : MonoBehaviour
 {
     public static QuestManagerV2 Instance;
 
-    //Vremenno
     public PlayerController playerController;
     public QuestUIV2 questUI;
 
@@ -31,7 +30,6 @@ public class QuestManagerV2 : MonoBehaviour
         {
             questSequence[i].Initialize(i == 0);
         }
-        Debug.Log($"<color=yellow>[Manager]</color> Выдача квеста: {questSequence[currentQuestIndex].questID}");
         questUI.ShowNewQuest(questSequence[currentQuestIndex]);
     }
 
@@ -48,7 +46,6 @@ public class QuestManagerV2 : MonoBehaviour
         if (currentQuestIndex >= questSequence.Count) return;
 
         QuestData current = questSequence[currentQuestIndex];
-        Debug.Log($"<color=yellow>[Manager]</color> �������� ��������: {id} ��� ���� {type} � ������ {current.questID}");
         if (current.isActive && current.type == type)
         {
             current.CheckTarget(id);
@@ -87,13 +84,8 @@ public class QuestManagerV2 : MonoBehaviour
         if (currentQuestIndex < questSequence.Count)
         {
             questSequence[currentQuestIndex].isActive = true;
-            Debug.Log($"<color=yellow>[Manager]</color> ��������� �����: {questSequence[currentQuestIndex].questID}");
             RuntimeManager.PlayOneShot(questCompletedSound);
             StartCoroutine(questUI.CompleteAndSwitchRoutine(questSequence[currentQuestIndex - 1], questSequence[currentQuestIndex]));
-        }
-        else
-        {
-            // All quests completed
         }
 
         switch (questSequence[currentQuestIndex].questID)
