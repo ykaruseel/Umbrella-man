@@ -223,7 +223,13 @@ public class QuestEvents : MonoBehaviour
         }
 
         pulseHighlightsToEnable.Show();
-        pulseHighlightsToEnable.transform.GetComponent<OutlineInteractable>().isBlocked = false;
+
+        var outline = pulseHighlightsToEnable.transform.GetComponent<OutlineInteractable>();
+
+        if (outline != null)
+        {
+            outline.isBlocked = false;
+        }
     }
 
     public IEnumerator QuestEvent9()

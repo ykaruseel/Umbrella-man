@@ -33,6 +33,8 @@ public class DeathHandler : MonoBehaviour
         gameOverUI.interactable = true;
         gameOverUI.blocksRaycasts = true;
 
+
+
         foreach (DoorController door in doorControllers)
         {
             door.ResetDoor();
@@ -46,6 +48,7 @@ public class DeathHandler : MonoBehaviour
         {
             playerController.SetCanMove(false);
             playerController.isCinematic = true;
+            playerController.transform.GetComponent<Flashlight>().SetBlocked(true);
         }
     }
 
@@ -72,6 +75,8 @@ public class DeathHandler : MonoBehaviour
         gameOverUI.alpha = 0;
         gameOverUI.interactable = false;
         gameOverUI.blocksRaycasts = false;
+
+        playerController.transform.GetComponent<Flashlight>().SetBlocked(false);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

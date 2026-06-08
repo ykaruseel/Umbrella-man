@@ -161,6 +161,14 @@ public class KnifeManAI : MonoBehaviour
     {
         if (Time.time >= lastAttackTime + attackCooldown)
         {
+            Vector3 direction = (playerTransform.position - transform.position).normalized;
+            direction.y = 0f;
+            if (direction != Vector3.zero)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, 360f);
+            }
+
             animator.SetTrigger("Attack");
 
             EventInstance inst = RuntimeManager.CreateInstance(attackSound);
@@ -204,6 +212,8 @@ public class KnifeManAI : MonoBehaviour
     public void ResetChasing()
     {
         isChasing = false;
+
+        animator.SetFloat("Speed", 0f);
 
         agent.Warp(new Vector3(-13.905f, -13.51372f, -17.796f));
 

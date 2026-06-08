@@ -5,7 +5,6 @@ public class Flashlight : MonoBehaviour
 {
     public string ID;
 
-    [Header("�������� ����������")]
     [SerializeField] private Light lightSource;
     [SerializeField] private GameObject flashLight;
     [SerializeField] private Transform triggerHandle;
