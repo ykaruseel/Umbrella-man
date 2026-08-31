@@ -4,10 +4,10 @@ using System.Collections;
 
 public class PictureTrigger : MonoBehaviour
 {
-    [Header("Что должно упасть?")]
+    [Header("What should fall?")]
     public FallingPicture picture;
 
-    [Header("Эффект испуга (PostProcess Volume)")]
+    [Header("Fright Effect (PostProcess Volume)")]
     public Volume scareVolume; 
 
     private bool triggered = false;
@@ -15,9 +15,19 @@ public class PictureTrigger : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         
-        if (!triggered && other.CompareTag("Player"))
+        if (triggered) return; 
+        
+        if (other.CompareTag("Player"))
         {
+            
             triggered = true;
+            
+            
+            Collider myCollider = GetComponent<Collider>();
+            if (myCollider != null)
+            {
+                myCollider.enabled = false;
+            }
             
             
             if (picture != null) 

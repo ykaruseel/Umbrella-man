@@ -10,32 +10,44 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager instance;
 
     [Header("UI")]
-    public GameObject dialoguePanel;    // панель с диалогом
+    public GameObject dialoguePanel;   
     public TMP_Text nameText;
     public TMP_Text dialogueText;       
 
     [Header("Settings")]
-    public float typingSpeed = 0.03f;   // скорость печати
-    public float fadeDuration = 0.2f;   // чуть ускорил появление (было 0.5)
+    public float typingSpeed = 0.03f;  
+    public float fadeDuration = 0.2f;   
 
     [Header("FMOD Voices")]
     [SerializeField] private EventReference danielVoiceEvent;
     [SerializeField] private EventReference lesterVoiceEvent;
+    [SerializeField] private Transform danielTransform;
+    [SerializeField] private Transform lesterTransform;
+    [SerializeField] private EventReference knifeManVoiceEvent;
+    [SerializeField] private Transform knifeManTransform;
+
+    [SerializeField] private Animator danielAnimator;
+    [SerializeField] private Animator lesterAnimator;
+    [SerializeField] private Animator currentAnimator;
+
+    [Header("Cinematic Cameras")]
+    public DialogueCameraSystem currentCameraSystem;
 
     private Queue<DialogueLine> linesQueue = new Queue<DialogueLine>();
     private bool isDialogueActive = false;
     
-    // --- НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ ПРОПУСКА ---
-    private bool isTyping = false;       // Печатается ли текст сейчас?
-    private string currentSentence = ""; // Храним полную фразу здесь
-    // -------------------------------------
-
+    private bool isTyping = false;       
+    private string currentSentence = ""; 
+  
     private Coroutine typingCoroutine;
     private Coroutine fadeCoroutine; 
 
     private FMOD.Studio.EventInstance currentVoiceInstance;
     private bool hasActiveVoice = false;
     public CanvasGroup dialogueCanvasGroup; 
+
+    
+    private float lastClickTime = 0f;
 
     void Awake()
     {
@@ -77,23 +89,20 @@ public class DialogueManager : MonoBehaviour
         DisplayNextSentence();
     }
 
-    // --- ОБНОВЛЕННАЯ ЛОГИКА ОТОБРАЖЕНИЯ ---
     public void DisplayNextSentence()
     {
-        // 1. Если текст ЕЩЁ печатается — завершаем его мгновенно
+        if (Time.unscaledTime - lastClickTime < 0.1f) return;
+        lastClickTime = Time.unscaledTime;
+
         if (isTyping)
         {
             if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-            
-            if (dialogueText != null) 
-                dialogueText.text = currentSentence; // Показываем всю фразу сразу
-            
+            if (dialogueText != null) dialogueText.text = currentSentence; 
             isTyping = false;
-            return; // ВАЖНО: Выходим, не запуская следующую фразу
+            return; 
         }
 
-        // 2. Если текст УЖЕ написан полностью — переходим к следующему
-        StopCurrentVoice(); 
+        StopCurrentVoice(currentAnimator); 
 
         if (linesQueue.Count == 0)
         {
@@ -101,47 +110,53 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        DialogueLine line = linesQueue.Dequeue();
         
-        // Сохраняем полную фразу для пропуска
+        DialogueLine line = linesQueue.Dequeue();
         currentSentence = line.sentence;
+        
+        
+        if (currentCameraSystem != null)
+        {
+            currentCameraSystem.NextLine(line.speakerName);
+        }
 
         if (nameText != null) nameText.text = line.speakerName;
-
         typingCoroutine = StartCoroutine(TypeSentence(line));
     }
 
     private IEnumerator TypeSentence(DialogueLine line)
     {
-        isTyping = true; // Начали печать
-        
+        isTyping = true; 
         if (dialogueText != null) dialogueText.text = "";
-
         StartVoiceForSpeaker(line.speakerName);
 
         foreach (char letter in line.sentence.ToCharArray())
         {
-            // Учитываем паузу (твоя старая логика)
             while (Pause.isPaused)
             {
-                SetPaused(); // ставим звук на паузу
+                SetPaused(); 
                 yield return null;
             }
-            SetPaused(); // снимаем звук с паузы
+            SetPaused(); 
 
             if (dialogueText != null) dialogueText.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        isTyping = false; // Закончили печать
-        StopCurrentVoice();
+        isTyping = false; 
+        StopCurrentVoice(currentAnimator);
         typingCoroutine = null;
     }
 
     private void EndDialogue()
     {
         isDialogueActive = false;
-        StopCurrentVoice();
+        StopCurrentVoice(currentAnimator);
+
+        if (currentCameraSystem != null)
+        {
+            currentCameraSystem.EndDialogue();
+        }
 
         if (dialoguePanel != null && dialogueCanvasGroup != null)
         {
@@ -175,25 +190,43 @@ public class DialogueManager : MonoBehaviour
         return isDialogueActive;
     }
 
-    // ---------- FMOD ГОЛОСА ----------
     private void StartVoiceForSpeaker(string speakerName)
     {
-        StopCurrentVoice();
+        StopCurrentVoice(currentAnimator);
         EventReference voiceEvent = new EventReference();
+        Transform speakerTransform = null;
 
-        if (speakerName == "Daniel") voiceEvent = danielVoiceEvent;
-        else if (speakerName == "Lester") voiceEvent = lesterVoiceEvent;
+        if (speakerName == "Daniel")
+        {
+            currentAnimator = danielAnimator;
+            voiceEvent = danielVoiceEvent;
+            speakerTransform = danielTransform;
+        }
+        else if (speakerName == "Lester")
+        {
+            currentAnimator = lesterAnimator;
+            voiceEvent = lesterVoiceEvent;
+            speakerTransform = lesterTransform;
+        }
+        else if (speakerName == "Suspicious man with a knife")
+        {
+            currentAnimator = null;
+            voiceEvent = knifeManVoiceEvent;
+            speakerTransform = knifeManTransform;
+        }
         else return;
 
-        if (voiceEvent.IsNull) return;
-
+        if (voiceEvent.IsNull || speakerTransform == null) return;
         currentVoiceInstance = RuntimeManager.CreateInstance(voiceEvent);
+        RuntimeManager.AttachInstanceToGameObject(currentVoiceInstance, speakerTransform, speakerTransform.GetComponent<Rigidbody>());
         currentVoiceInstance.start();
         hasActiveVoice = true;
+        if (currentAnimator != null) currentAnimator.SetBool("Talk", true);
     }
 
-    private void StopCurrentVoice()
+    private void StopCurrentVoice(Animator animator)
     {
+        if (animator != null) animator.SetBool("Talk", false);
         if (!hasActiveVoice) return;
         if (currentVoiceInstance.isValid())
         {

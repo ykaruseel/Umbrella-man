@@ -2,30 +2,71 @@ using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 public class QuestEvents : MonoBehaviour
 {
+
+    [Header("Jumpscares")]
+    public GameObject pictureJumpscare;
+    public GameObject shadowJumpscare;
+    public GameObject bulbJumpscare;
+    public GameObject doorJumpscare;
+
+
+    [Header("Soft Boundaries")]
+    public GameObject lesterStairsBlock;
+    public GameObject basementBlock;
+
     [Header("Quest 3")]
     public List<GameObject> objectsToEnable;
 
     public List<GameObject> objectsToDisable;
+
+    public GameObject lesterDoor;
+
+    public StudioEventEmitter emitterLester;
+
+    public DoorController doorController;
+
+    public CameraSequenceController cameraSequenceController;
+
+    public MeshRenderer entranceDoorMR;
+
+    public GameObject brokenDoor;
 
     [Header("Quest 5")]
     public GameObject tvToEndable;
 
     public GameObject tvToDisable;
 
+    public List<PulseHighlight> pulseHighlights;
+
+    public List<OutlineInteractable> outlineInteractables;
+
     [Header("Quest 7")]
     public List<Light> lightsToDisable;
 
+    public PulseHighlight pulseHighlightsToEnable;
+
     [Header("Quest 9-11")]
+    [SerializeField] private FMODUnity.EventReference umbrellaAppearSound;
     public PlayerController player;
+
+    public Light knifemanLight;
+
+    public StudioEventEmitter emitterKnifeman;
 
     public GameObject knifeMan;
 
     public GameObject umbrellaMan;
+
+    public GameObject umbrellaManTarget;
 
     public NPC_Dialogue knifeManDialogue;
 
@@ -42,19 +83,56 @@ public class QuestEvents : MonoBehaviour
 
     public List<DoorController> doors;
 
+    public Flashlight flashlight;
+
     [Header("Quest 11")]
-    public PlayerComments comments;
-    
+    public GameObject endGame;
+
     public Light flickerLight;
 
+    public Volume postProcessVolume;
+
+    public GameObject DanielsModel;
+
+    [Header("Quest 1B")]
+
+    public GameObject leftDoor;
+
+    public GameObject rightDoor;
+
+    public GameObject mouse;
+
+    public PlayerComments playerComments1B;
+
+    public Transform wardrobe;
+
+    [Header("Quest 9F")]
+
+    public GameObject cement;
+
+    public GameObject manWithUmbrella;
 
     private void Awake()
     {
         Instance = this;
+
+        foreach (OutlineInteractable interactable in outlineInteractables)
+        {
+            if (interactable != null)
+                interactable.isBlocked = true;
+        }
     }
 
     public IEnumerator QuestEvent3()
     {
+        Pause.canPause = false;
+        if (lesterStairsBlock != null) lesterStairsBlock.SetActive(false);
+        
+        if (shadowJumpscare != null) shadowJumpscare.SetActive(true);
+
+        MusicManagerv2.Instance.StartMusic();
+        MusicManagerv2.Instance.SetMusicState(0);
+        DanielsModel.SetActive(false);
         foreach (GameObject obj in objectsToEnable)
         {
             if (obj != null)
@@ -65,6 +143,31 @@ public class QuestEvents : MonoBehaviour
         {
             if (obj != null)
                 obj.SetActive(false);
+        }
+
+        lesterDoor.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        DoorOutline doorOutline = lesterDoor.GetComponent<DoorOutline>();
+        doorOutline.Hide();
+        doorOutline.enabled = false;
+
+        var instance = emitterLester.EventInstance;
+
+        if (instance.isValid())
+        {
+            float startVolume;
+            instance.getVolume(out startVolume);
+            float currentTime = 0;
+
+            while (currentTime < 2f)
+            {
+                currentTime += Time.deltaTime;
+                float newVolume = Mathf.Lerp(startVolume, 0f, currentTime / 2f);
+                instance.setVolume(newVolume);
+                yield return null;
+            }
+
+            instance.setVolume(0f);
+            emitterLester.Stop();
         }
 
         if (player)
@@ -79,34 +182,56 @@ public class QuestEvents : MonoBehaviour
 
             yield return new WaitForSeconds(1.25f);
 
-            player.transform.position = new Vector3(-22.77f, -8.31f, -1.53f);
-            player.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-            player.SetRotation(180f, 0f);
+            player.transform.position = new Vector3(-41.4f, -10.17f, -36.6f);
+            player.transform.rotation = Quaternion.Euler(0f, 40f, 0f);
+            player.SetRotation(40f, 0f);
 
-            yield return new WaitForSeconds(0.25f);
-
-            StartCoroutine(cameraFade.FadeIn());
-
-            yield return new WaitForSeconds(1f);
-
-            player.SetCanMove(true);
-            player.isCinematic = false;
             if (cc) cc.enabled = true;
             player.enabled = true;
+
+            cameraSequenceController.StartThirdAnim();
         }
+
+        doorController.DoorEvent();
+
+        entranceDoorMR.enabled = true;
+        brokenDoor.SetActive(false);
     }
 
 
     public void QuestEvent5()
     {
+        tvToEndable.SetActive(true);
+        tvToDisable.SetActive(false);
+
+        if (basementBlock != null) basementBlock.SetActive(false);
+
+        if (pictureJumpscare != null) pictureJumpscare.SetActive(true);
+        
+        if (bulbJumpscare != null) bulbJumpscare.SetActive(true);
+        if (doorJumpscare != null) doorJumpscare.SetActive(true);
+
+
+        if (bulbJumpscare != null) bulbJumpscare.SetActive(true);
+        if (doorJumpscare != null) doorJumpscare.SetActive(true);
+
         foreach (GameObject obj in objectsToEnable)
         {
             if (obj != null)
                 obj.tag = "Pickable";
         }
 
-        tvToEndable.SetActive(true);
-        tvToDisable.SetActive(false);
+        foreach (OutlineInteractable interactable in outlineInteractables)
+        {
+            if (interactable != null)
+                interactable.isBlocked = false;
+        }
+
+        foreach (PulseHighlight highlight in pulseHighlights)
+        {
+            if (highlight != null)
+                highlight.Show();
+        }
     }
 
     public void QuestEvent7()
@@ -116,46 +241,62 @@ public class QuestEvents : MonoBehaviour
             if (light != null)
                 light.enabled = false;
         }
+
+        pulseHighlightsToEnable.Show();
+
+        var outline = pulseHighlightsToEnable.transform.GetComponent<OutlineInteractable>();
+
+        if (outline != null)
+        {
+            outline.isBlocked = false;
+        }
     }
 
     public IEnumerator QuestEvent9()
     {
+        Pause.canPause = false;
+
         player.SetCanMove(false);
 
         player.isCinematic = true;
 
-
         StartCoroutine(cameraFade.FadeOut());
 
         yield return new WaitForSeconds(1.25f);
 
-        cinematicCamera.gameObject.SetActive(true);
-        playerCamera1.gameObject.SetActive(false);
-        playerCamera2.gameObject.SetActive(false);
-        knifeMan.SetActive(true);
-
-        yield return new WaitForSeconds(0.25f);
-
-        StartCoroutine(cameraFade.FadeIn());
+        flashlight.SetBlocked(true);
 
         CharacterController cc = player.transform.GetComponent<CharacterController>();
         if (cc) cc.enabled = false;
 
-        player.transform.rotation = Quaternion.Euler(0f, -0.853f, 0f);
-        player.SetRotation(-0.853f, 0f);
+        player.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+        player.SetRotation(180f, 0f);
 
-        float elapsed = 0;
-        Vector3 startPos = player.transform.position;
-        while (elapsed < 2.5f)
-        {
-            player.transform.position = Vector3.Lerp(startPos, retreatPoint.position, elapsed);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
+        player.transform.position = retreatPoint.position;
+
+        DanielsModel.SetActive(true);
+
+        knifeMan.SetActive(true);
+
+        cinematicCamera.gameObject.SetActive(true);
+        playerCamera1.gameObject.SetActive(false);
+        playerCamera2.gameObject.SetActive(false);
+        knifeMan.transform.position = new Vector3(-13.768f, -13.51372f, -19.388f);
+
+        GramophoneRotation.GramophoneIsPlaying = false;
+        emitterKnifeman.Stop();
+
+        StartCoroutine(cameraFade.FadeIn());
+
+        yield return new WaitForSeconds(3f);
 
         StartCoroutine(cameraFade.FadeOut());
 
         yield return new WaitForSeconds(1.25f);
+
+        knifeMan.transform.position = new Vector3(-13.905f, -13.51372f, -17.796f);
+        player.transform.rotation = Quaternion.Euler(0f, -0.853f, 0f);
+        player.SetRotation(-0.853f, 0f);
 
         playerCamera1.gameObject.SetActive(true);
         playerCamera2.gameObject.SetActive(true);
@@ -163,11 +304,15 @@ public class QuestEvents : MonoBehaviour
 
         yield return new WaitForSeconds(0.25f);
 
+        DanielsModel.SetActive(false);
+
         StartCoroutine(cameraFade.FadeIn());
 
         yield return new WaitForSeconds(1.25f);
 
         knifeManDialogue.TriggerDialogue();
+
+        knifemanLight.enabled = true;
     }
 
     public IEnumerator QuestEvent10()
@@ -176,6 +321,8 @@ public class QuestEvents : MonoBehaviour
         if (cc) cc.enabled = true;
         player.SetCanMove(true);
         player.isCinematic = false;
+        flashlight.SetBlocked(false);
+        knifemanLight.enabled = false;
 
         yield return new WaitForSeconds(2f);
 
@@ -186,29 +333,36 @@ public class QuestEvents : MonoBehaviour
             if (door != null)
                 door.isLockedWithQTE = true;
         }
+
+        TutorialManager.Instance.ShowHint(HintType.Sprint);
     }
 
-    public IEnumerator QuestEvent11() 
+    public IEnumerator QuestEvent11()
     {
+        Pause.canPause = false;
         knifeMan.SetActive(false);
+
+        FMODUnity.RuntimeManager.PlayOneShot(umbrellaAppearSound);
 
         umbrellaMan.SetActive(true);
 
         player.SetCanMove(false);
 
         player.isCinematic = true;
-        
+
         flickerLight.enabled = true;
 
-        player.StartCinematicPan(umbrellaMan.transform, 2f);
+        player.StartCinematicPan(umbrellaManTarget.transform, 2f);
 
         yield return new WaitForSeconds(2f);
 
         StartCoroutine(LightFlickerRoutine());
 
-        player.ZoomIn(0.4f);        
+        StartCoroutine(SmoothPostProcess(6f));
 
-        yield return new WaitForSeconds(2f);
+        player.ZoomIn(0.5f, 4f);
+
+        yield return new WaitForSeconds(6f);
 
         StartCoroutine(cameraFade.FadeOut());
 
@@ -216,15 +370,7 @@ public class QuestEvents : MonoBehaviour
 
         flickerLight.enabled = false;
 
-        if (comments != null)
-        {
-            comments.StartDialogue();
-
-            while (comments != null && comments.IsDialogueActive())
-            {
-                yield return null;
-            }
-        }
+        endGame.SetActive(true);
     }
 
     private IEnumerator LightFlickerRoutine()
@@ -268,5 +414,180 @@ public class QuestEvents : MonoBehaviour
             minDuration = Mathf.Max(minDuration, 0.05f);
             maxDuration = Mathf.Max(maxDuration, 0.1f);
         }
+    }
+
+    private IEnumerator SmoothPostProcess(float duration)
+    {
+        if (postProcessVolume == null || postProcessVolume.profile == null) yield break;
+
+        postProcessVolume.profile.TryGet(out Vignette vignette);
+        postProcessVolume.profile.TryGet(out ColorAdjustments colorAdjust);
+        postProcessVolume.profile.TryGet(out LensDistortion lensDist);
+        postProcessVolume.profile.TryGet(out ChromaticAberration chromAb);
+        postProcessVolume.profile.TryGet(out FilmGrain grain);
+
+        float startVignette = vignette != null ? vignette.intensity.value : 0;
+        float startExposure = colorAdjust != null ? colorAdjust.postExposure.value : 0;
+        float startContrast = colorAdjust != null ? colorAdjust.contrast.value : 0;
+        float startDistortion = lensDist != null ? lensDist.intensity.value : 0;
+        float startChrom = chromAb != null ? chromAb.intensity.value : 0;
+        float startGrainInt = grain != null ? grain.intensity.value : 0;
+
+        float t = 0;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration;
+            float curve = Mathf.SmoothStep(0, 1, t);
+
+            if (vignette != null) vignette.intensity.value = Mathf.Lerp(startVignette, 0.6f, curve);
+
+            if (colorAdjust != null)
+            {
+                colorAdjust.postExposure.value = Mathf.Lerp(startExposure, 3f, curve);
+                colorAdjust.contrast.value = Mathf.Lerp(startContrast, 70f, curve);
+            }
+
+            if (lensDist != null) lensDist.intensity.value = Mathf.Lerp(startDistortion, 0.5f, curve);
+            if (chromAb != null) chromAb.intensity.value = Mathf.Lerp(startChrom, 1f, curve);
+
+            if (grain != null)
+            {
+                grain.intensity.value = Mathf.Lerp(startGrainInt, 1f, curve);
+                grain.response.value = Mathf.Lerp(grain.response.value, 0f, curve);
+            }
+
+            yield return null;
+        }
+    }
+
+    public IEnumerator QuestEvent9B()
+    {
+        Pause.canPause = false;
+
+        player.SetCanMove(false);
+
+        player.isCinematic = true;
+
+        CharacterController cc = player.transform.GetComponent<CharacterController>();
+        if (cc) cc.enabled = false;
+
+        Vector3 sP = player.transform.position;
+        Quaternion sR = player.transform.rotation;
+
+        Vector3 fP = new Vector3(29f, -12.5f, -8.7f);
+        Quaternion fR = Quaternion.Euler(0f, 106f, 0f);
+
+        float time = 0f;
+
+        while (time < 6f)
+        {
+            time += Time.deltaTime;
+
+            float t = time / 6f;
+
+            t = Mathf.SmoothStep(0f, 1f, t);
+
+            player.transform.position = Vector3.Lerp(sP, fP, t);
+            player.transform.rotation = Quaternion.Slerp(sR, fR, t);
+
+            yield return null;
+        }
+
+        Quaternion leftDoorS = leftDoor.transform.rotation;
+        Quaternion rightDoorS = rightDoor.transform.rotation;
+
+        Quaternion leftDoorF = leftDoorS * Quaternion.Euler(0f, 90f, 0f);
+        Quaternion rightDoorF = rightDoorS * Quaternion.Euler(0f, -90f, 0f);
+
+        time = 0f;
+
+        while (time < 2f)
+        {
+            time += Time.deltaTime;
+
+            float t = Mathf.SmoothStep(0f, 1f, time / 2f);
+
+            leftDoor.transform.rotation = Quaternion.Slerp(leftDoorS, leftDoorF, t);
+            rightDoor.transform.rotation = Quaternion.Slerp(rightDoorS, rightDoorF, t);
+
+            yield return null;
+        }
+
+        leftDoor.transform.rotation = leftDoorF;
+        rightDoor.transform.rotation = rightDoorF;
+
+        player.transform.position = fP;
+        player.transform.rotation = fR;
+        player.SetRotation(106f, 0f);
+
+        mouse.SetActive(true);
+
+        player.StartCinematicPan(mouse.transform, 6f);
+        player.ZoomIn(0.4f);
+
+        yield return new WaitUntil(() => mouse == null || !mouse.activeSelf);
+
+        player.ZoomOut(0.4f);
+        yield return new WaitForSeconds(1f);
+
+        player.StartCinematicPan(wardrobe, 1f);
+
+        playerComments1B.StartDialogue();
+
+        yield return new WaitUntil(() => !playerComments1B.IsDialogueActive());
+
+        StartCoroutine(cameraFade.FadeOut());
+
+        yield return new WaitForSeconds(1.25f);
+
+        SceneManager.LoadScene("MainSceneFlashback");
+    }
+
+    public IEnumerator QuestEvent9F()
+    {
+        Pause.canPause = false;
+
+        player.SetCanMove(false);
+
+        player.isCinematic = true;
+
+        CharacterController cc = player.transform.GetComponent<CharacterController>();
+        if (cc) cc.enabled = false;
+
+        cement.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+
+        player.StartCinematicPan(cement.transform, 4f);
+        player.ZoomIn(0.6f,2f);
+
+        yield return new WaitForSeconds(6.5f);
+
+        manWithUmbrella.SetActive(true);
+
+        player.ZoomOut(0.6f,2f);
+        yield return new WaitForSeconds(2f);
+
+        player.StartCinematicPan(manWithUmbrella.transform, 4f);
+
+        player.ZoomIn(0.7f,2f);
+
+        yield return new WaitForSeconds(8f);
+
+        StartCoroutine(cameraFade.FadeOut());
+
+        yield return new WaitForSeconds(1.25f);
+        
+        manWithUmbrella.SetActive(false);
+
+        StartCoroutine(cameraFade.FadeIn());
+
+        yield return new WaitForSeconds(2f);
+
+        StartCoroutine(cameraFade.FadeOut());
+
+        yield return new WaitForSeconds(1.25f);
+
+        SceneManager.LoadScene("BackyardAfterflashback");
     }
 }

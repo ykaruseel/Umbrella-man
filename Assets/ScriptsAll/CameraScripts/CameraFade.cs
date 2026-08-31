@@ -12,16 +12,14 @@ public class CameraFade : MonoBehaviour
 
     public IEnumerator FadeOut()
     {
-        active = !active;
-        SetFadeImageActive(active);
+        fadeImage.gameObject.SetActive(true);
         yield return Fade(0f, 1f);
     }
 
     public IEnumerator FadeIn()
     {
         yield return Fade(1f, 0f);
-        active = !active;
-        SetFadeImageActive(active);
+        fadeImage.gameObject.SetActive(false);
     }
 
     IEnumerator Fade(float from, float to)
@@ -44,6 +42,13 @@ public class CameraFade : MonoBehaviour
     public void SetFadeImageActive(bool value)
     {
         fadeImage.gameObject.SetActive(value);
+    }
+
+    public void SetFadeAlpha(float alpha)
+    {
+        Color c = fadeImage.color;
+        c.a = Mathf.Clamp01(alpha);
+        fadeImage.color = c;
     }
 }
 

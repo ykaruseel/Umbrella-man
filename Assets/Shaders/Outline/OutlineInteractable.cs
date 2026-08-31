@@ -7,6 +7,8 @@ public class OutlineInteractable : MonoBehaviour
     Renderer rend;
     bool isOutlined;
 
+    public bool isBlocked = false;
+
     void Awake()
     {
         rend = GetComponentInChildren<Renderer>();
@@ -14,7 +16,7 @@ public class OutlineInteractable : MonoBehaviour
 
     public void Show()
     {
-        if (rend == null || outlineMaterial == null || isOutlined) return;
+        if (rend == null || outlineMaterial == null || isOutlined || isBlocked) return;
 
         var mats = rend.materials;
         var newMats = new Material[mats.Length + 1];

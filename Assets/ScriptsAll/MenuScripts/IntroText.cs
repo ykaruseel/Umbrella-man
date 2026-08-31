@@ -18,13 +18,7 @@ public class IntroText : MonoBehaviour
 
     [SerializeField] private GameObject IntroTextGO;
     [SerializeField] private EventReference typewriterEvent;
-
-
-    private void Start()
-    {
-        //StartCoroutine(SequenceRoutine(2f));
-    }
-
+    
     public IEnumerator SequenceRoutine(float t)
     {
         yield return new WaitForSeconds(t);
@@ -35,7 +29,8 @@ public class IntroText : MonoBehaviour
         {
             yield return TypeText(technicalText, msg);
             yield return new WaitForSeconds(messagePause);
-            yield return DeleteText(technicalText);
+            StartCoroutine(FadeCanvasGroup(IntroTextGO.GetComponent<CanvasGroup>(), 1f, 0f));
+            yield return new WaitForSeconds(2f);
         }
 
         IntroTextGO.SetActive(false);
@@ -45,15 +40,34 @@ public class IntroText : MonoBehaviour
     {
         text.text = "";
 
+        IntroTextGO.GetComponent<CanvasGroup>().alpha = 1f;
+
         foreach (char c in content)
         {
             text.text += c;
 
             if (!typewriterEvent.IsNull && c != ' ')
-                RuntimeManager.PlayOneShot(typewriterEvent);
+            {
+                RuntimeManager.PlayOneShot(typewriterEvent, Camera.main.transform.position);
+            }
 
             yield return new WaitForSeconds(typeSpeed);
         }
+    }
+
+    private IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end)
+    {
+        float timer = 0f;
+        cg.alpha = start;
+
+        while (timer < 2f)
+        {
+            timer += Time.deltaTime;
+            cg.alpha = Mathf.Lerp(start, end, timer / 2f);
+            yield return null;
+        }
+
+        cg.alpha = end;
     }
 
     IEnumerator DeleteText(TMP_Text text)

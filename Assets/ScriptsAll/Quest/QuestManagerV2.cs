@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,12 +8,13 @@ public class QuestManagerV2 : MonoBehaviour
 {
     public static QuestManagerV2 Instance;
 
-    //Vremenno
     public PlayerController playerController;
     public QuestUIV2 questUI;
 
     [SerializeField] private List<QuestData> questSequence;
-    private int currentQuestIndex = 0;
+    [SerializeField] private int currentQuestIndex = 0;
+
+    [SerializeField] private EventReference questCompletedSound;
 
     private void Awake()
     {
@@ -28,7 +30,6 @@ public class QuestManagerV2 : MonoBehaviour
         {
             questSequence[i].Initialize(i == 0);
         }
-        Debug.Log($"<color=yellow>[Manager]</color> Следующий квест: {questSequence[currentQuestIndex].questID}");
         questUI.ShowNewQuest(questSequence[currentQuestIndex]);
     }
 
@@ -45,14 +46,17 @@ public class QuestManagerV2 : MonoBehaviour
         if (currentQuestIndex >= questSequence.Count) return;
 
         QuestData current = questSequence[currentQuestIndex];
-        Debug.Log($"<color=yellow>[Manager]</color> Получено действие: {id} для типа {type} в квесте {current.questID}");
         if (current.isActive && current.type == type)
         {
             current.CheckTarget(id);
 
             if (current.isCompleted)
             {
-                Debug.Log($"<color=yellow>[Manager]</color> Квест {current.questID} завершён!");
+                if (current.questID == "Q5")
+                {
+                    MusicManagerv2.Instance.SetMusicState(1);
+                }
+
                 StartCoroutine(ActivateNextQuest());
             }
             else
@@ -65,7 +69,7 @@ public class QuestManagerV2 : MonoBehaviour
     public bool IsQuestActive(string id)
     {
         QuestData current = questSequence[currentQuestIndex];
-        if (id == current.questID) 
+        if (id == current.questID)
         {
             return true;
         }
@@ -80,16 +84,15 @@ public class QuestManagerV2 : MonoBehaviour
         if (currentQuestIndex < questSequence.Count)
         {
             questSequence[currentQuestIndex].isActive = true;
-            Debug.Log($"<color=yellow>[Manager]</color> Следующий квест: {questSequence[currentQuestIndex].questID}");
+            RuntimeManager.PlayOneShot(questCompletedSound);
             StartCoroutine(questUI.CompleteAndSwitchRoutine(questSequence[currentQuestIndex - 1], questSequence[currentQuestIndex]));
-        }
-        else
-        {
-            // All quests completed
         }
 
         switch (questSequence[currentQuestIndex].questID)
         {
+            case "Q2":
+                TutorialManager.Instance.ShowHint(HintType.Interact);
+                break;
             case "Q3":
                 StartCoroutine(QuestEvents.Instance.QuestEvent3());
                 break;
@@ -99,20 +102,61 @@ public class QuestManagerV2 : MonoBehaviour
                 break;
 
             case "Q7":
+                MusicManagerv2.Instance.StopMusic();
                 QuestEvents.Instance.QuestEvent7();
                 break;
 
             case "Q9":
+                MusicManagerv2.Instance.StartMusic();
+                MusicManagerv2.Instance.SetMusicState(4);
                 StartCoroutine(QuestEvents.Instance.QuestEvent9());
                 break;
 
             case "Q10":
+                MusicManagerv2.Instance.SetMusicState(3);
                 StartCoroutine(QuestEvents.Instance.QuestEvent10());
                 break;
 
             case "Q11":
+                MusicManagerv2.Instance.StopMusic();
                 StartCoroutine(QuestEvents.Instance.QuestEvent11());
                 break;
+            case "BQ2":
+                StartCoroutine(QuestEvents.Instance.QuestEvent9B());
+                break;
+            case "QF2":
+                StartCoroutine(QuestEvents.Instance.QuestEvent9F());
+                break;
+        }
+    }
+
+    public int GetCurrentQuest()
+    {
+        return currentQuestIndex;
+    }
+
+    public List<string> GetCompletedGoals()
+    {
+        if (currentQuestIndex < questSequence.Count)
+        {
+            return questSequence[currentQuestIndex].GetCompletedTargetsList();
+        }
+        return new List<string>();
+    }
+
+    public void SetQuestFromLoad(int index, List<string> completedGoals)
+    {
+        currentQuestIndex = index;
+
+        for (int i = 0; i < questSequence.Count; i++)
+        {
+            questSequence[i].Initialize(i == currentQuestIndex);
+        }
+
+        if (currentQuestIndex < questSequence.Count)
+        {
+            questSequence[currentQuestIndex].RestoreProgress(completedGoals);
+            questUI.ShowNewQuest(questSequence[currentQuestIndex]);
         }
     }
 }

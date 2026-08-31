@@ -17,6 +17,7 @@ public class PlayerComments : MonoBehaviour
 
     [Header("FMOD Voices")]
     [SerializeField] private EventReference danielVoiceEvent;
+    [SerializeField] private Transform playerTransform;
 
     private Queue<DialogueLine> linesQueue = new Queue<DialogueLine>();
     private bool isDialogueActive = false;
@@ -37,13 +38,13 @@ public class PlayerComments : MonoBehaviour
         if (commentsGO != null)
         {
             dialogueCanvasGroup = commentsGO.GetComponent<CanvasGroup>();
-            if (dialogueCanvasGroup == null)
-            {
-                dialogueCanvasGroup = commentsGO.AddComponent<CanvasGroup>();
-            }
+            //if (dialogueCanvasGroup == null)
+            //{
+            //    dialogueCanvasGroup = commentsGO.AddComponent<CanvasGroup>();
+            //}
 
-            commentsGO.SetActive(false);
-            dialogueCanvasGroup.alpha = 0f;
+            //commentsGO.SetActive(false);
+            //dialogueCanvasGroup.alpha = 0f;
         }
     }
 
@@ -164,13 +165,19 @@ public class PlayerComments : MonoBehaviour
     private void StartVoiceForSpeaker(string speakerName)
     {
         StopCurrentVoice();
-        EventReference voiceEvent = new EventReference();
 
-        voiceEvent = danielVoiceEvent;
+        EventReference voiceEvent = danielVoiceEvent;
 
-        if (voiceEvent.IsNull) return;
+        if (voiceEvent.IsNull || playerTransform == null) return;
 
         currentVoiceInstance = RuntimeManager.CreateInstance(voiceEvent);
+
+        RuntimeManager.AttachInstanceToGameObject(
+            currentVoiceInstance,
+            playerTransform,
+            playerTransform.GetComponent<Rigidbody>()
+        );
+
         currentVoiceInstance.start();
         hasActiveVoice = true;
     }

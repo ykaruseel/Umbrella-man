@@ -3,14 +3,14 @@ using FMODUnity;
 
 public class FloorLamp : MonoBehaviour
 {
-    [Header("Настройки")]
-    [Tooltip("Перетащи сюда компонент Light (который светит)")]
+    [Header("Settings")]
+    [Tooltip("Light")]
     public Light lampLight; 
 
-    [Tooltip("Перетащи сюда саму модельку лампы (MeshRenderer), чтобы она загоралась")]
+    [Tooltip("(MeshRenderer)")]
     public Renderer bulbRenderer; 
 
-    [Tooltip("Звук щелчка (FMOD Event)")]
+    [Tooltip("FMOD Event")]
     public EventReference clickSound; 
 
     private bool isPlayerNear = false; 

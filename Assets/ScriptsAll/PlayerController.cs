@@ -70,7 +70,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        
         isGameEnded = false;
         
         if (playerCamera == null) playerCamera = Camera.main;
@@ -200,35 +199,40 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    
-    public void ZoomIn(float value = 0.8f)
+    public void ZoomIn(float value = 0.8f, float t = -1f)
     {
         if (currentZoomCoroutine != null)
             StopCoroutine(currentZoomCoroutine);
 
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView* value));
+        float duration = (t < 0) ? dialogueZoomSpeed : t;
+
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView * value, duration));
     }
 
-    public void ZoomOut(float value = 0.8f)
+    public void ZoomOut(float value = 0.8f, float t = -1f)
     {
         if (currentZoomCoroutine != null)
             StopCoroutine(currentZoomCoroutine);
 
-        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView/ value));
+        float duration = (t < 0) ? dialogueZoomSpeed : t;
+
+        currentZoomCoroutine = StartCoroutine(SmoothZoom(virtualCam.Lens.FieldOfView, virtualCam.Lens.FieldOfView / value, duration));
     }
 
-    private IEnumerator SmoothZoom(float from, float to)
+    private IEnumerator SmoothZoom(float from, float to, float time)
     {
         float elapsed = 0f;
-        while (elapsed < dialogueZoomSpeed)
+        while (elapsed < time)
         {
             elapsed += Time.deltaTime;
-            float t = Mathf.SmoothStep(0f, 1f, elapsed / dialogueZoomSpeed);
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / time);
             virtualCam.Lens.FieldOfView = Mathf.Lerp(from, to, t);
             yield return null;
         }
         virtualCam.Lens.FieldOfView = to;
     }
+
+
 
     private void HandleFootsteps()
     {
@@ -333,6 +337,18 @@ public class PlayerController : MonoBehaviour
                     hit.collider.GetComponent<DoorController>().TryOpenDoor();
                     return;
                 }
+
+                if (hit.collider.CompareTag("Switch"))
+                {
+                    hit.collider.GetComponent<LightSwitch>().Interact();
+                    return;
+                }
+
+                if (hit.collider.CompareTag("LesterDoor") && QuestManagerV2.Instance.IsGoalRequired("Trigger Q2 (Door vremenaja)", GoalType.TalkToNPC))
+                {
+                    hit.collider.GetComponent<LesterDoor>().Interact();
+                    return;
+                }
             }
 
             objectInteraction.DropObject();
@@ -346,6 +362,42 @@ public class PlayerController : MonoBehaviour
             {
                 hit.transform.gameObject.SetActive(false);
                 flashlight.enabled = true;
+                TutorialManager.Instance.ShowHint(HintType.Flashlight);
+            }
+
+            if(hit.collider.CompareTag("TrashBag"))
+            {
+                hit.transform.gameObject.SetActive(false);
+                TrashManager.Instance.SetTrashCollidersEnabled();
+            }
+
+            if(hit.collider.CompareTag("BackyardDoor") && QuestManagerV2.Instance.IsGoalRequired("MainEntranceDoor", GoalType.Backyard))
+            {
+                hit.transform.GetComponent<SceneSwitch>().SwitchScene();
+            }
+
+            if (hit.collider.CompareTag("Trash"))
+            {
+                hit.transform.gameObject.SetActive(false);
+                QuestManagerV2.Instance.ProcessAction(hit.transform.name, GoalType.Trash);
+            }
+
+            if (hit.collider.CompareTag("Key") && QuestManagerV2.Instance.IsGoalRequired("Key", GoalType.BigTrashCan))
+            {
+                hit.transform.gameObject.SetActive(false);
+                QuestManagerV2.Instance.ProcessAction(hit.transform.name, GoalType.BigTrashCan);
+                TrashCanDoor.UnlockDoor();
+            }
+
+            if(hit.collider.CompareTag("BigTrashCan") && QuestManagerV2.Instance.IsGoalRequired("BigTrashCan", GoalType.BigTrashCan))
+            {
+                //udalenie musora
+                QuestManagerV2.Instance.ProcessAction("BigTrashCan", GoalType.BigTrashCan);
+            }
+
+            if (hit.collider.CompareTag("BigTrashCanDoor"))
+            {
+                hit.collider.GetComponent<TrashCanDoor>().OpenDoor();
             }
 
             NPC_Dialogue npcDialogue = hit.collider.GetComponent<NPC_Dialogue>();
@@ -356,14 +408,24 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
-            
+            if (hit.collider.CompareTag("LesterDoor") && QuestManagerV2.Instance.IsGoalRequired("Trigger Q2 (Door vremenaja)", GoalType.TalkToNPC))
+            {
+                hit.collider.GetComponent<LesterDoor>().Interact();
+                return;
+            }
+
             if (hit.collider.CompareTag("Pickable"))
             {
                 objectInteraction.PickupObject(hit.collider.gameObject);
                 return;
             }
 
-            
+            if (hit.collider.CompareTag("Switch"))
+            {
+                hit.collider.GetComponent<LightSwitch>().Interact();
+                return;
+            }
+
             InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
             if (interactable != null)
             {
@@ -392,34 +454,54 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator PanToTarget(Transform target, float duration)
     {
-        if (virtualCam == null || target == null) yield break;
+        if (virtualCam == null || target == null)
+            yield break;
 
         Transform cam = virtualCam.transform;
 
+        // Убираем roll камеры в начале
         Vector3 e = cam.eulerAngles;
         e.z = 0f;
         cam.rotation = Quaternion.Euler(e);
-
-        Quaternion startRot = cam.rotation;
-
-        Vector3 targetDir = (target.position - cam.position).normalized;
-        Quaternion targetRot = Quaternion.LookRotation(targetDir, cam.up);
 
         float time = 0f;
 
         while (time < duration)
         {
+            if (target == null)
+                yield break;
+
             float t = time / duration;
 
-            Quaternion rot = Quaternion.Slerp(startRot, targetRot, t);
-            cam.rotation = RemoveRoll(rot);
+            // Направление на ТЕКУЩУЮ позицию мыши
+            Vector3 targetDir = (target.position - cam.position).normalized;
+
+            if (targetDir != Vector3.zero)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(
+                    targetDir,
+                    Vector3.up
+                );
+
+                // Плавное движение камеры к мыши
+                cam.rotation = Quaternion.Slerp(
+                    cam.rotation,
+                    targetRot,
+                    Time.deltaTime * 5f
+                );
+
+                cam.rotation = RemoveRoll(cam.rotation);
+
+                // Убираем крен
+                Vector3 angles = cam.eulerAngles;
+                angles.z = 0f;
+                cam.rotation = Quaternion.Euler(angles);
+            }
 
             time += Time.deltaTime;
+
             yield return null;
         }
-
-        cam.rotation = targetRot;
-        cam.rotation = Quaternion.Euler(cam.eulerAngles.x, cam.eulerAngles.y, 0f);
     }
 
     Quaternion RemoveRoll(Quaternion q)
@@ -438,5 +520,11 @@ public class PlayerController : MonoBehaviour
 
         if (virtualCam != null)
             virtualCam.transform.localRotation = Quaternion.Euler(rotationX, 0f, 0f);
+    }
+
+    public void GetRotation(out float yaw, out float pitch)
+    {
+        yaw = rotationY;
+        pitch = rotationX;
     }
 }

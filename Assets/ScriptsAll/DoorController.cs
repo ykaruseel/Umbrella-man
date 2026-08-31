@@ -3,14 +3,10 @@ using FMODUnity;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Playables;
-using UnityEngine.UI;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class DoorController : MonoBehaviour
 {
-    // ==========================================
-    // СТАРЫЕ НАСТРОЙКИ (ОБЫЧНАЯ ДВЕРЬ)
-    // ==========================================
     [Header("Normal Door Settings")]
     [SerializeField] private Transform door;
     [SerializeField] private Transform handle;
@@ -24,6 +20,8 @@ public class DoorController : MonoBehaviour
     [SerializeField] private float autoCloseMax = 15f;
 
     [SerializeField] private EventReference DoorAudio;
+    [SerializeField] private EventReference metalDoorAudio;
+    [SerializeField] private bool isMetalDoor = false;
 
     private Quaternion closedRotation;
     private Quaternion openRotation;
@@ -34,48 +32,68 @@ public class DoorController : MonoBehaviour
     private bool isAnimating = false;
     private Coroutine autoCloseCoroutine;
 
-    // ==========================================
-    // НОВЫЕ НАСТРОЙКИ (QTE ДВЕРЬ)
-    // ==========================================
+    private bool doorEvent = false;
+
+
     [Header("QTE Settings")]
     [SerializeField] public bool isLockedWithQTE = false; 
 
     [Header("QTE Events (Блокировка Игрока)")]
-    public UnityEvent onQteStart; // Сработает при начале QTE
-    public UnityEvent onQteEnd;   // Сработает, когда дверь выбьют
+    public UnityEvent onQteStart; 
+    public UnityEvent onQteEnd;   
 
     [Header("QTE UI")]
     [SerializeField] private GameObject qtePanel;        
     [SerializeField] private RectTransform movingLine;   
     [SerializeField] private RectTransform barArea;      
 
-    [Header("QTE Zones (0.0 to 1.0)")]
-    [SerializeField] private Vector2 weakZone = new Vector2(0.2f, 0.4f);   
-    [SerializeField] private Vector2 mediumZone = new Vector2(0.45f, 0.7f);
-    [SerializeField] private Vector2 strongZone = new Vector2(0.75f, 0.95f);
+    [Header("QTE Zones (Только верхняя половина)")]
+    [SerializeField] private Vector2 weakZone = new Vector2(0.45f, 0.65f);   
+    [SerializeField] private Vector2 mediumZone = new Vector2(0.65f, 0.85f);
+    [SerializeField] private Vector2 strongZone = new Vector2(0.85f, 1.0f);
 
     [Header("QTE Difficulty")]
-    [SerializeField] private float lineSpeed = 1.2f;  
-    [SerializeField] private float qteCooldown = 0.5f; 
+    [SerializeField] private float lineSpeed = 0.3f;
+    
+    [SerializeField] private float qteCooldown = 0.4f;
+    [SerializeField] private float baseLineSpeed = 0.3f;
+    [SerializeField] private float boostedLineSpeed = 0.5f;
 
-    [Header("QTE Damage (Need 100 HP)")]
+    [Header("QTE Damage (Total HP = 100)")]
     [SerializeField] private float weakDamage = 20f;   
     [SerializeField] private float mediumDamage = 34f; 
     [SerializeField] private float strongDamage = 50f; 
     
     [Header("QTE Visuals & Audio")]
-    [SerializeField] private ParticleSystem hitDust;        // Пыль при ударе
-    [SerializeField] private ParticleSystem fallDust;       // Пыль при падении
-    [SerializeField] private ParticleSystem breakParticles; // НОВОЕ: Эффект (щепки/пыль) прямо в момент выбивания
+    [SerializeField] private ParticleSystem hitDust;        
+    [SerializeField] private ParticleSystem fallDust;       
+    [SerializeField] private ParticleSystem breakParticles; 
     [SerializeField] private EventReference qteHitSound;
 
-    // Внутренние переменные QTE
+    [SerializeField] private RectTransform[] weakZones;
+    [SerializeField] private RectTransform[] mediumZones;
+    [SerializeField] private RectTransform[] strongZones;
+
+    [SerializeField] private float hitScale = 0.85f;
+    [SerializeField] private float hitAnimTime = 0.08f;
+    [SerializeField] private bool useBrokenModel = false;
+    [SerializeField] private GameObject intactDoorModel;
+    [SerializeField] private GameObject brokenDoorModel;
+
+    private Vector3 originalScale;
+    private bool inputLocked = false;
+
     private float currentHealth = 100f;
     private bool isQteActive = false;
-    private bool isQteCooldown = false;
-    private float linePos = 0f;
+    
+    private bool isQteCooldown = false; 
+    private float linePos = 0f; 
     private int lineDir = 1;
     private Vector3 originalLocalPos;
+
+    private Vector3 originalGlobalPos;
+    private Quaternion originalGlobalRot;
+    private Coroutine shakeCoroutine;
 
     private void Start()
     {
@@ -86,25 +104,41 @@ public class DoorController : MonoBehaviour
         handleOpenRotation = handleClosedRotation * Quaternion.AngleAxis(handleRotationAngle, handleRotationAxis);
 
         originalLocalPos = door.localPosition;
+
+        originalGlobalPos = door.position;
+        originalGlobalRot = door.rotation;
+
         if (qtePanel != null) qtePanel.SetActive(false);
+        originalScale = movingLine.localScale;
+        linePos = 0f;
+        lineDir = 1;
+        inputLocked = false;
     }
 
     private void Update()
     {
-        if (isQteActive && !isQteCooldown)
+        
+        if (isQteActive && !isQteCooldown) 
         {
-            linePos += lineSpeed * lineDir * Time.deltaTime;
+
+            float currentSpeed = inputLocked ? boostedLineSpeed : baseLineSpeed;
+linePos += currentSpeed * lineDir * Time.deltaTime;
+
             if (linePos >= 1f || linePos <= 0f)
             {
                 lineDir *= -1;
                 linePos = Mathf.Clamp(linePos, 0f, 1f);
+
+                if (linePos <= 0f && lineDir == 1)
+                {
+                    inputLocked = false;
+                }
             }
 
             if (movingLine != null && barArea != null)
             {
                 float barHeight = barArea.rect.height;
                 float lineHeight = movingLine.rect.height;
-
                 float startY = lineHeight / 2f;
                 float endY = barHeight - (lineHeight / 2f);
 
@@ -115,12 +149,17 @@ public class DoorController : MonoBehaviour
                 }
 
                 float newY = Mathf.Lerp(startY, endY, linePos);
-                movingLine.localPosition = new Vector3(movingLine.localPosition.x, newY, 0);
+                movingLine.anchoredPosition = new Vector2(
+    movingLine.anchoredPosition.x,
+    newY
+);
             }
 
-            if (Input.GetKeyDown(KeyCode.Space))
+
+            if (!inputLocked && (Input.GetKeyDown(KeyCode.Space)))  
             {
                 CheckQTEHit();
+                inputLocked = true;
             }
         }
     }
@@ -149,6 +188,13 @@ public class DoorController : MonoBehaviour
             return; 
         }
 
+        if (doorEvent) 
+        {
+            StartCoroutine(OpenDoorAfterEvent());
+            PlayDoorSound(0);
+            return;
+        }
+
         if (!isOpen)
         {
             StartCoroutine(OpenDoor());
@@ -161,64 +207,89 @@ public class DoorController : MonoBehaviour
         }
     }
 
-    // ==========================================
-    // ЛОГИКА МИНИ-ИГРЫ QTE
-    // ==========================================
+    
     private void StartQTE()
     {
-        currentHealth = 100f;
-        linePos = 0f;
+        currentHealth += 20f;
+        currentHealth = Mathf.Clamp(currentHealth, 0f, 100f);
+        linePos = 0f; 
         lineDir = 1;
         isQteActive = true;
         isQteCooldown = false;
         if (qtePanel != null) qtePanel.SetActive(true);
         
-        // --- БЛОКИРУЕМ ИГРОКА ---
         onQteStart?.Invoke();
     }
 
     private void CheckQTEHit()
     {
-        float damageDone = 0f;
-        int hitType = -1;
+        StartCoroutine(AnimateHit());
 
-        if (linePos >= strongZone.x && linePos <= strongZone.y)
+        if (IsInsideAnyZone(movingLine, strongZones))
         {
-            damageDone = strongDamage;
-            hitType = 2;
+            PlayQTEHit(2);
+            StartCoroutine(RegisterQTEHit(strongDamage));
         }
-        else if (linePos >= mediumZone.x && linePos <= mediumZone.y)
+        else if (IsInsideAnyZone(movingLine, mediumZones))
         {
-            damageDone = mediumDamage;
-            hitType = 1;
+            PlayQTEHit(1);
+            StartCoroutine(RegisterQTEHit(mediumDamage));
         }
-        else if (linePos >= weakZone.x && linePos <= weakZone.y)
+        else if (IsInsideAnyZone(movingLine, weakZones))
         {
-            damageDone = weakDamage;
-            hitType = 0;
-        }
-
-        if (damageDone > 0)
-        {
-            PlayQTEHit(hitType);
-            StartCoroutine(RegisterQTEHit(damageDone));
+            PlayQTEHit(0);
+            StartCoroutine(RegisterQTEHit(weakDamage));
         }
         else
         {
-            StartCoroutine(QTECooldown(0.5f));
+            PlayQTEHit(4);
+
+            currentHealth += 20f;
+            currentHealth = Mathf.Clamp(currentHealth, 0f, 100f);
         }
     }
 
+    private bool IsInsideAnyZone(RectTransform line, RectTransform[] zones)
+    {
+        Rect lineRect = GetWorldRect(line);
+
+        for (int i = 0; i < zones.Length; i++)
+        {
+            Rect zoneRect = GetWorldRect(zones[i]);
+
+            if (lineRect.Overlaps(zoneRect))
+                return true;
+        }
+
+        return false;
+    }
+    private Rect GetWorldRect(RectTransform rt)
+    {
+        Vector3[] corners = new Vector3[4];
+        rt.GetWorldCorners(corners);
+
+        Vector3 bottomLeft = corners[0];
+        Vector3 topRight = corners[2];
+
+        return new Rect(
+            bottomLeft.x,
+            bottomLeft.y,
+            topRight.x - bottomLeft.x,
+            topRight.y - bottomLeft.y
+        );
+    }
     private IEnumerator RegisterQTEHit(float damage)
     {
         isQteCooldown = true;
         currentHealth -= damage;
 
-        if (!qteHitSound.IsNull) RuntimeManager.PlayOneShot(qteHitSound, transform.position);
         if (hitDust != null) hitDust.Play();
-        StartCoroutine(ShakeDoor());
+        
+        if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
+        shakeCoroutine = StartCoroutine(ShakeDoor());
 
-        yield return new WaitForSeconds(qteCooldown); 
+        
+        yield return new WaitForSeconds(qteCooldown);
 
         if (currentHealth <= 0)
         {
@@ -226,11 +297,12 @@ public class DoorController : MonoBehaviour
         }
         else
         {
-            isQteCooldown = false; 
+            isQteCooldown = false;
         }
     }
 
-    private IEnumerator QTECooldown(float time)
+    
+    private IEnumerator ApplyCooldown(float time)
     {
         isQteCooldown = true;
         yield return new WaitForSeconds(time);
@@ -251,16 +323,21 @@ public class DoorController : MonoBehaviour
 
     private void BreakDownDoor()
     {
+        if (useBrokenModel && brokenDoorModel != null && intactDoorModel != null)
+        {
+            intactDoorModel.SetActive(false);
+            brokenDoorModel.SetActive(true);
+
+            door = brokenDoorModel.transform;
+        }
         StopAllCoroutines(); 
 
         isQteActive = false;
         if (qtePanel != null) qtePanel.SetActive(false); 
         
-        // --- ВОСПРОИЗВОДИМ НОВЫЕ ПАРТИКЛЫ ВЫБИВАНИЯ ---
         if (breakParticles != null) breakParticles.Play();
         if (fallDust != null) fallDust.Play(); 
 
-        // --- РАЗБЛОКИРУЕМ ИГРОКА ---
         onQteEnd?.Invoke();
 
         door.SetParent(null);
@@ -287,18 +364,17 @@ public class DoorController : MonoBehaviour
         rb.AddForce((pushDir + Vector3.up * 0.4f) * 6f, ForceMode.VelocityChange);
         rb.AddTorque((transform.right * 3f + transform.up * Random.Range(-1f, 1f)), ForceMode.VelocityChange);
 
-        if (QuestManagerV2.Instance.IsGoalRequired(transform.name, GoalType.Door))
+        if (QuestManagerV2.Instance != null)
         {
-            QuestManagerV2.Instance.ProcessAction(transform.name, GoalType.Door);
+            if (QuestManagerV2.Instance.IsGoalRequired(transform.name, GoalType.Door))
+            {
+                QuestManagerV2.Instance.ProcessAction(transform.name, GoalType.Door);
+            }
         }
-        Debug.Log(transform.name);
+        
         PlayQTEHit(3);
-
     }
 
-    // ==========================================
-    // ЛОГИКА ОБЫЧНЫХ ДВЕРЕЙ
-    // ==========================================
     private IEnumerator OpenDoor()
     {
         isAnimating = true;
@@ -332,6 +408,30 @@ public class DoorController : MonoBehaviour
         autoCloseCoroutine = StartCoroutine(AutoCloseDoor());
     }
 
+    private IEnumerator AnimateHit()
+    {
+        float t = 0f;
+
+        Vector3 target = new Vector3(originalScale.x, originalScale.y * hitScale, originalScale.z);
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / hitAnimTime;
+            movingLine.localScale = Vector3.Lerp(originalScale, target, t);
+            yield return null;
+        }
+
+        t = 0f;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / hitAnimTime;
+            movingLine.localScale = Vector3.Lerp(target, originalScale, t);
+            yield return null;
+        }
+
+        movingLine.localScale = originalScale;
+    }
     private IEnumerator CloseDoor()
     {
         isAnimating = true;
@@ -354,6 +454,38 @@ public class DoorController : MonoBehaviour
         }
     }
 
+    private IEnumerator OpenDoorAfterEvent()
+    {
+        isAnimating = true;
+        float doorTime = openDuration;
+
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / doorTime;
+            door.localRotation = Quaternion.Slerp(Quaternion.Euler(0f, -22f, 0f), openRotation, t);
+            yield return null;
+        }
+        door.localRotation = openRotation;
+
+        isOpen = true;
+        isAnimating = false;
+        doorEvent = false;
+
+        if (autoCloseCoroutine != null) StopCoroutine(autoCloseCoroutine);
+        autoCloseCoroutine = StartCoroutine(AutoCloseDoor());
+    }
+
+    public void DoorEvent()
+    {
+        StopAllCoroutines();
+        isOpen = false;
+        isAnimating = false;
+        doorEvent = true;
+        handle.localRotation = handleClosedRotation;
+        door.localRotation = Quaternion.Euler(0f, -22f, 0f);
+    }
+
     private IEnumerator AutoCloseDoor()
     {
         float waitTime = Random.Range(autoCloseMin, autoCloseMax);
@@ -367,11 +499,66 @@ public class DoorController : MonoBehaviour
 
     private void PlayDoorSound(int state)
     {
-        EventInstance inst = RuntimeManager.CreateInstance(DoorAudio);
+        EventReference chosenEvent = isMetalDoor ? metalDoorAudio : DoorAudio;
+
+        if (chosenEvent.IsNull) return;
+
+        EventInstance inst = RuntimeManager.CreateInstance(chosenEvent);
         RuntimeManager.AttachInstanceToGameObject(inst, transform);
         inst.setParameterByName("Door", state);
         inst.start();
         inst.release();
+    }
+
+    public void ResetDoor()
+    {
+        StopAllCoroutines();
+        isAnimating = false;
+        isQteActive = false;
+        isQteCooldown = false;
+        inputLocked = false;
+
+        currentHealth = 100f;
+        if (qtePanel != null) qtePanel.SetActive(false);
+
+        if (useBrokenModel && intactDoorModel != null && brokenDoorModel != null)
+        {
+            brokenDoorModel.SetActive(false);
+            intactDoorModel.SetActive(true);
+            door = intactDoorModel.transform;
+        }
+
+        Rigidbody rb = door.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        door.position = originalGlobalPos;
+        door.rotation = originalGlobalRot;
+
+        originalScale = movingLine.localScale;
+        linePos = 0f;
+        lineDir = 1;
+
+        closedRotation = door.localRotation;
+        openRotation = closedRotation * Quaternion.Euler(0, openAngle, 0);
+
+        handleClosedRotation = handle.localRotation;
+        handleOpenRotation = handleClosedRotation * Quaternion.AngleAxis(handleRotationAngle, handleRotationAxis);
+
+        originalLocalPos = door.localPosition;
+
+        if (handle != null)
+        {
+            handle.localRotation = handleClosedRotation;
+        }
+
+        isOpen = false;
+        doorEvent = false;
     }
 }
 

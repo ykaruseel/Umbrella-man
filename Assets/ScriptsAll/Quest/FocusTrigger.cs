@@ -6,7 +6,7 @@ public class FocusTrigger : MonoBehaviour
 {
     public string requiredQuestID;
 
-    [SerializeField] private bool hasTriggered = false;
+    public bool hasTriggered = false;
 
     public GameObject focusObject;
 
@@ -15,7 +15,7 @@ public class FocusTrigger : MonoBehaviour
 
     public PlayerComments comments;
 
-    private PlayerController playerController;
+    private PlayerController _playerController;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -23,7 +23,7 @@ public class FocusTrigger : MonoBehaviour
 
         if (other.CompareTag("Player") && IsQuestActive(requiredQuestID))
         {
-            other.TryGetComponent(out playerController);
+            other.TryGetComponent(out _playerController);
             hasTriggered = true;
             StartCoroutine(OnTriggerEvent());
         }
@@ -35,20 +35,33 @@ public class FocusTrigger : MonoBehaviour
 
         if (other.CompareTag("Player") && IsQuestActive(requiredQuestID))
         {
-            other.TryGetComponent(out playerController);
+            other.TryGetComponent(out _playerController);
             hasTriggered = true;
             StartCoroutine(OnTriggerEvent());
         }
     }
 
+    public void TriggerFocus(PlayerController playerController)
+    {
+        if (hasTriggered) return;
+        _playerController = playerController;
+        hasTriggered = true;
+        if (TryGetComponent<OutlineInteractable>(out var outline))
+        {
+            outline.isBlocked = true;
+        }
+        StartCoroutine(OnTriggerEvent());
+    }
+
     private IEnumerator OnTriggerEvent()
     {
+        Pause.canPause = false;
         gameObject.GetComponent<Collider>().enabled = false;
 
-        playerController.isCinematic = true;
-        playerController.SetCanMove(false);
-        playerController.StartCinematicPan(focusObject.transform, 2f);
-        playerController.ZoomIn(focusPower);
+        _playerController.isCinematic = true;
+        _playerController.SetCanMove(false);
+        _playerController.StartCinematicPan(focusObject.transform, 2f);
+        _playerController.ZoomIn(focusPower);
 
         if (comments != null)
         {
@@ -60,11 +73,13 @@ public class FocusTrigger : MonoBehaviour
             }
         }
 
-        playerController.ZoomOut(focusPower);
-        playerController.isCinematic = false;
-        playerController.SetCanMove(true);
+        _playerController.ZoomOut(focusPower);
+        yield return new WaitForSeconds(1f);
+        _playerController.isCinematic = false;
+        _playerController.SetCanMove(true);
 
         enabled = false;
+        Pause.canPause = true;
     }
 
     private bool IsQuestActive(string id)

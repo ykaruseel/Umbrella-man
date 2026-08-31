@@ -45,11 +45,34 @@ public class QuestData : ScriptableObject
 
     public string GetTitleWithProgress()
     {
-        if (type == GoalType.ReturnItem && targetID != null && targetID.Count > 1)
+        if ((type == GoalType.ReturnItem || type == GoalType.Trash) && targetID != null && targetID.Count > 1)
         {
             return $"{title} ({completedTargets.Count}/{targetID.Count})";
         }
 
         return title;
+    }
+
+    public List<string> GetCompletedTargetsList()
+    {
+        return new List<string>(completedTargets);
+    }
+
+    public void RestoreProgress(List<string> savedGoals)
+    {
+        completedTargets.Clear();
+        if (savedGoals != null)
+        {
+            foreach (string id in savedGoals)
+            {
+                completedTargets.Add(id);
+            }
+        }
+
+        if (completedTargets.Count >= targetID.Count && targetID.Count > 0)
+        {
+            isCompleted = true;
+            isActive = false;
+        }
     }
 }

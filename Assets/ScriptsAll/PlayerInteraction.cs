@@ -11,6 +11,8 @@ public class PlayerInteraction : MonoBehaviour
 
     OutlineInteractable currentOutline;
 
+    DoorOutline currentDoorOutline;
+
     void Start()
     {
         dialogueManager = FindObjectOfType<DialogueManager>();
@@ -34,6 +36,18 @@ public class PlayerInteraction : MonoBehaviour
         {
             OutlineInteractable outline = hit.collider.GetComponentInParent<OutlineInteractable>();
             PlaceableItem item = hit.collider.GetComponentInParent<PlaceableItem>();
+            DoorOutline doorOutline = hit.collider.GetComponentInParent<DoorOutline>();
+
+            if (doorOutline != null && doorOutline.enabled)
+            {
+                if (currentOutline != doorOutline)
+                {
+                    ClearOutline();
+                    currentDoorOutline = doorOutline;
+                    currentDoorOutline.Show();
+                }
+                return;
+            }
 
             if (outline != null && item != null && item.CurrentState == PlaceableItem.ItemState.OnGround)
             {
@@ -57,6 +71,12 @@ public class PlayerInteraction : MonoBehaviour
             currentOutline.Hide();
             currentOutline = null;
         }
+
+        if (currentDoorOutline != null)
+        {
+            currentDoorOutline.Hide();
+            currentDoorOutline = null;
+        }
     }
 
     void HandleInteraction()
@@ -79,6 +99,26 @@ public class PlayerInteraction : MonoBehaviour
             {
                 interactable.Interact();
                 return;
+            }
+
+            if (hit.collider.CompareTag("Object"))
+            {
+                FocusTrigger focusTrigger = hit.collider.GetComponent<FocusTrigger>();
+                if (focusTrigger != null)
+                {
+                    focusTrigger.TriggerFocus(playerController);
+                    return;
+                }
+            }
+
+            if(hit.collider.CompareTag("NeighborDoor"))
+            {
+                NeighborDoor neighborDoor = hit.collider.GetComponentInParent<NeighborDoor>();
+                if (neighborDoor != null)
+                {
+                    neighborDoor.Interact(playerController);
+                    return;
+                }
             }
 
             //if (hit.collider.CompareTag("Pickable"))

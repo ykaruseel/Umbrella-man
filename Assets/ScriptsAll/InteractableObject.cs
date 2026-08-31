@@ -5,11 +5,9 @@ public class InteractableObject : MonoBehaviour
     public string objectID;
     public ObjectiveType interactionType = ObjectiveType.Interact;
 
-    
     [Header("Gating")]
     public bool isShieldReady = false; 
 
-    
     public void EnableShieldInteraction()
     {
         isShieldReady = true;
@@ -25,21 +23,15 @@ public class InteractableObject : MonoBehaviour
     {
         Debug.Log("Взаимодействие с: " + objectID);
 
-        
-        if (TutorialManager.instance != null)
-        {
-            TutorialManager.instance.CompleteInteractionStep();
-        }
-        
+        // СТАРЫЙ ВЫЗОВ ТУТОРИАЛА ПОЛНОСТЬЮ УДАЛЕН!
+        // (Теперь TutorialManager сам видит нажатие 'E' и закрывается автоматически)
 
-        
         if (!isShieldReady)
         {
             Debug.Log("Щиток пока заблокирован. Нужно дождаться ключевого события.");
             return;
         }
 
-        
         RepairQTE qteScript = GetComponent<RepairQTE>();
     
         if (qteScript != null)
@@ -49,7 +41,6 @@ public class InteractableObject : MonoBehaviour
             return; 
         }
 
-        
         QuestManager qm = QuestManager.instance;
         if (qm != null && qm.currentQuest != null)
         {

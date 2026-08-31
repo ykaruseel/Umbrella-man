@@ -5,18 +5,17 @@ public class PulseHighlight : MonoBehaviour
     [SerializeField] private Material pulseMaterial;
 
     Renderer rend;
-    bool active;
+    public bool active;
 
     void Awake()
     {
         rend = GetComponentInChildren<Renderer>();
     }
 
-    void Start()
-    {
-        Show();
-    }
-
+    //void Start()
+    //{
+    //    Show();
+    //}
 
     public void Show()
     {

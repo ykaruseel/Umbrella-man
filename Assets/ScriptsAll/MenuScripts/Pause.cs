@@ -7,11 +7,15 @@ public class Pause : MonoBehaviour
 {
     public static bool isPaused = false;
 
+    public static bool canPause;
+
     [SerializeField] private PlayerController _playerController;
     [SerializeField] private UmbrellaManChase _umbrellaManChase;
     //[SerializeField] private GameObject _pauseMenuUI;
     [SerializeField] private List<GameObject> _UIElements = new();
     [SerializeField] private EnemyLookDistortionSingleVolume _enemyLookDistortionSingleVolume;
+
+    [SerializeField] private KnifeManAI _knifeManAI;
 
     private float fadeDuration = 0.5f;
 
@@ -34,6 +38,8 @@ public class Pause : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
+            if (!canPause) return;
+            if(_knifeManAI != null && _knifeManAI.isChasing) return;
             foreach (GameObject obj in _UIElements)
             {
                 if (obj == null) continue;
@@ -115,7 +121,7 @@ public class Pause : MonoBehaviour
         _playerController.SetCanMove(true);
         _playerController.SetDialogueZoom(true);
 
-        if (_umbrellaManChase.gameObject.activeSelf)
+        if (_umbrellaManChase!= null && _umbrellaManChase.gameObject.activeSelf)
             _umbrellaManChase.ResumeChase();
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -136,7 +142,7 @@ public class Pause : MonoBehaviour
         _playerController.SetCanMove(false);
         _playerController.SetDialogueZoom(false);
 
-        if (_umbrellaManChase.gameObject.activeSelf)
+        if (_umbrellaManChase != null && _umbrellaManChase.gameObject.activeSelf)
             _umbrellaManChase.PauseChase();
 
         Cursor.lockState = CursorLockMode.None;
