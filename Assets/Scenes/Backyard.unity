@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.022
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.13962269, g: 0.13962269, b: 0.13962269, a: 1}
+  m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 0.1
@@ -35153,6 +35153,72 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1923870323}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &811803974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 811803977}
+  - component: {fileID: 811803976}
+  - component: {fileID: 811803975}
+  m_Layer: 0
+  m_Name: BasementZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &811803975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811803974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a02bf872f77d20f42ac88c4e1f3273ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &811803976
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811803974}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 115.104675, y: 4.6861143, z: 101.29051}
+  m_Center: {x: 34.183865, y: 1.6788392, z: -33.27235}
+--- !u!4 &811803977
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811803974}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.38659546, z: -0, w: 0.92224944}
+  m_LocalPosition: {x: -48.6, y: -13.85, z: -48.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -45.486, z: 0}
 --- !u!1001 &812703816
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82946,3 +83012,4 @@ SceneRoots:
   - {fileID: 1142251112}
   - {fileID: 998492125}
   - {fileID: 538573770}
+  - {fileID: 811803977}
