@@ -344,6 +344,24 @@ public class PlayerController : MonoBehaviour
                     return;
                 }
 
+                if (hit.collider.CompareTag("TV"))
+                {
+                    TVLight tv = hit.collider.GetComponentInParent<TVLight>();
+
+                    if (tv != null)
+                        tv.Interact();
+
+                    return;
+                }
+
+                InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
+
+                if (interactable != null)
+                {
+                    interactable.Interact();
+                    return;
+                }
+
                 if (hit.collider.CompareTag("LesterDoor") && QuestManagerV2.Instance.IsGoalRequired("Trigger Q2 (Door vremenaja)", GoalType.TalkToNPC))
                 {
                     hit.collider.GetComponent<LesterDoor>().Interact();
@@ -385,20 +403,31 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
-            if (hit.collider.CompareTag("Switch"))
-            {
+            if(hit.collider.CompareTag("Switch"))
+{
                 hit.collider.GetComponent<LightSwitch>().Interact();
                 return;
             }
 
-            InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
-            if (interactable != null)
+            if (hit.collider.CompareTag("TV"))
             {
-                interactable.Interact();
+                TVLight tv = hit.collider.GetComponentInParent<TVLight>();
+
+                if (tv != null)
+                    tv.Interact();
+
                 return;
             }
 
-            if(hit.collider.CompareTag("Door"))
+            InteractableObject interactableObject = hit.collider.GetComponent<InteractableObject>();
+
+            if (interactableObject != null)
+            {
+                interactableObject.Interact();
+                return;
+            }
+
+            if (hit.collider.CompareTag("Door"))
             {
                 hit.collider.GetComponent<DoorController>().TryOpenDoor();
                 return;
