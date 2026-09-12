@@ -214,6 +214,33 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 0
+--- !u!114 &-6334249433860345237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: snapshot:/Document_pause
+  m_EditorClassIdentifier: 
+  Path: snapshot:/Document_pause
+  Guid:
+    Data1: 1037319021
+    Data2: 1334243456
+    Data3: -103968379
+    Data4: 1614049575
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
 --- !u!114 &-6182978381346366784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,10 +304,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639244547405016267
+  lastModified: 639245671674217583
   FileSizes:
   - Name: Desktop
-    Value: 3570
+    Value: 3768
   Exists: 1
 --- !u!114 &-5769530616894563922
 MonoBehaviour:
@@ -453,10 +480,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639244547404958658
+  lastModified: 639245671674171809
   FileSizes:
   - Name: Desktop
-    Value: 22227008
+    Value: 23819040
   Exists: 1
 --- !u!114 &-2452832946106701224
 MonoBehaviour:
@@ -648,6 +675,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &-473545099237872715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/doors/main_door
+  m_EditorClassIdentifier: 
+  Path: event:/doors/main_door
+  Guid:
+    Data1: 1221556578
+    Data2: 1166254222
+    Data3: 598601640
+    Data4: 958343300
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1880
 --- !u!114 &-440819588714503313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -735,13 +789,44 @@ MonoBehaviour:
   - {fileID: -4211819323882306956}
   - {fileID: 6378601850262828936}
   - {fileID: -440819588714503313}
+  - {fileID: 664190660651058355}
+  - {fileID: 3941258166518083798}
+  - {fileID: -473545099237872715}
+  - {fileID: -6334249433860345237}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2609684373490591824}
   StringsBanks:
   - {fileID: -6018097725551979117}
-  cacheTime: 639244547405016267
+  cacheTime: 639245671674217583
   cacheVersion: 131632
+--- !u!114 &664190660651058355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/old margot/old_margot_vo
+  m_EditorClassIdentifier: 
+  Path: event:/old margot/old_margot_vo
+  Guid:
+    Data1: -916976869
+    Data2: 1151419163
+    Data3: -347411295
+    Data4: -1989469781
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 15000
 --- !u!114 &978116632145848277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -992,6 +1077,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 181
+--- !u!114 &3941258166518083798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UI/paper
+  m_EditorClassIdentifier: 
+  Path: event:/UI/paper
+  Guid:
+    Data1: -1263652574
+    Data2: 1318969905
+    Data3: -207387744
+    Data4: 454788394
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 4000
 --- !u!114 &3968687303032154305
 MonoBehaviour:
   m_ObjectHideFlags: 0
