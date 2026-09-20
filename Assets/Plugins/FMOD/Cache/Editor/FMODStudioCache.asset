@@ -304,10 +304,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639245671674217583
+  lastModified: 639255203216238428
   FileSizes:
   - Name: Desktop
-    Value: 3768
+    Value: 3904
   Exists: 1
 --- !u!114 &-5769530616894563922
 MonoBehaviour:
@@ -480,11 +480,38 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639245671674171809
+  lastModified: 639255203216192380
   FileSizes:
   - Name: Desktop
-    Value: 23819040
+    Value: 24582944
   Exists: 1
+--- !u!114 &-2462444977179461647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/mouse
+  m_EditorClassIdentifier: 
+  Path: event:/mouse
+  Guid:
+    Data1: -1030227698
+    Data2: 1203872316
+    Data3: -1679586383
+    Data4: 1095024921
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 10147
 --- !u!114 &-2452832946106701224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -793,12 +820,15 @@ MonoBehaviour:
   - {fileID: 3941258166518083798}
   - {fileID: -473545099237872715}
   - {fileID: -6334249433860345237}
+  - {fileID: -2462444977179461647}
+  - {fileID: 4919351864797372355}
+  - {fileID: 8483539803006346209}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2609684373490591824}
   StringsBanks:
   - {fileID: -6018097725551979117}
-  cacheTime: 639245671674217583
+  cacheTime: 639255203216238428
   cacheVersion: 131632
 --- !u!114 &664190660651058355
 MonoBehaviour:
@@ -1032,9 +1062,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/you_keep_the_rain_away_vinyl
+  m_Name: event:/music/you_keep_the_rain_away_vinyl
   m_EditorClassIdentifier: 
-  Path: event:/Music/you_keep_the_rain_away_vinyl
+  Path: event:/music/you_keep_the_rain_away_vinyl
   Guid:
     Data1: 1483169155
     Data2: 1185695023
@@ -1141,9 +1171,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Menu_theme
+  m_Name: event:/menu_theme
   m_EditorClassIdentifier: 
-  Path: event:/Menu_theme
+  Path: event:/menu_theme
   Guid:
     Data1: 1129893248
     Data2: 1341247553
@@ -1186,6 +1216,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 15712
+--- !u!114 &4919351864797372355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/journalist/journalist_vo
+  m_EditorClassIdentifier: 
+  Path: event:/journalist/journalist_vo
+  Guid:
+    Data1: -1514223235
+    Data2: 1150542655
+    Data3: 1113679036
+    Data4: 2097225410
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 10000
 --- !u!114 &5394026293150311495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1441,9 +1498,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/UM_music_theme
+  m_Name: event:/music/UM_music_theme
   m_EditorClassIdentifier: 
-  Path: event:/Music/UM_music_theme
+  Path: event:/music/UM_music_theme
   Guid:
     Data1: -1760517789
     Data2: 1291410756
@@ -1645,6 +1702,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2520
+--- !u!114 &8483539803006346209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/trash
+  m_EditorClassIdentifier: 
+  Path: event:/trash
+  Guid:
+    Data1: -1644993915
+    Data2: 1138793051
+    Data3: 17250187
+    Data4: 1156900021
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2050
 --- !u!114 &8974435720078932014
 MonoBehaviour:
   m_ObjectHideFlags: 0
