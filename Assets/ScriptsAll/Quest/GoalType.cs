@@ -1,4 +1,8 @@
-public enum GoalType 
-{ 
-    ReachPoint, TalkToNPC, ReturnItem, Door
+public enum GoalType
+{
+    ReachPoint,
+    TalkToNPC,
+    ReturnItem,
+    Door,
+    CollectItems
 }

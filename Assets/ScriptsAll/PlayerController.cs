@@ -320,6 +320,35 @@ public class PlayerController : MonoBehaviour
         bool hitSomething = Physics.Raycast(
             ray, out hit, interactionDistance, interactionLayerMask
         );
+        
+        if (hitSomething &&
+        !objectInteraction.IsHoldingObject())
+    {
+        CollectionPickup collectionPickup =
+            hit.collider.GetComponentInParent<CollectionPickup>();
+
+        if (collectionPickup != null)
+        {
+            if (collectionPickup.TryInteract())
+                return;
+        }
+
+
+        CollectibleItem collectible =
+            hit.collider.GetComponentInParent<CollectibleItem>();
+
+        if (collectible != null)
+        {
+            CollectionController collectionController =
+                GetComponent<CollectionController>();
+
+            if (collectionController != null &&
+                collectionController.TryCollect(collectible))
+            {
+                return;
+            }
+        }
+    }
         if (objectInteraction.IsHoldingObject())
         {
             if (hitSomething)

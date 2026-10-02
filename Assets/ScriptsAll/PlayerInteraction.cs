@@ -35,8 +35,42 @@ public class PlayerInteraction : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactionLayerMask))
         {
             OutlineInteractable outline = hit.collider.GetComponentInParent<OutlineInteractable>();
+            CollectionPickup collectionPickup = hit.collider.GetComponentInParent<CollectionPickup>();
+            CollectibleItem collectible = hit.collider.GetComponentInParent<CollectibleItem>();
+
             PlaceableItem item = hit.collider.GetComponentInParent<PlaceableItem>();
             DoorOutline doorOutline = hit.collider.GetComponentInParent<DoorOutline>();
+
+            if (collectionPickup != null &&
+                collectionPickup.CanInteract &&
+                outline != null)
+            {
+                if (currentOutline != outline)
+                {
+                    ClearOutline();
+
+                    currentOutline = outline;
+                    currentOutline.Show();
+                }
+
+                return;
+            }
+
+
+            if (collectible != null &&
+                collectible.CanInteract &&
+                outline != null)
+            {
+                if (currentOutline != outline)
+                {
+                    ClearOutline();
+
+                    currentOutline = outline;
+                    currentOutline.Show();
+                }
+
+                return;
+            }
 
             if (doorOutline != null && doorOutline.enabled)
             {

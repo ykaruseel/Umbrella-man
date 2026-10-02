@@ -96,9 +96,10 @@ public class CameraSequenceController : MonoBehaviour
         playerController.isCinematic = false;
         playerController.SetCanMove(true);
 
-        if (QuestManager.instance != null)
+        if (QuestManagerV2.Instance != null)
         {
             //QuestManager.instance.StartFirstQuest();
+            QuestManagerV2.Instance.StartQuestSequence();
         }
 
         if (MusicManager.Instance != null)
