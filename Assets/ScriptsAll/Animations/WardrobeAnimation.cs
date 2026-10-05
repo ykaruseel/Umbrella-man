@@ -1,11 +1,15 @@
 using System.Collections;
 using UnityEngine;
+using FMODUnity;
+using FMOD.Studio;
 
 public class WardrobeAnimation : MonoBehaviour
 {
     [SerializeField] private Transform leftDoor;
     [SerializeField] private Transform rightDoor;
     [SerializeField] private ParticleSystem dustParticles;
+
+    [SerializeField] private EventReference rumbleEvent;
 
     [SerializeField] private float duration = 4f;
     [SerializeField] private float shakeAmount = 0.05f;
@@ -26,6 +30,7 @@ public class WardrobeAnimation : MonoBehaviour
     private Quaternion rightDoorInitialRotation;
 
     private Coroutine animationCoroutine;
+    private EventInstance rumbleInstance;
 
     private float leftDoorTarget;
     private float rightDoorTarget;
@@ -42,9 +47,6 @@ public class WardrobeAnimation : MonoBehaviour
 
         if (rightDoor != null)
             rightDoorInitialRotation = rightDoor.localRotation;
-
-        nextDoorAction = Time.time + Random.Range(minDoorInterval, maxDoorInterval);
-        nextDustAction = Time.time + Random.Range(minDustInterval, maxDustInterval);
     }
 
     private void Start()
@@ -57,6 +59,8 @@ public class WardrobeAnimation : MonoBehaviour
         if (animationCoroutine != null)
             StopCoroutine(animationCoroutine);
 
+        StopRumble();
+
         animationCoroutine = StartCoroutine(WardrobeRoutine());
     }
 
@@ -67,14 +71,17 @@ public class WardrobeAnimation : MonoBehaviour
         nextDoorAction = Time.time + 0.2f;
         nextDustAction = Time.time + 0.2f;
 
+        leftDoorTarget = 0f;
+        rightDoorTarget = 0f;
+
         if (dustParticles != null)
             dustParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
+        StartRumble();
+
         while (Time.time - startTime < duration)
         {
-            float elapsed = Time.time - startTime;
-            float normalizedTime = elapsed / duration;
-
+            float normalizedTime = (Time.time - startTime) / duration;
             float energy = Mathf.Lerp(0.7f, 1f, normalizedTime);
 
             float noiseX = Mathf.PerlinNoise(Time.time * 20f, 0f) - 0.5f;
@@ -139,7 +146,28 @@ public class WardrobeAnimation : MonoBehaviour
         if (dustParticles != null)
             dustParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 
+        StopRumble();
+
         animationCoroutine = null;
+    }
+
+    private void StartRumble()
+    {
+        if (rumbleEvent.IsNull)
+            return;
+
+        rumbleInstance = RuntimeManager.CreateInstance(rumbleEvent);
+        rumbleInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
+        rumbleInstance.start();
+    }
+
+    private void StopRumble()
+    {
+        if (!rumbleInstance.isValid())
+            return;
+
+        rumbleInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        rumbleInstance.release();
     }
 
     private void HandleDoors()
@@ -149,37 +177,30 @@ public class WardrobeAnimation : MonoBehaviour
 
         if (Random.value > 0.5f)
         {
-            if (Mathf.Abs(leftDoorTarget) < 0.1f)
-                leftDoorTarget = Random.Range(0.7f, 1f) * doorOpenAngle;
-            else
-                leftDoorTarget = 0f;
+            leftDoorTarget = Mathf.Abs(leftDoorTarget) < 0.1f
+                ? Random.Range(0.7f, 1f) * doorOpenAngle
+                : 0f;
         }
         else
         {
-            if (Mathf.Abs(rightDoorTarget) < 0.1f)
-                rightDoorTarget = Random.Range(-1f, -0.7f) * doorOpenAngle;
-            else
-                rightDoorTarget = 0f;
+            rightDoorTarget = Mathf.Abs(rightDoorTarget) < 0.1f
+                ? Random.Range(-1f, -0.7f) * doorOpenAngle
+                : 0f;
         }
 
         nextDoorAction =
-            Time.time +
-            Random.Range(minDoorInterval, maxDoorInterval);
+            Time.time + Random.Range(minDoorInterval, maxDoorInterval);
     }
 
     private void HandleDust()
     {
-        if (dustParticles == null)
-            return;
-
-        if (Time.time < nextDustAction)
+        if (dustParticles == null || Time.time < nextDustAction)
             return;
 
         dustParticles.Play();
 
         nextDustAction =
-            Time.time +
-            Random.Range(minDustInterval, maxDustInterval);
+            Time.time + Random.Range(minDustInterval, maxDustInterval);
     }
 
     private IEnumerator ReturnToOriginal()
@@ -235,5 +256,15 @@ public class WardrobeAnimation : MonoBehaviour
 
         leftDoorTarget = 0f;
         rightDoorTarget = 0f;
+    }
+
+    private void OnDisable()
+    {
+        StopRumble();
+    }
+
+    private void OnDestroy()
+    {
+        StopRumble();
     }
 }
