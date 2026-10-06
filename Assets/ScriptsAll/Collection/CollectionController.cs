@@ -37,13 +37,6 @@ public class CollectionController : MonoBehaviour
     [SerializeField]
     private float flyDuration = 0.55f;
 
-    [SerializeField]
-    private float arcHeight = 0.35f;
-
-    [SerializeField]
-    private float rotationSpeed = 720f;
-
-
     [Header("Container Animation")]
     [Range(0.1f, 1f)]
     [SerializeField]
@@ -270,42 +263,22 @@ public class CollectionController : MonoBehaviour
         {
             elapsed += Time.deltaTime;
 
-            float t =
-                Mathf.Clamp01(elapsed / flyDuration);
+            float t = Mathf.Clamp01(elapsed / flyDuration);
+            float smoothT = Mathf.SmoothStep(0f, 1f, t);
 
-            float smoothT =
-                Mathf.SmoothStep(0f, 1f, t);
+            Vector3 targetPosition = collectionTarget.position;
 
-            Vector3 targetPosition =
-                collectionTarget.position;
-
-            Vector3 newPosition =
-                Vector3.Lerp(
-                    startPosition,
-                    targetPosition,
-                    smoothT
-                );
-
-            newPosition.y +=
-                Mathf.Sin(smoothT * Mathf.PI)
-                * arcHeight;
-
-            itemTransform.position =
-                newPosition;
-
-            itemTransform.Rotate(
-                Vector3.one *
-                rotationSpeed *
-                Time.deltaTime,
-                Space.Self
+            itemTransform.position = Vector3.Lerp(
+                startPosition,
+                targetPosition,
+                smoothT
             );
 
-            itemTransform.localScale =
-                Vector3.Lerp(
-                    startScale,
-                    Vector3.zero,
-                    smoothT
-                );
+            itemTransform.localScale = Vector3.Lerp(
+                startScale,
+                Vector3.zero,
+                smoothT
+            );
 
             yield return null;
         }
