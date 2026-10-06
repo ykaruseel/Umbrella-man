@@ -22,6 +22,9 @@ public class CameraSequenceController : MonoBehaviour
 
     [SerializeField] private PlayerController playerController;
 
+    [SerializeField]
+    private TrashQuestIntroSequence trashQuestIntroSequence;
+
     [SerializeField] private float defaultFOV = 50f;
 
     private const string FOV = "CameraFOV";
@@ -29,10 +32,11 @@ public class CameraSequenceController : MonoBehaviour
     private bool intro;
 
 
-    void Start()
-    {
-        Pause.canPause = false;
-        intro = true;
+void Start()
+{
+
+    Pause.canPause = false;
+    intro = true;
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.SetVolumeImmediate(0f);
@@ -59,12 +63,11 @@ public class CameraSequenceController : MonoBehaviour
         StartCoroutine(fade.FadeIn());
     }
 
-    void OnFirstFinished()
-    {
-        fly1.OnPathFinished -= OnFirstFinished;
-        StartCoroutine(SwitchToSecond());
-    }
-
+void OnFirstFinished()
+{
+    fly1.OnPathFinished -= OnFirstFinished;
+    StartCoroutine(SwitchToSecond());
+}
     IEnumerator SwitchToSecond()
     {
         yield return fade.FadeOut();
@@ -77,30 +80,29 @@ public class CameraSequenceController : MonoBehaviour
         yield return fade.FadeIn();
     }
 
-    void OnSecondFinished()
-    {
-        fly2.OnPathFinished -= OnSecondFinished;
-        StartCoroutine(SwitchToFinal());
-    }
+void OnSecondFinished()
+{
 
-    IEnumerator SwitchToFinal()
-    {
-        yield return fade.FadeOut();
+    fly2.OnPathFinished -= OnSecondFinished;
+    StartCoroutine(SwitchToFinal());
+}
+IEnumerator SwitchToFinal()
+{
+
+    yield return fade.FadeOut();
 
         cam2.gameObject.SetActive(false);
 
         cam3.gameObject.SetActive(true);
         cam4.gameObject.SetActive(true);
 
-        
-        playerController.isCinematic = false;
-        playerController.SetCanMove(true);
 
-        if (QuestManagerV2.Instance != null)
-        {
-            //QuestManager.instance.StartFirstQuest();
-            QuestManagerV2.Instance.StartQuestSequence();
-        }
+        // Do not give control to the player yet.
+        // The scene must first play through:
+        // ascent -> view of the bottles -> commentary.
+        playerController.isCinematic = true;
+        playerController.SetCanMove(false);
+
 
         if (MusicManager.Instance != null)
         {
@@ -108,12 +110,38 @@ public class CameraSequenceController : MonoBehaviour
             MusicManager.Instance.FadeToVolume(1f, 1.2f);
         }
 
-        //fade.SetFadeImageActive(false);
         intro = false;
+
         yield return fade.FadeIn();
 
-        TutorialManager.Instance.ShowHint(HintType.Move);
-        Pause.canPause = true;
+
+        // Our new intro sequence
+        if (trashQuestIntroSequence != null)
+{
+
+    yield return StartCoroutine(
+        trashQuestIntroSequence.PlaySequence()
+    );
+
+}
+        else
+        {
+
+            if (QuestManagerV2.Instance != null)
+            {
+                QuestManagerV2.Instance.StartQuestSequence();
+            }
+
+            playerController.isCinematic = false;
+            playerController.SetCanMove(true);
+
+            Pause.canPause = true;
+        }
+
+
+        TutorialManager.Instance.ShowHint(
+            HintType.Move
+        );
     }
 
     void DisableAllCameras()

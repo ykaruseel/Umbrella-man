@@ -74,10 +74,14 @@ public class PlayerComments : MonoBehaviour
     {
         if (isTyping)
         {
-            if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+            if (typingCoroutine != null)
+                StopCoroutine(typingCoroutine);
 
             if (dialogueText != null)
+            {
                 dialogueText.text = currentSentence;
+                dialogueText.maxVisibleCharacters = int.MaxValue;
+            }
 
             isTyping = false;
             return;
@@ -102,21 +106,44 @@ public class PlayerComments : MonoBehaviour
     {
         isTyping = true;
 
-        if (dialogueText != null) dialogueText.text = "";
+        if (dialogueText != null)
+        {
+            dialogueText.richText = true;
+
+            dialogueText.text = line.sentence;
+            dialogueText.maxVisibleCharacters = 0;
+
+            dialogueText.ForceMeshUpdate();
+        }
 
         StartVoiceForSpeaker(line.speakerName);
 
-        foreach (char letter in line.sentence.ToCharArray())
+        int visibleCharacterCount =
+            dialogueText != null
+                ? dialogueText.textInfo.characterCount
+                : line.sentence.Length;
+
+        for (int i = 1; i <= visibleCharacterCount; i++)
         {
             while (Pause.isPaused)
             {
                 SetPaused();
                 yield return null;
             }
+
             SetPaused();
 
-            if (dialogueText != null) dialogueText.text += letter;
+            if (dialogueText != null)
+            {
+                dialogueText.maxVisibleCharacters = i;
+            }
+
             yield return new WaitForSeconds(typingSpeed);
+        }
+
+        if (dialogueText != null)
+        {
+            dialogueText.maxVisibleCharacters = int.MaxValue;
         }
 
         isTyping = false;

@@ -4548,6 +4548,57 @@ Transform:
   - {fileID: 1504502639}
   m_Father: {fileID: 1111489067}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &89308593
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 89308594}
+  - component: {fileID: 89308595}
+  m_Layer: 0
+  m_Name: TrashIntroSequence
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &89308594
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89308593}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1417256167}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &89308595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89308593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 864fc25da0ab78e44b3a7ef943b78672, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 332663620}
+  bottlesFocusTarget: {fileID: 776631301}
+  introComment: {fileID: 1042869955}
+  sittingCameraOffset: 0.65
+  standUpDuration: 1.5
+  lookAtDuration: 1.3
+  pauseBeforeComment: 0.4
 --- !u!1 &89992906
 GameObject:
   m_ObjectHideFlags: 0
@@ -11747,7 +11798,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &187578439
 Transform:
   m_ObjectHideFlags: 0
@@ -11801,6 +11852,7 @@ MonoBehaviour:
   fade: {fileID: 187578440}
   introText: {fileID: 612807020}
   playerController: {fileID: 332663620}
+  trashQuestIntroSequence: {fileID: 89308595}
   defaultFOV: 50
 --- !u!1001 &187790223
 PrefabInstance:
@@ -24932,7 +24984,7 @@ Transform:
   m_GameObject: {fileID: 289492308}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.837, y: -1.222, z: -8.22}
+  m_LocalPosition: {x: -1.907, y: -0.374, z: -8.094}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -28391,7 +28443,7 @@ Transform:
   m_GameObject: {fileID: 332663618}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 4.685, y: 0.828, z: -31.839}
+  m_LocalPosition: {x: 0.991, y: 0.828, z: -31.526}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -74861,6 +74913,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 51995277}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &776631300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 776631301}
+  m_Layer: 0
+  m_Name: TrashIntroFocus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &776631301
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 776631300}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.281, y: -1.275, z: -1.332}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1584882925}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &776972081
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -91667,7 +91750,7 @@ Transform:
   m_GameObject: {fileID: 990628770}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.785, y: -1.275, z: -5.98}
+  m_LocalPosition: {x: 0.281, y: -1.275, z: -1.332}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -95171,6 +95254,68 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1980089549}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1042869954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1042869956}
+  - component: {fileID: 1042869955}
+  m_Layer: 0
+  m_Name: TrashIntroComment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1042869955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042869954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c04f9a53713ec49b096fe986a51575, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentsGO: {fileID: 1721760448}
+  dialogueText: {fileID: 1844148174}
+  dialogueLines:
+  - speakerName: 
+    sentence: I've really let this place go. Better clean it up before I trip over
+      one of these bottles. There should be some <color=#FFFF40>trash bags</color>
+      in the kitchen.
+  typingSpeed: 0.03
+  fadeDuration: 1.5
+  danielVoiceEvent:
+    Guid:
+      Data1: -1656578066
+      Data2: 1094193858
+      Data3: -1836718149
+      Data4: 2116357876
+    Path: event:/daniel_voice
+  playerTransform: {fileID: 332663625}
+  dialogueCanvasGroup: {fileID: 0}
+--- !u!4 &1042869956
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042869954}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1417256167}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1043891058
 GameObject:
   m_ObjectHideFlags: 0
@@ -130573,7 +130718,7 @@ Transform:
   m_GameObject: {fileID: 1408144446}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 4.685, y: 1.228, z: -31.868}
+  m_LocalPosition: {x: 0.991, y: 1.228, z: -31.554998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -130928,6 +131073,7 @@ GameObject:
   - component: {fileID: 1417256169}
   - component: {fileID: 1417256170}
   - component: {fileID: 1417256171}
+  - component: {fileID: 1417256172}
   m_Layer: 0
   m_Name: TriggersAndNewQestSys
   m_TagString: Untagged
@@ -131011,6 +131157,8 @@ Transform:
   - {fileID: 5939519001024962917}
   - {fileID: 8006633826044455396}
   - {fileID: 942738277216417924}
+  - {fileID: 1042869956}
+  - {fileID: 89308594}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1417256168
@@ -131188,6 +131336,25 @@ MonoBehaviour:
       Data3: 2120680875
       Data4: 262036342
     Path: event:/typewriter
+--- !u!114 &1417256172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417256164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 864fc25da0ab78e44b3a7ef943b78672, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 332663620}
+  bottlesFocusTarget: {fileID: 776631301}
+  introComment: {fileID: 1042869955}
+  sittingCameraOffset: 0.65
+  standUpDuration: 1.5
+  lookAtDuration: 1.3
+  pauseBeforeComment: 0.4
 --- !u!1 &1417320578
 GameObject:
   m_ObjectHideFlags: 0
@@ -145555,6 +145722,7 @@ Transform:
   - {fileID: 4805799}
   - {fileID: 1195560874}
   - {fileID: 981118402}
+  - {fileID: 776631301}
   m_Father: {fileID: 1985116758}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1584918456 stripped
@@ -204624,7 +204792,7 @@ Transform:
   m_GameObject: {fileID: 2143652719}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.251, y: -1.275, z: -3.35}
+  m_LocalPosition: {x: 4.355, y: -1.275, z: -7.586}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
