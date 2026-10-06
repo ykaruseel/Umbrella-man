@@ -15,6 +15,12 @@ public class PlayerComments : MonoBehaviour
     public float typingSpeed = 0.03f;
     public float fadeDuration = 0.2f;
 
+    [SerializeField]
+    private bool autoCloseAfterLastLine = false;
+
+    [SerializeField]
+    private float autoCloseDelay = 0.5f;
+
     [Header("FMOD Voices")]
     [SerializeField] private EventReference danielVoiceEvent;
     [SerializeField] private Transform playerTransform;
@@ -32,6 +38,7 @@ public class PlayerComments : MonoBehaviour
     private FMOD.Studio.EventInstance currentVoiceInstance;
     private bool hasActiveVoice = false;
     public CanvasGroup dialogueCanvasGroup;
+    private Coroutine autoCloseCoroutine;
 
     void Start()
     {
@@ -84,6 +91,19 @@ public class PlayerComments : MonoBehaviour
             }
 
             isTyping = false;
+            StopCurrentVoice();
+            typingCoroutine = null;
+
+            if (autoCloseAfterLastLine &&
+                linesQueue.Count == 0)
+            {
+                if (autoCloseCoroutine != null)
+                    StopCoroutine(autoCloseCoroutine);
+
+                autoCloseCoroutine =
+                    StartCoroutine(AutoCloseLastLine());
+            }
+
             return;
         }
 
@@ -149,6 +169,16 @@ public class PlayerComments : MonoBehaviour
         isTyping = false;
         StopCurrentVoice();
         typingCoroutine = null;
+
+        if (autoCloseAfterLastLine &&
+            linesQueue.Count == 0)
+        {
+            if (autoCloseCoroutine != null)
+                StopCoroutine(autoCloseCoroutine);
+
+            autoCloseCoroutine =
+                StartCoroutine(AutoCloseLastLine());
+        }
     }
 
     private void EndDialogue()
@@ -233,5 +263,19 @@ public class PlayerComments : MonoBehaviour
             currentVoiceInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             currentVoiceInstance.release();
         }
+    }
+
+    private IEnumerator AutoCloseLastLine()
+    {
+        yield return new WaitForSeconds(autoCloseDelay);
+
+        if (isDialogueActive &&
+            !isTyping &&
+            linesQueue.Count == 0)
+        {
+            EndDialogue();
+        }
+
+        autoCloseCoroutine = null;
     }
 }

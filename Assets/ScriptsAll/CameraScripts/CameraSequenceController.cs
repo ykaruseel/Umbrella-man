@@ -86,63 +86,65 @@ void OnSecondFinished()
     fly2.OnPathFinished -= OnSecondFinished;
     StartCoroutine(SwitchToFinal());
 }
+
 IEnumerator SwitchToFinal()
 {
-
     yield return fade.FadeOut();
 
-        cam2.gameObject.SetActive(false);
 
-        cam3.gameObject.SetActive(true);
-        cam4.gameObject.SetActive(true);
+    cam2.gameObject.SetActive(false);
 
-
-        // Do not give control to the player yet.
-        // The scene must first play through:
-        // ascent -> view of the bottles -> commentary.
-        playerController.isCinematic = true;
-        playerController.SetCanMove(false);
+    cam3.gameObject.SetActive(true);
+    cam4.gameObject.SetActive(true);
 
 
-        if (MusicManager.Instance != null)
-        {
-            MusicManager.Instance.EnsureMusicPlaying();
-            MusicManager.Instance.FadeToVolume(1f, 1.2f);
-        }
-
-        intro = false;
-
-        yield return fade.FadeIn();
+    playerController.isCinematic = true;
+    playerController.SetCanMove(false);
 
 
-        // Our new intro sequence
-        if (trashQuestIntroSequence != null)
-{
-
-    yield return StartCoroutine(
-        trashQuestIntroSequence.PlaySequence()
-    );
-
-}
-        else
-        {
-
-            if (QuestManagerV2.Instance != null)
-            {
-                QuestManagerV2.Instance.StartQuestSequence();
-            }
-
-            playerController.isCinematic = false;
-            playerController.SetCanMove(true);
-
-            Pause.canPause = true;
-        }
+    if (trashQuestIntroSequence != null)
+    {
+        trashQuestIntroSequence.PrepareSeatedPose();
+    }
 
 
-        TutorialManager.Instance.ShowHint(
-            HintType.Move
+    if (MusicManager.Instance != null)
+    {
+        MusicManager.Instance.EnsureMusicPlaying();
+        MusicManager.Instance.FadeToVolume(1f, 1.2f);
+    }
+
+    intro = false;
+
+
+    // Now the player sees the camera for the first time in a seated position
+    yield return fade.FadeIn();
+
+
+    if (trashQuestIntroSequence != null)
+    {
+        yield return StartCoroutine(
+            trashQuestIntroSequence.PlaySequence()
         );
     }
+    else
+    {
+        if (QuestManagerV2.Instance != null)
+        {
+            QuestManagerV2.Instance.StartQuestSequence();
+        }
+
+        playerController.isCinematic = false;
+        playerController.SetCanMove(true);
+
+        Pause.canPause = true;
+    }
+
+
+    TutorialManager.Instance.ShowHint(
+        HintType.Move
+    );
+}
 
     void DisableAllCameras()
     {

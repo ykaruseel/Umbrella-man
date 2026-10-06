@@ -29,6 +29,8 @@ public class TrashQuestIntroSequence : MonoBehaviour
     [SerializeField]
     private float pauseBeforeComment = 0.4f;
 
+    private Vector3 standingCameraPosition;
+    private bool seatedPosePrepared = false;
 
 public IEnumerator PlaySequence()
 {
@@ -64,34 +66,36 @@ public IEnumerator PlaySequence()
 
         // Cinemachine camera already used by PlayerController
         Transform cameraTransform =
-            playerController.virtualCam.transform;
+        playerController.virtualCam.transform;
 
 
-        // Normal camera position for the standing player
-        Vector3 standingLocalPosition =
+        if (!seatedPosePrepared)
+        {
+            // Fallback
+            standingCameraPosition =
+                cameraTransform.localPosition;
+
+            cameraTransform.localPosition =
+                standingCameraPosition +
+                Vector3.down * sittingCameraOffset;
+        }
+
+
+        Vector3 sittingLocalPosition =
             cameraTransform.localPosition;
 
 
-        // Simulate a seated position:
-        // simply lower the camera downward
-        Vector3 sittingLocalPosition =
-            standingLocalPosition +
-            Vector3.down * sittingCameraOffset;
-
-
-        cameraTransform.localPosition =
-            sittingLocalPosition;
-
-
-        // Smoothly "stand up"
+        // stand up
         yield return StartCoroutine(
             MoveCamera(
                 cameraTransform,
                 sittingLocalPosition,
-                standingLocalPosition,
+                standingCameraPosition,
                 standUpDuration
             )
         );
+
+        seatedPosePrepared = false;
 
 
         // Now look at the bottles
@@ -125,19 +129,16 @@ public IEnumerator PlaySequence()
             }
         }
 
-
-        // Only AFTER the comment do we begin the first quest
-        if (QuestManagerV2.Instance != null)
-        {
-            Debug.Log("[TRASH INTRO] Starting quest");
-            QuestManagerV2.Instance.StartQuestSequence();
-        }
-
+        SyncPlayerRotationWithCamera();
 
         playerController.isCinematic = false;
         playerController.SetCanMove(true);
-
         Pause.canPause = true;
+
+        if (QuestManagerV2.Instance != null)
+        {
+            QuestManagerV2.Instance.StartQuestSequence();
+        }
     }
 
 
@@ -170,5 +171,57 @@ public IEnumerator PlaySequence()
         }
 
         cameraTransform.localPosition = to;
+    }
+
+    public void PrepareSeatedPose()
+    {
+        if (playerController == null ||
+            playerController.virtualCam == null)
+        {
+            Debug.LogWarning(
+                "[TrashQuestIntroSequence] Cannot prepare seated pose."
+            );
+            return;
+        }
+
+        Transform cameraTransform =
+            playerController.virtualCam.transform;
+
+        // Remember the standing position for later
+        standingCameraPosition =
+            cameraTransform.localPosition;
+
+        // Simulate a seated position by lowering the camera
+        cameraTransform.localPosition =
+            standingCameraPosition +
+            Vector3.down * sittingCameraOffset;
+
+        seatedPosePrepared = true;
+    }
+
+
+    private void SyncPlayerRotationWithCamera()
+    {
+        if (playerController == null ||
+            playerController.virtualCam == null)
+            return;
+
+        Transform cameraTransform =
+            playerController.virtualCam.transform;
+
+        Vector3 cameraEuler =
+            cameraTransform.eulerAngles;
+
+        float yaw = cameraEuler.y;
+
+        float pitch = cameraEuler.x;
+
+        if (pitch > 180f)
+            pitch -= 360f;
+
+        playerController.SetRotation(
+            yaw,
+            pitch
+        );
     }
 }

@@ -18,7 +18,7 @@ public class QuestManagerV2 : MonoBehaviour
     [SerializeField] private EventReference questCompletedSound;
 
     [SerializeField]
-    private bool autoStartQuestSequence = true;
+    private bool autoStartQuestSequence = false;
     private bool sequenceStarted = false;
 
     private bool isAdvancingQuest = false;
@@ -74,7 +74,7 @@ public class QuestManagerV2 : MonoBehaviour
     }
 
 
-    public void StartQuestSequence()
+    public void StartQuestSequence(bool showQuestUI = true)
     {
         if (sequenceStarted)
             return;
@@ -89,11 +89,14 @@ public class QuestManagerV2 : MonoBehaviour
 
         questSequence[currentQuestIndex].Initialize(true);
 
-        questUI.ShowNewQuest(
-            questSequence[currentQuestIndex]
-        );
+        if (showQuestUI && questUI != null)
+        {
+            questUI.ShowNewQuest(
+                questSequence[currentQuestIndex]
+            );
+        }
     }
-    
+        
 
     public bool IsGoalRequired(
     string id,
@@ -258,7 +261,10 @@ public class QuestManagerV2 : MonoBehaviour
     {
         if (questUI != null)
         {
-            questUI.SetQuestText(text);
+            questUI.SetQuestText(
+                text,
+                true
+            );
         }
     }
 

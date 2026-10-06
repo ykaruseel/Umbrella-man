@@ -29,9 +29,18 @@ public class QuestUIV2 : MonoBehaviour
 
     private IEnumerator FadeSequence()
     {
-        yield return StartCoroutine(Fade(1, 0.5f));
+        isVisible = true;
+
+        yield return StartCoroutine(
+            Fade(1, 0.5f)
+        );
+
         yield return new WaitForSeconds(2f);
-        yield return StartCoroutine(Fade(0, 0.5f));
+
+        yield return StartCoroutine(
+            Fade(0, 0.5f)
+        );
+
         isVisible = false;
     }
 
@@ -93,9 +102,16 @@ public class QuestUIV2 : MonoBehaviour
         }
     }
 
-    public void SetQuestText(string text)
+    public void SetQuestText(string text, bool showTemporarily = false)
     {
         questText.text = text;
+        questText.color = Color.white;
+
+        if (showTemporarily)
+        {
+            StopAllCoroutines();
+            StartCoroutine(FadeSequence());
+        }
     }
 
     public void UpdateProgressUI(QuestData quest)
