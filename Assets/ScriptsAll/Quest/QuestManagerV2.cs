@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class QuestManagerV2 : MonoBehaviour
 {
+    
     public static QuestManagerV2 Instance;
 
     public PlayerController playerController;
@@ -16,111 +17,269 @@ public class QuestManagerV2 : MonoBehaviour
 
     [SerializeField] private EventReference questCompletedSound;
 
+    [SerializeField]
+    private bool autoStartQuestSequence = false;
+    private bool sequenceStarted = false;
+
+    private bool isAdvancingQuest = false;
+
+    private void RequestQuestAdvance()
+    {
+        if (isAdvancingQuest)
+            return;
+        
+        StartCoroutine(ActivateNextQuest());
+    }
+
+
+    public void AdvanceCompletedQuest()
+    {
+        if (!sequenceStarted)
+            return;
+
+        if (currentQuestIndex >= questSequence.Count)
+            return;
+
+        QuestData current =
+            questSequence[currentQuestIndex];
+
+        if (!current.isCompleted)
+            return;
+
+        RequestQuestAdvance();
+    }
+
     private void Awake()
     {
         Instance = this;
-        SetupQuests();
-    }
 
-    private void SetupQuests()
-    {
-        if (questSequence.Count == 0) return;
+        InitializeQuests();
 
-        for (int i = 0; i < questSequence.Count; i++)
+        if (autoStartQuestSequence)
         {
-            questSequence[i].Initialize(i == 0);
-        }
-        questUI.ShowNewQuest(questSequence[currentQuestIndex]);
-    }
-
-    public bool IsGoalRequired(string id, GoalType type)
-    {
-        if (currentQuestIndex >= questSequence.Count) return false;
-
-        QuestData current = questSequence[currentQuestIndex];
-        return current.isActive && current.type == type && current.targetID.Contains(id);
-    }
-
-    public void ProcessAction(string id, GoalType type)
-    {
-        if (currentQuestIndex >= questSequence.Count) return;
-
-        QuestData current = questSequence[currentQuestIndex];
-        if (current.isActive && current.type == type)
-        {
-            current.CheckTarget(id);
-
-            if (current.isCompleted)
-            {
-                if (current.questID == "Q5")
-                {
-                    MusicManagerv2.Instance.SetMusicState(1);
-                }
-
-                StartCoroutine(ActivateNextQuest());
-            }
-            else
-            {
-                questUI.UpdateProgressUI(current);
-            }
+            StartQuestSequence();
         }
     }
 
+    private void InitializeQuests()
+    {
+        if (questSequence == null)
+            return;
+
+        foreach (QuestData quest in questSequence)
+        {
+            if (quest != null)
+                quest.Initialize(false);
+        }
+    }
+
+
+    public void StartQuestSequence(bool showQuestUI = true)
+    {
+        if (sequenceStarted)
+            return;
+
+        if (questSequence == null ||
+            questSequence.Count == 0)
+            return;
+
+        sequenceStarted = true;
+
+        currentQuestIndex = 0;
+
+        questSequence[currentQuestIndex].Initialize(true);
+
+        if (showQuestUI && questUI != null)
+        {
+            questUI.ShowNewQuest(
+                questSequence[currentQuestIndex]
+            );
+        }
+    }
+        
+
+    public bool IsGoalRequired(
+    string id,
+    GoalType type)
+    {
+        if (!sequenceStarted)
+            return false;
+
+        if (currentQuestIndex >= questSequence.Count)
+            return false;
+
+        QuestData current =
+            questSequence[currentQuestIndex];
+
+        return
+            current.isActive &&
+            current.type == type &&
+            current.targetID.Contains(id);
+    }
+
+    public void ProcessAction(
+    string id,
+    GoalType type,
+    bool deferQuestAdvance = false)
+{
+    if (!sequenceStarted)
+        return;
+
+    if (currentQuestIndex >= questSequence.Count)
+        return;
+
+    QuestData current =
+        questSequence[currentQuestIndex];
+
+    if (current.isActive &&
+        current.type == type)
+    {
+        current.CheckTarget(id);
+
+        questUI.UpdateProgressUI(current);
+
+        if (current.isCompleted)
+        {
+            if (current.questID == "Q5")
+            {
+                MusicManagerv2.Instance.SetMusicState(1);
+            }
+
+            if (!deferQuestAdvance)
+            {
+                RequestQuestAdvance();
+            }
+        }
+    }
+}
     public bool IsQuestActive(string id)
     {
-        QuestData current = questSequence[currentQuestIndex];
-        if (id == current.questID)
-        {
-            return true;
-        }
+    if (!sequenceStarted)
         return false;
+
+    if (currentQuestIndex < 0 ||
+        currentQuestIndex >= questSequence.Count)
+        return false;
+
+    QuestData current =
+        questSequence[currentQuestIndex];
+
+    return
+        current.isActive &&
+        id == current.questID;
     }
 
-    private IEnumerator ActivateNextQuest()
+  private IEnumerator ActivateNextQuest()
+{
+    isAdvancingQuest = true;
+
+    yield return null;
+
+    int completedQuestIndex =
+        currentQuestIndex;
+
+    currentQuestIndex++;
+
+    if (currentQuestIndex >= questSequence.Count)
     {
-        yield return null;
+        isAdvancingQuest = false;
+        yield break;
+    }
 
-        currentQuestIndex++;
-        if (currentQuestIndex < questSequence.Count)
+    QuestData completedQuest =
+        questSequence[completedQuestIndex];
+
+    QuestData nextQuest =
+        questSequence[currentQuestIndex];
+
+    nextQuest.isActive = true;
+
+    RuntimeManager.PlayOneShot(
+        questCompletedSound
+    );
+
+    StartCoroutine(
+        questUI.CompleteAndSwitchRoutine(
+            completedQuest,
+            nextQuest
+        )
+    );
+
+    switch (nextQuest.questID)
+    {
+        case "Q2":
+            break;
+
+        case "Q3":
+            StartCoroutine(
+                QuestEvents.Instance.QuestEvent3()
+            );
+            break;
+
+        case "Q5":
+            QuestEvents.Instance.QuestEvent5();
+            break;
+
+        case "Q7":
+            MusicManagerv2.Instance.StopMusic();
+            QuestEvents.Instance.QuestEvent7();
+            break;
+
+        case "Q9":
+            MusicManagerv2.Instance.StartMusic();
+            MusicManagerv2.Instance.SetMusicState(4);
+
+            StartCoroutine(
+                QuestEvents.Instance.QuestEvent9()
+            );
+            break;
+
+        case "Q10":
+            MusicManagerv2.Instance.SetMusicState(3);
+
+            StartCoroutine(
+                QuestEvents.Instance.QuestEvent10()
+            );
+            break;
+
+        case "Q11":
+            MusicManagerv2.Instance.StopMusic();
+
+            StartCoroutine(
+                QuestEvents.Instance.QuestEvent11()
+            );
+            break;
+    }
+
+    isAdvancingQuest = false;
+}
+
+    public void SetCurrentQuestText(string text)
+    {
+        if (questUI != null)
         {
-            questSequence[currentQuestIndex].isActive = true;
-            RuntimeManager.PlayOneShot(questCompletedSound);
-            StartCoroutine(questUI.CompleteAndSwitchRoutine(questSequence[currentQuestIndex - 1], questSequence[currentQuestIndex]));
+            questUI.SetQuestText(
+                text,
+                true
+            );
         }
+    }
 
-        switch (questSequence[currentQuestIndex].questID)
+
+    public void RefreshCurrentQuestUI()
+    {
+        if (!sequenceStarted)
+            return;
+
+        if (currentQuestIndex < 0 ||
+            currentQuestIndex >= questSequence.Count)
+            return;
+
+        if (questUI != null)
         {
-            case "Q2":
-                TutorialManager.Instance.ShowHint(HintType.Interact);
-                break;
-            case "Q3":
-                StartCoroutine(QuestEvents.Instance.QuestEvent3());
-                break;
-
-            case "Q5":
-                QuestEvents.Instance.QuestEvent5();
-                break;
-
-            case "Q7":
-                MusicManagerv2.Instance.StopMusic();
-                QuestEvents.Instance.QuestEvent7();
-                break;
-
-            case "Q9":
-                MusicManagerv2.Instance.StartMusic();
-                MusicManagerv2.Instance.SetMusicState(4);
-                StartCoroutine(QuestEvents.Instance.QuestEvent9());
-                break;
-
-            case "Q10":
-                MusicManagerv2.Instance.SetMusicState(3);
-                StartCoroutine(QuestEvents.Instance.QuestEvent10());
-                break;
-
-            case "Q11":
-                MusicManagerv2.Instance.StopMusic();
-                StartCoroutine(QuestEvents.Instance.QuestEvent11());
-                break;
+            questUI.UpdateProgressUI(
+                questSequence[currentQuestIndex]
+            );
         }
     }
 
@@ -140,6 +299,8 @@ public class QuestManagerV2 : MonoBehaviour
 
     public void SetQuestFromLoad(int index, List<string> completedGoals)
     {
+        sequenceStarted = true;
+        isAdvancingQuest = false;
         currentQuestIndex = index;
 
         for (int i = 0; i < questSequence.Count; i++)

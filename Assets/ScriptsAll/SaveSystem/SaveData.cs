@@ -58,6 +58,9 @@ public class SaveData
     public int currentQuestIndex;
     public List<string> completedGoalIDs = new List<string>();
 
+    // Collection tasks
+    public List<CollectionTaskSaveData> collectionTasks = new List<CollectionTaskSaveData>();
+
     //Tutorial
     public List<HintType> savedShownHints;
 

@@ -52,6 +52,9 @@ public class SaveManager : MonoBehaviour
 
     public GameObject TriggerQ8;
 
+    [Header("Collection Systems")]
+    public List<CollectionController> collectionControllers = new List<CollectionController>();
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -120,6 +123,19 @@ public class SaveManager : MonoBehaviour
 
         data.currentQuestIndex = QuestManagerV2.Instance.GetCurrentQuest();
         data.completedGoalIDs = QuestManagerV2.Instance.GetCompletedGoals();
+
+        data.collectionTasks.Clear();
+
+        foreach (CollectionController controller
+                in collectionControllers)
+        {
+            if (controller == null)
+                continue;
+
+            data.collectionTasks.Add(
+                controller.CreateSaveData()
+            );
+        }
 
         data.savedShownHints = new List<HintType>(TutorialManager.Instance.GetShownHints());
 
@@ -274,6 +290,28 @@ public class SaveManager : MonoBehaviour
             TriggerQ8.GetComponent<BoxCollider>().enabled = data.isBoxColliderOnQ8;
 
             QuestManagerV2.Instance.SetQuestFromLoad(data.currentQuestIndex, data.completedGoalIDs);
+
+            if (data.collectionTasks != null)
+            {
+                foreach (CollectionController controller
+                        in collectionControllers)
+                {
+                    if (controller == null)
+                        continue;
+
+                    CollectionTaskSaveData savedState =
+                        data.collectionTasks.Find(
+                            x => x.questID == controller.QuestID
+                        );
+
+                    if (savedState != null)
+                    {
+                        controller.RestoreFromSave(
+                            savedState
+                        );
+                    }
+                }
+            }
 
             TutorialManager.Instance.LoadShownHints(data.savedShownHints);
         }

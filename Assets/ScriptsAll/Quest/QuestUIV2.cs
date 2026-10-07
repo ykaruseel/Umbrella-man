@@ -11,18 +11,36 @@ public class QuestUIV2 : MonoBehaviour
     void Start() => canvasGroup.alpha = 0;
 
     public void ShowNewQuest(QuestData quest)
+{
+    questText.text = quest.GetTitleWithProgress();
+    questText.color = Color.white;
+
+    StopAllCoroutines();
+
+    if (quest.keepVisibleWhileActive)
     {
-        questText.text = quest.GetTitleWithProgress();
-        questText.color = Color.white;
-        StopAllCoroutines();
-        StartCoroutine(FadeSequence());
+        canvasGroup.alpha = 1f;
+        isVisible = true;
+        return;
     }
+
+    StartCoroutine(FadeSequence());
+}
 
     private IEnumerator FadeSequence()
     {
-        yield return StartCoroutine(Fade(1, 0.5f));
+        isVisible = true;
+
+        yield return StartCoroutine(
+            Fade(1, 0.5f)
+        );
+
         yield return new WaitForSeconds(2f);
-        yield return StartCoroutine(Fade(0, 0.5f));
+
+        yield return StartCoroutine(
+            Fade(0, 0.5f)
+        );
+
         isVisible = false;
     }
 
@@ -81,6 +99,18 @@ public class QuestUIV2 : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             ToggleQuest();
+        }
+    }
+
+    public void SetQuestText(string text, bool showTemporarily = false)
+    {
+        questText.text = text;
+        questText.color = Color.white;
+
+        if (showTemporarily)
+        {
+            StopAllCoroutines();
+            StartCoroutine(FadeSequence());
         }
     }
 
