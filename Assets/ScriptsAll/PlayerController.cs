@@ -359,6 +359,15 @@ public class PlayerController : MonoBehaviour
                     return;
             }
             
+            TrashStorageDoor trashStorageDoor =
+                hit.collider.GetComponentInParent<TrashStorageDoor>();
+
+            if (trashStorageDoor != null)
+            {
+                if (trashStorageDoor.TryInteract())
+                    return;
+            }
+
             CollectionPickup collectionPickup =
                 hit.collider.GetComponentInParent<CollectionPickup>();
 

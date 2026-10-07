@@ -314,4 +314,76 @@ public class QuestManagerV2 : MonoBehaviour
             questUI.ShowNewQuest(questSequence[currentQuestIndex]);
         }
     }
+
+        public bool ActivateQuestByID(
+    string questID,
+    bool showQuestUI = false)
+{
+    if (questSequence == null ||
+        questSequence.Count == 0)
+    {
+        return false;
+    }
+
+    int index = questSequence.FindIndex(
+        quest =>
+            quest != null &&
+            quest.questID == questID
+    );
+
+    if (index < 0)
+    {
+        Debug.LogError(
+            $"[QuestManagerV2] Quest '{questID}' " +
+            "was not found in Quest Sequence."
+        );
+
+        return false;
+    }
+
+
+    sequenceStarted = true;
+    isAdvancingQuest = false;
+    currentQuestIndex = index;
+
+
+    for (int i = 0;
+         i < questSequence.Count;
+         i++)
+    {
+        if (questSequence[i] != null)
+        {
+            questSequence[i].Initialize(
+                i == currentQuestIndex
+            );
+        }
+    }
+
+
+    if (questUI != null)
+    {
+        if (showQuestUI)
+        {
+            questUI.ShowNewQuest(
+                questSequence[currentQuestIndex]
+            );
+        }
+        else
+        {
+            questUI.SetQuestText(
+                questSequence[currentQuestIndex]
+                    .GetTitleWithProgress(),
+                false
+            );
+        }
+    }
+
+
+    Debug.Log(
+        $"[QuestManagerV2] Activated quest: " +
+        $"{questSequence[currentQuestIndex].questID}"
+    );
+
+    return true;
+}
 }

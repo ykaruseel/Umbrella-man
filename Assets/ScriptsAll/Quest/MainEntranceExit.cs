@@ -13,6 +13,9 @@ public class MainEntranceExit : MonoBehaviour
     [SerializeField] private OutlineInteractable outline;
     [SerializeField] private PulseHighlight pulseHighlight;
 
+    [SerializeField]
+    private CollectionController collectionController;
+
     private bool isBusy;
     private bool lastAvailable = false;
 
@@ -119,7 +122,17 @@ public class MainEntranceExit : MonoBehaviour
             );
         }
 
+        bool hasFullTrashBag =
+            collectionController != null &&
+            collectionController.HasFullContainer;
 
+
+
+        SceneTransitionState.Prepare(
+            "BackyardEntrance",
+            requiredQuestId,
+            true
+        );
         SceneManager.LoadScene(targetSceneName);
     }
 

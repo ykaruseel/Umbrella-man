@@ -59,6 +59,9 @@ public class PlayerInteraction : MonoBehaviour
             MainEntranceExit mainEntranceExit =
                 hit.collider.GetComponentInParent<MainEntranceExit>();
 
+            TrashStorageDoor trashStorageDoor =
+                hit.collider.GetComponentInParent<TrashStorageDoor>();
+
             if (collectionPickup != null &&
                 collectionPickup.CanInteract &&
                 outline != null)
@@ -108,6 +111,21 @@ public class PlayerInteraction : MonoBehaviour
 
             if (mainEntranceExit != null &&
                 mainEntranceExit.CanInteract &&
+                outline != null)
+            {
+                if (currentOutline != outline)
+                {
+                    ClearOutline();
+
+                    currentOutline = outline;
+                    currentOutline.Show();
+                }
+
+                return;
+            }
+
+            if (trashStorageDoor != null &&
+                trashStorageDoor.CanInteract &&
                 outline != null)
             {
                 if (currentOutline != outline)
