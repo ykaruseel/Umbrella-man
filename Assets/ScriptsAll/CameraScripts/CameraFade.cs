@@ -13,12 +13,20 @@ public class CameraFade : MonoBehaviour
     public IEnumerator FadeOut()
     {
         fadeImage.gameObject.SetActive(true);
-        yield return Fade(0f, 1f);
+
+        yield return Fade(
+            fadeImage.color.a,
+            1f
+        );
     }
 
     public IEnumerator FadeIn()
     {
-        yield return Fade(1f, 0f);
+        yield return Fade(
+            fadeImage.color.a,
+            0f
+        );
+
         fadeImage.gameObject.SetActive(false);
     }
 

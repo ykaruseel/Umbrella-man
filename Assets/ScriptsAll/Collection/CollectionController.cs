@@ -254,9 +254,6 @@ public class CollectionController : MonoBehaviour
         Vector3 startPosition =
             itemTransform.position;
 
-        Vector3 startScale =
-            itemTransform.localScale;
-
         float elapsed = 0f;
 
         while (elapsed < flyDuration)
@@ -271,12 +268,6 @@ public class CollectionController : MonoBehaviour
             itemTransform.position = Vector3.Lerp(
                 startPosition,
                 targetPosition,
-                smoothT
-            );
-
-            itemTransform.localScale = Vector3.Lerp(
-                startScale,
-                Vector3.zero,
                 smoothT
             );
 

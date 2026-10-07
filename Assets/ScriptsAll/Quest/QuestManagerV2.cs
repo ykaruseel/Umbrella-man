@@ -208,9 +208,6 @@ public class QuestManagerV2 : MonoBehaviour
     switch (nextQuest.questID)
     {
         case "Q2":
-            TutorialManager.Instance.ShowHint(
-                HintType.Interact
-            );
             break;
 
         case "Q3":

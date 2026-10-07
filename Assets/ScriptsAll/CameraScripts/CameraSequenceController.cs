@@ -30,6 +30,17 @@ public class CameraSequenceController : MonoBehaviour
     private const string FOV = "CameraFOV";
 
     private bool intro;
+    [SerializeField]
+    private GameObject skipHint;
+    [SerializeField]
+    private float skipHintVisibleTime = 2f;
+
+    [SerializeField]
+    private float skipHintFadeDuration = 0.5f;
+
+    private CanvasGroup skipHintCanvasGroup;
+
+    private bool finalTransitionStarted = false;
 
 
 void Start()
@@ -37,6 +48,26 @@ void Start()
 
     Pause.canPause = false;
     intro = true;
+
+    finalTransitionStarted = false;
+
+    if (skipHint != null)
+    {
+        skipHint.SetActive(true);
+
+        skipHintCanvasGroup =
+            skipHint.GetComponent<CanvasGroup>();
+
+        if (skipHintCanvasGroup != null)
+        {
+            skipHintCanvasGroup.alpha = 1f;
+
+            StartCoroutine(
+                HideSkipHintRoutine()
+            );
+        }
+    }
+
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.SetVolumeImmediate(0f);
@@ -80,18 +111,18 @@ void OnFirstFinished()
         yield return fade.FadeIn();
     }
 
-void OnSecondFinished()
-{
+    void OnSecondFinished()
+    {
+        fly2.OnPathFinished -= OnSecondFinished;
 
-    fly2.OnPathFinished -= OnSecondFinished;
-    StartCoroutine(SwitchToFinal());
-}
+        BeginFinalTransition();
+    }
 
 IEnumerator SwitchToFinal()
 {
     yield return fade.FadeOut();
 
-
+    cam1.gameObject.SetActive(false);
     cam2.gameObject.SetActive(false);
 
     cam3.gameObject.SetActive(true);
@@ -141,11 +172,25 @@ IEnumerator SwitchToFinal()
     }
 
 
-    TutorialManager.Instance.ShowHint(
-        HintType.Move
-    );
+    StartCoroutine(ShowInitialTutorialHints());
 }
 
+    private IEnumerator ShowInitialTutorialHints()
+    {
+        if (TutorialManager.Instance == null)
+            yield break;
+
+        TutorialManager.Instance.ShowHint(
+            HintType.Move
+        );
+
+        // Ждём, пока первая подсказка успеет показаться и исчезнуть.
+        yield return new WaitForSeconds(8f);
+
+        TutorialManager.Instance.ShowHint(
+            HintType.Interact
+        );
+    }
     void DisableAllCameras()
     {
         cam1.gameObject.SetActive(false);
@@ -155,13 +200,15 @@ IEnumerator SwitchToFinal()
         cam5.gameObject.SetActive(false);
     }
 
-    //private void Update()
-    //{
-    //    if (intro && Input.GetKeyDown(KeyCode.Space))
-    //    {
-    //        Skip();
-    //    }
-    //}
+    private void Update()
+    {
+        if (intro &&
+            !finalTransitionStarted &&
+            Input.GetKeyDown(KeyCode.E))
+        {
+            SkipOpeningCinematic();
+        }
+    }
 
     public void StartThirdAnim()
     {
@@ -201,28 +248,77 @@ IEnumerator SwitchToFinal()
 
     }
 
-    private void Skip()
+    private void SkipOpeningCinematic()
     {
-        StopAllCoroutines();
+        if (!intro || finalTransitionStarted)
+            return;
+
+        BeginFinalTransition();
+    }
+
+
+    private void BeginFinalTransition()
+    {
+        if (finalTransitionStarted)
+            return;
+
+        finalTransitionStarted = true;
         intro = false;
 
-        fade.SetFadeAlpha(0f);
-        fade.SetFadeImageActive(false);
-
-        cam1.gameObject.SetActive(false);
-        cam2.gameObject.SetActive(false);
-
-        cam3.gameObject.SetActive(true);
-        cam4.gameObject.SetActive(true);
-
-
-        playerController.isCinematic = false;
-        playerController.SetCanMove(true);
-
-        if (MusicManager.Instance != null)
+        // Убираем подсказку Skip
+        if (skipHint != null)
         {
-            MusicManager.Instance.EnsureMusicPlaying();
-            MusicManager.Instance.FadeToVolume(1f, 1.2f);
+            skipHint.SetActive(false);
         }
+
+        if (fly1 != null)
+        {
+            fly1.OnPathFinished -= OnFirstFinished;
+        }
+
+        if (fly2 != null)
+        {
+            fly2.OnPathFinished -= OnSecondFinished;
+        }
+
+        StopAllCoroutines();
+
+        StartCoroutine(SwitchToFinal());
+    }
+
+        private IEnumerator HideSkipHintRoutine()
+    {
+        yield return new WaitForSeconds(
+            skipHintVisibleTime
+        );
+
+        if (skipHintCanvasGroup == null)
+            yield break;
+
+        float elapsed = 0f;
+        float startAlpha =
+            skipHintCanvasGroup.alpha;
+
+        while (elapsed < skipHintFadeDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float t = Mathf.Clamp01(
+                elapsed / skipHintFadeDuration
+            );
+
+            skipHintCanvasGroup.alpha =
+                Mathf.Lerp(
+                    startAlpha,
+                    0f,
+                    t
+                );
+
+            yield return null;
+        }
+
+        skipHintCanvasGroup.alpha = 0f;
+
+        skipHint.SetActive(false);
     }
 }
