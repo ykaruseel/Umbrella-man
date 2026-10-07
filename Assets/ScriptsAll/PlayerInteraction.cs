@@ -21,6 +21,13 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
+
+        if (JanitorNoteUI.CurrentOpenNote != null)
+        {
+            ClearOutline();
+            return;
+        }
+
         if (!Pause.isPaused)
             UpdateOutline();
 
@@ -32,7 +39,12 @@ public class PlayerInteraction : MonoBehaviour
     {
         Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
 
-        if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactionLayerMask))
+        if (Physics.Raycast(
+            ray,
+            out RaycastHit hit,
+            interactionDistance,
+            interactionLayerMask,
+            QueryTriggerInteraction.Collide))
         {
             OutlineInteractable outline = hit.collider.GetComponentInParent<OutlineInteractable>();
             CollectionPickup collectionPickup = hit.collider.GetComponentInParent<CollectionPickup>();
@@ -40,6 +52,12 @@ public class PlayerInteraction : MonoBehaviour
 
             PlaceableItem item = hit.collider.GetComponentInParent<PlaceableItem>();
             DoorOutline doorOutline = hit.collider.GetComponentInParent<DoorOutline>();
+
+            JanitorNoteInteractable janitorNote =
+                hit.collider.GetComponentInParent<JanitorNoteInteractable>();
+
+            MainEntranceExit mainEntranceExit =
+                hit.collider.GetComponentInParent<MainEntranceExit>();
 
             if (collectionPickup != null &&
                 collectionPickup.CanInteract &&
@@ -59,6 +77,37 @@ public class PlayerInteraction : MonoBehaviour
 
             if (collectible != null &&
                 collectible.CanInteract &&
+                outline != null)
+            {
+                if (currentOutline != outline)
+                {
+                    ClearOutline();
+
+                    currentOutline = outline;
+                    currentOutline.Show();
+                }
+
+                return;
+            }
+
+            if (janitorNote != null &&
+                janitorNote.CanInteract &&
+                outline != null)
+            {
+                if (currentOutline != outline)
+                {
+                    ClearOutline();
+
+                    currentOutline = outline;
+                    currentOutline.Show();
+                }
+
+                return;
+            }
+
+
+            if (mainEntranceExit != null &&
+                mainEntranceExit.CanInteract &&
                 outline != null)
             {
                 if (currentOutline != outline)
@@ -119,7 +168,12 @@ public class PlayerInteraction : MonoBehaviour
             return;
 
         Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
-        if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactionLayerMask))
+        if (Physics.Raycast(
+            ray,
+            out RaycastHit hit,
+            interactionDistance,
+            interactionLayerMask,
+            QueryTriggerInteraction.Collide))
         {
             NPC_Dialogue npcDialogue = hit.collider.GetComponent<NPC_Dialogue>();
             if (npcDialogue != null)

@@ -61,6 +61,11 @@ public class CollectionController : MonoBehaviour
 
     [SerializeField]
     private UnityEvent onCollectionCompleted;
+    [SerializeField]
+    private PlayerController playerController;
+
+    [SerializeField]
+    private PlayerComments completionComment;
 
 
     public bool HasContainer { get; private set; }
@@ -453,6 +458,38 @@ public class CollectionController : MonoBehaviour
         onCollectionCompleted?.Invoke();
 
 
+        // Daniel comments on the completed cleanup
+        if (completionComment != null)
+        {
+            if (playerController != null)
+            {
+                Pause.canPause = false;
+
+                playerController.isCinematic = true;
+                playerController.SetCanMove(false);
+            }
+
+
+            completionComment.StartDialogue();
+
+            while (completionComment.IsDialogueActive())
+            {
+                yield return null;
+            }
+
+
+            if (playerController != null)
+            {
+                playerController.isCinematic = false;
+                playerController.SetCanMove(true);
+
+                Pause.canPause = true;
+            }
+        }
+
+
+        // Only after Daniel's comment,
+        // start Take Out the Trash I.
         QuestManagerV2.Instance.AdvanceCompletedQuest();
     }
 

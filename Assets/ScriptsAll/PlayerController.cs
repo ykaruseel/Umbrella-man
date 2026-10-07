@@ -95,6 +95,18 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+
+        if (JanitorNoteUI.CurrentOpenNote != null)
+        {
+            StopFootsteps();
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                JanitorNoteUI.CurrentOpenNote.Close();
+            }
+
+            return;
+        }
         
         DialogueManager dm = FindObjectOfType<DialogueManager>();
         if (dm != null && dm.IsDialogueActive())
@@ -318,20 +330,43 @@ public class PlayerController : MonoBehaviour
         );
         RaycastHit hit;
         bool hitSomething = Physics.Raycast(
-            ray, out hit, interactionDistance, interactionLayerMask
+            ray,
+            out hit,
+            interactionDistance,
+            interactionLayerMask,
+            QueryTriggerInteraction.Collide
         );
-        
+                
         if (hitSomething &&
         !objectInteraction.IsHoldingObject())
-    {
-        CollectionPickup collectionPickup =
-            hit.collider.GetComponentInParent<CollectionPickup>();
-
-        if (collectionPickup != null)
         {
-            if (collectionPickup.TryInteract())
-                return;
-        }
+            JanitorNoteInteractable janitorNote =
+                hit.collider.GetComponentInParent<JanitorNoteInteractable>();
+
+            if (janitorNote != null)
+            {
+                if (janitorNote.TryInteract())
+                    return;
+            }
+
+
+            MainEntranceExit mainEntranceExit =
+                hit.collider.GetComponentInParent<MainEntranceExit>();
+
+            if (mainEntranceExit != null)
+            {
+                if (mainEntranceExit.TryInteract())
+                    return;
+            }
+            
+            CollectionPickup collectionPickup =
+                hit.collider.GetComponentInParent<CollectionPickup>();
+
+            if (collectionPickup != null)
+            {
+                if (collectionPickup.TryInteract())
+                    return;
+            }
 
 
         CollectibleItem collectible =
