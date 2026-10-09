@@ -93,6 +93,7 @@ public class PlayerController : MonoBehaviour
             initialFOV = virtualCam.Lens.FieldOfView;
     }
 
+    [System.Obsolete]
     void Update()
     {
 
