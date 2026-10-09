@@ -368,6 +368,15 @@ public class PlayerController : MonoBehaviour
                     return;
             }
 
+            WardrobeSequenceController wardrobeSequence =
+                hit.collider.GetComponentInParent<WardrobeSequenceController>();
+
+            if (wardrobeSequence != null)
+            {
+                if (wardrobeSequence.TryInteract())
+                    return;
+            }
+
             CollectionPickup collectionPickup =
                 hit.collider.GetComponentInParent<CollectionPickup>();
 
