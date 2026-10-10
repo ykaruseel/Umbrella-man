@@ -109,6 +109,10 @@ public class WardrobeSequenceController : MonoBehaviour
     [SerializeField]
     private float ratCameraVerticalOffset = -0.35f;
 
+    [Header("Interaction")]
+    [SerializeField]
+    private Collider wardrobeInteractionCollider;
+
 
 
     private Quaternion leftDoorClosedRotation;
@@ -197,6 +201,11 @@ public class WardrobeSequenceController : MonoBehaviour
     private IEnumerator SequenceRoutine()
     {
         sequenceStarted = true;
+
+        if (wardrobeInteractionCollider != null)
+        {
+            wardrobeInteractionCollider.enabled = false;
+        }
 
         if (wardrobeAnimation != null)
         {

@@ -21,6 +21,11 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
+        if (PlayerController.playerComments != null)
+        {
+            ClearOutline();
+            return;
+        }
 
         if (JanitorNoteUI.CurrentOpenNote != null)
         {
@@ -62,6 +67,21 @@ public class PlayerInteraction : MonoBehaviour
             TrashStorageDoor trashStorageDoor =
                 hit.collider.GetComponentInParent<TrashStorageDoor>();
 
+            BackyardReturnHomeExit returnHomeExit =
+                hit.collider.GetComponentInParent<
+                    BackyardReturnHomeExit
+                >();
+
+            TrashStorageKey trashStorageKey =
+                hit.collider.GetComponentInParent<
+                    TrashStorageKey
+                >();
+
+            TrashDumpsterInteractable dumpster =
+                hit.collider.GetComponentInParent<
+                    TrashDumpsterInteractable
+                >();
+
             if (collectionPickup != null &&
                 collectionPickup.CanInteract &&
                 outline != null)
@@ -80,6 +100,52 @@ public class PlayerInteraction : MonoBehaviour
 
             if (collectible != null &&
                 collectible.CanInteract &&
+                outline != null)
+            {
+                if (currentOutline != outline)
+                {
+                    ClearOutline();
+
+                    currentOutline = outline;
+                    currentOutline.Show();
+                }
+
+                return;
+            }
+
+            if (trashStorageKey != null &&
+                trashStorageKey.CanInteract &&
+                outline != null)
+            {
+                if (currentOutline != outline)
+                {
+                    ClearOutline();
+
+                    currentOutline = outline;
+                    currentOutline.Show();
+                }
+
+                return;
+            }
+
+            if (returnHomeExit != null &&
+                returnHomeExit.CanInteract &&
+                outline != null)
+            {
+                if (currentOutline != outline)
+                {
+                    ClearOutline();
+
+                    currentOutline = outline;
+                    currentOutline.Show();
+                }
+
+                return;
+            }
+
+
+            if (dumpster != null &&
+                dumpster.CanInteract &&
                 outline != null)
             {
                 if (currentOutline != outline)

@@ -126,6 +126,10 @@ public class ReturnHomeFlashbackController : MonoBehaviour
     [SerializeField]
     private bool debugStartOnPlay = false;
 
+    [Header("Next Quest")]
+    [SerializeField]
+    private TakeOutTrash2Controller takeOutTrash2Controller;
+
 
     private bool flashbackActive = false;
     private bool cementTriggered = false;
@@ -577,15 +581,22 @@ public class ReturnHomeFlashbackController : MonoBehaviour
 
         flashbackActive = false;
 
-
-        if (playerController != null)
+        if (takeOutTrash2Controller != null)
         {
-            playerController.isCinematic = false;
-            playerController.SetCanMove(true);
+            yield return StartCoroutine(
+                takeOutTrash2Controller.PlayIntroRoutine()
+            );
         }
+        else
+        {
+            if (playerController != null)
+            {
+                playerController.isCinematic = false;
+                playerController.SetCanMove(true);
+            }
 
-
-        Pause.canPause = true;
+            Pause.canPause = true;
+        }
     }
 
 

@@ -121,10 +121,17 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if(playerComments != null)
+        if (playerComments != null)
         {
-            if (Input.GetKeyDown(KeyCode.E) && !Pause.isPaused)
+            StopFootsteps();
+
+            if (Input.GetKeyDown(KeyCode.E) &&
+                !Pause.isPaused)
+            {
                 playerComments.DisplayNextSentence();
+            }
+
+            return;
         }
 
         HandleMovement();
@@ -375,6 +382,41 @@ public class PlayerController : MonoBehaviour
             if (wardrobeSequence != null)
             {
                 if (wardrobeSequence.TryInteract())
+                    return;
+            }
+
+            BackyardReturnHomeExit returnHomeExit =
+                hit.collider.GetComponentInParent<
+                    BackyardReturnHomeExit
+                >();
+
+            if (returnHomeExit != null)
+            {
+                if (returnHomeExit.TryInteract())
+                    return;
+            }
+
+
+            TrashStorageKey trashStorageKey =
+                hit.collider.GetComponentInParent<
+                    TrashStorageKey
+                >();
+
+            if (trashStorageKey != null)
+            {
+                if (trashStorageKey.TryInteract())
+                    return;
+            }
+
+
+            TrashDumpsterInteractable dumpster =
+                hit.collider.GetComponentInParent<
+                    TrashDumpsterInteractable
+                >();
+
+            if (dumpster != null)
+            {
+                if (dumpster.TryInteract())
                     return;
             }
 
