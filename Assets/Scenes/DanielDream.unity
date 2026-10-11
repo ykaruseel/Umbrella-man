@@ -14827,6 +14827,8 @@ MonoBehaviour:
       my future."
   typingSpeed: 0.03
   fadeDuration: 1.5
+  autoCloseAfterLastLine: 0
+  autoCloseDelay: 0.5
   danielVoiceEvent:
     Guid:
       Data1: -1656578066
@@ -21596,6 +21598,8 @@ MonoBehaviour:
     sentence: Buying a cheap mirror was definitely a mistake.
   typingSpeed: 0.03
   fadeDuration: 1.5
+  autoCloseAfterLastLine: 0
+  autoCloseDelay: 0.5
   danielVoiceEvent:
     Guid:
       Data1: -1656578066
@@ -24727,6 +24731,110 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 647621195}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &661704230
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 304f72ddd525f4849a79a15e06501010,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -20.478214
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304f72ddd525f4849a79a15e06501010,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.561
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304f72ddd525f4849a79a15e06501010,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -62.515675
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304f72ddd525f4849a79a15e06501010,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304f72ddd525f4849a79a15e06501010,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304f72ddd525f4849a79a15e06501010,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304f72ddd525f4849a79a15e06501010,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304f72ddd525f4849a79a15e06501010,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304f72ddd525f4849a79a15e06501010,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304f72ddd525f4849a79a15e06501010,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 304f72ddd525f4849a79a15e06501010,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 57a5b920881304949b23fdf532b42907, type: 2}
+    - target: {fileID: 919132149155446097, guid: 304f72ddd525f4849a79a15e06501010,
+        type: 3}
+      propertyPath: m_Name
+      value: flower
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 304f72ddd525f4849a79a15e06501010,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 661704232}
+  m_SourcePrefab: {fileID: 100100000, guid: 304f72ddd525f4849a79a15e06501010, type: 3}
+--- !u!1 &661704231 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 304f72ddd525f4849a79a15e06501010,
+    type: 3}
+  m_PrefabInstance: {fileID: 661704230}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &661704232
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661704231}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.25221932, y: 0.28274488, z: 0.24727848}
+  m_Center: {x: 0.0065698996, y: 0.07610076, z: -0.0028130412}
 --- !u!1001 &698025322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34010,6 +34118,8 @@ MonoBehaviour:
     sentence: "Someone should\u2019ve invented a machine for this by now."
   typingSpeed: 0.03
   fadeDuration: 1.5
+  autoCloseAfterLastLine: 0
+  autoCloseDelay: 0.5
   danielVoiceEvent:
     Guid:
       Data1: -1656578066
@@ -43003,6 +43113,8 @@ MonoBehaviour:
     sentence: "I don\u2019t think I\u2019ll forget this trip anytime soon."
   typingSpeed: 0.03
   fadeDuration: 1.5
+  autoCloseAfterLastLine: 0
+  autoCloseDelay: 0.5
   danielVoiceEvent:
     Guid:
       Data1: -1656578066
@@ -61043,3 +61155,4 @@ SceneRoots:
   - {fileID: 1059480407}
   - {fileID: 1675212466}
   - {fileID: 1023504801}
+  - {fileID: 661704230}
