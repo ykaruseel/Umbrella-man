@@ -34,30 +34,63 @@ public class Pause : MonoBehaviour
     private float grainIntensity;
     private float saturation;
 
+    
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (!canPause) return;
-            if(_knifeManAI.isChasing) return;
-            foreach (GameObject obj in _UIElements)
-            {
-                if (obj == null) continue;
+        if (!Input.GetKeyDown(KeyCode.Escape))
+            return;
 
-                if (obj.activeSelf) return;
-            }
-            if (isPaused)
+        Debug.Log(
+            $"[PAUSE DEBUG] ESC pressed | " +
+            $"canPause={canPause} | " +
+            $"isPaused={isPaused} | " +
+            $"isTransitioning={isTransitioning}"
+        );
+
+        if (isTransitioning)
+            return;
+
+        // Always allow closing an already open menu.
+        if (isPaused)
+        {
+            ResumeGame();
+            return;
+        }
+
+        if (!canPause)
+        {
+            Debug.LogWarning(
+                "[PAUSE DEBUG] Blocked: canPause is false"
+            );
+            return;
+        }
+
+        if (_knifeManAI != null && _knifeManAI.isChasing)
+        {
+            Debug.LogWarning(
+                "[PAUSE DEBUG] Blocked: KnifeMan is chasing"
+            );
+            return;
+        }
+
+        foreach (GameObject obj in _UIElements)
+        {
+            if (obj == null)
+                continue;
+
+            if (obj.activeInHierarchy)
             {
-                Debug.Log("Resuming Game from Pause Menu");
-                ResumeGame();
-            }
-            else
-            {
-                Debug.Log("Pausing Game from Pause Menu");
-                PauseGame();
+                Debug.LogWarning(
+                    "[PAUSE DEBUG] Blocked by UI: " + obj.name
+                );
+                return;
             }
         }
+
+        Debug.Log("[PAUSE DEBUG] Opening pause menu");
+        PauseGame();
     }
+
 
     private void PauseGame()
     {
@@ -121,8 +154,11 @@ public class Pause : MonoBehaviour
         _playerController.SetCanMove(true);
         _playerController.SetDialogueZoom(true);
 
-        if (_umbrellaManChase.gameObject.activeSelf)
+        if (_umbrellaManChase != null &&
+            _umbrellaManChase.gameObject.activeInHierarchy)
+        {
             _umbrellaManChase.ResumeChase();
+        }
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -142,8 +178,11 @@ public class Pause : MonoBehaviour
         _playerController.SetCanMove(false);
         _playerController.SetDialogueZoom(false);
 
-        if (_umbrellaManChase.gameObject.activeSelf)
+        if (_umbrellaManChase != null &&
+            _umbrellaManChase.gameObject.activeInHierarchy)
+        {
             _umbrellaManChase.PauseChase();
+        }
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

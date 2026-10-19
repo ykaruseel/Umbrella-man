@@ -53,6 +53,9 @@ public class ReturnHomeFlashbackController : MonoBehaviour
     private Vector3 cementFallRotation =
         new Vector3(160f, 70f, 40f);
 
+    private Vector3 presentCementPosition;
+    private Quaternion presentCementRotation;
+
 
     [Header("Umbrella Man")]
     [SerializeField]
@@ -162,7 +165,10 @@ public class ReturnHomeFlashbackController : MonoBehaviour
 
         if (cementBag != null)
         {
-            cementBag.SetActive(false);
+            presentCementPosition = cementBag.transform.position;
+            presentCementRotation = cementBag.transform.rotation;
+
+            cementBag.SetActive(true);
         }
 
 
@@ -910,6 +916,13 @@ public class ReturnHomeFlashbackController : MonoBehaviour
         if (cementBag != null)
         {
             cementBag.SetActive(false);
+
+            cementBag.transform.SetPositionAndRotation(
+                presentCementPosition,
+                presentCementRotation
+            );
+
+            cementBag.SetActive(true);
         }
 
 

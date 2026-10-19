@@ -46,10 +46,11 @@ public class QuestUIV2 : MonoBehaviour
 
     public void ToggleQuest()
     {
-        isVisible = !isVisible;
         StopAllCoroutines();
-        float targetAlpha = isVisible ? 1 : 0;
-        StartCoroutine(Fade(targetAlpha, 0.3f));
+
+        isVisible = true;
+
+        StartCoroutine(FadeSequence());
     }
 
     private IEnumerator Fade(float targetAlpha, float duration)

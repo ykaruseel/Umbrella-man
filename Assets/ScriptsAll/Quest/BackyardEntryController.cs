@@ -29,15 +29,13 @@ public class BackyardEntryController : MonoBehaviour
 
     private IEnumerator Start()
     {
-        // Backyard был открыт напрямую из Editor.
-        // Тогда автоматическую entry sequence не запускаем.
         if (!SceneTransitionState.HasPendingTransition)
         {
             Debug.Log(
                 "[BackyardEntryController] " +
                 "No transition data."
             );
-
+            Pause.canPause = true;
             yield break;
         }
 
