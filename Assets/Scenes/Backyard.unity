@@ -489,6 +489,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 350408341}
+  - {fileID: 1803181286}
   - {fileID: 735695645}
   - {fileID: 1585777461}
   - {fileID: 1990163905}
@@ -12777,6 +12778,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
   isBlocked: 0
+  outlineAllChildren: 0
+  rendererRoot: {fileID: 0}
 --- !u!65 &282759764
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -77300,6 +77303,9 @@ MonoBehaviour:
   disposalBagVisual: {fileID: 1990163904}
   bagStartPoint: {fileID: 350408341}
   bagEndPoint: {fileID: 735695645}
+  bagOverRimPoint: {fileID: 1803181286}
+  throwArcHeight: 0.6
+  throwDurationRatio: 0.65
   bagDropDuration: 1.2
   cameraTarget: {fileID: 1585777461}
   cameraPanDuration: 0.5
@@ -77318,6 +77324,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
   isBlocked: 0
+  outlineAllChildren: 1
+  rendererRoot: {fileID: 1503941614}
 --- !u!65 &1503941613
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -77339,6 +77347,12 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1503941614 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 75f5a6ba64e91a5409eabbfee6660ce0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1503941609}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1505650854
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79958,6 +79972,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
   isBlocked: 0
+  outlineAllChildren: 0
+  rendererRoot: {fileID: 0}
 --- !u!1 &1585777460
 GameObject:
   m_ObjectHideFlags: 0
@@ -79983,7 +79999,7 @@ Transform:
   m_GameObject: {fileID: 1585777460}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.15, z: -2.609}
+  m_LocalPosition: {x: 0, y: 0.702, z: -2.609}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -82502,6 +82518,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
   isBlocked: 0
+  outlineAllChildren: 0
+  rendererRoot: {fileID: 0}
 --- !u!1001 &1624991420
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -89310,6 +89328,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0052366834, y: 0.019254262, z: 0.060090087}
   m_Center: {x: 0.0026183333, y: 0.009627125, z: 0.030045044}
+--- !u!1 &1803181285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1803181286}
+  m_Layer: 0
+  m_Name: TrashBagOverRim
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1803181286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1803181285}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.004, y: 0.765, z: -2.081}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 11002992}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1805968507
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -89983,6 +90032,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
   isBlocked: 0
+  outlineAllChildren: 0
+  rendererRoot: {fileID: 0}
 --- !u!65 &1821134733
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -101757,6 +101808,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
   isBlocked: 0
+  outlineAllChildren: 0
+  rendererRoot: {fileID: 0}
 --- !u!65 &2087302218
 BoxCollider:
   m_ObjectHideFlags: 0

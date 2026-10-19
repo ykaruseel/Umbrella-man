@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 
@@ -9,6 +10,8 @@ public class CollectionTaskSaveData
     public bool hasContainer;
 
     public bool isCompleted;
+
+    public bool wasDisposed;
 
     public List<string> collectedItemIDs =
         new List<string>();

@@ -14,6 +14,10 @@ public class CameraSequenceController : MonoBehaviour
 
     [SerializeField] private CameraFade fade;
 
+    [Header("Opening Cinematic")]
+    [SerializeField]
+    private bool playFirstFlyAtStartup = false;
+
     public IntroText introText;
 
     private CameraPathFly fly1;
@@ -42,10 +46,52 @@ public class CameraSequenceController : MonoBehaviour
 
     private bool finalTransitionStarted = false;
 
+    private bool deferredFirstFlyPlayed = false;
+    private bool deferredFirstFlyFinished = false;  
+
+    private bool returningFromBackyard = false;
+
+    private void Awake()
+    {
+        returningFromBackyard =
+            SceneTransitionState.HasPendingTransition &&
+            SceneTransitionState.SpawnPointID ==
+            "MainSceneEntranceFromBackyard";
+    }
+        
 
 void Start()
 {
+     if (returningFromBackyard)
+    {
+        Debug.Log(
+            "[CameraSequence] Returned from Backyard. " +
+            "Skipping opening cinematic."
+        );
 
+        intro = false;
+        finalTransitionStarted = true;
+
+        if (skipHint != null)
+        {
+            skipHint.SetActive(false);
+        }
+
+        DisableAllCameras();
+
+        if (cam3 != null)
+            cam3.gameObject.SetActive(true);
+
+        if (cam4 != null)
+            cam4.gameObject.SetActive(true);
+
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.EnsureMusicPlaying();
+        }
+
+        return;
+    }
     Pause.canPause = false;
     intro = true;
 
@@ -85,13 +131,13 @@ void Start()
         fly1 = cam1.GetComponent<CameraPathFly>();
         fly2 = cam2.GetComponent<CameraPathFly>();
         fly3 = cam5.GetComponent<CameraPathFly>();
-
+        
         DisableAllCameras();
 
-        cam1.gameObject.SetActive(true);
-        fly1.OnPathFinished += OnFirstFinished;
+        // Skip both old opening cameras.
+        // Start directly with Daniel sitting on the sofa.
+        BeginFinalTransition(true);
 
-        StartCoroutine(fade.FadeIn());
     }
 
 void OnFirstFinished()
@@ -118,9 +164,17 @@ void OnFirstFinished()
         BeginFinalTransition();
     }
 
-IEnumerator SwitchToFinal()
+IEnumerator SwitchToFinal(bool skipFadeOut = false)
 {
-    yield return fade.FadeOut();
+    if (skipFadeOut)
+    {
+        fade.SetFadeImageActive(true);
+        fade.SetFadeAlpha(1f);
+    }
+    else
+    {
+        yield return fade.FadeOut();
+    }
 
     cam1.gameObject.SetActive(false);
     cam2.gameObject.SetActive(false);
@@ -257,7 +311,7 @@ IEnumerator SwitchToFinal()
     }
 
 
-    private void BeginFinalTransition()
+private void BeginFinalTransition(bool skipFadeOut = false)
     {
         if (finalTransitionStarted)
             return;
@@ -265,7 +319,6 @@ IEnumerator SwitchToFinal()
         finalTransitionStarted = true;
         intro = false;
 
-        // Убираем подсказку Skip
         if (skipHint != null)
         {
             skipHint.SetActive(false);
@@ -283,7 +336,7 @@ IEnumerator SwitchToFinal()
 
         StopAllCoroutines();
 
-        StartCoroutine(SwitchToFinal());
+StartCoroutine(SwitchToFinal(skipFadeOut));
     }
 
         private IEnumerator HideSkipHintRoutine()
@@ -321,4 +374,111 @@ IEnumerator SwitchToFinal()
 
         skipHint.SetActive(false);
     }
+
+    
+private void OnDeferredFirstFlyFinished()
+{
+    deferredFirstFlyFinished = true;
+}
+
+
+
+public IEnumerator PlayDeferredFirstFly()
+{
+    if (deferredFirstFlyPlayed)
+        yield break;
+
+    if (cam1 == null || cam2 == null ||
+        cam3 == null || cam4 == null ||
+        fade == null)
+    {
+        Debug.LogWarning(
+            "[CameraSequence] Missing camera references."
+        );
+        yield break;
+    }
+
+    if (fly1 == null)
+        fly1 = cam1.GetComponent<CameraPathFly>();
+
+    if (fly2 == null)
+        fly2 = cam2.GetComponent<CameraPathFly>();
+
+    if (fly1 == null || fly2 == null ||
+        fly1.points == null || fly1.points.Count < 4 ||
+        fly2.points == null || fly2.points.Count < 4)
+    {
+        Debug.LogWarning(
+            "[CameraSequence] Deferred paths are not configured."
+        );
+        yield break;
+    }
+
+    deferredFirstFlyPlayed = true;
+
+    // Hide gameplay cameras.
+    yield return StartCoroutine(fade.FadeOut());
+
+    DisableAllCameras();
+
+    // First cinematic: camera fly.
+    yield return StartCoroutine(
+        PlayDeferredCamera(cam1, fly1)
+    );
+
+    // Second cinematic: bed sequence.
+    yield return StartCoroutine(
+        PlayDeferredCamera(cam2, fly2)
+    );
+
+    // Return to gameplay cameras.
+    cam3.gameObject.SetActive(true);
+    cam4.gameObject.SetActive(true);
+
+    yield return StartCoroutine(fade.FadeIn());
+
+    Debug.Log(
+        "[CameraSequence] Deferred cinematic completed."
+    );
+}
+
+private IEnumerator PlayDeferredCamera(
+    Camera targetCamera,
+    CameraPathFly path)
+{
+    bool finished = false;
+
+    System.Action onFinished = () =>
+    {
+        finished = true;
+    };
+
+    path.OnPathFinished += onFinished;
+
+    targetCamera.gameObject.SetActive(true);
+
+    yield return StartCoroutine(fade.FadeIn());
+
+    float timeout = 120f;
+
+    while (!finished && timeout > 0f)
+    {
+        timeout -= Time.deltaTime;
+        yield return null;
+    }
+
+    path.OnPathFinished -= onFinished;
+
+    if (!finished)
+    {
+        Debug.LogWarning(
+            "[CameraSequence] Deferred camera timed out."
+        );
+    }
+
+    yield return StartCoroutine(fade.FadeOut());
+
+    targetCamera.gameObject.SetActive(false);
+}
+
 }

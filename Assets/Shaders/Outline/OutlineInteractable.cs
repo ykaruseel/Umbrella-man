@@ -1,55 +1,103 @@
+
+using System.Collections.Generic;
 using UnityEngine;
 
 public class OutlineInteractable : MonoBehaviour
 {
     public Material outlineMaterial;
-
-    Renderer rend;
-    bool isOutlined;
-
     public bool isBlocked = false;
 
-    void Awake()
-    {
-        rend = GetComponentInChildren<Renderer>();
-    }
+    [Header("Multiple Renderers")]
+    [SerializeField]
+    private bool outlineAllChildren = false;
+
+    [SerializeField]
+    private Transform rendererRoot;
+
+    private readonly Dictionary<Renderer, Material[]>
+        originalMaterials = new();
+
+    private bool isOutlined;
 
     public void Show()
     {
-        if (rend == null || outlineMaterial == null || isOutlined || isBlocked) return;
+        if (isOutlined || isBlocked || outlineMaterial == null)
+            return;
 
-        var mats = rend.materials;
-        var newMats = new Material[mats.Length + 1];
+        Transform root = rendererRoot != null
+            ? rendererRoot
+            : transform;
 
-        for (int i = 0; i < mats.Length; i++)
-            newMats[i] = mats[i];
+        Renderer[] renderers;
 
-        newMats[newMats.Length - 1] = outlineMaterial;
-        rend.materials = newMats;
-        isOutlined = true;
+        if (outlineAllChildren)
+        {
+            renderers = root.GetComponentsInChildren<Renderer>();
+        }
+        else
+        {
+            Renderer first = GetComponentInChildren<Renderer>();
+            renderers = first != null
+                ? new Renderer[] { first }
+                : new Renderer[0];
+        }
+
+        foreach (Renderer rend in renderers)
+        {
+            if (rend == null || !rend.enabled)
+                continue;
+
+            // Skip particle and trail renderers.
+            if (!(rend is MeshRenderer) &&
+                !(rend is SkinnedMeshRenderer))
+                continue;
+
+            Material[] originals = rend.sharedMaterials;
+
+            // Avoid adding the same outline twice.
+            bool alreadyPresent = false;
+            foreach (Material mat in originals)
+            {
+                if (mat == outlineMaterial)
+                {
+                    alreadyPresent = true;
+                    break;
+                }
+            }
+
+            if (alreadyPresent)
+                continue;
+
+            originalMaterials[rend] = originals;
+
+            Material[] expanded =
+                new Material[originals.Length + 1];
+
+            originals.CopyTo(expanded, 0);
+            expanded[expanded.Length - 1] = outlineMaterial;
+
+            rend.sharedMaterials = expanded;
+        }
+
+        isOutlined = originalMaterials.Count > 0;
     }
 
     public void Hide()
     {
-        if (rend == null || !isOutlined) return;
-
-        var mats = rend.materials;
-        int count = 0;
-
-        for (int i = 0; i < mats.Length; i++)
-            if (mats[i].shader != outlineMaterial.shader)
-                count++;
-
-        var newMats = new Material[count];
-        int idx = 0;
-
-        for (int i = 0; i < mats.Length; i++)
+        foreach (var entry in originalMaterials)
         {
-            if (mats[i].shader == outlineMaterial.shader) continue;
-            newMats[idx++] = mats[i];
+            if (entry.Key != null)
+            {
+                entry.Key.sharedMaterials = entry.Value;
+            }
         }
 
-        rend.materials = newMats;
+        originalMaterials.Clear();
         isOutlined = false;
+    }
+
+    private void OnDisable()
+    {
+        Hide();
     }
 }

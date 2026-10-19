@@ -21,6 +21,13 @@ public class MainSceneBackyardEntryController : MonoBehaviour
     private string expectedSpawnPointID =
         "MainSceneEntranceFromBackyard";
 
+    [Header("Completed Trash Collection")]
+    [SerializeField]
+    private CollectionController collectionController;
+
+    [SerializeField]
+    private TrashCarryVisual trashCarryVisual;
+
 
     private IEnumerator Start()
     {
@@ -83,8 +90,19 @@ public class MainSceneBackyardEntryController : MonoBehaviour
             );
         }
 
+        // -----------------------------------
+        // RESTORE COMPLETED TRASH COLLECTION
+        // -----------------------------------
 
-        // Данные уже использованы.
+        if (collectionController != null)
+        {
+            collectionController.RestoreAfterTrashDisposal();
+        }
+
+        if (trashCarryVisual != null)
+        {
+            trashCarryVisual.HideFullBag();
+}
         SceneTransitionState.Clear();
 
 

@@ -317,41 +317,57 @@ public class QuestEvents : MonoBehaviour
         TutorialManager.Instance.ShowHint(HintType.Sprint);
     }
 
-    public IEnumerator QuestEvent11()
+    
+public IEnumerator QuestEvent11()
+{
+    Pause.canPause = false;
+
+    // The KnifeMan chase is over.
+    knifeMan.SetActive(false);
+
+    player.SetCanMove(false);
+    player.isCinematic = true;
+
+    // Play the cinematic removed from the opening.
+    if (cameraSequenceController != null)
     {
-        Pause.canPause = false;
-        knifeMan.SetActive(false);
-
-        FMODUnity.RuntimeManager.PlayOneShot(umbrellaAppearSound);
-
-        umbrellaMan.SetActive(true);
-
-        player.SetCanMove(false);
-
-        player.isCinematic = true;
-
-        flickerLight.enabled = true;
-
-        player.StartCinematicPan(umbrellaManTarget.transform, 2f);
-
-        yield return new WaitForSeconds(2f);
-
-        StartCoroutine(LightFlickerRoutine());
-
-        StartCoroutine(SmoothPostProcess(6f));
-
-        player.ZoomIn(0.5f, 4f);
-
-        yield return new WaitForSeconds(6f);
-
-        StartCoroutine(cameraFade.FadeOut());
-
-        yield return new WaitForSeconds(1.25f);
-
-        flickerLight.enabled = false;
-
-        endGame.SetActive(true);
+        yield return StartCoroutine(
+            cameraSequenceController.PlayDeferredFirstFly()
+        );
     }
+
+    // Umbrella Man appears.
+    FMODUnity.RuntimeManager.PlayOneShot(
+        umbrellaAppearSound
+    );
+
+    umbrellaMan.SetActive(true);
+
+    flickerLight.enabled = true;
+
+    player.StartCinematicPan(
+        umbrellaManTarget.transform,
+        2f
+    );
+
+    yield return new WaitForSeconds(2f);
+
+    StartCoroutine(LightFlickerRoutine());
+    StartCoroutine(SmoothPostProcess(6f));
+
+    player.ZoomIn(0.5f, 4f);
+
+    yield return new WaitForSeconds(6f);
+
+    StartCoroutine(cameraFade.FadeOut());
+
+    yield return new WaitForSeconds(1.25f);
+
+    flickerLight.enabled = false;
+
+    endGame.SetActive(true);
+}
+
 
     private IEnumerator LightFlickerRoutine()
     {

@@ -606,88 +606,72 @@ public class ReturnHomeFlashbackController : MonoBehaviour
     }
 
 
-    private IEnumerator DropCement()
+    
+private IEnumerator DropCement()
+{
+    if (cementBag == null || cementSpawn == null)
     {
-        if (cementBag == null ||
-            cementSpawn == null ||
-            cementLookTarget == null)
-        {
-            yield break;
-        }
+        Debug.LogWarning(
+            "[Flashback] Cement references are missing."
+        );
 
-
-        cementBag.transform.position =
-            cementSpawn.position;
-
-        cementBag.transform.rotation =
-            cementSpawn.rotation;
-
-        cementBag.SetActive(true);
-
-
-        Vector3 startPosition =
-            cementSpawn.position;
-
-        Vector3 endPosition =
-            cementLookTarget.position;
-
-
-        Quaternion startRotation =
-            cementSpawn.rotation;
-
-        Quaternion endRotation =
-            startRotation *
-            Quaternion.Euler(
-                cementFallRotation
-            );
-
-
-        float elapsed = 0f;
-
-
-        while (elapsed < cementFallDuration)
-        {
-            elapsed += Time.deltaTime;
-
-
-            float t =
-                Mathf.Clamp01(
-                    elapsed /
-                    cementFallDuration
-                );
-
-
-            // Accelerates toward the ground.
-            float fallT =
-                t * t;
-
-
-            cementBag.transform.position =
-                Vector3.Lerp(
-                    startPosition,
-                    endPosition,
-                    fallT
-                );
-
-
-            cementBag.transform.rotation =
-                Quaternion.Slerp(
-                    startRotation,
-                    endRotation,
-                    t
-                );
-
-
-            yield return null;
-        }
-
-
-        cementBag.transform.position =
-            endPosition;
-
-        cementBag.transform.rotation =
-            endRotation;
+        yield break;
     }
+
+    Transform bag = cementBag.transform;
+
+    // Starting position: upper floor.
+    Vector3 startPosition = cementSpawn.position;
+    Quaternion startRotation = cementSpawn.rotation;
+
+    // Final position: exactly as in the present.
+    Vector3 endPosition = presentCementPosition;
+    Quaternion endRotation = presentCementRotation;
+
+    bag.SetPositionAndRotation(
+        startPosition,
+        startRotation
+    );
+
+    cementBag.SetActive(true);
+
+    float duration =
+        Mathf.Max(0.01f, cementFallDuration);
+
+    float elapsed = 0f;
+
+    while (elapsed < duration)
+    {
+        elapsed += Time.deltaTime;
+
+        float t = Mathf.Clamp01(
+            elapsed / duration
+        );
+
+        // Accelerating fall.
+        float fallT = t * t;
+
+        bag.position = Vector3.Lerp(
+            startPosition,
+            endPosition,
+            fallT
+        );
+
+        bag.rotation = Quaternion.Slerp(
+            startRotation,
+            endRotation,
+            t
+        );
+
+        yield return null;
+    }
+
+    // Guarantee an exact final transform.
+    bag.SetPositionAndRotation(
+        endPosition,
+        endRotation
+    );
+}
 
 
     private IEnumerator PanCameraToTarget(

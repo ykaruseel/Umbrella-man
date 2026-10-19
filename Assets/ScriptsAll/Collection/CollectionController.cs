@@ -71,6 +71,7 @@ public class CollectionController : MonoBehaviour
     public bool HasContainer { get; private set; }
 
     public bool IsCompleted { get; private set; }
+    public bool WasDisposed { get; private set; }
 
     public bool IsBusy => isCollecting;
 
@@ -603,16 +604,19 @@ public class CollectionController : MonoBehaviour
     }
 
 
-    public CollectionTaskSaveData CreateSaveData()
+
+public CollectionTaskSaveData CreateSaveData()
+{
+    return new CollectionTaskSaveData
     {
-        return new CollectionTaskSaveData
-        {
-            questID = QuestID,
-            hasContainer = HasContainer,
-            isCompleted = IsCompleted,
-            collectedItemIDs = GetCollectedIDs()
-        };
-    }
+        questID = QuestID,
+        hasContainer = HasContainer,
+        isCompleted = IsCompleted,
+        wasDisposed = WasDisposed,
+        collectedItemIDs = GetCollectedIDs()
+    };
+}
+
 
 
     public void RestoreFromSave(
@@ -634,6 +638,8 @@ public class CollectionController : MonoBehaviour
 
         IsCompleted =
             data.isCompleted;
+
+        WasDisposed = data.wasDisposed;
 
         isCollecting = false;
 
@@ -693,11 +699,11 @@ public class CollectionController : MonoBehaviour
 
 
         if (fullContainerVisual != null)
-        {
-            fullContainerVisual.SetActive(
-                IsCompleted
-            );
-        }
+{
+    fullContainerVisual.SetActive(
+        IsCompleted && !WasDisposed
+    );
+}
 
 
         if (questActive && !IsCompleted)
@@ -719,8 +725,49 @@ public class CollectionController : MonoBehaviour
     
     // use next quest in sequence, when the trash is actually thrown away.
     public void ConsumeFullContainer()
+{
+    WasDisposed = true;
+
+    if (emptyContainerVisual != null)
+        emptyContainerVisual.SetActive(false);
+
+    if (fullContainerVisual != null)
+        fullContainerVisual.SetActive(false);
+}
+
+
+public void RestoreAfterTrashDisposal()
+{
+    CollectionTaskSaveData data =
+        new CollectionTaskSaveData
+        {
+            questID = QuestID,
+            hasContainer = true,
+            isCompleted = true,
+            wasDisposed = true,
+            collectedItemIDs = new List<string>()
+        };
+
+    // All collectible objects were collected
+    // before leaving the apartment.
+    foreach (CollectibleItem item in collectibleItems)
     {
-        if (fullContainerVisual != null)
-            fullContainerVisual.SetActive(false);
+        if (item != null)
+        {
+            data.collectedItemIDs.Add(item.ID);
+        }
     }
+
+    // Reuse the existing restoration logic.
+    RestoreFromSave(data);
+
+    // Ensure the bag is no longer visible.
+    ConsumeFullContainer();
+
+    Debug.Log(
+        "[CollectionController] " +
+        "Trash collection restored as completed and disposed."
+    );
+}
+
 }

@@ -32,6 +32,16 @@ public class TrashDumpsterInteractable : MonoBehaviour
     private Transform bagEndPoint;
 
     [SerializeField]
+    private Transform bagOverRimPoint;
+
+    [Header("Throw Arc")]
+    [SerializeField, Min(0f)]
+    private float throwArcHeight = 0.6f;
+
+    [SerializeField, Range(0.2f, 0.9f)]
+    private float throwDurationRatio = 0.65f;
+
+    [SerializeField]
     private float bagDropDuration =
         1.2f;
 
@@ -166,108 +176,111 @@ public class TrashDumpsterInteractable : MonoBehaviour
         // WORLD BAG APPEARS
         // ------------------------
 
+        
         if (disposalBagVisual != null &&
             bagStartPoint != null &&
+            bagOverRimPoint != null &&
             bagEndPoint != null)
         {
-            disposalBagVisual.transform.position =
-                bagStartPoint.position;
+            Vector3 start = bagStartPoint.position;
+            Vector3 overRim = bagOverRimPoint.position;
+            Vector3 end = bagEndPoint.position;
 
-            disposalBagVisual.transform.rotation =
-                bagStartPoint.rotation;
-
-            disposalBagVisual.SetActive(
-                true
-            );
-
-
-            Vector3 startPosition =
-                bagStartPoint.position;
-
-            Vector3 endPosition =
-                bagEndPoint.position;
-
-
-            Quaternion startRotation =
-                bagStartPoint.rotation;
-
+            Quaternion startRotation = bagStartPoint.rotation;
             Quaternion endRotation =
-                startRotation *
-                Quaternion.Euler(
-                    80f,
-                    40f,
-                    20f
-                );
+                startRotation * Quaternion.Euler(80f, 40f, 20f);
 
+            Transform bag = disposalBagVisual.transform;
 
+            bag.SetPositionAndRotation(start, startRotation);
+            disposalBagVisual.SetActive(true);
+
+            float totalDuration = Mathf.Max(0.1f, bagDropDuration);
+
+            float throwDuration =
+                totalDuration * throwDurationRatio;
+
+            float fallDuration =
+                totalDuration - throwDuration;
+
+            // PHASE 1: Throw upward, over the container rim.
             float elapsed = 0f;
 
-
-            while (
-                elapsed <
-                bagDropDuration
-            )
+            while (elapsed < throwDuration)
             {
-                elapsed +=
-                    Time.deltaTime;
+                elapsed += Time.deltaTime;
 
+                float t = Mathf.Clamp01(
+                    elapsed / throwDuration
+                );
 
-                float t =
-                    Mathf.Clamp01(
-                        elapsed /
-                        bagDropDuration
-                    );
+                float smoothT = Mathf.SmoothStep(0f, 1f, t);
 
+                Vector3 position =
+                    Vector3.Lerp(start, overRim, smoothT);
 
-                float smoothT =
-                    Mathf.SmoothStep(
-                        0f,
-                        1f,
-                        t
-                    );
+                // Vertical arc above the base trajectory.
+                position.y +=
+                    Mathf.Sin(Mathf.PI * t) * throwArcHeight;
 
+                bag.position = position;
 
-                disposalBagVisual
-                    .transform
-                    .position =
-                    Vector3.Lerp(
-                        startPosition,
-                        endPosition,
-                        smoothT
-                    );
-
-
-                disposalBagVisual
-                    .transform
-                    .rotation =
-                    Quaternion.Slerp(
-                        startRotation,
-                        endRotation,
-                        smoothT
-                    );
-
+                bag.rotation = Quaternion.Slerp(
+                    startRotation,
+                    endRotation,
+                    t * 0.6f
+                );
 
                 yield return null;
             }
 
+            bag.position = overRim;
 
-            disposalBagVisual
-                .transform
-                .position =
-                endPosition;
+            // PHASE 2: Drop vertically into the container.
+            elapsed = 0f;
 
+            Quaternion fallStartRotation = bag.rotation;
 
-            yield return new WaitForSeconds(
-                0.25f
-            );
+            while (elapsed < fallDuration)
+            {
+                elapsed += Time.deltaTime;
 
+                float t = Mathf.Clamp01(
+                    elapsed / fallDuration
+                );
 
-            // По QDD после завершения
-            // мешок больше не отображается.
-            disposalBagVisual.SetActive(
-                false
+                // Accelerating fall.
+                float fallT = t * t;
+
+                bag.position = Vector3.Lerp(
+                    overRim,
+                    end,
+                    fallT
+                );
+
+                bag.rotation = Quaternion.Slerp(
+                    fallStartRotation,
+                    endRotation,
+                    t
+                );
+
+                yield return null;
+            }
+
+            bag.position = end;
+            bag.rotation = endRotation;
+
+            yield return new WaitForSeconds(0.25f);
+
+            disposalBagVisual.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning(
+                "[TrashDumpster] Throw references are missing."
             );
         }
+
 
 
         // ------------------------
