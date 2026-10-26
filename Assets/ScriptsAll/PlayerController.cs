@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour
         characterController.Move(moveDirection * Time.deltaTime);
     }
 
-    private void HandleCameraRotation()
+private void HandleCameraRotation()
     {
         if (!canMove || isCinematic) return;
 
@@ -201,14 +201,37 @@ public class PlayerController : MonoBehaviour
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         rotationY += Input.GetAxis("Mouse X") * lookSpeed;
 
-        Quaternion targetRotationX = Quaternion.Euler(rotationX, 0, 0);
-        Quaternion targetRotationY = Quaternion.Euler(0, rotationY, 0);
+        Quaternion targetRotationY = Quaternion.Euler(0f, rotationY, 0f);
+        Quaternion targetRotationX = Quaternion.Euler(rotationX, 0f, 0f);
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotationY, Time.deltaTime * cameraRotationSmooth);
+        if (cameraRotationSmooth <= 0f)
+        {
+            transform.rotation = targetRotationY;
+
+            if (virtualCam != null)
+                virtualCam.transform.localRotation = targetRotationX;
+
+            return;
+        }
+
+        float smooth = 1f - Mathf.Exp(-cameraRotationSmooth * Time.deltaTime);
+
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRotationY,
+            smooth
+        );
 
         if (virtualCam != null)
-            virtualCam.transform.localRotation = Quaternion.Slerp(virtualCam.transform.localRotation, targetRotationX, Time.deltaTime * cameraRotationSmooth);
+        {
+            virtualCam.transform.localRotation = Quaternion.Slerp(
+                virtualCam.transform.localRotation,
+                targetRotationX,
+                smooth
+            );
+        }
     }
+
 
     private void HandleDialogueZoom()
     {
