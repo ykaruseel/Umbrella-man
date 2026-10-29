@@ -1,70 +1,87 @@
+
 using UnityEngine;
-using FMODUnity; 
+using FMODUnity;
 
 public class FloorLamp : MonoBehaviour
 {
     [Header("Settings")]
-    [Tooltip("Light")]
-    public Light lampLight; 
+    [SerializeField] private Light lampLight;
+    [SerializeField] private Renderer bulbRenderer;
+    [SerializeField] private EventReference clickSound;
 
-    [Tooltip("(MeshRenderer)")]
-    public Renderer bulbRenderer; 
+    [Header("Interaction")]
+    [SerializeField] private Camera playerCamera;
+    [SerializeField] private float interactionDistance = 2f;
+    [SerializeField] private LayerMask interactionLayers = ~0;
 
-    [Tooltip("FMOD Event")]
-    public EventReference clickSound; 
+    private bool isOn = false;
 
-    private bool isPlayerNear = false; 
-    private bool isOn = false;         
-
-    void Start()
+    private void Start()
     {
-        
         UpdateLampState();
     }
 
-    void Update()
+    private void Update()
     {
-        
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.E))
+        if (playerCamera == null)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.E) && IsLookingAtLamp())
         {
             ToggleLamp();
         }
     }
 
-    void ToggleLamp()
+    private bool IsLookingAtLamp()
     {
-        isOn = !isOn; 
-        
-        
-        if (!clickSound.IsNull) 
+        Ray ray = new Ray(
+            playerCamera.transform.position,
+            playerCamera.transform.forward
+        );
+
+        if (Physics.Raycast(
+            ray,
+            out RaycastHit hit,
+            interactionDistance,
+            interactionLayers,
+            QueryTriggerInteraction.Ignore))
         {
-            RuntimeManager.PlayOneShot(clickSound, transform.position);
+            Debug.Log("Raycast hit: " + hit.transform.name);
+
+            return hit.transform == transform ||
+                   hit.transform.IsChildOf(transform);
         }
-        
+
+        Debug.Log("Raycast hit nothing");
+        return false;
+    }
+
+    private void ToggleLamp()
+    {
+        isOn = !isOn;
+
+        if (!clickSound.IsNull)
+        {
+            RuntimeManager.PlayOneShot(
+                clickSound,
+                transform.position
+            );
+        }
+
         UpdateLampState();
     }
 
-    void UpdateLampState()
+    private void UpdateLampState()
     {
-        
-        if (lampLight != null) lampLight.enabled = isOn;
+        if (lampLight != null)
+            lampLight.enabled = isOn;
 
-        
         if (bulbRenderer != null)
         {
-            if (isOn) bulbRenderer.material.EnableKeyword("_EMISSION");
-            else bulbRenderer.material.DisableKeyword("_EMISSION");
+            if (isOn)
+                bulbRenderer.material.EnableKeyword("_EMISSION");
+            else
+                bulbRenderer.material.DisableKeyword("_EMISSION");
         }
-    }
-
-    
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player")) isPlayerNear = true;
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player")) isPlayerNear = false;
     }
 }

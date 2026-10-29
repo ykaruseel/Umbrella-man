@@ -1,4 +1,5 @@
 using System.Collections;
+using FMODUnity;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,6 +13,12 @@ public class CollectionController : MonoBehaviour
     [SerializeField]
     private string containerPickupObjective = "Find a trash bag";
 
+    [Header("Audio")]
+    [SerializeField] private EventReference trashAudioEvent;
+    [SerializeField] private string trashParameterName = "Trash";
+    [SerializeField] private float trashPickupParameterValue = 0f;
+    [SerializeField] private float bagTyingParameterValue = 1f;
+    [SerializeField] private EventReference kitchenTrashBagPickupEvent;
 
     [Header("Collection Objects")]
     [SerializeField]
@@ -199,6 +206,8 @@ public class CollectionController : MonoBehaviour
 
         HasContainer = true;
 
+        PlayKitchenTrashBagPickupSound();
+
         if (emptyContainerVisual != null)
         {
             emptyContainerVisual.SetActive(true);
@@ -279,7 +288,7 @@ public class CollectionController : MonoBehaviour
 
             yield return null;
         }
-
+        PlayTrashAudio(trashPickupParameterValue);
         string collectedID = item.ID;
 
         collectedIDs.Add(collectedID);
@@ -335,6 +344,16 @@ public class CollectionController : MonoBehaviour
         isCollecting = false;
     }
 
+    private void PlayKitchenTrashBagPickupSound()
+    {
+        if (string.IsNullOrEmpty(kitchenTrashBagPickupEvent.Path))
+            return;
+
+        RuntimeManager.PlayOneShot(
+            kitchenTrashBagPickupEvent,
+            transform.position
+        );
+    }
 
     private IEnumerator AnimateContainer(
         int collectedAmount)
@@ -421,15 +440,13 @@ public class CollectionController : MonoBehaviour
     {
         if (cameraFade != null)
         {
-            yield return StartCoroutine(
-                cameraFade.FadeOut()
-            );
+            yield return StartCoroutine(cameraFade.FadeOut());
         }
 
+        PlayTrashAudio(bagTyingParameterValue);
 
         if (emptyContainerVisual != null)
             emptyContainerVisual.SetActive(false);
-
 
         if (fullContainerVisual != null)
         {
@@ -735,8 +752,36 @@ public CollectionTaskSaveData CreateSaveData()
         fullContainerVisual.SetActive(false);
 }
 
+    private void PlayTrashAudio(float parameterValue)
+    {
+        Vector3 soundPosition = collectionTarget != null
+            ? collectionTarget.position
+            : transform.position;
 
-public void RestoreAfterTrashDisposal()
+        PlayTrashAudio(parameterValue, soundPosition);
+    }
+
+    private void PlayTrashAudio(float parameterValue, Vector3 soundPosition)
+    {
+        if (string.IsNullOrEmpty(trashAudioEvent.Path))
+            return;
+
+        FMOD.Studio.EventInstance audioInstance =
+            RuntimeManager.CreateInstance(trashAudioEvent);
+
+        audioInstance.setParameterByName(
+            trashParameterName,
+            parameterValue
+        );
+
+        audioInstance.set3DAttributes(
+            RuntimeUtils.To3DAttributes(soundPosition)
+        );
+
+        audioInstance.start();
+        audioInstance.release();
+    }
+    public void RestoreAfterTrashDisposal()
 {
     CollectionTaskSaveData data =
         new CollectionTaskSaveData

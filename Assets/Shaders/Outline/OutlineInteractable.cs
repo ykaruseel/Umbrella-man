@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,10 +13,63 @@ public class OutlineInteractable : MonoBehaviour
     [SerializeField]
     private Transform rendererRoot;
 
+    [Header("Outline Distance")]
+    [SerializeField]
+    private bool limitOutlineDistance = false;
+
+    [SerializeField]
+    private Camera playerCamera;
+
+    [SerializeField]
+    private float outlineDistance = 2f;
+
     private readonly Dictionary<Renderer, Material[]>
         originalMaterials = new();
 
     private bool isOutlined;
+
+    private void Update()
+    {
+        if (!limitOutlineDistance)
+            return;
+
+        if (playerCamera == null)
+        {
+            Hide();
+            return;
+        }
+
+        if (isBlocked || !IsWithinOutlineDistance())
+        {
+            Hide();
+            return;
+        }
+
+        Show();
+    }
+
+    private bool IsWithinOutlineDistance()
+    {
+        Ray ray = new Ray(
+            playerCamera.transform.position,
+            playerCamera.transform.forward
+        );
+
+        if (!Physics.Raycast(
+            ray,
+            out RaycastHit hit,
+            outlineDistance,
+            Physics.DefaultRaycastLayers,
+            QueryTriggerInteraction.Ignore))
+        {
+            return false;
+        }
+
+        OutlineInteractable hitOutline =
+            hit.transform.GetComponentInParent<OutlineInteractable>();
+
+        return hitOutline == this;
+    }
 
     public void Show()
     {
@@ -47,14 +99,12 @@ public class OutlineInteractable : MonoBehaviour
             if (rend == null || !rend.enabled)
                 continue;
 
-            // Skip particle and trail renderers.
             if (!(rend is MeshRenderer) &&
                 !(rend is SkinnedMeshRenderer))
                 continue;
 
             Material[] originals = rend.sharedMaterials;
 
-            // Avoid adding the same outline twice.
             bool alreadyPresent = false;
             foreach (Material mat in originals)
             {

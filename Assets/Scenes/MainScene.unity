@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.022
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.554717, g: 0.554717, b: 0.554717, a: 1}
+  m_AmbientSkyColor: {r: 0.17735851, g: 0.17735851, b: 0.17735851, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 0.1
@@ -478,6 +478,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &9500235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2890,6 +2893,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &59975263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6435,6 +6441,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!65 &117057273
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6472,6 +6481,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1001 &118568165
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9999,6 +10011,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &173625014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10621,6 +10636,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1 &180801959 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1c96d7889d7955e449a0f34bd7fbb27d,
@@ -11167,6 +11185,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!65 &185781767
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11838,6 +11859,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1001 &195579903
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14245,16 +14269,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2065794293531001828, guid: 05f2ba6e476af274d8d395f669b6be2f,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 9ad640a52f6c80d47ba03eba12605c97, type: 2}
-    - target: {fileID: 5866666021909216657, guid: 05f2ba6e476af274d8d395f669b6be2f,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: d2fb5e2c00886634abae75699eefd826, type: 2}
     - target: {fileID: -8679921383154817045, guid: 67e7d6b75b74142419537e21ed5161fb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14330,6 +14344,16 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 696eb422f4794884986351f63f0f9024, type: 2}
+    - target: {fileID: 2065794293531001828, guid: 05f2ba6e476af274d8d395f669b6be2f,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9ad640a52f6c80d47ba03eba12605c97, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 05f2ba6e476af274d8d395f669b6be2f,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d2fb5e2c00886634abae75699eefd826, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18209,6 +18233,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!4 &275380303 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 45e700925d18646c189c78d2eb1aaf16,
@@ -24258,6 +24285,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &285454678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24740,6 +24770,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!65 &289492313
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27760,6 +27793,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 0b8425d17dfd6cb4eac172e41d6f4409, type: 2}
     - target: {fileID: -7467756135131901179, guid: 1a4b5fa0653739145b23ade362cf36ef,
         type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7467756135131901179, guid: 1a4b5fa0653739145b23ade362cf36ef,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -27809,10 +27847,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1718611862}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a4b5fa0653739145b23ade362cf36ef,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1718611863}
     - targetCorrespondingSourceObject: {fileID: 814172001358484468, guid: 1a4b5fa0653739145b23ade362cf36ef,
         type: 3}
       insertIndex: -1
@@ -27820,11 +27854,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 814172001358484468, guid: 1a4b5fa0653739145b23ade362cf36ef,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 894865607}
+      addedObject: {fileID: 894865612}
     - targetCorrespondingSourceObject: {fileID: 814172001358484468, guid: 1a4b5fa0653739145b23ade362cf36ef,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 894865612}
+      addedObject: {fileID: 894865616}
   m_SourcePrefab: {fileID: 100100000, guid: 1a4b5fa0653739145b23ade362cf36ef, type: 3}
 --- !u!1 &332663618
 GameObject:
@@ -27906,7 +27940,7 @@ MonoBehaviour:
   gravity: 10
   lookSpeed: 2
   lookXLimit: 75
-  cameraRotationSmooth: 10
+  cameraRotationSmooth: 12
   isCinematic: 0
   flashlight: {fileID: 332663632}
   playerCam: {fileID: 308851623}
@@ -28276,6 +28310,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questData: {fileID: 11400000, guid: 62987c07fe9ca8841917f422b1cd87fc, type: 2}
   containerPickupObjective: Find a trash bag
+  trashAudioEvent:
+    Guid:
+      Data1: -1644993915
+      Data2: 1138793051
+      Data3: 17250187
+      Data4: 1156900021
+    Path: event:/trash
+  trashParameterName: Trash
+  trashPickupParameterValue: 0
+  bagTyingParameterValue: 1
+  kitchenTrashBagPickupEvent:
+    Guid:
+      Data1: 1833535062
+      Data2: 1127658476
+      Data3: -1259014765
+      Data4: 256704577
+    Path: event:/pick_up_item
   collectionPickup: {fileID: 289492310}
   collectibleItems:
   - {fileID: 2143652723}
@@ -28286,7 +28337,7 @@ MonoBehaviour:
   emptyContainerVisual: {fileID: 2033202906}
   fullContainerVisual: {fileID: 1058658265}
   collectionTarget: {fileID: 116770188}
-  flyDuration: 0.55
+  flyDuration: 0.4
   squashFactor: 0.85
   squashDuration: 0.08
   growDuration: 0.12
@@ -41610,6 +41661,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!4 &426421541 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7414f5406b2dec74ba185e7ddcab28b9,
@@ -41762,6 +41816,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &434626016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42030,6 +42087,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!4 &440546487 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c6854d99b8ba4e08bfb978565e80da6,
@@ -51945,6 +52005,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &559564588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64746,6 +64809,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &651635700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81919,61 +81985,6 @@ Transform:
   - {fileID: 763808852}
   m_Father: {fileID: 175195903}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &820722912
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 820722914}
-  - component: {fileID: 820722913}
-  m_Layer: 0
-  m_Name: IntroNarrativeController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &820722913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 820722912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6833414b9e0d2d45a3071d7a963b196, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeInSeconds: 0.6
-  showSeconds: 10
-  fadeOutSeconds: 0.8
-  canvasGroup: {fileID: 760576362}
-  backgroundImage: {fileID: 0}
-  narrativeText: {fileID: 993588657}
-  playerController: {fileID: 332663620}
-  storyText: " Daniel woke up in his apartment with unbearable vertigo. His sleep
-    had been restless. It felt like he had been dreaming about something. \n\n Someone
-    had messed up his home: some things were not in their usual places. Perhaps if
-    he put everything back where it belonged, the vertigo would stop."
---- !u!4 &820722914
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 820722912}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 995.7342, y: 2.2797697, z: 1123.693}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &825221715
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82983,6 +82994,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1 &844519057
 GameObject:
   m_ObjectHideFlags: 0
@@ -83121,21 +83135,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: looping
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4409011625575948860, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5878142233136804078, guid: 7c4bb9b6288baf344987f64fa54a0d52,
         type: 3}
       propertyPath: m_Name
@@ -83194,6 +83193,21 @@ PrefabInstance:
     - target: {fileID: 7036836734124335007, guid: 7c4bb9b6288baf344987f64fa54a0d52,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4409011625575948860, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -83364,6 +83378,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1 &859578447
 GameObject:
   m_ObjectHideFlags: 0
@@ -83554,13 +83571,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 861505352}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.6957715, w: 0.7182632}
-  m_LocalPosition: {x: -3.067, y: -1.249, z: -0.659}
+  m_LocalRotation: {x: -0, y: -0, z: 0.73426485, w: 0.67886317}
+  m_LocalPosition: {x: -0.325, y: -0.696, z: 0.093}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 567635609}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 88.177}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 94.49}
 --- !u!114 &861505354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83591,6 +83608,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &861505356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84133,6 +84153,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1001 &873716045
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85101,27 +85124,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 332487865}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &894865607
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 894865603}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.7727468, y: 1.884901, z: 2.4544282}
-  m_Center: {x: 0.1100117, y: 0.94257617, z: -1.0889213}
 --- !u!114 &894865608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85143,6 +85145,11 @@ MonoBehaviour:
       Data3: -1374099295
       Data4: -87091086
     Path: event:/light_on
+  playerCamera: {fileID: 308851623}
+  interactionDistance: 1
+  interactionLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &894865612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85159,6 +85166,31 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 1
+  playerCamera: {fileID: 308851623}
+  outlineDistance: 2
+--- !u!64 &894865616
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894865603}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2064214052206832847, guid: 1a4b5fa0653739145b23ade362cf36ef, type: 3}
 --- !u!1001 &895687192
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -86393,6 +86425,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1 &913096754 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a70c9bf8535d38f4a8a035f98f6e9c55,
@@ -86741,6 +86776,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &920288763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90381,6 +90419,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &990628774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91624,6 +91665,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1008007068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91687,6 +91731,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1008007074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93820,7 +93867,7 @@ MonoBehaviour:
   dialogueLines:
   - speakerName: 
     sentence: I've really let this place go. Better clean it up before I trip over
-      one of these bottles. There should be some <color=#FFFF40>trash bags</color>
+      one of these bottles. There should be some <color=#FFE46B>trash bags</color>
       in the kitchen.
   typingSpeed: 0.03
   fadeDuration: 1.5
@@ -94655,7 +94702,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 9f3b0ee894d47a14f8649447a367c951, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98756,7 +98803,7 @@ Transform:
   m_GameObject: {fileID: 1131787248}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.55, y: -1.074, z: -2.62}
+  m_LocalPosition: {x: 4.925, y: -1.074, z: -1.541}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -98792,6 +98839,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1131787252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99326,6 +99376,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!4 &1140091286 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 312dcd85d62de1f459c07cf2ed66f238,
@@ -102856,6 +102909,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1 &1199695035
 GameObject:
   m_ObjectHideFlags: 0
@@ -109449,6 +109505,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1001 &1221580975
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -109774,6 +109833,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1230894680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110743,6 +110805,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1241455896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113241,6 +113306,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1001 &1269809899
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -113677,6 +113745,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1277280346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117616,6 +117687,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1337644313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119422,6 +119496,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!65 &1349856479
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -119459,6 +119536,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1 &1350577285
 GameObject:
   m_ObjectHideFlags: 0
@@ -129897,6 +129977,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1 &1425919725
 GameObject:
   m_ObjectHideFlags: 0
@@ -131151,6 +131234,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1 &1447303115
 GameObject:
   m_ObjectHideFlags: 0
@@ -133174,6 +133260,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1487146727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134322,6 +134411,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!65 &1508644911
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -134359,6 +134451,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1 &1508716410
 GameObject:
   m_ObjectHideFlags: 0
@@ -141518,6 +141613,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1 &1547802591
 GameObject:
   m_ObjectHideFlags: 0
@@ -142638,6 +142736,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1565329791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144136,6 +144237,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!4 &1595596893 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a9f332e6f5acd2e489d8582fe1b4fbc3,
@@ -147446,6 +147550,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1636961162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149244,6 +149351,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1666787716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150747,9 +150857,9 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 2
-  m_Color: {r: 1, g: 0.8352941, b: 0.49019608, a: 1}
+  m_Color: {r: 1, g: 0.7413969, b: 0.49803925, a: 1}
   m_Intensity: 2
-  m_Range: 5
+  m_Range: 4
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -150757,7 +150867,7 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 0.51
+    m_Strength: 0.5
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
@@ -157136,6 +157246,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1715591423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157314,6 +157427,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1718611862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157329,27 +157445,6 @@ MonoBehaviour:
   itemID: 
   isPlaced: 0
   CurrentState: 0
---- !u!65 &1718611863
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1718611853}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.18941164, y: 1.8650743, z: 0.24167442}
-  m_Center: {x: -0.022362232, y: 0.98038214, z: -0.00038051605}
 --- !u!1 &1718812389
 GameObject:
   m_ObjectHideFlags: 0
@@ -157487,6 +157582,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1 &1721435716
 GameObject:
   m_ObjectHideFlags: 0
@@ -172966,7 +173064,7 @@ Transform:
   m_GameObject: {fileID: 1795488390}
   serializedVersion: 2
   m_LocalRotation: {x: 0.28607488, y: -0.15906164, z: -0.6598197, w: 0.6763864}
-  m_LocalPosition: {x: -2.59, y: -1.264, z: -4.341}
+  m_LocalPosition: {x: -3.368, y: -1.234, z: -4.899}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -173002,6 +173100,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1795488394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176518,6 +176619,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1853204051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178638,8 +178742,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.1017239, y: 0.71619314, z: 0.49085957}
-  m_Center: {x: -0.050862025, y: 0.10679949, z: -0.11365811}
+  m_Size: {x: 0.94413626, y: 0.51950556, z: 0.49085957}
+  m_Center: {x: -0.07675755, y: 0.107216455, z: -0.11365811}
 --- !u!23 &1881585753
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -178702,7 +178806,7 @@ Transform:
   m_GameObject: {fileID: 1881585750}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.519, y: 1.022, z: -32.124}
+  m_LocalPosition: {x: 5.588, y: 0.947, z: -31.899}
   m_LocalScale: {x: 0.07502536, y: 0.09385125, z: 0.29441434}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -178731,6 +178835,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1001 &1885917719
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -179224,6 +179331,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1001 &1892247281
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -181251,6 +181361,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &1915976346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184175,6 +184288,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1 &1953907608 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a80c14f09b3d99488d9a5f1e0171e12,
@@ -193609,6 +193725,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1 &2011344199
 GameObject:
   m_ObjectHideFlags: 0
@@ -194223,7 +194342,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f2fce4201bd6db84f95910f9da2dcc6c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.249
+      value: 4.065
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f2fce4201bd6db84f95910f9da2dcc6c,
         type: 3}
@@ -194233,12 +194352,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f2fce4201bd6db84f95910f9da2dcc6c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -39.177
+      value: -39.102
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f2fce4201bd6db84f95910f9da2dcc6c,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6290968
+      value: 0.52020735
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f2fce4201bd6db84f95910f9da2dcc6c,
         type: 3}
@@ -194248,7 +194367,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f2fce4201bd6db84f95910f9da2dcc6c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.777327
+      value: 0.85404
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f2fce4201bd6db84f95910f9da2dcc6c,
         type: 3}
@@ -194263,7 +194382,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f2fce4201bd6db84f95910f9da2dcc6c,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 102.033
+      value: 117.308
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f2fce4201bd6db84f95910f9da2dcc6c,
         type: 3}
@@ -195132,7 +195251,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 9f3b0ee894d47a14f8649447a367c951, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -195847,6 +195966,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &2043237852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199137,6 +199259,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &2087602373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201011,6 +201136,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!65 &2117704714
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -201048,6 +201176,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!4 &2120161301 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c6854d99b8ba4e08bfb978565e80da6,
@@ -202320,7 +202451,7 @@ Transform:
   m_GameObject: {fileID: 2143652719}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.355, y: -1.15, z: -7.586}
+  m_LocalPosition: {x: 3.94, y: -0.305, z: -8.097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -202356,6 +202487,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!114 &2143652723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205516,6 +205650,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!4 &6608985817483462222
 Transform:
   m_ObjectHideFlags: 0
@@ -205547,6 +205684,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!23 &6612595454734725719
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -205668,6 +205808,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!33 &6838642439274093927
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -205934,6 +206077,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!65 &7093743073930907726
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -205994,6 +206140,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!65 &7232575514183678050
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -206987,6 +207136,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!65 &9060241182796110418
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -207012,7 +207164,6 @@ BoxCollider:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 820722914}
   - {fileID: 2028442177}
   - {fileID: 579057325}
   - {fileID: 1985116758}
