@@ -59,7 +59,19 @@ public class PlayerComments : MonoBehaviour
     }
     public void StartDialogue()
     {
+        if (isDialogueActive)
+        {
+            Debug.LogWarning(
+                "[PlayerComments] Dialogue is already active."
+            );
+            return;
+        }
+
         if (dialogueLines == null || dialogueLines.Length == 0) return;
+
+        Debug.Log(
+            $"[PlayerComments] Starting dialogue: {gameObject.name}"
+        );
 
         PlayerController.playerComments = this;
 

@@ -103,6 +103,67 @@ public class QuestEvents : MonoBehaviour
         }
     }
 
+    
+    public void ApplyQuest3SceneState()
+    {
+        Debug.Log(
+            "[QuestEvents] Applying Q3 world state."
+        );
+
+        // Stairwell and jumpscare objects.
+        if (lesterStairsBlock != null)
+            lesterStairsBlock.SetActive(false);
+
+        if (shadowJumpscare != null)
+            shadowJumpscare.SetActive(true);
+
+        if (DanielsModel != null)
+            DanielsModel.SetActive(false);
+
+        // Restore the objects configured for Q3.
+        foreach (GameObject obj in objectsToEnable)
+        {
+            if (obj != null)
+                obj.SetActive(true);
+        }
+
+        foreach (GameObject obj in objectsToDisable)
+        {
+            if (obj != null)
+                obj.SetActive(false);
+        }
+
+        // Lester's old door configuration.
+        if (lesterDoor != null)
+        {
+            lesterDoor.transform.localRotation =
+                Quaternion.identity;
+
+            DoorOutline doorOutline =
+                lesterDoor.GetComponent<DoorOutline>();
+
+            if (doorOutline != null)
+            {
+                doorOutline.Hide();
+                doorOutline.enabled = false;
+            }
+        }
+
+        if (emitterLester != null)
+            emitterLester.Stop();
+
+        // Restore the entrance door state.
+        if (entranceDoorMR != null)
+            entranceDoorMR.enabled = true;
+
+        if (brokenDoor != null)
+            brokenDoor.SetActive(false);
+
+        if (doorController != null)
+            doorController.DoorEvent();
+    }
+
+
     public IEnumerator QuestEvent3()
     {
         Pause.canPause = false;

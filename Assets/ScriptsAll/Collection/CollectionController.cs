@@ -815,4 +815,32 @@ public CollectionTaskSaveData CreateSaveData()
     );
 }
 
+    public void RestoreAfterTrashCollection()
+    {
+        CollectionTaskSaveData data =
+            new CollectionTaskSaveData
+            {
+                questID = QuestID,
+                hasContainer = true,
+                isCompleted = true,
+                wasDisposed = false,
+                collectedItemIDs = new List<string>()
+            };
+
+        foreach (CollectibleItem item in collectibleItems)
+        {
+            if (item != null)
+            {
+                data.collectedItemIDs.Add(item.ID);
+            }
+        }
+
+        RestoreFromSave(data);
+
+        Debug.Log(
+            "[CollectionController] " +
+            "Restored completed collection with full bag."
+        );
+    }
+
 }

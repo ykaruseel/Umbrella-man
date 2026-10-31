@@ -168,7 +168,7 @@ public class ReturnHomeFlashbackController : MonoBehaviour
             presentCementPosition = cementBag.transform.position;
             presentCementRotation = cementBag.transform.rotation;
 
-            cementBag.SetActive(true);
+            cementBag.SetActive(false);
         }
 
 

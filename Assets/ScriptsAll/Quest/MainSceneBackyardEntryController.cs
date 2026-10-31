@@ -96,7 +96,34 @@ public class MainSceneBackyardEntryController : MonoBehaviour
 
         if (collectionController != null)
         {
-            collectionController.RestoreAfterTrashDisposal();
+            
+            bool returningWithTrash =
+                questID == "Q_TAKE_OUT_TRASH_1";
+
+            if (collectionController != null)
+            {
+                if (returningWithTrash)
+                {
+                    collectionController.RestoreAfterTrashCollection();
+                }
+                else
+                {
+                    collectionController.RestoreAfterTrashDisposal();
+                }
+            }
+
+            if (trashCarryVisual != null)
+            {
+                if (returningWithTrash)
+                {
+                    trashCarryVisual.ShowFullBag();
+                }
+                else
+                {
+                    trashCarryVisual.HideFullBag();
+                }
+            }
+
         }
 
         if (trashCarryVisual != null)
@@ -104,6 +131,16 @@ public class MainSceneBackyardEntryController : MonoBehaviour
             trashCarryVisual.HideFullBag();
 }
         SceneTransitionState.Clear();
+
+        // Wait one frame so scene objects
+        // finish their Start() initialization.
+        yield return null;
+
+        if (questID == "Q3" &&
+            QuestEvents.Instance != null)
+        {
+            QuestEvents.Instance.ApplyQuest3SceneState();
+        }
 
 
         // -------------------------

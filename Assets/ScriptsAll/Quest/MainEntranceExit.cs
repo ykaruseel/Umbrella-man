@@ -59,12 +59,11 @@ public class MainEntranceExit : MonoBehaviour
                 outline.Hide();
         }
 
+        // Large doors should not have glow.
+        // Keep the normal interaction outline.
         if (pulseHighlight != null)
         {
-            if (available)
-                pulseHighlight.Show();
-            else
-                pulseHighlight.Hide();
+            pulseHighlight.Hide();
         }
 
         lastAvailable = available;

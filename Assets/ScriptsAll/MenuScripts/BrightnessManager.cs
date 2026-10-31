@@ -27,7 +27,7 @@ public class BrightnessManager : MonoBehaviour
         colorAdjustments.active = true;
         colorAdjustments.postExposure.overrideState = true;
 
-        float savedBrightness = PlayerPrefs.GetFloat(BrightnessVolume, 0f);
+        float savedBrightness = PlayerPrefs.GetFloat(BrightnessVolume, 0.5f);
 
         ApplyBrightness(savedBrightness);
 

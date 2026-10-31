@@ -44,21 +44,27 @@ public class BackyardReturnHomeExit : MonoBehaviour
     private bool isBusy = false;
 
 
+
     public bool CanInteract
     {
         get
         {
-            if (isBusy)
+            if (isBusy ||
+                QuestManagerV2.Instance == null)
+            {
                 return false;
+            }
 
-            if (QuestManagerV2.Instance == null)
-                return false;
-
-            return QuestManagerV2.Instance.IsQuestActive(
-                requiredQuestID
-            );
+            return
+                QuestManagerV2.Instance.IsQuestActive(
+                    requiredQuestID
+                ) ||
+                QuestManagerV2.Instance.IsQuestActive(
+                    "Q_TAKE_OUT_TRASH_1"
+                );
         }
     }
+
 
 
     private void Awake()
@@ -112,12 +118,18 @@ public class BackyardReturnHomeExit : MonoBehaviour
             outline.isBlocked = true;
         }
 
+        bool returningWithTrash =
+        QuestManagerV2.Instance != null &&
+        QuestManagerV2.Instance.IsQuestActive(
+            "Q_TAKE_OUT_TRASH_1"
+        );
 
         // ---------------------------------
         // COMPLETE BACKYARD RETURN HOME
         // ---------------------------------
 
-        if (QuestManagerV2.Instance != null)
+        if (!returningWithTrash &&
+            QuestManagerV2.Instance != null)
         {
             QuestManagerV2.Instance.ProcessAction(
                 questTargetID,
@@ -145,8 +157,10 @@ public class BackyardReturnHomeExit : MonoBehaviour
 
         SceneTransitionState.Prepare(
             targetSpawnPointID,
-            mainSceneQuestID,
-            false
+            returningWithTrash
+                ? "Q_TAKE_OUT_TRASH_1"
+                : mainSceneQuestID,
+            returningWithTrash
         );
 
 
