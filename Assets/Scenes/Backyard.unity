@@ -12780,6 +12780,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!65 &282759764
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -21503,8 +21506,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8e0ef1e5e5e0cbe41b060b541f824e03, type: 2}
-  m_sharedMaterial: {fileID: -1744588423887588587, guid: 8e0ef1e5e5e0cbe41b060b541f824e03,
+  m_fontAsset: {fileID: 11400000, guid: 294574a394af9a64baca0b834d9421fd, type: 2}
+  m_sharedMaterial: {fileID: 4575285309224653104, guid: 294574a394af9a64baca0b834d9421fd,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -26818,15 +26821,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7593782661702596078, guid: 5aab91b25088ebf46a48c3566eebe32c,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1583743517}
-    - targetCorrespondingSourceObject: {fileID: 7593782661702596078, guid: 5aab91b25088ebf46a48c3566eebe32c,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1583743519}
     - targetCorrespondingSourceObject: {fileID: 7593782661702596078, guid: 5aab91b25088ebf46a48c3566eebe32c,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1583743518}
+    - targetCorrespondingSourceObject: {fileID: 7593782661702596078, guid: 5aab91b25088ebf46a48c3566eebe32c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1583743522}
     - targetCorrespondingSourceObject: {fileID: -6115676600064748632, guid: 5aab91b25088ebf46a48c3566eebe32c,
         type: 3}
       insertIndex: -1
@@ -72489,6 +72492,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 1
   rendererRoot: {fileID: 1503941614}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!65 &1503941613
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -74468,8 +74474,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Next [E]'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f311b50c9302e974aa2ee3115f9a3db3, type: 2}
-  m_sharedMaterial: {fileID: -6607438040311026152, guid: f311b50c9302e974aa2ee3115f9a3db3,
+  m_fontAsset: {fileID: 11400000, guid: 294574a394af9a64baca0b834d9421fd, type: 2}
+  m_sharedMaterial: {fileID: 4575285309224653104, guid: 294574a394af9a64baca0b834d9421fd,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -75081,27 +75087,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 524136642}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &1583743517
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1583743515}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.016983265, y: 0.0013498568, z: 0.0248597}
-  m_Center: {x: -0.0012702675, y: 0.0013035362, z: -0.010979474}
 --- !u!114 &1583743518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75117,8 +75102,8 @@ MonoBehaviour:
   partOneQuestID: Q_TAKE_OUT_TRASH_1
   partTwoQuestID: Q_TAKE_OUT_TRASH_2
   doorPivot: {fileID: 524136643}
-  openEuler: {x: 0, y: 0, z: 95}
-  openDuration: 0.7
+  openEuler: {x: 0, y: -95, z: 0}
+  openDuration: 1
   messageUI: {fileID: 2058228017}
   outline: {fileID: 0}
 --- !u!114 &1583743519
@@ -75137,6 +75122,31 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
+--- !u!64 &1583743522
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583743515}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2732614382741535736, guid: 5aab91b25088ebf46a48c3566eebe32c, type: 3}
 --- !u!1 &1585777460
 GameObject:
   m_ObjectHideFlags: 0
@@ -77683,6 +77693,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1001 &1624991420
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85197,6 +85210,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!65 &1821134733
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -87893,7 +87909,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: ea3f882f29fe03143ba7c4ce14324ea7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.061
+      value: 6.607
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ea3f882f29fe03143ba7c4ce14324ea7,
         type: 3}
@@ -93127,8 +93143,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.024689775, y: 0.00091711036, z: 0.03184163}
-  m_Center: {x: -0.02054509, y: -0.02489543, z: -0.011011929}
+  m_Size: {x: 2.4708822, y: 3.1841636, z: 0.11907956}
+  m_Center: {x: -2.090811, y: -1.1011927, z: 2.4758303}
 --- !u!65 &2011012754
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -93148,8 +93164,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.02565643, y: 0.00091711036, z: 0.03184163}
-  m_Center: {x: 0.021056034, y: -0.02489548, z: -0.011011928}
+  m_Size: {x: 2.5418482, y: 3.1841636, z: 0.03307628}
+  m_Center: {x: 2.1175008, y: -1.1011927, z: 2.5188096}
 --- !u!65 &2011012755
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -93169,8 +93185,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.06714679, y: 0.0013430761, z: 0.03184163}
-  m_Center: {x: 0.00031084986, y: 0.023928473, z: -0.011011935}
+  m_Size: {x: 0.21574827, y: 3.1841636, z: 4.9953947}
+  m_Center: {x: -3.2183769, y: -1.1011927, z: 0.037699934}
 --- !u!65 &2011012756
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -93190,8 +93206,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.001993446, y: 0.04995394, z: 0.03184163}
-  m_Center: {x: -0.032265767, y: -0.00037700514, z: -0.011011933}
+  m_Size: {x: 6.71468, y: 3.1841636, z: 0.12653157}
+  m_Center: {x: 0.031085964, y: -1.1011927, z: -2.3967185}
 --- !u!65 &2011012757
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -93211,8 +93227,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.0023146553, y: 0.04995394, z: 0.03184163}
-  m_Center: {x: 0.032726917, y: -0.00037700517, z: -0.01101193}
+  m_Size: {x: 0.18130036, y: 3.1841636, z: 4.9953947}
+  m_Center: {x: 3.2591202, y: -1.1011927, z: 0.037699938}
 --- !u!1 &2013897705
 GameObject:
   m_ObjectHideFlags: 0
@@ -96978,6 +96994,9 @@ MonoBehaviour:
   isBlocked: 0
   outlineAllChildren: 0
   rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!65 &2087302218
 BoxCollider:
   m_ObjectHideFlags: 0
