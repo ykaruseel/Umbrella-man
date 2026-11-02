@@ -1,10 +1,12 @@
 using UnityEngine;
+using FMODUnity;
 
 public class JanitorNoteInteractable : MonoBehaviour
 {
     [SerializeField] private JanitorNoteUI noteUI;
     [SerializeField] private OutlineInteractable outline;
     [SerializeField] private PulseHighlight pulseHighlight;
+    [SerializeField] private EventReference paperPickupSound;
 
     [SerializeField] private string requiredQuestId = "Q_TAKE_OUT_TRASH_1";
 
@@ -77,6 +79,14 @@ public class JanitorNoteInteractable : MonoBehaviour
     {
         if (!CanInteract)
             return false;
+
+        if (!paperPickupSound.IsNull)
+        {
+            RuntimeManager.PlayOneShot(
+                paperPickupSound,
+                transform.position
+            );
+        }
 
         noteUI.Open();
         return true;

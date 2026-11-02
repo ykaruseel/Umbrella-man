@@ -124,6 +124,9 @@ public class ReturnHomeFlashbackController : MonoBehaviour
     [SerializeField]
     private EventReference cementImpactSound;
 
+    [SerializeField]
+    private StudioEventEmitter constructionEmitter;
+
 
     [Header("Debug")]
     [SerializeField]
@@ -273,6 +276,7 @@ public class ReturnHomeFlashbackController : MonoBehaviour
         // -----------------------------------
 
         SetFlashbackLighting(true);
+        StartConstructionSound();
 
 
         // -----------------------------------
@@ -344,7 +348,21 @@ public class ReturnHomeFlashbackController : MonoBehaviour
 
         Pause.canPause = true;
     }
+    private void StartConstructionSound()
+    {
+        if (constructionEmitter == null)
+            return;
 
+        constructionEmitter.Play();
+    }
+
+    private void StopConstructionSound()
+    {
+        if (constructionEmitter == null)
+            return;
+
+        constructionEmitter.Stop();
+    }
 
     public bool TryStartCementSequence()
     {
@@ -548,6 +566,7 @@ public class ReturnHomeFlashbackController : MonoBehaviour
         // -----------------------------------
 
         RestorePresentState();
+
 
 
         // -----------------------------------
@@ -888,6 +907,7 @@ private IEnumerator DropCement()
 
     private void RestorePresentState()
     {
+        StopConstructionSound();
         SetFlashbackLighting(false);
 
 

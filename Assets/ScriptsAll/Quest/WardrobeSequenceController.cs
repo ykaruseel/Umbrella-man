@@ -59,6 +59,8 @@ public class WardrobeSequenceController : MonoBehaviour
 
     [SerializeField]
     private float ratTurnSpeed = 12f;
+    private FMOD.Studio.EventInstance ratRunningInstance;
+    private bool ratRunningSoundActive;
 
 
     [Header("Camera")]
@@ -84,7 +86,16 @@ public class WardrobeSequenceController : MonoBehaviour
     private EventReference wardrobeOpenSound;
 
     [SerializeField]
-    private EventReference ratSound;
+    private EventReference ratAudioEvent;
+
+    [SerializeField]
+    private string ratParameterName = "Trash";
+
+    [SerializeField]
+    private float ratSqueakValue = 0f;
+
+    [SerializeField]
+    private float ratRunningValue = 1f;
 
 
     [Header("Finish")]
@@ -123,7 +134,21 @@ public class WardrobeSequenceController : MonoBehaviour
     private Quaternion leftDoorOpenRotation;
     private Quaternion rightDoorOpenRotation;
 
+    private void Update()
+    {
+        if (!ratRunningSoundActive)
+            return;
 
+        if (rat == null || !rat.activeInHierarchy)
+        {
+            StopRatRunningSound();
+            return;
+        }
+
+        ratRunningInstance.set3DAttributes(
+            RuntimeUtils.To3DAttributes(rat.transform)
+        );
+    }
     private void Awake()
     {
         if (leftDoor != null)
@@ -265,9 +290,9 @@ public class WardrobeSequenceController : MonoBehaviour
         // -------------------------
 
         if (rat != null &&
-            ratPath != null &&
-            ratPath.Length > 0 &&
-            ratPath[0] != null)
+      ratPath != null &&
+      ratPath.Length > 0 &&
+      ratPath[0] != null)
         {
             rat.transform.position =
                 ratPath[0].position;
@@ -276,17 +301,10 @@ public class WardrobeSequenceController : MonoBehaviour
                 ratPath[0].rotation;
 
             rat.SetActive(true);
+
+            PlayRatSqueak();
         }
 
-
-        if (!ratSound.IsNull &&
-            rat != null)
-        {
-            RuntimeManager.PlayOneShotAttached(
-                ratSound,
-                rat
-            );
-        }
 
 
         // -------------------------
@@ -303,17 +321,20 @@ public class WardrobeSequenceController : MonoBehaviour
         // CAMERA FOLLOWS
         // -------------------------
 
+        StartRatRunningSound();
+
         yield return StartCoroutine(
             RunRatPathFromIndex(1)
         );
 
+        StopRatRunningSound();
 
+        yield return null;
 
         if (rat != null)
         {
             rat.SetActive(false);
         }
-        ForceDoorsOpen();
 
 
         // -------------------------
@@ -488,6 +509,63 @@ public class WardrobeSequenceController : MonoBehaviour
 
         rightDoor.localRotation =
             rightTarget;
+    }
+    private void PlayRatSqueak()
+    {
+        if (ratAudioEvent.IsNull || rat == null)
+            return;
+
+        FMOD.Studio.EventInstance instance =
+            RuntimeManager.CreateInstance(ratAudioEvent);
+
+        instance.setParameterByName(
+            ratParameterName,
+            ratSqueakValue
+        );
+
+        instance.set3DAttributes(
+            RuntimeUtils.To3DAttributes(rat.transform)
+        );
+
+        instance.start();
+        instance.release();
+    }
+
+    private void StartRatRunningSound()
+    {
+        StopRatRunningSound();
+
+        if (ratAudioEvent.IsNull || rat == null)
+            return;
+
+        ratRunningInstance = RuntimeManager.CreateInstance(ratAudioEvent);
+
+        ratRunningInstance.setParameterByName(
+            ratParameterName,
+            ratRunningValue
+        );
+
+        ratRunningInstance.set3DAttributes(
+            RuntimeUtils.To3DAttributes(rat.transform)
+        );
+
+        ratRunningInstance.start();
+        ratRunningSoundActive = true;
+    }
+
+    private void StopRatRunningSound()
+    {
+        ratRunningSoundActive = false;
+
+        if (!ratRunningInstance.isValid())
+            return;
+
+        ratRunningInstance.stop(
+            FMOD.Studio.STOP_MODE.IMMEDIATE
+        );
+
+        ratRunningInstance.release();
+        ratRunningInstance.clearHandle();
     }
 
     private void ForceDoorsOpen()
@@ -806,55 +884,60 @@ public class WardrobeSequenceController : MonoBehaviour
     float elapsed = 0f;
 
 
-    while (elapsed < ratJumpDuration)
-    {
-        elapsed += Time.deltaTime;
-
-        float t =
-            Mathf.Clamp01(
-                elapsed /
-                ratJumpDuration
-            );
-
-
-        Vector3 position =
-            Vector3.Lerp(
-                startPosition,
-                targetPosition,
-                t
-            );
-
-
-        float jump =
-            4f *
-            ratJumpHeight *
-            t *
-            (1f - t);
-
-
-        position.y += jump;
-
-
-        rat.transform.position =
-            position;
-
-
-        Vector3 direction =
-            targetPosition -
-            rat.transform.position;
-
-
-        if (direction.sqrMagnitude > 0.001f)
+        while (elapsed < ratJumpDuration)
         {
-            rat.transform.rotation =
-                Quaternion.LookRotation(
-                    direction.normalized,
-                    Vector3.up
+            elapsed += Time.deltaTime;
+
+            float t =
+                Mathf.Clamp01(
+                    elapsed /
+                    ratJumpDuration
                 );
+
+
+            Vector3 position =
+                Vector3.Lerp(
+                    startPosition,
+                    targetPosition,
+                    t
+                );
+
+
+            float jump =
+                4f *
+                ratJumpHeight *
+                t *
+                (1f - t);
+
+
+            position.y += jump;
+
+
+            rat.transform.position =
+                position;
+
+
+            Vector3 direction =
+                targetPosition -
+                rat.transform.position;
+
+
+            if (direction.sqrMagnitude > 0.001f)
+            {
+                rat.transform.rotation =
+                    Quaternion.LookRotation(
+                        direction.normalized,
+                        Vector3.up
+                    );
+            }
+
+
+            yield return null;
         }
 
-
-        yield return null;
     }
-}
+    private void OnDisable()
+    {
+        StopRatRunningSound();
+    }
 }
