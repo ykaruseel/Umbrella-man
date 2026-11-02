@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Pause : MonoBehaviour
 {
@@ -37,7 +38,11 @@ public class Pause : MonoBehaviour
     
     private void Update()
     {
-        if (!Input.GetKeyDown(KeyCode.Escape))
+        bool pausePressed = Input.GetKeyDown(KeyCode.Escape) ||
+                    (Gamepad.current != null &&
+                     Gamepad.current.startButton.wasPressedThisFrame);
+
+        if (!pausePressed)
             return;
 
         Debug.Log(

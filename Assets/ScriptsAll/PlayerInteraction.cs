@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -36,8 +37,13 @@ public class PlayerInteraction : MonoBehaviour
         if (!Pause.isPaused)
             UpdateOutline();
 
-        if (Input.GetKeyDown(KeyCode.E) && !Pause.isPaused)
+        if (!Pause.isPaused &&
+    (Input.GetKeyDown(KeyCode.E) ||
+     (Gamepad.current != null &&
+      Gamepad.current.buttonSouth.wasPressedThisFrame)))
+        {
             HandleInteraction();
+        }
     }
 
     void UpdateOutline()

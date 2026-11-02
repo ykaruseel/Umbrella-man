@@ -2,6 +2,7 @@
 using UnityEngine;
 using FMODUnity;
 using Unity.Cinemachine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -101,7 +102,7 @@ public class PlayerController : MonoBehaviour
         {
             StopFootsteps();
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (InteractPressedThisFrame())
             {
                 JanitorNoteUI.CurrentOpenNote.Close();
             }
@@ -115,7 +116,7 @@ public class PlayerController : MonoBehaviour
             
             StopFootsteps();
 
-            if (Input.GetKeyDown(KeyCode.E) && !Pause.isPaused)
+            if (InteractPressedThisFrame() && !Pause.isPaused)
                 dm.DisplayNextSentence();
 
             return;
@@ -125,7 +126,7 @@ public class PlayerController : MonoBehaviour
         {
             StopFootsteps();
 
-            if (Input.GetKeyDown(KeyCode.E) &&
+            if (InteractPressedThisFrame() &&
                 !Pause.isPaused)
             {
                 playerComments.DisplayNextSentence();
@@ -138,7 +139,7 @@ public class PlayerController : MonoBehaviour
         HandleCameraRotation();
         HandleDialogueZoom();
         HandleFootsteps();
-        if (Input.GetKeyDown(KeyCode.E))
+        if (InteractPressedThisFrame())
         {
             CheckInteractionInput();
         }
@@ -173,14 +174,35 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
-        if(!canMove) return;
+        if (!canMove) return;
+
+        Gamepad gamepad = Gamepad.current;
+
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        if (gamepad != null)
+        {
+            Vector2 stick = gamepad.leftStick.ReadValue();
+
+            if (Mathf.Abs(stick.x) > Mathf.Abs(horizontal))
+                horizontal = stick.x;
+
+            if (Mathf.Abs(stick.y) > Mathf.Abs(vertical))
+                vertical = stick.y;
+        }
+
+        bool isRunning = Input.GetKey(KeyCode.LeftShift) ||
+                         (gamepad != null && gamepad.leftStickButton.isPressed);
+
+        float speed = isRunning ? runSpeed : walkSpeed;
+
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        float curSpeedX = canMove ? (Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0f;
-        float curSpeedY = canMove ? (Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0f;
         float movementDirectionY = moveDirection.y;
-        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+
+        moveDirection = (forward * vertical + right * horizontal) * speed;
 
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
             moveDirection.y = jumpPower;
@@ -193,13 +215,26 @@ public class PlayerController : MonoBehaviour
         characterController.Move(moveDirection * Time.deltaTime);
     }
 
-private void HandleCameraRotation()
+    private void HandleCameraRotation()
     {
         if (!canMove || isCinematic) return;
 
-        rotationX -= Input.GetAxis("Mouse Y") * lookSpeed;
+        Gamepad gamepad = Gamepad.current;
+
+        float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
+        float mouseY = Input.GetAxis("Mouse Y") * lookSpeed;
+
+        if (gamepad != null)
+        {
+            Vector2 stick = gamepad.rightStick.ReadValue();
+
+            mouseX += stick.x * lookSpeed * 50f * Time.deltaTime;
+            mouseY += stick.y * lookSpeed * 50f * Time.deltaTime;
+        }
+
+        rotationX -= mouseY;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-        rotationY += Input.GetAxis("Mouse X") * lookSpeed;
+        rotationY += mouseX;
 
         Quaternion targetRotationY = Quaternion.Euler(0f, rotationY, 0f);
         Quaternion targetRotationX = Quaternion.Euler(rotationX, 0f, 0f);
@@ -279,7 +314,18 @@ private void HandleCameraRotation()
 
     private void HandleFootsteps()
     {
-        bool isMoving = (Input.GetAxis("Vertical") != 0f || Input.GetAxis("Horizontal") != 0f) && canMove;
+        Vector2 movementInput = new Vector2(
+    Input.GetAxis("Horizontal"),
+    Input.GetAxis("Vertical")
+);
+
+        if (Gamepad.current != null &&
+            Gamepad.current.leftStick.ReadValue().sqrMagnitude > movementInput.sqrMagnitude)
+        {
+            movementInput = Gamepad.current.leftStick.ReadValue();
+        }
+
+        bool isMoving = movementInput.sqrMagnitude > 0.01f && canMove;
 
         if (isMoving && footstepCoroutine == null)
         {
@@ -299,7 +345,8 @@ private void HandleCameraRotation()
 
         while (isWalking)
         {
-            bool isRunning = Input.GetKey(KeyCode.LeftShift);
+            bool isRunning = Input.GetKey(KeyCode.LeftShift) ||
+                  (Gamepad.current != null && Gamepad.current.leftStickButton.isPressed);
             float delay = isRunning ? runStepInterval : walkStepInterval;
 
             if (Mathf.Abs(delay - previousDelay) > 0.001f)
@@ -340,9 +387,14 @@ private void HandleCameraRotation()
     {
         dialogueZoom = value;
     }
-     
 
-    
+    private bool InteractPressedThisFrame()
+    {
+        return Input.GetKeyDown(KeyCode.E) ||
+               (Gamepad.current != null &&
+                Gamepad.current.buttonSouth.wasPressedThisFrame);
+    }
+
     void CheckInteractionInput()
     {
         DialogueManager dm = FindFirstObjectByType<DialogueManager>();
