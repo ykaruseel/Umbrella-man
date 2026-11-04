@@ -1,4 +1,6 @@
 using UnityEngine;
+using FMOD.Studio;
+using FMODUnity;
 
 public class TrashStorageKey : MonoBehaviour
 {
@@ -19,6 +21,9 @@ public class TrashStorageKey : MonoBehaviour
 
     [SerializeField]
     private PulseHighlight pulseHighlight;
+    [Header("FMOD")]
+    [SerializeField]
+    private EventReference pickupKeyAudio;
 
 
     private bool pickedUp = false;
@@ -125,6 +130,7 @@ public class TrashStorageKey : MonoBehaviour
 
 
         pickedUp = true;
+        PlayPickupSound();
 
 
         if (outline != null)
@@ -162,5 +168,21 @@ public class TrashStorageKey : MonoBehaviour
 
 
         return true;
+    }
+    private void PlayPickupSound()
+    {
+        if (pickupKeyAudio.IsNull)
+            return;
+
+        EventInstance instance =
+            RuntimeManager.CreateInstance(pickupKeyAudio);
+
+        RuntimeManager.AttachInstanceToGameObject(
+            instance,
+            transform
+        );
+
+        instance.start();
+        instance.release();
     }
 }

@@ -31,9 +31,16 @@ public class TrashStorageDoor : MonoBehaviour
     [SerializeField]
     private OutlineInteractable outline;
 
+    [Header("Locked Door Shake")]
+    [SerializeField] private float shakeAngle = 3f;
+    [SerializeField] private float shakeDuration = 0.3f;
+    [SerializeField] private float shakeFrequency = 3f;
+
     [Header("FMOD")]
     [SerializeField]
     private EventReference metalDoorAudio;
+    [SerializeField]
+    private EventReference lockedDoorAudio;
 
     [SerializeField]
     private string doorParameterName = "Door";
@@ -47,6 +54,7 @@ public class TrashStorageDoor : MonoBehaviour
     private bool isOpening;
     private bool isOpened;
     private bool keyUsedMessageShown;
+    private bool isShaking;
 
     public bool IsUnlocked => isUnlocked;
 
@@ -91,6 +99,11 @@ public class TrashStorageDoor : MonoBehaviour
 
         if (!isUnlocked)
         {
+            if (!isShaking)
+                StartCoroutine(ShakeLockedDoor());
+
+            PlayLockedDoorSound();
+
             if (messageUI != null)
                 messageUI.ShowMessage("Closed");
 
@@ -160,7 +173,32 @@ public class TrashStorageDoor : MonoBehaviour
         isOpened = true;
         isOpening = false;
     }
+    private IEnumerator ShakeLockedDoor()
+    {
+        isShaking = true;
 
+        float elapsed = 0f;
+
+        while (elapsed < shakeDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float progress = Mathf.Clamp01(elapsed / shakeDuration);
+            float damping = 1f - progress;
+
+            float angle = Mathf.Sin(elapsed * shakeFrequency * Mathf.PI * 2f)
+                          * shakeAngle
+                          * damping;
+
+            doorPivot.localRotation = closedRotation *
+                                      Quaternion.Euler(0f, angle, 0f);
+
+            yield return null;
+        }
+
+        doorPivot.localRotation = closedRotation;
+        isShaking = false;
+    }
     private void PlayMetalDoorSqueak()
     {
         if (metalDoorAudio.IsNull)
@@ -177,6 +215,22 @@ public class TrashStorageDoor : MonoBehaviour
         instance.setParameterByName(
             doorParameterName,
             squeakValue
+        );
+
+        instance.start();
+        instance.release();
+    }
+    private void PlayLockedDoorSound()
+    {
+        if (lockedDoorAudio.IsNull)
+            return;
+
+        EventInstance instance =
+            RuntimeManager.CreateInstance(lockedDoorAudio);
+
+        RuntimeManager.AttachInstanceToGameObject(
+            instance,
+            doorPivot
         );
 
         instance.start();

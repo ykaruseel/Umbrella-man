@@ -27,6 +27,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 118569
+--- !u!114 &-8740839187147420566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/key
+  m_EditorClassIdentifier: 
+  Path: event:/key
+  Guid:
+    Data1: -858615206
+    Data2: 1237971860
+    Data3: 498581897
+    Data4: 1394896084
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &-8696629014810986896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,10 +476,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639292378231610132
+  lastModified: 639294117759806676
   FileSizes:
   - Name: Desktop
-    Value: 4084
+    Value: 4180
   Exists: 1
 --- !u!114 &-5894382804971912607
 MonoBehaviour:
@@ -792,10 +819,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639292378231535007
+  lastModified: 639294117759740883
   FileSizes:
   - Name: Desktop
-    Value: 28104672
+    Value: 28369120
   Exists: 1
 --- !u!114 &-2262358081435299516
 MonoBehaviour:
@@ -1077,12 +1104,14 @@ MonoBehaviour:
   - {fileID: 5964652714837104895}
   - {fileID: -5537987629028588389}
   - {fileID: -8158083717279523074}
+  - {fileID: -8740839187147420566}
+  - {fileID: 516212775931565338}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2609684373490591824}
   StringsBanks:
   - {fileID: -6018097725551979117}
-  cacheTime: 639292378231610132
+  cacheTime: 639294117759806676
   cacheVersion: 131632
 --- !u!114 &187922053860065131
 MonoBehaviour:
@@ -1139,6 +1168,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 15000
+--- !u!114 &516212775931565338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/garbage storage gate
+  m_EditorClassIdentifier: 
+  Path: event:/garbage storage gate
+  Guid:
+    Data1: 2085925060
+    Data2: 1098867673
+    Data3: -760017240
+    Data4: -1362264343
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1000
 --- !u!114 &599863290097253109
 MonoBehaviour:
   m_ObjectHideFlags: 0
