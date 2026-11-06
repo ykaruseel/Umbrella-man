@@ -126,10 +126,6 @@ public class MainSceneBackyardEntryController : MonoBehaviour
 
         }
 
-        if (trashCarryVisual != null)
-        {
-            trashCarryVisual.HideFullBag();
-}
         SceneTransitionState.Clear();
 
         // Wait one frame so scene objects

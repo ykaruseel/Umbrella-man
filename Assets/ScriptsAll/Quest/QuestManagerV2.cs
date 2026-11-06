@@ -192,6 +192,12 @@ public class QuestManagerV2 : MonoBehaviour
     QuestData nextQuest =
         questSequence[currentQuestIndex];
 
+    Debug.Log(
+    $"[QuestManagerV2] Completed: " +
+    $"{completedQuest.questID} -> " +
+    $"Next: {nextQuest.questID}"
+);
+
     nextQuest.isActive = true;
 
     RuntimeManager.PlayOneShot(

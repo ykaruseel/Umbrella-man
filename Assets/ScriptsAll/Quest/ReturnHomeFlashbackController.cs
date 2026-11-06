@@ -27,6 +27,12 @@ public class ReturnHomeFlashbackController : MonoBehaviour
     [SerializeField]
     private TrashCarryVisual trashCarryVisual;
 
+    [Header("Skybox")]
+    [SerializeField]
+    private Material presentSkybox;
+
+    [SerializeField]
+    private Material flashbackSkybox;
 
     [Header("Lighting")]
     [SerializeField]
@@ -906,7 +912,7 @@ private IEnumerator DropCement()
                 presentCementRotation
             );
 
-            cementBag.SetActive(true);
+            cementBag.SetActive(false);
         }
 
 
@@ -1036,5 +1042,25 @@ private IEnumerator DropCement()
                 }
             }
         }
+
+        
+        Material targetSkybox =
+            flashback
+                ? flashbackSkybox
+                : presentSkybox;
+
+        if (targetSkybox != null &&
+            RenderSettings.skybox != targetSkybox)
+        {
+            RenderSettings.skybox = targetSkybox;
+
+            DynamicGI.UpdateEnvironment();
+
+            Debug.Log(
+                "[Flashback] Skybox switched: " +
+                (flashback ? "DAY" : "NIGHT")
+            );
+        }
+
     }
 }

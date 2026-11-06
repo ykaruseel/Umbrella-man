@@ -295,6 +295,9 @@ public class QuestEvents : MonoBehaviour
 
     public IEnumerator QuestEvent9()
     {
+        Debug.Log(
+    "[QuestEvents] QuestEvent9 started."
+);
         Pause.canPause = false;
 
         player.SetCanMove(false);

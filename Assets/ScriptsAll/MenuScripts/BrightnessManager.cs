@@ -61,4 +61,24 @@ public class BrightnessManager : MonoBehaviour
             brightnessSlider.onValueChanged.RemoveListener(OnSliderChanged);
         }
     }
+
+    #if UNITY_EDITOR
+    [ContextMenu("DEBUG / Reset Brightness to 0.5")]
+    private void ResetBrightness()
+    {
+        PlayerPrefs.SetFloat("Brightness", 0.5f);
+        PlayerPrefs.Save();
+
+        ApplyBrightness(0.5f);
+
+        if (brightnessSlider != null)
+        {
+            brightnessSlider.SetValueWithoutNotify(0.5f);
+        }
+
+        Debug.Log(
+            "[BrightnessManager] Brightness reset to 0.5."
+        );
+    }
+    #endif
 }

@@ -81,18 +81,44 @@ public class ObjectInteraction : MonoBehaviour
         objTransform.SetParent(null);
 
         heldItemID = null;
-        PlaceableItem placeable = objTransform.GetComponent<PlaceableItem>();
+        PlaceableItem placeable =
+            objTransform.GetComponent<PlaceableItem>();
+
         if (placeable != null)
+        {
             placeable.isPlaced = true;
+
+            placeable.SetState(
+                PlaceableItem.ItemState.Placed
+            );
+        }
 
         if (QuestManagerV2.Instance.IsGoalRequired(placeable.itemID, GoalType.ReturnItem))
         {
             QuestManagerV2.Instance.ProcessAction(placeable.itemID, GoalType.ReturnItem);
         }
 
-        OutlineInteractable outline = objTransform.GetComponent<OutlineInteractable>();
+        OutlineInteractable outline =
+            objTransform.GetComponent<OutlineInteractable>();
+
         if (outline != null)
+        {
             outline.Hide();
+            outline.isBlocked = true;
+        }
+
+        PulseHighlight pulse =
+            objTransform.GetComponent<PulseHighlight>();
+
+        if (pulse != null)
+        {
+            pulse.Hide();
+        }
+
+        if (spot != null)
+        {
+            spot.SetHighlight(false);
+        }
 
         heldObject = null;
         heldObjectRb = null;
@@ -140,7 +166,7 @@ public class ObjectInteraction : MonoBehaviour
 
     public void DropObject()
     {
-        Debug.Log("Бросил объект: " + heldObject.name);
+        Debug.Log("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ: " + heldObject.name);
         if (heldItemID != null)
         {
             UpdateHighlights(false);

@@ -130,7 +130,7 @@ public class MainEntranceExit : MonoBehaviour
         SceneTransitionState.Prepare(
             "BackyardEntrance",
             requiredQuestId,
-            true
+            hasFullTrashBag
         );
         SceneManager.LoadScene(targetSceneName);
     }

@@ -17,29 +17,46 @@ public class FocusTrigger : MonoBehaviour
 
     private PlayerController _playerController;
 
+    
     private void OnTriggerEnter(Collider other)
     {
-        if (hasTriggered) return;
-
-        if (other.CompareTag("Player") && IsQuestActive(requiredQuestID))
-        {
-            other.TryGetComponent(out _playerController);
-            hasTriggered = true;
-            StartCoroutine(OnTriggerEvent());
-        }
+        TryActivateFocus(other);
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (hasTriggered) return;
-
-        if (other.CompareTag("Player") && IsQuestActive(requiredQuestID))
-        {
-            other.TryGetComponent(out _playerController);
-            hasTriggered = true;
-            StartCoroutine(OnTriggerEvent());
-        }
+        TryActivateFocus(other);
     }
+
+    private void TryActivateFocus(Collider other)
+    {
+        if (hasTriggered)
+            return;
+
+        PlayerController player =
+            other.GetComponentInParent<PlayerController>();
+
+        if (player == null)
+            return;
+
+        if (QuestManagerV2.Instance == null ||
+            !QuestManagerV2.Instance.IsQuestActive(
+                requiredQuestID))
+        {
+            return;
+        }
+
+        _playerController = player;
+        hasTriggered = true;
+
+        Debug.Log(
+            $"[FocusTrigger] Activated: {gameObject.name}, " +
+            $"Quest: {requiredQuestID}"
+        );
+
+        StartCoroutine(OnTriggerEvent());
+    }
+
 
     public void TriggerFocus(PlayerController playerController)
     {

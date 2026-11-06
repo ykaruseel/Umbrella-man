@@ -323,9 +323,25 @@ linePos += currentSpeed * lineDir * Time.deltaTime;
 
     private void BreakDownDoor()
     {
-        if (useBrokenModel && brokenDoorModel != null && intactDoorModel != null)
+        if (useBrokenModel &&
+            brokenDoorModel != null &&
+            intactDoorModel != null)
         {
-            intactDoorModel.SetActive(false);
+            // Hide only the intact door mesh.
+            MeshRenderer intactRenderer =
+                intactDoorModel.GetComponent<MeshRenderer>();
+
+            if (intactRenderer != null)
+                intactRenderer.enabled = false;
+
+            // Disable intact door collision.
+            Collider intactCollider =
+                intactDoorModel.GetComponent<Collider>();
+
+            if (intactCollider != null)
+                intactCollider.enabled = false;
+
+            // Show the broken model.
             brokenDoorModel.SetActive(true);
 
             door = brokenDoorModel.transform;
@@ -521,10 +537,26 @@ linePos += currentSpeed * lineDir * Time.deltaTime;
         currentHealth = 100f;
         if (qtePanel != null) qtePanel.SetActive(false);
 
-        if (useBrokenModel && intactDoorModel != null && brokenDoorModel != null)
+        if (useBrokenModel &&
+            intactDoorModel != null &&
+            brokenDoorModel != null)
         {
             brokenDoorModel.SetActive(false);
+
             intactDoorModel.SetActive(true);
+
+            MeshRenderer intactRenderer =
+                intactDoorModel.GetComponent<MeshRenderer>();
+
+            if (intactRenderer != null)
+                intactRenderer.enabled = true;
+
+            Collider intactCollider =
+                intactDoorModel.GetComponent<Collider>();
+
+            if (intactCollider != null)
+                intactCollider.enabled = true;
+
             door = intactDoorModel.transform;
         }
 
