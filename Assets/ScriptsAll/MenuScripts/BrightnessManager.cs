@@ -10,7 +10,7 @@ public class BrightnessManager : MonoBehaviour
     public Volume postProcessVolume;
 
     private ColorAdjustments colorAdjustments;
-    private const string BrightnessVolume = "Brightness";
+private const string BrightnessVolume = "Brightness_v2";
 
     private void Awake()
     {

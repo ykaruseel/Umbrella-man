@@ -27975,21 +27975,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 199190467}
     m_Modifications:
-    - target: {fileID: -4400611236221517441, guid: 9a58884528eb62d4fa364a7e5e6b8c5b,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -2713307599641656506, guid: 9a58884528eb62d4fa364a7e5e6b8c5b,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: ac63d7b9df73b4540aead1e9d1fd79d5, type: 2}
-    - target: {fileID: 7817638084753478108, guid: 9a58884528eb62d4fa364a7e5e6b8c5b,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: ac63d7b9df73b4540aead1e9d1fd79d5, type: 2}
     - target: {fileID: -8679921383154817045, guid: f175799a2b689d842a973e6cf6cd52d8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -28055,6 +28040,21 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: e8edff7eb278f0b4cb26dbeb103ad303, type: 2}
+    - target: {fileID: -4400611236221517441, guid: 9a58884528eb62d4fa364a7e5e6b8c5b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2713307599641656506, guid: 9a58884528eb62d4fa364a7e5e6b8c5b,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ac63d7b9df73b4540aead1e9d1fd79d5, type: 2}
+    - target: {fileID: 7817638084753478108, guid: 9a58884528eb62d4fa364a7e5e6b8c5b,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ac63d7b9df73b4540aead1e9d1fd79d5, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -59252,7 +59252,7 @@ Transform:
   m_GameObject: {fileID: 1099099676}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.92387956, z: 0, w: 0.38268343}
-  m_LocalPosition: {x: -44.05, y: -10.38, z: -37.075}
+  m_LocalPosition: {x: -44.05, y: -10.74, z: -37.075}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -101362,6 +101362,8 @@ MonoBehaviour:
   playerController: {fileID: 332663620}
   flashbackSpawn: {fileID: 24531777}
   trashCarryVisual: {fileID: 332663633}
+  presentSkybox: {fileID: 2100000, guid: 51b74d7bad397457d883c5940f7664d8, type: 2}
+  flashbackSkybox: {fileID: 2100000, guid: c4352f9d0bb7fc741befedb9e1cc4a90, type: 2}
   presentLightingObjects:
   - {fileID: 711655203}
   - {fileID: 521692081}
@@ -101400,6 +101402,7 @@ MonoBehaviour:
   - {fileID: 459631843}
   flashbackLightingObjects:
   - {fileID: 791881032}
+  - {fileID: 1994457583}
   cementBag: {fileID: 350187118}
   cementSpawn: {fileID: 1592825350}
   cementLookTarget: {fileID: 586693278}
@@ -102779,8 +102782,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c1c51d13112ea048943e7835a90313f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  messageText: {fileID: 222534509}
-  canvasGroup: {fileID: 222534508}
+  messageText: {fileID: 1844148174}
+  canvasGroup: {fileID: 1721760450}
   fadeDuration: 0.25
   visibleDuration: 1.5
 --- !u!225 &2058228018
