@@ -17,29 +17,45 @@ public class FocusTrigger : MonoBehaviour
 
     private PlayerController _playerController;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (hasTriggered) return;
+    
+private void OnTriggerEnter(Collider other)
+{
+    TryActivateFromTrigger(other);
+}
 
-        if (other.CompareTag("Player") && IsQuestActive(requiredQuestID))
-        {
-            other.TryGetComponent(out _playerController);
-            hasTriggered = true;
-            StartCoroutine(OnTriggerEvent());
-        }
+private void OnTriggerStay(Collider other)
+{
+    TryActivateFromTrigger(other);
+}
+
+private void TryActivateFromTrigger(Collider other)
+{
+    if (hasTriggered)
+        return;
+
+    // When a QuestTrigger exists, it controls
+    // the order of focus and quest completion.
+    QuestTrigger questTrigger =
+        GetComponent<QuestTrigger>();
+
+    if (questTrigger != null &&
+        questTrigger.enabled)
+    {
+        return;
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (hasTriggered) return;
+    PlayerController player =
+        other.GetComponentInParent<PlayerController>();
 
-        if (other.CompareTag("Player") && IsQuestActive(requiredQuestID))
-        {
-            other.TryGetComponent(out _playerController);
-            hasTriggered = true;
-            StartCoroutine(OnTriggerEvent());
-        }
-    }
+    if (player == null)
+        return;
+
+    if (!IsQuestActive(requiredQuestID))
+        return;
+
+    TriggerFocus(player);
+}
+
 
     public void TriggerFocus(PlayerController playerController)
     {
@@ -83,7 +99,11 @@ public class FocusTrigger : MonoBehaviour
     }
 
     private bool IsQuestActive(string id)
-    {
-        return QuestManagerV2.Instance.IsQuestActive(id);
-    }
+{
+    QuestManagerV2 manager =
+        QuestManagerV2.Instance;
+
+    return manager != null &&
+           manager.IsQuestActive(id);
+}
 }

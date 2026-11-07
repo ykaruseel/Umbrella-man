@@ -295,6 +295,9 @@ public class QuestEvents : MonoBehaviour
 
     public IEnumerator QuestEvent9()
     {
+                Debug.Log(
+            "[QuestEvents] Q9 cinematic started."
+        );
         Pause.canPause = false;
 
         player.SetCanMove(false);
