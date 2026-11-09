@@ -49801,8 +49801,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 0.9832978}
+  m_Center: {x: 0, y: -0.0000082477245, z: 0.0083513465}
 --- !u!23 &541350166
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -82894,6 +82894,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4409011625575948860, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5878142233136804078, guid: 7c4bb9b6288baf344987f64fa54a0d52,
         type: 3}
       propertyPath: m_Name
@@ -82952,21 +82967,6 @@ PrefabInstance:
     - target: {fileID: 7036836734124335007, guid: 7c4bb9b6288baf344987f64fa54a0d52,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: looping
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4409011625575948860, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -95184,7 +95184,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 0f5b53e4dd5b49641b0ec9c1946f30b1,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.728
+      value: 1.7279999
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f5b53e4dd5b49641b0ec9c1946f30b1,
         type: 3}
@@ -180768,21 +180768,20 @@ MonoBehaviour:
     instead of waking everyone up at night? I''m sick and tired of listening to residents
     complain about all the noise.
 
-    
 
-    Starting today, the dumpster area
-    will be locked overnight. If you want to take your trash out, do it during the
-    day.
 
-    
+    Starting today, the dumpster area will be
+    locked overnight. If you want to take your trash out, do it during the day.
 
-    If you absolutely have to throw something away at night, find
-    the key in the old wardrobe in the alley behind the dumpsters
 
-    
 
-    -
-    Your ever-dedicated janitor'
+    If
+    you absolutely have to throw something away at night, find the key in the old
+    wardrobe in the alley behind the dumpsters
+
+
+
+    - Your ever-dedicated janitor'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 71f6b16abf1b4ab489986de49cc863b5, type: 2}
   m_sharedMaterial: {fileID: -590343943756479925, guid: 71f6b16abf1b4ab489986de49cc863b5,
