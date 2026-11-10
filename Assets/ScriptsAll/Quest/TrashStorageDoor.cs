@@ -105,7 +105,16 @@ public class TrashStorageDoor : MonoBehaviour
             PlayLockedDoorSound();
 
             if (messageUI != null)
+            {
+                Debug.Log("[TrashStorageDoor] Showing Closed UI");
                 messageUI.ShowMessage("Closed");
+            }
+            else
+            {
+                Debug.LogError(
+                    "[TrashStorageDoor] InteractionMessageUI is missing!"
+                );
+            }
 
             return true;
         }

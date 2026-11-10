@@ -134,7 +134,7 @@ public class BackyardEntryController : MonoBehaviour
                 yield return null;
             }
         }
-
+        yield return new WaitForSeconds(1.5f);
 
         // --------------------
         // Control back

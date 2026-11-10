@@ -67,6 +67,8 @@ public class FlashbackTitleSequence : MonoBehaviour
 
         titleLine1.text = "";
         titleLine2.text = "";
+        titleLine1.maxVisibleCharacters = 0;
+        titleLine2.maxVisibleCharacters = 0;
 
         // Show black background.
         canvasGroup.alpha = 1f;
@@ -107,25 +109,33 @@ public class FlashbackTitleSequence : MonoBehaviour
         Debug.Log("[FlashbackTitle] Sequence finished");
     }
 
-    private IEnumerator TypeText(
-        TMP_Text target,
-        string content)
+   private IEnumerator TypeText(
+    TMP_Text target,
+    string content)
+{
+    target.text = content;
+    target.maxVisibleCharacters = 0;
+    target.ForceMeshUpdate();
+
+    int count = target.textInfo.characterCount;
+
+    for (int i = 1; i <= count; i++)
     {
-        target.text = "";
+        target.maxVisibleCharacters = i;
 
-        foreach (char c in content)
+        char c = content[i - 1];
+
+        if (c != ' ' && c != '\n' &&
+            !typewriterSound.IsNull)
         {
-            target.text += c;
-
-            if (c != ' ' && c != '\n' &&
-                !typewriterSound.IsNull)
-            {
-                RuntimeManager.PlayOneShot(typewriterSound);
-            }
-
-            yield return new WaitForSeconds(typeSpeed);
+            RuntimeManager.PlayOneShot(typewriterSound);
         }
+
+        yield return new WaitForSeconds(typeSpeed);
     }
+
+    target.maxVisibleCharacters = int.MaxValue;
+}
 
     private IEnumerator DeleteText(TMP_Text target)
     {

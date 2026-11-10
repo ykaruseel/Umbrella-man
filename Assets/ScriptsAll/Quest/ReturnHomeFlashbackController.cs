@@ -79,6 +79,10 @@ private FlashbackTitleSequence flashbackTitle;
     [SerializeField]
     private float umbrellaAppearLeadTime = 0.12f;
 
+    [Header("Wardrobe Flashback")]
+[SerializeField]
+private WardrobeSequenceController wardrobeSequence;
+
 
     [Header("Fear")]
     [SerializeField]
@@ -226,6 +230,11 @@ private FlashbackTitleSequence flashbackTitle;
     {
         flashbackActive = true;
         cementTriggered = false;
+
+        if (wardrobeSequence != null)
+        {
+            wardrobeSequence.EnterFlashbackVisualState();
+        }
 
 
         // -----------------------------------
@@ -939,6 +948,11 @@ private IEnumerator DropCement()
     {
         StopConstructionSound();
         SetFlashbackLighting(false);
+
+        if (wardrobeSequence != null)
+        {
+            wardrobeSequence.ExitFlashbackVisualState();
+        }
 
 
         if (umbrellaMan != null)

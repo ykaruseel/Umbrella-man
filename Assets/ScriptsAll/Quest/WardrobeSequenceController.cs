@@ -5,6 +5,13 @@ using UnityEngine.Events;
 
 public class WardrobeSequenceController : MonoBehaviour
 {
+
+    [Header("Flashback Visuals")]
+    [SerializeField] private GameObject wardrobeKey;
+    private Quaternion savedLeftRotation;
+    private Quaternion savedRightRotation;
+    private bool savedKeyActive;
+    private bool flashbackVisualsSaved;
     [Header("Quest")]
     [SerializeField]
     private string requiredQuestID =
@@ -940,4 +947,47 @@ public class WardrobeSequenceController : MonoBehaviour
     {
         StopRatRunningSound();
     }
+
+    public void EnterFlashbackVisualState()
+{
+    if (flashbackVisualsSaved)
+        return;
+
+    if (leftDoor != null)
+    {
+        savedLeftRotation = leftDoor.localRotation;
+        leftDoor.localRotation = leftDoorClosedRotation;
+    }
+
+    if (rightDoor != null)
+    {
+        savedRightRotation = rightDoor.localRotation;
+        rightDoor.localRotation = rightDoorClosedRotation;
+    }
+
+    if (wardrobeKey != null)
+    {
+        savedKeyActive = wardrobeKey.activeSelf;
+        wardrobeKey.SetActive(false);
+    }
+
+    flashbackVisualsSaved = true;
+}
+
+public void ExitFlashbackVisualState()
+{
+    if (!flashbackVisualsSaved)
+        return;
+
+    if (leftDoor != null)
+        leftDoor.localRotation = savedLeftRotation;
+
+    if (rightDoor != null)
+        rightDoor.localRotation = savedRightRotation;
+
+    if (wardrobeKey != null)
+        wardrobeKey.SetActive(savedKeyActive);
+
+    flashbackVisualsSaved = false;
+}
 }
