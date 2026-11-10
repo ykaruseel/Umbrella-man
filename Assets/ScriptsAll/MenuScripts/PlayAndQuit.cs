@@ -169,7 +169,7 @@ public class PlayAndQuit : MonoBehaviour
             {
                 progressBarGO.SetActive(false);
 
-                StartCoroutine(loadingScreen.TitleWrite());
+                StartCoroutine(loadingScreen.TitleWrite(false));
 
                 yield return new WaitUntil(() => LoadingScreenController.CanSwitchScenes);
 

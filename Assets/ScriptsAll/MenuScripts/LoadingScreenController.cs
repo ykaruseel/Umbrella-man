@@ -55,11 +55,25 @@ public class LoadingScreenController : MonoBehaviour
         }
     }
 
-    public IEnumerator TitleWrite()
+    public IEnumerator TitleWrite(bool showTitle = true)
+{
+    if (titleLine1 != null)
+        titleLine1.text = "";
+
+    if (titleLine2 != null)
+        titleLine2.text = "";
+
+    if (showTitle)
     {
-        yield return TypeText(titleLine1, "Do you know", true);
+        yield return TypeText(
+            titleLine1, "Do you know", true
+        );
+
         yield return new WaitForSeconds(1.5f);
-        yield return TypeText(titleLine2, "The man with the umbrella?", true);
+
+        yield return TypeText(
+            titleLine2, "The man with the umbrella?", true
+        );
 
         yield return new WaitForSeconds(2f);
 
@@ -67,11 +81,16 @@ public class LoadingScreenController : MonoBehaviour
         yield return DeleteText(titleLine1);
 
         yield return new WaitForSeconds(2f);
-
-        StartCoroutine(FadeOutMenuMusic(musicFadeOutTime)); 
-
-        CanSwitchScenes = true;
     }
+    else
+    {
+        yield return new WaitForSeconds(0.3f);
+    }
+
+    StartCoroutine(FadeOutMenuMusic(musicFadeOutTime));
+
+    CanSwitchScenes = true;
+}
 
     IEnumerator FadeOutMenuMusic(float duration)
     {

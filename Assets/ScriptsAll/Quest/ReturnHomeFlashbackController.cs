@@ -5,6 +5,12 @@ using UnityEngine.Rendering;
 
 public class ReturnHomeFlashbackController : MonoBehaviour
 {
+
+    [Header("Flashback Title")]
+[SerializeField]
+private FlashbackTitleSequence flashbackTitle;
+
+
     [Header("Quest")]
     [SerializeField]
     private string flashbackQuestID =
@@ -566,6 +572,24 @@ public class ReturnHomeFlashbackController : MonoBehaviour
             );
         }
 
+        // -----------------------------------
+        // GAME TITLE
+        // -----------------------------------
+
+        if (flashbackTitle != null)
+        {
+            Debug.Log("[Flashback] Starting game title");
+
+            yield return StartCoroutine(
+                flashbackTitle.PlaySequence()
+            );
+        }
+        else
+        {
+            Debug.LogWarning(
+                "[Flashback] Title sequence is not assigned!"
+            );
+        }
 
         // -----------------------------------
         // RETURN TO PRESENT
