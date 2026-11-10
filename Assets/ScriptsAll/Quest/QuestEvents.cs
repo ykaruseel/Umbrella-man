@@ -85,16 +85,97 @@ public class QuestEvents : MonoBehaviour
 
     [Header("Quest 11")]
     public GameObject endGame;
+    [Header("After Umbrella Cinematic")]
+[SerializeField] private Transform afterDreamSpawnPoint;
 
     public Light flickerLight;
 
     public Volume postProcessVolume;
+    private Coroutine umbrellaFearCoroutine;
+
+    private bool normalEffectsSaved;
+
+    private float normalVignette;
+    private float normalExposure;
+    private float normalContrast;
+    private float normalLensDistortion;
+    private float normalChromatic;
+    private float normalGrain;
+    private float normalGrainResponse;
+
+
+private void SaveNormalPostProcessing()
+{
+    if (postProcessVolume == null ||
+        postProcessVolume.profile == null)
+        return;
+
+    var profile = postProcessVolume.profile;
+
+    if (profile.TryGet(out Vignette vignette))
+        normalVignette = vignette.intensity.value;
+
+    if (profile.TryGet(out ColorAdjustments color))
+    {
+        normalExposure = color.postExposure.value;
+        normalContrast = color.contrast.value;
+    }
+
+    if (profile.TryGet(out LensDistortion lens))
+        normalLensDistortion = lens.intensity.value;
+
+    if (profile.TryGet(out ChromaticAberration chromatic))
+        normalChromatic = chromatic.intensity.value;
+
+    if (profile.TryGet(out FilmGrain grain))
+    {
+        normalGrain = grain.intensity.value;
+        normalGrainResponse = grain.response.value;
+    }
+
+    normalEffectsSaved = true;
+}
+
+private void RestoreNormalPostProcessing()
+{
+    if (!normalEffectsSaved ||
+        postProcessVolume == null ||
+        postProcessVolume.profile == null)
+        return;
+
+    var profile = postProcessVolume.profile;
+
+    if (profile.TryGet(out Vignette vignette))
+        vignette.intensity.value = normalVignette;
+
+    if (profile.TryGet(out ColorAdjustments color))
+    {
+        color.postExposure.value = normalExposure;
+        color.contrast.value = normalContrast;
+    }
+
+    if (profile.TryGet(out LensDistortion lens))
+        lens.intensity.value = normalLensDistortion;
+
+    if (profile.TryGet(out ChromaticAberration chromatic))
+        chromatic.intensity.value = normalChromatic;
+
+    if (profile.TryGet(out FilmGrain grain))
+    {
+        grain.intensity.value = normalGrain;
+        grain.response.value = normalGrainResponse;
+    }
+
+    Debug.Log("[Q11] Fear effect restored to normal.");
+}
+
 
     public GameObject DanielsModel;
 
     private void Awake()
     {
         Instance = this;
+        SaveNormalPostProcessing();
 
         foreach (OutlineInteractable interactable in outlineInteractables)
         {
@@ -368,6 +449,19 @@ public class QuestEvents : MonoBehaviour
         flashlight.SetBlocked(false);
         knifemanLight.enabled = false;
 
+// Prepare Daniel's apartment entrance
+// before KnifeMan starts chasing.
+if (doorController != null)
+{
+    doorController.PrepareForChaseQTE();
+}
+else
+{
+    Debug.LogWarning(
+        "[Q10] Apartment DoorController is missing!"
+    );
+}
+
         yield return new WaitForSeconds(2f);
 
         knifeManDialogue.gameObject.GetComponent<KnifeManAI>().StartChasing();
@@ -382,31 +476,25 @@ public class QuestEvents : MonoBehaviour
     }
 
     
+
 public IEnumerator QuestEvent11()
 {
+    Debug.Log("[Q11] Umbrella cinematic started");
+
     Pause.canPause = false;
 
-    // The KnifeMan chase is over.
+    // Chase finished
     knifeMan.SetActive(false);
 
     player.SetCanMove(false);
     player.isCinematic = true;
 
-    // Play the cinematic removed from the opening.
-    if (cameraSequenceController != null)
-    {
-        yield return StartCoroutine(
-            cameraSequenceController.PlayDeferredFirstFly()
-        );
-    }
-
-    // Umbrella Man appears.
+    // 1. Show the Umbrella Man FIRST
     FMODUnity.RuntimeManager.PlayOneShot(
         umbrellaAppearSound
     );
 
     umbrellaMan.SetActive(true);
-
     flickerLight.enabled = true;
 
     player.StartCinematicPan(
@@ -417,19 +505,135 @@ public IEnumerator QuestEvent11()
     yield return new WaitForSeconds(2f);
 
     StartCoroutine(LightFlickerRoutine());
-    StartCoroutine(SmoothPostProcess(6f));
+
+umbrellaFearCoroutine = StartCoroutine(
+    SmoothPostProcess(6f)
+);
 
     player.ZoomIn(0.5f, 4f);
 
     yield return new WaitForSeconds(6f);
 
-    StartCoroutine(cameraFade.FadeOut());
-
-    yield return new WaitForSeconds(1.25f);
+    // 2. Fade to black
+    yield return StartCoroutine(cameraFade.FadeOut());
 
     flickerLight.enabled = false;
+    umbrellaMan.SetActive(false);
+    // Stop the fear animation completely.
+if (umbrellaFearCoroutine != null)
+{
+    StopCoroutine(umbrellaFearCoroutine);
+    umbrellaFearCoroutine = null;
+}
 
-    endGame.SetActive(true);
+// Restore the normal visual appearance.
+RestoreNormalPostProcessing();
+
+    Debug.Log("[Q11] Umbrella cinematic finished");
+
+    // 3. Teleport Daniel while screen is black
+    if (afterDreamSpawnPoint != null)
+    {
+        CharacterController cc =
+            player.GetComponent<CharacterController>();
+
+        if (cc != null)
+            cc.enabled = false;
+
+        player.transform.position =
+            afterDreamSpawnPoint.position;
+
+        player.SetRotation(
+            afterDreamSpawnPoint.eulerAngles.y,
+            0f
+        );
+
+        if (cc != null)
+            cc.enabled = true;
+    }
+    else
+    {
+        Debug.LogWarning(
+            "[Q11] AfterDreamSpawnPoint is missing!"
+        );
+    }
+
+    // Restore FOV
+    player.ZoomOut(0.5f, 0.3f);
+
+    // 4. NOW play the apartment + bed cinematic
+    if (cameraSequenceController != null)
+    {
+        yield return StartCoroutine(
+            cameraSequenceController.PlayDeferredFirstFly()
+        );
+    }
+    else
+    {
+        yield return StartCoroutine(cameraFade.FadeIn());
+    }
+
+    Debug.Log("[Q11] Bed cinematic completed");
+
+    // 5. Enable Lester's door outline
+    if (lesterDoor != null)
+    {
+        DoorOutline outline =
+            lesterDoor.GetComponent<DoorOutline>();
+
+        if (outline != null)
+            outline.enabled = true;
+    }
+
+    // 6. Finish Q11 and activate Q2
+    QuestManagerV2 manager = QuestManagerV2.Instance;
+
+    if (manager != null &&
+        manager.IsGoalRequired("8", GoalType.ReachPoint))
+    {
+        manager.ProcessAction("8", GoalType.ReachPoint);
+
+        Debug.Log("[Q11] Completed. Activating Q2...");
+    }
+    else
+    {
+        Debug.LogWarning(
+            "[Q11] Could not complete Q11 automatically."
+        );
+    }
+
+    // 7. Restore gameplay
+    player.isCinematic = false;
+    player.SetCanMove(true);
+
+    Pause.canPause = true;
+}
+public IEnumerator FinishDemoAfterLester()
+{
+    Debug.Log("[DEMO] Lester dialogue completed");
+
+    Pause.canPause = false;
+
+    player.SetCanMove(false);
+    player.isCinematic = true;
+
+    // Let dialogue UI disappear
+    yield return new WaitForSeconds(0.3f);
+
+    // Fade to black
+    yield return StartCoroutine(cameraFade.FadeOut());
+
+    // Show the existing ending screen
+    if (endGame != null)
+    {
+        endGame.SetActive(true);
+    }
+    else
+    {
+        Debug.LogError(
+            "[DEMO] EndGame reference is missing!"
+        );
+    }
 }
 
 

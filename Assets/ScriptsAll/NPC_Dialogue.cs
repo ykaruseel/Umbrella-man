@@ -62,34 +62,94 @@ public class NPC_Dialogue : MonoBehaviour
         }
     }
 
-    private IEnumerator HandleDialogueSequence()
+
+private IEnumerator HandleDialogueSequence()
+{
+    while (dialogueManager != null &&
+           dialogueManager.IsDialogueActive())
     {
-        while (dialogueManager != null && dialogueManager.IsDialogueActive())
+        // E is already handled by PlayerController.
+        if (Input.GetMouseButtonDown(0) ||
+            Input.GetKeyDown(KeyCode.Space))
         {
-            
-            if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E))
-            {
-                dialogueManager.DisplayNextSentence();
-            }
-            yield return null;
+            dialogueManager.DisplayNextSentence();
         }
 
-        
-
-        if (playerController)
-        {
-            playerController.SetCanMove(true);
-        }
-
-        if (QuestManagerV2.Instance.IsGoalRequired(npcID, GoalType.TalkToNPC))
-        {
-            QuestManagerV2.Instance.ProcessAction(npcID, GoalType.TalkToNPC);
-        }
-
-        if (questManager != null)
-        {
-            questManager.UpdateQuestProgress("door", ObjectiveType.Interact);
-            questManager.ForceUpdateQuestText("Follow the light");
-        }
+        yield return null;
     }
+
+    QuestManagerV2 manager = QuestManagerV2.Instance;
+
+    // Determine whether this was the final Lester dialogue.
+    bool isFinalLesterDialogue =
+        manager != null &&
+        manager.IsQuestActive("Q2") &&
+        manager.IsGoalRequired(
+            npcID,
+            GoalType.TalkToNPC
+        );
+
+    // Complete the quest
+    if (manager != null &&
+        manager.IsGoalRequired(
+            npcID,
+            GoalType.TalkToNPC
+        ))
+    {
+        manager.ProcessAction(
+            npcID,
+            GoalType.TalkToNPC
+        );
+    }
+
+    // Q2 is our final demo quest
+    if (isFinalLesterDialogue)
+    {
+        Debug.Log(
+            "[NPC Dialogue] Final Lester conversation finished"
+        );
+
+        if (QuestEvents.Instance != null)
+        {
+            yield return StartCoroutine(
+                QuestEvents.Instance.FinishDemoAfterLester()
+            );
+        }
+        else
+        {
+            Debug.LogError(
+                "[NPC Dialogue] QuestEvents not found!"
+            );
+        }
+
+        yield break;
+    }
+
+    // Normal dialogue behavior
+    if (playerController != null)
+    {
+        CharacterController cc =
+            playerController.GetComponent<CharacterController>();
+
+        if (cc != null)
+            cc.enabled = true;
+
+        playerController.isCinematic = false;
+        playerController.SetCanMove(true);
+    }
+
+    // Preserve old prototype behavior for other quests
+    if (questManager != null)
+    {
+        questManager.UpdateQuestProgress(
+            "door",
+            ObjectiveType.Interact
+        );
+
+        questManager.ForceUpdateQuestText(
+            "Follow the light"
+        );
+    }
+}
+
 }

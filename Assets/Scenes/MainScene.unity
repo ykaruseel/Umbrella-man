@@ -40493,6 +40493,37 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1337644314}
   m_SourcePrefab: {fileID: 100100000, guid: 652ad0fe6905fe2408a6c57291031adb, type: 3}
+--- !u!1 &411550221
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 411550222}
+  m_Layer: 0
+  m_Name: AfterDreamSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &411550222
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411550221}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.4857726, y: 1.143175, z: -32.499573}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &411831057
 GameObject:
   m_ObjectHideFlags: 0
@@ -82894,21 +82925,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: looping
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4409011625575948860, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5878142233136804078, guid: 7c4bb9b6288baf344987f64fa54a0d52,
         type: 3}
       propertyPath: m_Name
@@ -82967,6 +82983,21 @@ PrefabInstance:
     - target: {fileID: 7036836734124335007, guid: 7c4bb9b6288baf344987f64fa54a0d52,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4409011625575948860, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -128956,6 +128987,7 @@ MonoBehaviour:
   - {fileID: 8898129693783578905}
   flashlight: {fileID: 332663632}
   endGame: {fileID: 953989062}
+  afterDreamSpawnPoint: {fileID: 411550222}
   flickerLight: {fileID: 614190217}
   postProcessVolume: {fileID: 1143986533}
   DanielsModel: {fileID: 2088585049}
@@ -186474,80 +186506,78 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueLines:
   - speakerName: Lester
-    sentence: Oh, hi, Daniel. You were a little louder than usual today.
+    sentence: 'Oh, Tommy. Hi.
+
+      You were a little louder than usual today.'
   - speakerName: Daniel
-    sentence: Hey, Lester, sorry for bothering you this early.
-  - speakerName: Daniel
-    sentence: "Sounds like the orchestra\u2019s already wide awake."
+    sentence: 'Hey, Lester. Sorry to bother you so early.
+
+      I wanted to ask
+      you something.
+
+      Do you know the man with the umbrella?'
   - speakerName: Lester
-    sentence: "Oh, that\u2019s right. You know, nothing sets you up for a good day
-      like some good music in the morning. You should really try it. "
+    sentence: 'The man with the what?
+
+'
   - speakerName: Daniel
-    sentence: "I would\u2026 but I don\u2019t have a gramophone anymore."
+    sentence: 'The umbrella. A black one.
+
+      I saw him in the building yesterday.'
   - speakerName: Lester
-    sentence: "That\u2019s a shame to hear."
-  - speakerName: Lester
-    sentence: "Sorry\u2026 Did the music wake you?"
-  - speakerName: Daniel
-    sentence: "No, that\u2019s not why I came. I wanted to ask you something."
-  - speakerName: Daniel
-    sentence: Do you know a man with an umbrella?
-  - speakerName: Lester
-    sentence: "A man with\u2026 what?"
-  - speakerName: Daniel
-    sentence: An umbrella.
-  - speakerName: Daniel
-    sentence: Black one. I saw him here in the building yesterday.
-  - speakerName: Lester
-    sentence: "No\u2026 I don\u2019t think so. I usually don\u2019t pay much attention
-      to\r\nthe other tenants."
+    sentence: "Can't say I do. \nI don't really pay much attention to the other tenants."
   - speakerName: Daniel
     sentence: Do you think he lives here?
   - speakerName: Lester
-    sentence: Well, how else would he get inside? Unless, of course, someone let
-      him in.
+    sentence: 'How else would he get in? Somebody must''ve let him in.
+
+      I
+      don''t know many people in this building.
+
+      You should ask Old Margo
+      from Apartment 104. She''s been living here forever and knows just about everyone.
+
+      Maybe
+      she knows something about your umbrella man.
+
+'
+  - speakerName: Daniel
+    sentence: Alright. I'll ask her.
   - speakerName: Lester
-    sentence: "I don\u2019t know many people here myself."
+    sentence: So what's the story with this guy?
+  - speakerName: Daniel
+    sentence: 'Something strange happened yesterday after I took the trash out.
+
+      Some
+      lunatic with a knife came after me, but I managed to get away.'
   - speakerName: Lester
-    sentence: "You should ask the old-timers in the building. They\u2019ve been here
-      for years \u2014 they probably know everyone. Maybe they know your umbrella
-      man too."
+    sentence: 'A guy with a knife?
+
+      I thought they caught one of those a few
+      days ago.
+
+      They''re everywhere these days.'
   - speakerName: Daniel
-    sentence: "Alright. I\u2019ll ask around."
+    sentence: 'The point is, I thought I was about to die.
+
+      Then, out of nowhere,
+      he appeared.
+
+      The man with the umbrella.
+
+      He just stood there,
+      watching me.
+
+      I don''t know. He''s probably got nothing to do with it,
+      but... something about him didn''t feel right.'
   - speakerName: Lester
-    sentence: "So\u2026 what\u2019s this about, anyway?"
+    sentence: 'There are plenty of crazies out there.
+
+      Just be careful.'
   - speakerName: Daniel
-    sentence: "You\u2019ll probably think I\u2019ve gone crazy. Yesterday, when I
-      was taking out the trash\u2026 something strange happened."
-  - speakerName: Daniel
-    sentence: Someone was in my apartment, and then some lunatic attacked me, but
-      I managed to get away.
-  - speakerName: Daniel
-    sentence: "I was this close\u2026 at least it felt that way."
-  - speakerName: Daniel
-    sentence: And then, out of nowhere, he appeared. The man with the umbrella.
-  - speakerName: Daniel
-    sentence: "He just stood there\u2026 watching me."
-  - speakerName: Daniel
-    sentence: "I don\u2019t know. Maybe it has nothing to do with him. But something
-      about it felt\u2026 wrong."
-  - speakerName: Lester
-    sentence: Wow, Daniel.
-  - speakerName: Lester
-    sentence: Maybe I should get out of the apartment more often.
-  - speakerName: Lester
-    sentence: "Are you sure you\u2019re alright?"
-  - speakerName: Daniel
-    sentence: "I think so\u2026"
-  - speakerName: Daniel
-    sentence: "It\u2019s just\u2026 I\u2019m scared."
-  - speakerName: Daniel
-    sentence: "I could\u2019ve been lying somewhere out there today instead of\r\ntalking
-      to you."
-  - speakerName: Lester
-    sentence: There are plenty of crazies out there. Be careful.
-  - speakerName: Daniel
-    sentence: I will. Thanks, Lester.
+    sentence: 'I will.
+
+      Thanks, Lester.'
   interactionPrompt: {fileID: 1016952845}
   knockSound:
     Guid:
@@ -206929,3 +206959,4 @@ SceneRoots:
   - {fileID: 1919870155}
   - {fileID: 1401263835}
   - {fileID: 309027709}
+  - {fileID: 411550222}

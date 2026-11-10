@@ -560,6 +560,29 @@ linePos += currentSpeed * lineDir * Time.deltaTime;
         isOpen = false;
         doorEvent = false;
     }
+
+    public void PrepareForChaseQTE()
+{
+    // Restore the intact door and original position.
+    ResetDoor();
+
+    // Force the door into its closed state.
+    door.localRotation = closedRotation;
+    door.localPosition = originalLocalPos;
+
+    handle.localRotation = handleClosedRotation;
+
+    isOpen = false;
+    isAnimating = false;
+    doorEvent = false;
+
+    // Enable the breaking mechanic.
+    isLockedWithQTE = true;
+
+    Debug.Log(
+        "[DoorController] Door closed and locked for chase QTE."
+    );
+}
 }
 
 
