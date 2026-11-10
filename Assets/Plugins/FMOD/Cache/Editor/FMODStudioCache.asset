@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/menu_theme
+  m_Name: event:/Menu_theme
   m_EditorClassIdentifier: 
-  Path: event:/menu_theme
+  Path: event:/Menu_theme
   Guid:
     Data1: 1129893248
     Data2: 1341247553
@@ -118,9 +118,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/mouse
+  m_Name: event:/Mouse
   m_EditorClassIdentifier: 
-  Path: event:/mouse
+  Path: event:/Mouse
   Guid:
     Data1: -1030227698
     Data2: 1203872316
@@ -296,6 +296,35 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 40
   Length: 120000
+--- !u!114 &-8082134548429197038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/tommy/MusicSwitch
+  m_EditorClassIdentifier: 
+  Name: MusicSwitch
+  StudioPath: 
+  Min: 0
+  Max: 4
+  Default: 0
+  ID:
+    data1: 3599626145
+    data2: 804981421
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
+  - Value B
+  - Value C
+  - Value D
+  - Value E
+  Exists: 1
 --- !u!114 &-7939734797302325915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,9 +363,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/music/you_keep_the_rain_away_vinyl
+  m_Name: event:/Music/you_keep_the_rain_away_vinyl
   m_EditorClassIdentifier: 
-  Path: event:/music/you_keep_the_rain_away_vinyl
+  Path: event:/Music/you_keep_the_rain_away_vinyl
   Guid:
     Data1: 1483169155
     Data2: 1185695023
@@ -350,7 +379,7 @@ MonoBehaviour:
   Parameters:
   - {fileID: -606811663065628319}
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 10
   Length: 129767
 --- !u!114 &-7424005493397504312
 MonoBehaviour:
@@ -476,10 +505,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639295978123526425
+  lastModified: 639299335228148363
   FileSizes:
   - Name: Desktop
-    Value: 4180
+    Value: 4216
   Exists: 1
 --- !u!114 &-5894382804971912607
 MonoBehaviour:
@@ -671,6 +700,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 119751
+--- !u!114 &-4399253218484185323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/tommy
+  m_EditorClassIdentifier: 
+  Path: event:/Music/tommy
+  Guid:
+    Data1: 1312522510
+    Data2: 1306845239
+    Data3: -1014342777
+    Data4: -1899940068
+  Banks:
+  - {fileID: -2609684373490591824}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -8082134548429197038}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 130000
 --- !u!114 &-3751723514944566570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -819,10 +876,10 @@ MonoBehaviour:
   Path: Assets/FMODbanks/Umbrella man/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639295978123526425
+  lastModified: 639299335228052209
   FileSizes:
   - Name: Desktop
-    Value: 28369120
+    Value: 29864480
   Exists: 1
 --- !u!114 &-2262358081435299516
 MonoBehaviour:
@@ -834,9 +891,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/music/UM_music_theme
+  m_Name: event:/Music/UM_music_theme
   m_EditorClassIdentifier: 
-  Path: event:/music/UM_music_theme
+  Path: event:/Music/UM_music_theme
   Guid:
     Data1: -1760517789
     Data2: 1291410756
@@ -1017,7 +1074,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/mouse/Trash
+  m_Name: parameter:/Mouse/Trash
   m_EditorClassIdentifier: 
   Name: Trash
   StudioPath: 
@@ -1106,12 +1163,13 @@ MonoBehaviour:
   - {fileID: -8158083717279523074}
   - {fileID: -8740839187147420566}
   - {fileID: 516212775931565338}
+  - {fileID: -4399253218484185323}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2609684373490591824}
   StringsBanks:
   - {fileID: -6018097725551979117}
-  cacheTime: 639295978123526425
+  cacheTime: 639299335228148363
   cacheVersion: 131632
 --- !u!114 &187922053860065131
 MonoBehaviour:
