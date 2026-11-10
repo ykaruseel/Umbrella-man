@@ -157,7 +157,7 @@ public class ObjectInteraction : MonoBehaviour
             heldItemID = placeable.itemID;
 
             // Do not show placement ghosts while carrying.
-            UpdateHighlights(false);
+            UpdateHighlights(true);
         }
 
         heldObjectRb.useGravity = false;
@@ -225,13 +225,20 @@ public class ObjectInteraction : MonoBehaviour
 
     void UpdateHighlights(bool show)
     {
-        PlacementSpot[] allSpots = FindObjectsOfType<PlacementSpot>();
+        PlacementSpot[] allSpots =
+            FindObjectsOfType<PlacementSpot>();
+
         foreach (PlacementSpot spot in allSpots)
         {
-            if (show && spot.requiredItemID == heldItemID)
-                spot.SetHighlight(true);
-            else
-                spot.SetHighlight(false);
+            if (spot == null)
+                continue;
+
+            bool shouldShow =
+                show &&
+                spot.enabled &&
+                spot.requiredItemID == heldItemID;
+
+            spot.SetHighlight(shouldShow);
         }
     }
 

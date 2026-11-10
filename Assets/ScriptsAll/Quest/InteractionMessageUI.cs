@@ -109,4 +109,14 @@ public class InteractionMessageUI : MonoBehaviour
 
         canvasGroup.alpha = target;
     }
+
+    [ContextMenu("TEST: Show Closed")]
+    private void TestClosedMessage()
+    {
+        if (!Application.isPlaying)
+            return;
+
+        Debug.Log("[InteractionMessageUI] Testing Closed");
+        ShowMessage("Closed");
+    }
 }
