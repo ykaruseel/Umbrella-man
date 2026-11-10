@@ -155,7 +155,9 @@ public class ObjectInteraction : MonoBehaviour
         {
             placeable.isPlaced = false;
             heldItemID = placeable.itemID;
-            UpdateHighlights(true);
+
+            // Do not show placement ghosts while carrying.
+            UpdateHighlights(false);
         }
 
         heldObjectRb.useGravity = false;

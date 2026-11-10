@@ -360,8 +360,7 @@ private void RestoreNormalPostProcessing()
     {
         foreach (Light light in lightsToDisable)
         {
-            if (light != null)
-                light.enabled = false;
+            TurnOffPower();
         }
 
         pulseHighlightsToEnable.Show();
@@ -372,6 +371,17 @@ private void RestoreNormalPostProcessing()
         {
             outline.isBlocked = false;
         }
+    }
+
+        public void TurnOffPower()
+    {
+        foreach (Light light in lightsToDisable)
+        {
+            if (light != null)
+                light.enabled = false;
+        }
+
+        Debug.Log("[Power] Electricity turned off.");
     }
 
     public IEnumerator QuestEvent9()
@@ -560,7 +570,14 @@ RestoreNormalPostProcessing();
 
     // Restore FOV
     player.ZoomOut(0.5f, 0.3f);
+    // Restore the apartment after the dream.
+    RestoreMorningLights();
 
+    if (flashlight != null)
+    {
+        flashlight.HideForMorning();
+    }
+    ShowBrokenEntranceDoor();
     // 4. NOW play the apartment + bed cinematic
     if (cameraSequenceController != null)
     {
@@ -721,6 +738,35 @@ public IEnumerator FinishDemoAfterLester()
             }
 
             yield return null;
+        }
+    }
+
+    public void RestoreMorningLights()
+    {
+        foreach (Light light in lightsToDisable)
+        {
+            if (light != null)
+                light.enabled = true;
+        }
+
+        Debug.Log("[Power] Morning lights restored.");
+    }
+    public void ShowBrokenEntranceDoor()
+    {
+        if (entranceDoorMR != null)
+            entranceDoorMR.enabled = false;
+
+        if (brokenDoor != null)
+        {
+            brokenDoor.SetActive(true);
+
+            Debug.Log("[Door] Broken entrance door visible.");
+        }
+        else
+        {
+            Debug.LogWarning(
+                "[Door] Broken Door reference is missing."
+            );
         }
     }
 }

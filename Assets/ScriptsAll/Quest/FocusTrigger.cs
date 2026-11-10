@@ -17,6 +17,9 @@ public class FocusTrigger : MonoBehaviour
 
     private PlayerController _playerController;
 
+    [Header("Events")]
+public UnityEvent beforeComment;
+
     
 private void OnTriggerEnter(Collider other)
 {
@@ -78,6 +81,7 @@ private void TryActivateFromTrigger(Collider other)
         _playerController.SetCanMove(false);
         _playerController.StartCinematicPan(focusObject.transform, 2f);
         _playerController.ZoomIn(focusPower);
+        beforeComment?.Invoke();
 
         if (comments != null)
         {

@@ -18,20 +18,22 @@ public class PlaceableItem : MonoBehaviour
     {
         CurrentState = newState;
 
-        PulseHighlight pulse = GetComponent<PulseHighlight>();
-        OutlineInteractable outline = GetComponent<OutlineInteractable>();
+        bool onGround = CurrentState == ItemState.OnGround;
 
-        if (pulse != null)
+        foreach (PulseHighlight pulse in
+                GetComponentsInChildren<PulseHighlight>(true))
         {
-            if (CurrentState == ItemState.OnGround)
+            if (onGround)
                 pulse.Show();
             else
                 pulse.Hide();
         }
 
-        if (outline != null)
+        foreach (OutlineInteractable outline in
+                GetComponentsInChildren<OutlineInteractable>(true))
         {
             outline.Hide();
+            outline.isBlocked = !onGround;
         }
     }
 

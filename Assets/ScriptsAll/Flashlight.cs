@@ -200,4 +200,22 @@ public class Flashlight : MonoBehaviour
         reelInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         reelInstance.release();
     }
+
+    public void HideForMorning()
+{
+    isBlocked = true;
+    isEquipped = false;
+    currentEnergy = 0f;
+
+    if (flashLight != null)
+        flashLight.SetActive(false);
+
+    if (lightSource != null)
+        lightSource.intensity = 0f;
+
+    if (reelInstance.isValid())
+        reelInstance.setParameterByName("Intensity", 0f);
+
+    Debug.Log("[Flashlight] Hidden after the dream.");
+}
 }

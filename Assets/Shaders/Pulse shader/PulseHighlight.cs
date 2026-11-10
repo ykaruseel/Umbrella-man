@@ -17,42 +17,34 @@ public class PulseHighlight : MonoBehaviour
     //    Show();
     //}
 
-    public void Show()
-    {
-        if (rend == null || pulseMaterial == null || active) return;
+   public void Show()
+{
+    if (rend == null || pulseMaterial == null || active)
+        return;
 
-        var mats = rend.materials;
-        var newMats = new Material[mats.Length + 1];
+    var mats = new System.Collections.Generic.List<Material>(
+        rend.sharedMaterials
+    );
 
-        for (int i = 0; i < mats.Length; i++)
-            newMats[i] = mats[i];
+    if (!mats.Contains(pulseMaterial))
+        mats.Add(pulseMaterial);
 
-        newMats[newMats.Length - 1] = pulseMaterial;
-        rend.materials = newMats;
-        active = true;
-    }
+    rend.sharedMaterials = mats.ToArray();
+    active = true;
+}
 
-    public void Hide()
-    {
-        if (rend == null || !active) return;
+public void Hide()
+{
+    if (rend == null || pulseMaterial == null)
+        return;
 
-        var mats = rend.materials;
-        int count = 0;
+    var mats = new System.Collections.Generic.List<Material>(
+        rend.sharedMaterials
+    );
 
-        for (int i = 0; i < mats.Length; i++)
-            if (mats[i].shader != pulseMaterial.shader)
-                count++;
+    mats.RemoveAll(mat => mat == pulseMaterial);
 
-        var newMats = new Material[count];
-        int idx = 0;
-
-        for (int i = 0; i < mats.Length; i++)
-        {
-            if (mats[i].shader == pulseMaterial.shader) continue;
-            newMats[idx++] = mats[i];
-        }
-
-        rend.materials = newMats;
-        active = false;
-    }
+    rend.sharedMaterials = mats.ToArray();
+    active = false;
+}
 }

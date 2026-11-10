@@ -66,15 +66,11 @@ public class NPC_Dialogue : MonoBehaviour
 private IEnumerator HandleDialogueSequence()
 {
     while (dialogueManager != null &&
-           dialogueManager.IsDialogueActive())
+        dialogueManager.IsDialogueActive())
     {
-        // E is already handled by PlayerController.
-        if (Input.GetMouseButtonDown(0) ||
-            Input.GetKeyDown(KeyCode.Space))
-        {
-            dialogueManager.DisplayNextSentence();
-        }
-
+        // Dialogue input is handled by PlayerController.
+        // E advances the dialogue.
+        // LMB remains available for the flashlight.
         yield return null;
     }
 
