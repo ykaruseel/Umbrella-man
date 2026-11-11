@@ -51,6 +51,10 @@ public class CameraSequenceController : MonoBehaviour
 
     private bool returningFromBackyard = false;
 
+    [Header("Intro Video")]
+[SerializeField]
+private IntroVideoSequence introVideoSequence;
+
     private void Awake()
     {
         returningFromBackyard =
@@ -192,17 +196,28 @@ IEnumerator SwitchToFinal(bool skipFadeOut = false)
         trashQuestIntroSequence.PrepareSeatedPose();
     }
 
+    intro = false;
 
+    // 1. Play the intro video while gameplay is hidden.
+    if (introVideoSequence != null)
+    {
+        Debug.Log("[INTRO] Starting TV report.");
+
+        yield return StartCoroutine(
+            introVideoSequence.PlaySequence()
+        );
+
+        Debug.Log("[INTRO] TV report finished.");
+    }
+
+    // 2. Start normal game music after the video.
     if (MusicManager.Instance != null)
     {
         MusicManager.Instance.EnsureMusicPlaying();
         MusicManager.Instance.FadeToVolume(1f, 1.2f);
     }
 
-    intro = false;
-
-
-    // Now the player sees the camera for the first time in a seated position
+    // 3. Show Daniel on the sofa.
     yield return fade.FadeIn();
 
 
