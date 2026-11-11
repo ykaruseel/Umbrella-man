@@ -52,8 +52,13 @@ public class CameraSequenceController : MonoBehaviour
     private bool returningFromBackyard = false;
 
     [Header("Intro Video")]
+    
 [SerializeField]
 private IntroVideoSequence introVideoSequence;
+
+[Header("World TV Intro")]
+[SerializeField]
+private IntroTVWorldSequence worldTVIntro;
 
     private void Awake()
     {
@@ -168,6 +173,7 @@ void OnFirstFinished()
         BeginFinalTransition();
     }
 
+
 IEnumerator SwitchToFinal(bool skipFadeOut = false)
 {
     if (skipFadeOut)
@@ -180,17 +186,15 @@ IEnumerator SwitchToFinal(bool skipFadeOut = false)
         yield return fade.FadeOut();
     }
 
-    cam1.gameObject.SetActive(false);
-    cam2.gameObject.SetActive(false);
-
-    cam3.gameObject.SetActive(true);
-    cam4.gameObject.SetActive(true);
-
+    // Disable the old cinematic fly cameras.
+    if (cam1 != null) cam1.gameObject.SetActive(false);
+    if (cam2 != null) cam2.gameObject.SetActive(false);
 
     playerController.isCinematic = true;
     playerController.SetCanMove(false);
+    Pause.canPause = false;
 
-
+    // Prepare seated gameplay camera position.
     if (trashQuestIntroSequence != null)
     {
         trashQuestIntroSequence.PrepareSeatedPose();
@@ -198,29 +202,46 @@ IEnumerator SwitchToFinal(bool skipFadeOut = false)
 
     intro = false;
 
-    // 1. Play the intro video while gameplay is hidden.
-    if (introVideoSequence != null)
+    // IMPORTANT:
+    // Disable gameplay cameras during the world intro.
+    if (cam3 != null) cam3.gameObject.SetActive(false);
+    if (cam4 != null) cam4.gameObject.SetActive(false);
+
+    // Play the 3D TV cutscene.
+    if (worldTVIntro != null)
     {
-        Debug.Log("[INTRO] Starting TV report.");
+        Debug.Log("[INTRO] Starting 3D TV cutscene");
 
         yield return StartCoroutine(
-            introVideoSequence.PlaySequence()
+            worldTVIntro.PlaySequence()
         );
 
-        Debug.Log("[INTRO] TV report finished.");
+        Debug.Log("[INTRO] 3D TV cutscene finished");
+    }
+    else
+    {
+        Debug.LogWarning(
+            "[INTRO] World TV intro is not assigned!"
+        );
     }
 
-    // 2. Start normal game music after the video.
+    // The world intro ends on a black screen.
+    // Now return to the normal gameplay cameras.
+    if (cam3 != null) cam3.gameObject.SetActive(true);
+    if (cam4 != null) cam4.gameObject.SetActive(true);
+
+    // Restore normal music.
     if (MusicManager.Instance != null)
     {
         MusicManager.Instance.EnsureMusicPlaying();
         MusicManager.Instance.FadeToVolume(1f, 1.2f);
     }
 
-    // 3. Show Daniel on the sofa.
+    // Reveal the seated gameplay camera.
     yield return fade.FadeIn();
 
-
+    // Daniel stands up, looks at bottles,
+    // and starts the Collect the Trash quest.
     if (trashQuestIntroSequence != null)
     {
         yield return StartCoroutine(
@@ -236,14 +257,11 @@ IEnumerator SwitchToFinal(bool skipFadeOut = false)
 
         playerController.isCinematic = false;
         playerController.SetCanMove(true);
-
         Pause.canPause = true;
     }
 
-
     StartCoroutine(ShowInitialTutorialHints());
 }
-
     private IEnumerator ShowInitialTutorialHints()
     {
         if (TutorialManager.Instance == null)
