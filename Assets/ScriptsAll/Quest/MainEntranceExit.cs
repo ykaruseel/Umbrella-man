@@ -12,6 +12,7 @@ public class MainEntranceExit : MonoBehaviour
 
     [SerializeField] private OutlineInteractable outline;
     [SerializeField] private PulseHighlight pulseHighlight;
+    [SerializeField] private QuestMusicController questMusicController;
 
     [SerializeField]
     private CollectionController collectionController;
@@ -120,7 +121,8 @@ public class MainEntranceExit : MonoBehaviour
                 cameraFade.FadeOut()
             );
         }
-
+        if (questMusicController != null)
+            questMusicController.StopMusic();
         bool hasFullTrashBag =
             collectionController != null &&
             collectionController.HasFullContainer;

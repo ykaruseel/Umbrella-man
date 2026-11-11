@@ -893,91 +893,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 20061847}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &22286780
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 22286782}
-  - component: {fileID: 22286781}
-  m_Layer: 0
-  m_Name: _QuestManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &22286781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 22286780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ab6fc0a7703e3f4c8a314e4a85ca677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstQuest: {fileID: 11400000, guid: 50915153bc506ab4489d737f67ae2089, type: 2}
-  currentQuest: {fileID: 0}
-  questUI: {fileID: 1690164013}
-  repairPanelQuest: {fileID: 11400000, guid: e7fb9e843b631154a829a980e630b7b0, type: 2}
-  umbrellaManNear: {fileID: 1888251721}
-  umbrellaManFar: {fileID: 1136442007}
-  gameOverUI: {fileID: 80121497}
-  prototypeCompleteUI: {fileID: 65674600}
-  followLightController: {fileID: 375994149}
-  chase: {fileID: 0}
-  repairQTE: {fileID: 611034070}
-  enemyLightDistortion: {fileID: 547571597}
-  shieldInteractable: {fileID: 611034061}
-  lightController: {fileID: 47673007}
-  playerController: {fileID: 332663620}
-  knockSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  questCompleteSound:
-    Guid:
-      Data1: 982650717
-      Data2: 1320511343
-      Data3: 516923534
-      Data4: 1673419026
-    Path: event:/Quest
-  umbrellaManAppearSound:
-    Guid:
-      Data1: -2088746596
-      Data2: 1183469415
-      Data3: 1052227243
-      Data4: -2048410900
-    Path: event:/UM_appear
-  musicFadeBeforeKnockDuration: 1
-  fadeImage: {fileID: 1178692457}
-  fadeDuration: 3
-  finalSpotlight: {fileID: 1396395470}
-  prototypeCompleteDelay: 2
---- !u!4 &22286782
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 22286780}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.355, y: 1.0725204, z: -34.87}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &24218496 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: be1768996f40e68499270beb3a3b7ec5,
@@ -62174,7 +62089,7 @@ MonoBehaviour:
   shieldSuccessDuration: 0.3
   shieldFailDuration: 0.3
   lampAnimator: {fileID: 45681716}
-  questManager: {fileID: 22286781}
+  questManager: {fileID: 0}
 --- !u!1 &611322212
 GameObject:
   m_ObjectHideFlags: 0
@@ -83071,6 +82986,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4409011625575948860, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5878142233136804078, guid: 7c4bb9b6288baf344987f64fa54a0d52,
         type: 3}
       propertyPath: m_Name
@@ -83129,21 +83059,6 @@ PrefabInstance:
     - target: {fileID: 7036836734124335007, guid: 7c4bb9b6288baf344987f64fa54a0d52,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: looping
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4409011625575948860, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -91570,6 +91485,7 @@ MonoBehaviour:
   playerController: {fileID: 332663620}
   outline: {fileID: 0}
   pulseHighlight: {fileID: 0}
+  questMusicController: {fileID: 1117875680}
   collectionController: {fileID: 332663633}
 --- !u!114 &1008007078
 MonoBehaviour:
@@ -97452,6 +97368,59 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 807379326}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1117875679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1117875681}
+  - component: {fileID: 1117875680}
+  m_Layer: 0
+  m_Name: Quest Music Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1117875680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117875679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d71e923312fe844281b9a6582667298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicEvent:
+    Guid:
+      Data1: 1312522510
+      Data2: 1306845239
+      Data3: -1014342777
+      Data4: -1899940068
+    Path: event:/Music/tommy
+  parameterName: MusicSwitch
+  parameterValue: 1
+--- !u!4 &1117875681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117875679}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -50.440517, y: -14.298371, z: -44.87704}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1118049941
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -99166,12 +99135,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f882f29fe03143ba7c4ce14324ea7, type: 3}
---- !u!1 &1136442007 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ea3f882f29fe03143ba7c4ce14324ea7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1136442006}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1136855881 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2490312750197242499, guid: 2f26a709f18c94b4a9bcb2e4a525e11f,
@@ -128976,6 +128939,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 332663620}
   questUI: {fileID: 1417256165}
+  questMusicController: {fileID: 1117875680}
   questSequence:
   - {fileID: 11400000, guid: 62987c07fe9ca8841917f422b1cd87fc, type: 2}
   - {fileID: 11400000, guid: 85c16df06acb6c74c82152019c10258b, type: 2}
@@ -207066,7 +207030,6 @@ SceneRoots:
   - {fileID: 1506464511}
   - {fileID: 1583264997}
   - {fileID: 1251021389}
-  - {fileID: 22286782}
   - {fileID: 47673006}
   - {fileID: 375994150}
   - {fileID: 547571598}
@@ -207143,3 +207106,4 @@ SceneRoots:
   - {fileID: 1401263835}
   - {fileID: 309027709}
   - {fileID: 411550222}
+  - {fileID: 1117875681}

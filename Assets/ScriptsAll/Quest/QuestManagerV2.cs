@@ -11,7 +11,7 @@ public class QuestManagerV2 : MonoBehaviour
 
     public PlayerController playerController;
     public QuestUIV2 questUI;
-
+    [SerializeField] private QuestMusicController questMusicController;
     [SerializeField] private List<QuestData> questSequence;
     [SerializeField] private int currentQuestIndex = 0;
 
@@ -27,8 +27,18 @@ public class QuestManagerV2 : MonoBehaviour
     {
         if (isAdvancingQuest)
             return;
-        
+
         StartCoroutine(ActivateNextQuest());
+    }
+    private void UpdateQuestMusic(QuestData quest)
+    {
+        if (quest == null || questMusicController == null)
+            return;
+
+        if (quest.questID == "Q_COLLECT_TRASH")
+        {
+            questMusicController.StartMusic();
+        }
     }
 
 
@@ -89,6 +99,8 @@ public class QuestManagerV2 : MonoBehaviour
 
         questSequence[currentQuestIndex].Initialize(true);
 
+        UpdateQuestMusic(questSequence[currentQuestIndex]);
+
         if (showQuestUI && questUI != null)
         {
             questUI.ShowNewQuest(
@@ -96,7 +108,7 @@ public class QuestManagerV2 : MonoBehaviour
             );
         }
     }
-        
+
 
     public bool IsGoalRequired(
     string id,
@@ -310,80 +322,78 @@ public class QuestManagerV2 : MonoBehaviour
 
         if (currentQuestIndex < questSequence.Count)
         {
+            UpdateQuestMusic(questSequence[currentQuestIndex]);
+
             questSequence[currentQuestIndex].RestoreProgress(completedGoals);
             questUI.ShowNewQuest(questSequence[currentQuestIndex]);
         }
     }
 
-        public bool ActivateQuestByID(
+    public bool ActivateQuestByID(
     string questID,
     bool showQuestUI = false)
-{
-    if (questSequence == null ||
-        questSequence.Count == 0)
     {
-        return false;
-    }
+        if (questSequence == null ||
+            questSequence.Count == 0)
+        {
+            return false;
+        }
 
-    int index = questSequence.FindIndex(
-        quest =>
-            quest != null &&
-            quest.questID == questID
-    );
-
-    if (index < 0)
-    {
-        Debug.LogError(
-            $"[QuestManagerV2] Quest '{questID}' " +
-            "was not found in Quest Sequence."
+        int index = questSequence.FindIndex(
+            quest =>
+                quest != null &&
+                quest.questID == questID
         );
 
-        return false;
-    }
-
-
-    sequenceStarted = true;
-    isAdvancingQuest = false;
-    currentQuestIndex = index;
-
-
-    for (int i = 0;
-         i < questSequence.Count;
-         i++)
-    {
-        if (questSequence[i] != null)
+        if (index < 0)
         {
-            questSequence[i].Initialize(
-                i == currentQuestIndex
+            Debug.LogError(
+                $"[QuestManagerV2] Quest '{questID}' " +
+                "was not found in Quest Sequence."
             );
+
+            return false;
         }
-    }
 
+        sequenceStarted = true;
+        isAdvancingQuest = false;
+        currentQuestIndex = index;
 
-    if (questUI != null)
-    {
-        if (showQuestUI)
+        for (int i = 0; i < questSequence.Count; i++)
         {
-            questUI.ShowNewQuest(
-                questSequence[currentQuestIndex]
-            );
+            if (questSequence[i] != null)
+            {
+                questSequence[i].Initialize(
+                    i == currentQuestIndex
+                );
+            }
         }
-        else
+
+        UpdateQuestMusic(questSequence[currentQuestIndex]);
+
+        if (questUI != null)
         {
-            questUI.SetQuestText(
-                questSequence[currentQuestIndex]
-                    .GetTitleWithProgress(),
-                false
-            );
+            if (showQuestUI)
+            {
+                questUI.ShowNewQuest(
+                    questSequence[currentQuestIndex]
+                );
+            }
+            else
+            {
+                questUI.SetQuestText(
+                    questSequence[currentQuestIndex]
+                        .GetTitleWithProgress(),
+                    false
+                );
+            }
         }
+
+        Debug.Log(
+            $"[QuestManagerV2] Activated quest: " +
+            $"{questSequence[currentQuestIndex].questID}"
+        );
+
+        return true;
     }
-
-
-    Debug.Log(
-        $"[QuestManagerV2] Activated quest: " +
-        $"{questSequence[currentQuestIndex].questID}"
-    );
-
-    return true;
-}
 }
