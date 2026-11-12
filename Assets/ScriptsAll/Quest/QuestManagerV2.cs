@@ -37,7 +37,7 @@ public class QuestManagerV2 : MonoBehaviour
 
         if (quest.questID == "Q_COLLECT_TRASH")
         {
-            questMusicController.StartMusic();
+            questMusicController.StartQuestMusic();
         }
     }
 

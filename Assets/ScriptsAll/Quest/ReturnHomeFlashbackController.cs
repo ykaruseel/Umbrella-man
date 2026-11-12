@@ -52,6 +52,9 @@ private FlashbackTitleSequence flashbackTitle;
     [SerializeField]
     private GameObject cementBag;
 
+    [Header("Music")]
+    private QuestMusicController questMusicController;
+
     [SerializeField]
     private Transform cementSpawn;
 
@@ -170,6 +173,7 @@ private WardrobeSequenceController wardrobeSequence;
 
     private void Awake()
     {
+        questMusicController = FindFirstObjectByType<QuestMusicController>();
         if (flashbackFearVolume != null)
         {
             flashbackFearVolume.weight = 0f;
@@ -430,6 +434,8 @@ private WardrobeSequenceController wardrobeSequence;
         yield return StartCoroutine(
             DropCement()
         );
+        if (questMusicController != null)
+            questMusicController.StartMusicAtState(2f);
 
 
         if (!cementImpactSound.IsNull &&

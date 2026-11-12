@@ -24,13 +24,20 @@ public class FlashbackTitleSequence : MonoBehaviour
     [SerializeField] private float titleHoldDuration = 2f;
     [SerializeField] private float deleteSpeed = 0.04f;
 
+    [Header("Music")]
+    private QuestMusicController questMusicController;
+
     [Header("FMOD")]
     [SerializeField] private EventReference typewriterSound;
+
+    [Header("Sounds to Mute During Title")]
+    [SerializeField] private StudioEventEmitter[] emittersToMute;
 
     private bool played = false;
 
     private void Awake()
     {
+        questMusicController = FindFirstObjectByType<QuestMusicController>();
         if (canvasGroup != null)
         {
             canvasGroup.alpha = 0f;
@@ -71,6 +78,11 @@ public class FlashbackTitleSequence : MonoBehaviour
         titleLine2.maxVisibleCharacters = 0;
 
         // Show black background.
+        StopSceneSounds();
+
+        if (questMusicController != null)
+            questMusicController.SetMusicState(3f);
+
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
@@ -106,6 +118,11 @@ public class FlashbackTitleSequence : MonoBehaviour
         canvasGroup.alpha = 0f;
         canvasGroup.blocksRaycasts = false;
 
+        ResumeSceneSounds();
+
+        if (questMusicController != null)
+            questMusicController.StopPermanently();
+
         Debug.Log("[FlashbackTitle] Sequence finished");
     }
 
@@ -136,7 +153,23 @@ public class FlashbackTitleSequence : MonoBehaviour
 
     target.maxVisibleCharacters = int.MaxValue;
 }
+    private void StopSceneSounds()
+    {
+        foreach (StudioEventEmitter emitter in emittersToMute)
+        {
+            if (emitter != null)
+                emitter.Stop();
+        }
+    }
 
+    private void ResumeSceneSounds()
+    {
+        foreach (StudioEventEmitter emitter in emittersToMute)
+        {
+            if (emitter != null)
+                emitter.Play();
+        }
+    }
     private IEnumerator DeleteText(TMP_Text target)
     {
         while (target.text.Length > 0)

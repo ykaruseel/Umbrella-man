@@ -4,6 +4,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Video;
+using FMODUnity;
 
 public class IntroTVWorldSequence : MonoBehaviour
 {
@@ -13,7 +14,6 @@ public class IntroTVWorldSequence : MonoBehaviour
         [TextArea(2, 4)]
         public string subtitle;
 
-        public AudioClip voice;
         public float duration = 5f;
 
         [Range(0, 3)]
@@ -44,12 +44,16 @@ public class IntroTVWorldSequence : MonoBehaviour
     [Header("Daniel")]
     [SerializeField] private GameObject danielVisual;
 
+    [SerializeField] private QuestMusicController questMusicController;
+
     [Header("Dialogue")]
     [SerializeField] private TMP_Text subtitleText;
-    [SerializeField] private AudioSource voiceSource;
+    [SerializeField] private GameObject subtitleBackground;
+    [SerializeField] private EventReference voiceEvent;
     [SerializeField] private float newsLeadIn = 2f;
     [SerializeField] private float gapBetweenLines = 0.3f;
-
+    private FMOD.Studio.EventInstance voiceInstance;
+    [SerializeField] private Transform voicePosition;
     [SerializeField] private IntroLine[] lines =
     {
         new IntroLine {
@@ -91,6 +95,8 @@ public class IntroTVWorldSequence : MonoBehaviour
 
     private void Awake()
     {
+        if (questMusicController == null)
+            questMusicController = FindFirstObjectByType<QuestMusicController>();
         if (introTV != null)
             introTV.SetActive(false);
 
@@ -102,6 +108,9 @@ public class IntroTVWorldSequence : MonoBehaviour
 
         if (subtitleText != null)
             subtitleText.text = "";
+
+        if (subtitleBackground != null)
+            subtitleBackground.SetActive(false);
 
         if (videoPlayer != null)
         {
@@ -116,8 +125,55 @@ public class IntroTVWorldSequence : MonoBehaviour
             pointIntensity = tvPointLight.intensity;
     }
 
+    private void StartVoice()
+    {
+        StopVoice();
+
+        if (voiceEvent.IsNull)
+        {
+            Debug.LogError("[IntroTV] Voice Event is not assigned.");
+            return;
+        }
+
+        if (voicePosition == null)
+        {
+            Debug.LogError("[IntroTV] Voice Position is not assigned.");
+            return;
+        }
+
+        voiceInstance = RuntimeManager.CreateInstance(voiceEvent);
+
+        FMOD.RESULT positionResult = voiceInstance.set3DAttributes(
+            RuntimeUtils.To3DAttributes(voicePosition.position)
+        );
+
+        Debug.Log("[IntroTV] Set 3D position: " + positionResult);
+
+        FMOD.RESULT startResult = voiceInstance.start();
+
+        Debug.Log("[IntroTV] Voice started: " + startResult);
+    }
+
+    private void StopVoice()
+    {
+        if (!voiceInstance.isValid())
+            return;
+
+        voiceInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        voiceInstance.release();
+        voiceInstance = default;
+    }
     public IEnumerator PlaySequence()
     {
+        if (questMusicController != null)
+        {
+            Debug.Log("[IntroTV] QuestMusicController found");
+            questMusicController.StartIntroMusic();
+        }
+        else
+        {
+            Debug.LogError("[IntroTV] QuestMusicController NOT FOUND");
+        }
         if (hasPlayed)
             yield break;
 
@@ -272,26 +328,21 @@ yield return new WaitForSeconds(newsLeadIn);
 
             subtitleText.text = line.subtitle;
 
-            float lineDuration = Mathf.Max(0.1f, line.duration);
+            if (subtitleBackground != null)
+                subtitleBackground.SetActive(true);
 
-            if (voiceSource != null && line.voice != null)
-            {
-                voiceSource.Stop();
-                voiceSource.clip = line.voice;
-                voiceSource.Play();
+            StartVoice();
 
-                lineDuration = Mathf.Max(
-                    lineDuration,
-                    line.voice.length
-                );
-            }
+            yield return new WaitForSeconds(
+                Mathf.Max(0.1f, line.duration)
+            );
 
-            yield return new WaitForSeconds(lineDuration);
-
-            if (voiceSource != null)
-                voiceSource.Stop();
+            StopVoice();
 
             subtitleText.text = "";
+
+            if (subtitleBackground != null)
+                subtitleBackground.SetActive(false);
 
             yield return new WaitForSeconds(gapBetweenLines);
         }
