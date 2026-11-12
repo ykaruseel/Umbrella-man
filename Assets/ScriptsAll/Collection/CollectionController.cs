@@ -1,3 +1,4 @@
+
 using System.Collections;
 using FMODUnity;
 using System.Collections.Generic;
@@ -346,7 +347,7 @@ public class CollectionController : MonoBehaviour
 
     private void PlayKitchenTrashBagPickupSound()
     {
-        if (string.IsNullOrEmpty(kitchenTrashBagPickupEvent.Path))
+        if (kitchenTrashBagPickupEvent.IsNull)
             return;
 
         RuntimeManager.PlayOneShot(
@@ -763,7 +764,7 @@ public CollectionTaskSaveData CreateSaveData()
 
     private void PlayTrashAudio(float parameterValue, Vector3 soundPosition)
     {
-        if (string.IsNullOrEmpty(trashAudioEvent.Path))
+        if (trashAudioEvent.IsNull)
             return;
 
         FMOD.Studio.EventInstance audioInstance =

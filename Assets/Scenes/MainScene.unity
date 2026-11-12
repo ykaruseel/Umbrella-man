@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.022
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.17735851, g: 0.17735851, b: 0.17735851, a: 1}
+  m_AmbientSkyColor: {r: 0.11764706, g: 0.11764706, b: 0.11764706, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 0.1
@@ -28165,8 +28165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f651192e54830c940b1703cedb4bb14f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 4
-  runSpeed: 8
+  walkSpeed: 2.5
+  runSpeed: 4
   jumpPower: 0
   gravity: 10
   lookSpeed: 2
@@ -83858,6 +83858,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4409011625575948860, guid: a055e466a7002514e8db9de28b68e903,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5878142233136804078, guid: 7c4bb9b6288baf344987f64fa54a0d52,
         type: 3}
       propertyPath: m_Name
@@ -83916,21 +83931,6 @@ PrefabInstance:
     - target: {fileID: 7036836734124335007, guid: 7c4bb9b6288baf344987f64fa54a0d52,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: looping
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4330088903915663296, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4409011625575948860, guid: a055e466a7002514e8db9de28b68e903,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -113762,7 +113762,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Game
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f311b50c9302e974aa2ee3115f9a3db3, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 71f6b16abf1b4ab489986de49cc863b5, type: 2}
   m_sharedMaterial: {fileID: -6607438040311026152, guid: f311b50c9302e974aa2ee3115f9a3db3,
     type: 2}
   m_fontSharedMaterials: []
@@ -113829,7 +113829,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &1267257781
@@ -145632,7 +145632,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Menu
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f311b50c9302e974aa2ee3115f9a3db3, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 71f6b16abf1b4ab489986de49cc863b5, type: 2}
   m_sharedMaterial: {fileID: -6607438040311026152, guid: f311b50c9302e974aa2ee3115f9a3db3,
     type: 2}
   m_fontSharedMaterials: []
@@ -145699,7 +145699,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &1602837358
@@ -152683,6 +152683,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1381187174}
     m_Modifications:
+    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0c9ccb2a975d5c44fb8ce2017b01f4cc, type: 2}
+    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: -7067887647009988459, guid: d5f245b9148cec04fb35fbe596602c81,
+        type: 3}
     - target: {fileID: -8679921383154817045, guid: 7e4f8b13f42e2bc41be65b7d5433d769,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -152748,22 +152764,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 0c9ccb2a975d5c44fb8ce2017b01f4cc, type: 2}
-    - target: {fileID: -7511558181221131132, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
-      value: 
-      objectReference: {fileID: -7067887647009988459, guid: d5f245b9148cec04fb35fbe596602c81,
-        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -166358,14 +166358,14 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
+  m_TargetTexture: {fileID: 8400000, guid: 31f4b20f14f4af1418121ff5f72dfaa3, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!114 &1748567004
@@ -166391,7 +166391,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
