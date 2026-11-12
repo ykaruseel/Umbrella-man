@@ -16968,7 +16968,12 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1a154fcda14f1154492ed0e83b8f128e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1a154fcda14f1154492ed0e83b8f128e,
+        type: 3}
+      propertyPath: m_TagString
+      value: Door
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16981,7 +16986,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a154fcda14f1154492ed0e83b8f128e,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 251875683}
+      addedObject: {fileID: 251875682}
   m_SourcePrefab: {fileID: 100100000, guid: 1a154fcda14f1154492ed0e83b8f128e, type: 3}
 --- !u!4 &251875678 stripped
 Transform:
@@ -16995,7 +17000,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 251875677}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &251875683
+--- !u!65 &251875682
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17014,8 +17019,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.08534922, y: 2.2000272, z: 1.092489}
-  m_Center: {x: -0.11070364, y: -0.016393185, z: 0.52567697}
+  m_Size: {x: 0.0008534922, y: 0.010924893, z: 0.022000277}
+  m_Center: {x: -0.0011070364, y: -0.0052567706, z: -0.00016393284}
 --- !u!1001 &252413404
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -129902,7 +129907,7 @@ MonoBehaviour:
   doorController: {fileID: 7836256896010017576}
   cameraSequenceController: {fileID: 187578441}
   entranceDoorMR: {fileID: 196306647814366022}
-  brokenDoor: {fileID: 251875679}
+  brokenDoor: {fileID: 1613807451}
   tvToEndable: {fileID: 285454670}
   tvToDisable: {fileID: 754843266}
   pulseHighlights:
@@ -147175,13 +147180,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1613807452}
   - component: {fileID: 1613807453}
+  - component: {fileID: 1613807454}
   m_Layer: 0
   m_Name: FinalBrokenDoorPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1613807452
 Transform:
   m_ObjectHideFlags: 0
@@ -147220,6 +147226,25 @@ MonoBehaviour:
       Data3: -196000835
       Data4: 1889739155
     Path: event:/doors/door_open
+--- !u!114 &1613807454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613807451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+  outlineAllChildren: 0
+  rendererRoot: {fileID: 251875678}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 308851623}
+  outlineDistance: 2
 --- !u!1001 &1620585392
 PrefabInstance:
   m_ObjectHideFlags: 0
