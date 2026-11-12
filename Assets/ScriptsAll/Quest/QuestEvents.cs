@@ -86,9 +86,13 @@ public class QuestEvents : MonoBehaviour
     [Header("Quest 11")]
     public GameObject endGame;
     [Header("After Umbrella Cinematic")]
+    [SerializeField]
+private Collider intactEntranceDoorCollider;
 [SerializeField] private Transform afterDreamSpawnPoint;
 
     public Light flickerLight;
+    private Coroutine flickerCoroutine;
+private float originalFlickerIntensity;
 
     public Volume postProcessVolume;
     private Coroutine umbrellaFearCoroutine;
@@ -182,6 +186,12 @@ private void RestoreNormalPostProcessing()
             if (interactable != null)
                 interactable.isBlocked = true;
         }
+        
+        if (flickerLight != null)
+        {
+            originalFlickerIntensity = flickerLight.intensity;
+        }
+    
     }
 
     
@@ -190,7 +200,8 @@ private void RestoreNormalPostProcessing()
         Debug.Log(
             "[QuestEvents] Applying Q3 world state."
         );
-
+    if (intactEntranceDoorCollider != null)
+    intactEntranceDoorCollider.enabled = true;
         // Stairwell and jumpscare objects.
         if (lesterStairsBlock != null)
             lesterStairsBlock.SetActive(false);
@@ -514,7 +525,17 @@ public IEnumerator QuestEvent11()
 
     yield return new WaitForSeconds(2f);
 
-    StartCoroutine(LightFlickerRoutine());
+    if (flickerCoroutine != null)
+    {
+        StopCoroutine(flickerCoroutine);
+    }
+
+    if (flickerLight != null)
+    {
+        flickerCoroutine = StartCoroutine(
+            LightFlickerRoutine()
+        );
+    }
 
 umbrellaFearCoroutine = StartCoroutine(
     SmoothPostProcess(6f)
@@ -527,8 +548,20 @@ umbrellaFearCoroutine = StartCoroutine(
     // 2. Fade to black
     yield return StartCoroutine(cameraFade.FadeOut());
 
-    flickerLight.enabled = false;
+    
+    if (flickerCoroutine != null)
+    {
+        StopCoroutine(flickerCoroutine);
+        flickerCoroutine = null;
+    }
+
+    if (flickerLight != null)
+    {
+        flickerLight.enabled = false;
+    }
+
     umbrellaMan.SetActive(false);
+
     // Stop the fear animation completely.
 if (umbrellaFearCoroutine != null)
 {
@@ -572,6 +605,11 @@ RestoreNormalPostProcessing();
     player.ZoomOut(0.5f, 0.3f);
     // Restore the apartment after the dream.
     RestoreMorningLights();
+    if (flickerLight != null)
+    {
+        flickerLight.intensity = originalFlickerIntensity;
+        flickerLight.enabled = true;
+    }
 
     if (flashlight != null)
     {
@@ -625,6 +663,7 @@ RestoreNormalPostProcessing();
 
     Pause.canPause = true;
 }
+
 public IEnumerator FinishDemoAfterLester()
 {
     Debug.Log("[DEMO] Lester dialogue completed");
@@ -634,13 +673,20 @@ public IEnumerator FinishDemoAfterLester()
     player.SetCanMove(false);
     player.isCinematic = true;
 
-    // Let dialogue UI disappear
+    // Allow dialogue UI to finish closing.
     yield return new WaitForSeconds(0.3f);
 
-    // Fade to black
+    // Hide the final quest permanently.
+    if (QuestManagerV2.Instance != null &&
+        QuestManagerV2.Instance.questUI != null)
+    {
+        QuestManagerV2.Instance.questUI.HideForDemo();
+    }
+
+    // Fade to black.
     yield return StartCoroutine(cameraFade.FadeOut());
 
-    // Show the existing ending screen
+    // Show ending screen.
     if (endGame != null)
     {
         endGame.SetActive(true);
@@ -652,7 +698,6 @@ public IEnumerator FinishDemoAfterLester()
         );
     }
 }
-
 
     private IEnumerator LightFlickerRoutine()
     {
@@ -753,6 +798,8 @@ public IEnumerator FinishDemoAfterLester()
     }
     public void ShowBrokenEntranceDoor()
     {
+        if (intactEntranceDoorCollider != null)
+    intactEntranceDoorCollider.enabled = false;
         if (entranceDoorMR != null)
             entranceDoorMR.enabled = false;
 

@@ -10,6 +10,8 @@ public class QuestUIV2 : MonoBehaviour
 
     void Start() => canvasGroup.alpha = 0;
 
+    private bool hiddenForDemo = false;
+
     public void ShowNewQuest(QuestData quest)
 {
     questText.text = quest.GetTitleWithProgress();
@@ -46,6 +48,9 @@ public class QuestUIV2 : MonoBehaviour
 
     public void ToggleQuest()
     {
+        if (hiddenForDemo)
+            return;
+
         StopAllCoroutines();
 
         isVisible = true;
@@ -126,4 +131,31 @@ public class QuestUIV2 : MonoBehaviour
             isVisible = true;
         }
     }
+
+
+public void HideForDemo()
+{
+    hiddenForDemo = true;
+
+    StopAllCoroutines();
+
+    if (questText != null)
+    {
+        questText.text = "";
+    }
+
+    if (canvasGroup != null)
+    {
+        canvasGroup.alpha = 0f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+    }
+
+    transform.localScale = Vector3.one;
+
+    isVisible = false;
+
+    Debug.Log("[QuestUI] Hidden for demo ending.");
+}
+
 }
