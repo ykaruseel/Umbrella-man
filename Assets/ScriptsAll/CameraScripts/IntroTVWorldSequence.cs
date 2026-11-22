@@ -46,6 +46,11 @@ public class IntroTVWorldSequence : MonoBehaviour
 
     [SerializeField] private QuestMusicController questMusicController;
 
+    [Header("TV Audio")]
+    [SerializeField] private EventReference tvAmbienceEvent;
+    [SerializeField] private Transform tvAudioPosition;
+
+    private FMOD.Studio.EventInstance tvAmbienceInstance;
     [Header("Dialogue")]
     [SerializeField] private TMP_Text subtitleText;
     [SerializeField] private GameObject subtitleBackground;
@@ -163,6 +168,41 @@ public class IntroTVWorldSequence : MonoBehaviour
         voiceInstance.release();
         voiceInstance = default;
     }
+    private void StartTVSound()
+    {
+        StopTVSound();
+
+        if (tvAmbienceEvent.IsNull)
+        {
+            Debug.LogWarning("[IntroTV] TV ambience event is not assigned.");
+            return;
+        }
+
+        if (tvAudioPosition == null)
+        {
+            Debug.LogWarning("[IntroTV] TV audio position is not assigned.");
+            return;
+        }
+
+        tvAmbienceInstance = RuntimeManager.CreateInstance(tvAmbienceEvent);
+
+        RuntimeManager.AttachInstanceToGameObject(
+            tvAmbienceInstance,
+            tvAudioPosition
+        );
+
+        tvAmbienceInstance.start();
+    }
+
+    private void StopTVSound()
+    {
+        if (!tvAmbienceInstance.isValid())
+            return;
+
+        tvAmbienceInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        tvAmbienceInstance.release();
+        tvAmbienceInstance = default;
+    }
     public IEnumerator PlaySequence()
     {
         if (questMusicController != null)
@@ -209,6 +249,7 @@ public class IntroTVWorldSequence : MonoBehaviour
 
         originalTV.SetActive(false);
         introTV.SetActive(true);
+        StartTVSound();
 
         previousScreenMaterial = tvScreen.sharedMaterial;
 
@@ -427,6 +468,7 @@ yield return new WaitForSeconds(newsLeadIn);
 
     private void TurnOffTV()
     {
+        StopTVSound();
         if (videoPlayer != null)
             videoPlayer.Stop();
 
