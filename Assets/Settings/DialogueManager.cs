@@ -30,6 +30,12 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Animator lesterAnimator;
     [SerializeField] private Animator currentAnimator;
 
+    [SerializeField]
+    private EventReference emilyVoiceEvent;
+
+    [SerializeField]
+    private Transform emilyTransform;
+
     [Header("Cinematic Cameras")]
     public DialogueCameraSystem currentCameraSystem;
 
@@ -128,7 +134,10 @@ public class DialogueManager : MonoBehaviour
     {
         isTyping = true; 
         if (dialogueText != null) dialogueText.text = "";
-        StartVoiceForSpeaker(line.speakerName);
+        StartVoiceForSpeaker(
+            line.speakerName,
+            line.voiceEvent
+        );
 
         foreach (char letter in line.sentence.ToCharArray())
         {
@@ -190,7 +199,9 @@ public class DialogueManager : MonoBehaviour
         return isDialogueActive;
     }
 
-    private void StartVoiceForSpeaker(string speakerName)
+    private void StartVoiceForSpeaker(
+        string speakerName,
+        EventReference overrideEvent)
     {
         StopCurrentVoice(currentAnimator);
         EventReference voiceEvent = new EventReference();
@@ -214,7 +225,18 @@ public class DialogueManager : MonoBehaviour
             voiceEvent = knifeManVoiceEvent;
             speakerTransform = knifeManTransform;
         }
+        else if (speakerName == "Emily")
+        {
+            currentAnimator = null;
+            voiceEvent = emilyVoiceEvent;
+            speakerTransform = emilyTransform;
+        }
         else return;
+
+        if (!overrideEvent.IsNull)
+        {
+            voiceEvent = overrideEvent;
+        }
 
         if (voiceEvent.IsNull || speakerTransform == null) return;
         currentVoiceInstance = RuntimeManager.CreateInstance(voiceEvent);
@@ -250,4 +272,25 @@ public class DialogueManager : MonoBehaviour
             currentVoiceInstance.release();
         }
     }
+
+
+public void SkipDialogue()
+{
+    if (!isDialogueActive)
+        return;
+
+    if (typingCoroutine != null)
+    {
+        StopCoroutine(typingCoroutine);
+        typingCoroutine = null;
+    }
+
+    isTyping = false;
+    linesQueue.Clear();
+
+    EndDialogue();
+
+    Debug.Log("[DialogueManager] Dialogue skipped.");
+}
+
 }

@@ -423,17 +423,25 @@ public class PlayerController : MonoBehaviour
         if (hitSomething &&
         !objectInteraction.IsHoldingObject())
         {
+        OptionalPhoneQuestController phone =
+            hit.collider.GetComponentInParent<
+                OptionalPhoneQuestController>();
 
-FinalBrokenDoorInteractable finalDoor =
-    hit.collider.GetComponentInParent<
-        FinalBrokenDoorInteractable
-    >();
+        if (phone != null && phone.TryInteract())
+        {
+            return;
+        }
 
-if (finalDoor != null)
-{
-    finalDoor.TryInteract();
-    return;
-}
+        FinalBrokenDoorInteractable finalDoor =
+            hit.collider.GetComponentInParent<
+                FinalBrokenDoorInteractable
+            >();
+
+        if (finalDoor != null)
+        {
+            finalDoor.TryInteract();
+            return;
+        }
 
             JanitorNoteInteractable janitorNote =
                 hit.collider.GetComponentInParent<JanitorNoteInteractable>();

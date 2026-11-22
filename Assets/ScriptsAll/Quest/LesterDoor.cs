@@ -26,6 +26,15 @@ public class LesterDoor : MonoBehaviour
 
     public void Interact()
     {
+        OptionalPhoneQuestController phone =
+            FindFirstObjectByType<
+                OptionalPhoneQuestController>();
+
+        if (phone != null)
+        {
+            phone.CancelIfUnanswered();
+        }
+
         gameObject.tag = "Untagged";
 
         closedRotation = door.localRotation;

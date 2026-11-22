@@ -662,6 +662,15 @@ RestoreNormalPostProcessing();
     player.SetCanMove(true);
 
     Pause.canPause = true;
+
+    OptionalPhoneQuestController phone =
+        FindFirstObjectByType<
+            OptionalPhoneQuestController>();
+
+    if (phone != null)
+    {
+        phone.BeginAfterWake();
+    }
 }
 
 public IEnumerator FinishDemoAfterLester()

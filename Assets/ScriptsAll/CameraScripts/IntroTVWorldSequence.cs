@@ -245,6 +245,17 @@ private IEnumerator WaitOrSkip(float seconds)
         tvAmbienceInstance.release();
         tvAmbienceInstance = default;
     }
+
+    private void ClearIntroSubtitles()
+    {
+        StopVoice();
+
+        if (subtitleText != null)
+            subtitleText.text = string.Empty;
+
+        if (subtitleBackground != null)
+            subtitleBackground.SetActive(false);
+    }
     public IEnumerator PlaySequence()
     {
         if (questMusicController != null)
@@ -431,8 +442,13 @@ yield return WaitOrSkip(newsLeadIn);
             yield return WaitOrSkip(
                 Mathf.Max(0.1f, line.duration)
             );
+
+            ClearIntroSubtitles();
+
             if (skipRequested)
                 break;
+
+            yield return WaitOrSkip(gapBetweenLines);
 
             StopVoice();
 
@@ -445,6 +461,7 @@ yield return WaitOrSkip(newsLeadIn);
         }
 
         // The last line has finished: TV OFF.
+        ClearIntroSubtitles();
         TurnOffTV();
 
         yield return new WaitForSeconds(tvOffHold);
@@ -475,7 +492,7 @@ yield return WaitOrSkip(newsLeadIn);
 
         if (skipButtonUI != null)
             skipButtonUI.SetActive(false);
-
+        ClearIntroSubtitles();
         sequenceRunning = false;
     }
 
