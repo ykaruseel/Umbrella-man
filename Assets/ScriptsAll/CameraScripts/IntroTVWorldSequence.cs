@@ -98,6 +98,45 @@ public class IntroTVWorldSequence : MonoBehaviour
     private float spotIntensity;
     private float pointIntensity;
 
+
+[Header("Skip Intro")]
+[SerializeField] private GameObject skipButtonUI;
+
+private bool skipRequested;
+private bool sequenceRunning;
+
+private Coroutine currentCameraMove;
+
+public void RequestSkip()
+{
+    if (!sequenceRunning)
+        return;
+
+    skipRequested = true;
+    Debug.Log("[IntroTV] Skip requested.");
+}
+
+private void Update()
+{
+    if (sequenceRunning &&
+        Input.GetKeyDown(KeyCode.Space))
+    {
+        RequestSkip();
+    }
+}
+
+private IEnumerator WaitOrSkip(float seconds)
+{
+    float elapsed = 0f;
+
+    while (!skipRequested && elapsed < seconds)
+    {
+        elapsed += Time.unscaledDeltaTime;
+        yield return null;
+    }
+}
+
+
     private void Awake()
     {
         if (questMusicController == null)
@@ -128,6 +167,9 @@ public class IntroTVWorldSequence : MonoBehaviour
 
         if (tvPointLight != null)
             pointIntensity = tvPointLight.intensity;
+
+        if (skipButtonUI != null)
+             skipButtonUI.SetActive(false);
     }
 
     private void StartVoice()
@@ -239,6 +281,11 @@ public class IntroTVWorldSequence : MonoBehaviour
         }
 
         hasPlayed = true;
+        skipRequested = false;
+        sequenceRunning = true;
+
+        if (skipButtonUI != null)
+            skipButtonUI.SetActive(true);
 
         // Remember the original television state.
         originalTVWasActive = originalTV.activeSelf;
@@ -286,9 +333,10 @@ public class IntroTVWorldSequence : MonoBehaviour
 
         float preparationTime = 0f;
 
-        while (!videoPlayer.isPrepared &&
-               string.IsNullOrEmpty(videoError) &&
-               preparationTime < prepareTimeout)
+        while (!skipRequested &&
+            !videoPlayer.isPrepared &&
+            string.IsNullOrEmpty(videoError) &&
+            preparationTime < prepareTimeout)
         {
             preparationTime += Time.unscaledDeltaTime;
             yield return null;
@@ -306,7 +354,8 @@ if (videoPlayer.isPrepared &&
     float firstFrameTimeout = 5f;
     float elapsed = 0f;
 
-    while (videoPlayer.frame < 0 &&
+    while (!skipRequested &&
+            videoPlayer.frame < 0 &&
            string.IsNullOrEmpty(videoError) &&
            elapsed < firstFrameTimeout)
     {
@@ -347,7 +396,7 @@ if (videoPlayer.isPrepared && videoPlayer.isPaused)
 }
 
 // Let the news report establish the scene.
-yield return new WaitForSeconds(newsLeadIn);
+yield return WaitOrSkip(newsLeadIn);
 
         // Daniel's internal monologue.
         foreach (IntroLine line in lines)
@@ -359,7 +408,12 @@ yield return new WaitForSeconds(newsLeadIn);
                 line.shotIndex < shots.Length &&
                 shots[line.shotIndex] != null)
             {
-                StartCoroutine(
+                if (currentCameraMove != null)
+                {
+                    StopCoroutine(currentCameraMove);
+                }
+
+                currentCameraMove = StartCoroutine(
                     MoveCameraTo(
                         shots[line.shotIndex],
                         line.cameraMoveTime
@@ -374,9 +428,11 @@ yield return new WaitForSeconds(newsLeadIn);
 
             StartVoice();
 
-            yield return new WaitForSeconds(
+            yield return WaitOrSkip(
                 Mathf.Max(0.1f, line.duration)
             );
+            if (skipRequested)
+                break;
 
             StopVoice();
 
@@ -395,7 +451,11 @@ yield return new WaitForSeconds(newsLeadIn);
 
         // Hide the model swap with a black screen.
         yield return fade.FadeOut();
-
+        if (currentCameraMove != null)
+        {
+            StopCoroutine(currentCameraMove);
+            currentCameraMove = null;
+        }
         cinematicCamera.gameObject.SetActive(false);
 
         if (danielVisual != null)
@@ -410,6 +470,13 @@ yield return new WaitForSeconds(newsLeadIn);
         videoPlayer.errorReceived -= OnVideoError;
 
         Debug.Log("[IntroTV] World intro finished.");
+        StopVoice();
+        StopTVSound();
+
+        if (skipButtonUI != null)
+            skipButtonUI.SetActive(false);
+
+        sequenceRunning = false;
     }
 
     private IEnumerator MoveCameraTo(
