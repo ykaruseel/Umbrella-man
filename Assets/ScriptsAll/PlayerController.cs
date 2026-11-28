@@ -423,6 +423,16 @@ public class PlayerController : MonoBehaviour
         if (hitSomething &&
         !objectInteraction.IsHoldingObject())
             {
+
+
+OldManQuestController oldMan =
+    hit.collider.GetComponentInParent<OldManQuestController>();
+
+if (oldMan != null && oldMan.TryInteract())
+{
+    return;
+}
+
                 MargotQuestController margot =
         hit.collider.GetComponentInParent<MargotQuestController>();
 

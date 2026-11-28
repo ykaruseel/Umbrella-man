@@ -10650,12 +10650,32 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: d5ec13e17a3ea5a40aa480a69d462419, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: dbe203d1ceba5bc4fac3b1cd55fc11b8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1320994615}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: dbe203d1ceba5bc4fac3b1cd55fc11b8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 182599286}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dbe203d1ceba5bc4fac3b1cd55fc11b8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 337281413}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dbe203d1ceba5bc4fac3b1cd55fc11b8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 337281414}
     - targetCorrespondingSourceObject: {fileID: -5591512088681698578, guid: dbe203d1ceba5bc4fac3b1cd55fc11b8,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 99519996}
+    - targetCorrespondingSourceObject: {fileID: -5591512088681698578, guid: dbe203d1ceba5bc4fac3b1cd55fc11b8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 99520000}
   m_SourcePrefab: {fileID: 100100000, guid: dbe203d1ceba5bc4fac3b1cd55fc11b8, type: 3}
 --- !u!1 &99519995 stripped
 GameObject:
@@ -10685,6 +10705,27 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7690173711618433057, guid: dbe203d1ceba5bc4fac3b1cd55fc11b8, type: 3}
+--- !u!65 &99520000
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99519995}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.010519428, y: 0.0038176284, z: 0.019420493}
+  m_Center: {x: 0.004965597, y: 0.0016656901, z: -0.0005454541}
 --- !u!1 &100431182
 GameObject:
   m_ObjectHideFlags: 0
@@ -21279,6 +21320,81 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2d99aa5e2dfb9f42bddc39e6c77e1e2, type: 3}
+--- !u!1 &182599284
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 182599286}
+  - component: {fileID: 182599285}
+  m_Layer: 0
+  m_Name: OldManFireSpreadShot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &182599285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182599284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Priority:
+    Enabled: 1
+    m_Value: 0
+  OutputChannel: 1
+  StandbyUpdate: 2
+  m_StreamingVersion: 20241001
+  m_LegacyPriority: 0
+  Target:
+    TrackingTarget: {fileID: 0}
+    LookAtTarget: {fileID: 0}
+    CustomLookAtTarget: 0
+  Lens:
+    FieldOfView: 60.000004
+    OrthographicSize: 10
+    NearClipPlane: 0.1
+    FarClipPlane: 5000
+    Dutch: 0
+    ModeOverride: 0
+    PhysicalProperties:
+      GateFit: 2
+      SensorSize: {x: 21.946, y: 16.002}
+      LensShift: {x: 0, y: 0}
+      FocusDistance: 10
+      Iso: 200
+      ShutterSpeed: 0.005
+      Aperture: 16
+      BladeCount: 5
+      Curvature: {x: 2, y: 11}
+      BarrelClipping: 0.25
+      Anamorphism: 0
+  BlendHint: 0
+--- !u!4 &182599286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182599284}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 4.557, y: -12.45, z: 13.495}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 337281412}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &183167750
 GameObject:
   m_ObjectHideFlags: 0
@@ -54313,6 +54429,390 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 337056790}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &337281411 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dbe203d1ceba5bc4fac3b1cd55fc11b8,
+    type: 3}
+  m_PrefabInstance: {fileID: 99519994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &337281412 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dbe203d1ceba5bc4fac3b1cd55fc11b8,
+    type: 3}
+  m_PrefabInstance: {fileID: 99519994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &337281413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337281411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 235011e98fbe46443908740e31ae6290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiredQuestID: Q_OLD_MAN
+  completionTargetID: OLD_MAN_COMPLETE
+  player: {fileID: 332663620}
+  dialogueManager: {fileID: 398143663}
+  shortMessage: {fileID: 1844148174}
+  voiceOrigin: {fileID: 1943492797}
+  outline: {fileID: 337281414}
+  closedDoorCamera: {fileID: 1320994616}
+  fireSpreadCamera: {fileID: 182599285}
+  cinematicCameraPriority: 200
+  noAnswerDelay: 0.7
+  silenceMessageTime: 1
+  danielCommentTime: 2.5
+  delayAfterThirdKnock: 10
+  fireRoot: {fileID: 1253531773}
+  behindDoorLight: {fileID: 640919350}
+  behindDoorFire: {fileID: 499320095}
+  doorFire: {fileID: 2058311469}
+  corridorFire:
+  - {fileID: 680674276}
+  - {fileID: 1355804453}
+  - {fileID: 1667139098}
+  - {fileID: 1762911433}
+  - {fileID: 1540315265}
+  - {fileID: 996756448}
+  - {fileID: 1741263594}
+  - {fileID: 368936670}
+  deferredEffects: []
+  waitToDoorFire: 1.5
+  waitToCorridorFire: 1
+  corridorSpreadInterval: 0.8
+  finalFireHold: 1.3
+  knockEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  keroseneLineEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  firstKnockCommentEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  secondKnockCommentEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  crashEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  fireLoopEmitter: {fileID: 0}
+  conversation:
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: Coming, coming! Who's there?
+  - speakerName: Daniel
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: Hello. My name's Daniel. I live in this building.
+  - speakerName: Daniel
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: I... wanted to ask you something. Would you mind opening the door?
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: I'm not opening this door. I look too damn awful.
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: Besides, you don't look much better yourself.
+  - speakerName: Daniel
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: Alright. I'll ask from here, then.
+  - speakerName: Daniel
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: Have you ever heard of the man with the umbrella?
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: HA-HA-HA. The man with the umbrella. So... you've seen him?
+  - speakerName: Daniel
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: Twice.
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: I've been seeing him more and more lately.
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: You're afraid of him, aren't you? And of what comes after him.
+  - speakerName: Daniel
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: What comes after him? What do you know about him?
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: No one knows what comes after him.
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: Though I suppose I'll find out soon enough. HA-HA-HA.
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: Tell me, Daniel... Why are you afraid of death?
+  - speakerName: Daniel
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: What makes you think I'm afraid of death?
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: Because otherwise, you wouldn't pay any mind to a man carrying an umbrella.
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: "Do you understand? So tell me\u2026 Why?"
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: You've lost someone, haven't you? Someone close to you.
+  - speakerName: Daniel
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: What's that got to do with any of this?
+  - speakerName: Daniel
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: Of course I'm afraid of death. Everyone is.
+  - speakerName: Daniel
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: Everyone's afraid of what comes after. Can you just tell me who he
+      is?
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: No. You're not just afraid of what comes after.
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: You're afraid there's nothing after. And that's why he'll never leave
+      you alone.
+  - speakerName: Daniel
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: But how are those things connected?
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: I've lost a lot of people and I've lived a long life. Too long.
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: It's a sad thing to realize I spent the last years of my life
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: rotting away in this miserable basement.
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: Now I'm ready to meet him. I think I can see him right now.
+  - speakerName: Old Man
+    voiceEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    sentence: Time to set it all ablaze, Daniel!
+--- !u!114 &337281414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337281411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be00a73c5f7a48d41919d18ae7c56911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: e1e00ced09062ab40bfd0a2f8c486bc7, type: 2}
+  isBlocked: 0
+  outlineAllChildren: 0
+  rendererRoot: {fileID: 0}
+  limitOutlineDistance: 0
+  playerCamera: {fileID: 0}
+  outlineDistance: 2
 --- !u!1001 &337945303
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65839,6 +66339,14 @@ MonoBehaviour:
     Path: 
   margotTransform: {fileID: 0}
   margotAnimator: {fileID: 0}
+  oldManVoiceEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  oldManVoiceOrigin: {fileID: 0}
   dialogueCanvasGroup: {fileID: 1075412036}
 --- !u!1001 &402310306
 PrefabInstance:
@@ -78141,6 +78649,127 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71599eebe925b7d47b0b904499ad3319, type: 3}
+--- !u!1 &499320095
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 499320096}
+  - component: {fileID: 499320098}
+  - component: {fileID: 499320097}
+  m_Layer: 0
+  m_Name: Point Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &499320096
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499320095}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 593718236}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &499320097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499320095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+--- !u!108 &499320098
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499320095}
+  m_Enabled: 1
+  serializedVersion: 11
+  m_Type: 2
+  m_Color: {r: 1, g: 0.41341, b: 0, a: 1}
+  m_Intensity: 3
+  m_Range: 3
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1 &500842566
 GameObject:
   m_ObjectHideFlags: 0
@@ -97781,6 +98410,38 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 593471989}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &593718235
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 593718236}
+  m_Layer: 0
+  m_Name: BehindDoorGlow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &593718236
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593718235}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -9.42, z: -4.89}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 499320096}
+  m_Father: {fileID: 1253531774}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &597713990 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4400611236221517441, guid: 9a58884528eb62d4fa364a7e5e6b8c5b,
@@ -117999,6 +118660,73 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &680366828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 680366831}
+  - component: {fileID: 680366830}
+  - component: {fileID: 680366829}
+  m_Layer: 0
+  m_Name: BasementSmellZone_Entrance2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &680366829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680366828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77a4a250790558b4fa272446072cd1db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldManQuest: {fileID: 337281413}
+--- !u!65 &680366830
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680366828}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 2.3537593}
+  m_Center: {x: 0, y: 0, z: 0.67687964}
+--- !u!4 &680366831
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680366828}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -21.094, y: -13.012, z: 5.708}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &680674276
 GameObject:
   m_ObjectHideFlags: 0
@@ -232464,7 +233192,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1253531774
 Transform:
   m_ObjectHideFlags: 0
@@ -232489,6 +233217,7 @@ Transform:
   - {fileID: 1355804454}
   - {fileID: 680674277}
   - {fileID: 2058311470}
+  - {fileID: 593718236}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1254169584
@@ -237551,6 +238280,81 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1953907612}
   m_SourcePrefab: {fileID: 100100000, guid: 8a80c14f09b3d99488d9a5f1e0171e12, type: 3}
+--- !u!1 &1320994614
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1320994615}
+  - component: {fileID: 1320994616}
+  m_Layer: 0
+  m_Name: OldManDoorShot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1320994615
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320994614}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.97973293, z: -0.20030849, w: 0}
+  m_LocalPosition: {x: 3.563, y: -11.464, z: 13.302}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 337281412}
+  m_LocalEulerAnglesHint: {x: 23.11, y: 180, z: 0}
+--- !u!114 &1320994616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320994614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Priority:
+    Enabled: 1
+    m_Value: 0
+  OutputChannel: 1
+  StandbyUpdate: 2
+  m_StreamingVersion: 20241001
+  m_LegacyPriority: 0
+  Target:
+    TrackingTarget: {fileID: 0}
+    LookAtTarget: {fileID: 0}
+    CustomLookAtTarget: 0
+  Lens:
+    FieldOfView: 60.000004
+    OrthographicSize: 10
+    NearClipPlane: 0.1
+    FarClipPlane: 5000
+    Dutch: 0
+    ModeOverride: 0
+    PhysicalProperties:
+      GateFit: 2
+      SensorSize: {x: 21.946, y: 16.002}
+      LensShift: {x: 0, y: 0}
+      FocusDistance: 10
+      Iso: 200
+      ShutterSpeed: 0.005
+      Aperture: 16
+      BladeCount: 5
+      Curvature: {x: 2, y: 11}
+      BarrelClipping: 0.25
+      Anamorphism: 0
+  BlendHint: 0
 --- !u!1 &1323990655
 GameObject:
   m_ObjectHideFlags: 0
@@ -265231,6 +266035,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 56d2d382300ea774c869f9be80ade7c5, type: 2}
   - {fileID: 11400000, guid: d42dada1800874c45b69a19213ee2ec0, type: 2}
   - {fileID: 11400000, guid: 49045f0dddc475f49b0924b1254b0fe6, type: 2}
+  - {fileID: 11400000, guid: 4f3c2eae2a89d3d4a8ddd4240eb58d09, type: 2}
   currentQuestIndex: 0
   questCompletedSound:
     Guid:
@@ -361261,6 +362066,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1942696421}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1943492796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1943492797}
+  m_Layer: 0
+  m_Name: OldManVoiceOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1943492797
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943492796}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.539, y: -12.322, z: -26.688}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1944426918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -365533,6 +366369,73 @@ Transform:
   m_Children:
   - {fileID: 1875472811}
   m_Father: {fileID: 1718812390}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1991856265
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1991856268}
+  - component: {fileID: 1991856267}
+  - component: {fileID: 1991856266}
+  m_Layer: 0
+  m_Name: BasementSmellZone_Entrance1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1991856266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991856265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77a4a250790558b4fa272446072cd1db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldManQuest: {fileID: 337281413}
+--- !u!65 &1991856267
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991856265}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.8208084, y: 1, z: 1}
+  m_Center: {x: -0.04053831, y: 0, z: 0}
+--- !u!4 &1991856268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991856265}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.275, y: -13.002, z: -0.716}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1991993972 stripped
 Transform:
@@ -390738,3 +391641,6 @@ SceneRoots:
   - {fileID: 585831945}
   - {fileID: 999155754}
   - {fileID: 2062837230}
+  - {fileID: 1943492797}
+  - {fileID: 1991856268}
+  - {fileID: 680366831}

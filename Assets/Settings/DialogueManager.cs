@@ -44,6 +44,13 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Transform margotTransform;
     [SerializeField] private Animator margotAnimator;
 
+    [Header("Old Man")]
+    [SerializeField]
+    private FMODUnity.EventReference oldManVoiceEvent;
+
+    [SerializeField]
+    private Transform oldManVoiceOrigin;
+
     private Queue<DialogueLine> linesQueue = new Queue<DialogueLine>();
     private bool isDialogueActive = false;
     
@@ -240,6 +247,12 @@ public class DialogueManager : MonoBehaviour
             currentAnimator = margotAnimator;
             voiceEvent = margotVoiceEvent;
             speakerTransform = margotTransform;
+        }
+        else if (speakerName == "Old Man")
+        {
+            currentAnimator = null;
+            voiceEvent = oldManVoiceEvent;
+            speakerTransform = oldManVoiceOrigin;
         }
         else return;
 

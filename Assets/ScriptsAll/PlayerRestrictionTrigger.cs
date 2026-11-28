@@ -22,17 +22,43 @@ public class PlayerRestrictionTrigger : MonoBehaviour
 
     private bool isTriggered = false;
 
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !isTriggered)
+        if (!other.CompareTag("Player") || isTriggered)
+            return;
+
+        QuestManagerV2 manager = QuestManagerV2.Instance;
+
+        if (manager != null)
         {
-            PlayerController player = other.GetComponent<PlayerController>();
-            if (player != null)
+            // Player must be able to enter the basement
+            // during Old Man and Escape quests.
+            bool basementUnlocked =
+                manager.IsQuestActive("Q_OLD_MAN") ||
+                manager.IsQuestActive("Q_ESCAPE");
+
+            if (basementUnlocked)
             {
-                StartCoroutine(TurnAndShowText(player));
+                Debug.Log(
+                    "[Basement] Entry allowed. " +
+                    "Old Man / Escape quest active."
+                );
+
+                return;
             }
         }
+
+        // Keep original behavior for earlier quests.
+        PlayerController player =
+            other.GetComponent<PlayerController>();
+
+        if (player != null)
+        {
+            StartCoroutine(TurnAndShowText(player));
+        }
     }
+
 
     private IEnumerator TurnAndShowText(PlayerController player)
     {
