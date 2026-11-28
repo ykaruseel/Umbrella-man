@@ -17,6 +17,10 @@ public sealed class OldManQuestController : MonoBehaviour
     [SerializeField] private Transform voiceOrigin;
     [SerializeField] private OutlineInteractable outline;
 
+    [Header("Daniel Cinematic Visual")]
+    [SerializeField] private GameObject danielVisual;
+    [SerializeField] private Transform danielStandPoint;
+
     [Header("Optional locked shot (Cinemachine 3)")]
     [SerializeField] private CinemachineCamera closedDoorCamera;
     [SerializeField] private CinemachineCamera fireSpreadCamera;
@@ -192,6 +196,52 @@ public sealed class OldManQuestController : MonoBehaviour
     {
         knockBusy = true;
         ClearCue();
+
+
+GameObject cinematicDaniel = danielVisual;
+
+if (cinematicDaniel == null &&
+    QuestEvents.Instance != null)
+{
+    cinematicDaniel = QuestEvents.Instance.DanielsModel;
+}
+
+bool danielWasActive = false;
+Vector3 oldDanielPosition = Vector3.zero;
+Quaternion oldDanielRotation = Quaternion.identity;
+
+if (cinematicDaniel != null)
+{
+    danielWasActive = cinematicDaniel.activeSelf;
+
+    oldDanielPosition =
+        cinematicDaniel.transform.position;
+
+    oldDanielRotation =
+        cinematicDaniel.transform.rotation;
+
+    if (danielStandPoint != null)
+    {
+        cinematicDaniel.transform.SetPositionAndRotation(
+            danielStandPoint.position,
+            danielStandPoint.rotation
+        );
+    }
+
+    cinematicDaniel.SetActive(true);
+
+    Debug.Log(
+        "[OldMan] Daniel cinematic model enabled."
+    );
+}
+else
+{
+    Debug.LogWarning(
+        "[OldMan] Daniel visual not assigned!"
+    );
+}
+
+
         pausePreviouslyAllowed = Pause.canPause;
         Pause.canPause = false;
         player.SetCanMove(false);
@@ -230,6 +280,19 @@ public sealed class OldManQuestController : MonoBehaviour
             closedDoorCamera.Priority = previousDoorCameraPriority;
         if (fireSpreadCamera != null)
             fireSpreadCamera.Priority = previousFireCameraPriority;
+
+        if (cinematicDaniel != null)
+        {
+            cinematicDaniel.SetActive(false);
+
+            cinematicDaniel.transform.SetPositionAndRotation(
+                oldDanielPosition,
+                oldDanielRotation
+            );
+
+            cinematicDaniel.SetActive(danielWasActive);
+        }
+
         player.isCinematic = false;
         player.SetCanMove(true);
         Pause.canPause = pausePreviouslyAllowed;
