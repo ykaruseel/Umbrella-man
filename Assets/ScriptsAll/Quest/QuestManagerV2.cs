@@ -219,8 +219,42 @@ public class QuestManagerV2 : MonoBehaviour
 
     switch (nextQuest.questID)
     {
-        case "Q2":
+        case "Q_PHONE":
+        {
+            OptionalPhoneQuestController phone =
+                FindFirstObjectByType<
+                    OptionalPhoneQuestController>();
+
+            if (phone != null)
+            {
+                phone.BeginAfterWake();
+            }
+            else
+            {
+                Debug.LogError(
+                    "[QuestManagerV2] Phone controller not found!"
+                );
+            }
+
             break;
+        }
+
+        case "Q2":
+        {
+            // Lester becomes available after the phone quest.
+            if (QuestEvents.Instance != null &&
+                QuestEvents.Instance.lesterDoor != null)
+            {
+                DoorOutline outline =
+                    QuestEvents.Instance.lesterDoor
+                        .GetComponent<DoorOutline>();
+
+                if (outline != null)
+                    outline.enabled = true;
+            }
+
+            break;
+        }
 
         case "Q3":
             StartCoroutine(

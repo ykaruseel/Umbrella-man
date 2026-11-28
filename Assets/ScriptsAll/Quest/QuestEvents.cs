@@ -630,15 +630,7 @@ RestoreNormalPostProcessing();
 
     Debug.Log("[Q11] Bed cinematic completed");
 
-    // 5. Enable Lester's door outline
-    if (lesterDoor != null)
-    {
-        DoorOutline outline =
-            lesterDoor.GetComponent<DoorOutline>();
 
-        if (outline != null)
-            outline.enabled = true;
-    }
 
     // 6. Finish Q11 and activate Q2
     QuestManagerV2 manager = QuestManagerV2.Instance;
@@ -663,14 +655,7 @@ RestoreNormalPostProcessing();
 
     Pause.canPause = true;
 
-    OptionalPhoneQuestController phone =
-        FindFirstObjectByType<
-            OptionalPhoneQuestController>();
 
-    if (phone != null)
-    {
-        phone.BeginAfterWake();
-    }
 }
 
 public IEnumerator FinishDemoAfterLester()
