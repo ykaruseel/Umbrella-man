@@ -422,7 +422,14 @@ public class PlayerController : MonoBehaviour
                 
         if (hitSomething &&
         !objectInteraction.IsHoldingObject())
-        {
+            {
+                MargotQuestController margot =
+        hit.collider.GetComponentInParent<MargotQuestController>();
+
+    if (margot != null && margot.TryInteract())
+    {
+        return;
+    }
         OptionalPhoneQuestController phone =
             hit.collider.GetComponentInParent<
                 OptionalPhoneQuestController>();

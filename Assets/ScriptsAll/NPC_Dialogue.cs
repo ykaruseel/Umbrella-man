@@ -16,6 +16,9 @@ public class NPC_Dialogue : MonoBehaviour
     private PlayerController playerController;
     private bool dialogueTriggered = false;
 
+    [Header("Demo transition")]
+[SerializeField] private bool endDemoAfterLester = true;
+
     string npcID;
 
     void Start()
@@ -99,7 +102,7 @@ private IEnumerator HandleDialogueSequence()
     }
 
     // Q2 is our final demo quest
-    if (isFinalLesterDialogue)
+    if (isFinalLesterDialogue && endDemoAfterLester)
     {
         Debug.Log(
             "[NPC Dialogue] Final Lester conversation finished"
@@ -132,6 +135,12 @@ private IEnumerator HandleDialogueSequence()
 
         playerController.isCinematic = false;
         playerController.SetCanMove(true);
+    }
+
+    if (isFinalLesterDialogue)
+    {
+        Pause.canPause = true;
+        yield break;
     }
 
     // Preserve old prototype behavior for other quests

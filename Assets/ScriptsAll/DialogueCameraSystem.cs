@@ -59,7 +59,11 @@ public class DialogueCameraSystem : MonoBehaviour
         {
             characterCameras[0].Priority = 100;
         }
-        else if (speakerName == "Lester" && characterCameras[1] != null)
+        else if (
+        (speakerName == "Lester" ||
+        speakerName == "Old Margo") &&
+        characterCameras.Length > 1 &&
+        characterCameras[1] != null)
         {
             characterCameras[1].Priority = 100;
         }

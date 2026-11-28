@@ -39,6 +39,11 @@ public class DialogueManager : MonoBehaviour
     [Header("Cinematic Cameras")]
     public DialogueCameraSystem currentCameraSystem;
 
+    [Header("Old Margo")]
+    [SerializeField] private EventReference margotVoiceEvent;
+    [SerializeField] private Transform margotTransform;
+    [SerializeField] private Animator margotAnimator;
+
     private Queue<DialogueLine> linesQueue = new Queue<DialogueLine>();
     private bool isDialogueActive = false;
     
@@ -230,6 +235,11 @@ public class DialogueManager : MonoBehaviour
             currentAnimator = null;
             voiceEvent = emilyVoiceEvent;
             speakerTransform = emilyTransform;
+        } else if (speakerName == "Old Margo")
+        {
+            currentAnimator = margotAnimator;
+            voiceEvent = margotVoiceEvent;
+            speakerTransform = margotTransform;
         }
         else return;
 
@@ -237,7 +247,10 @@ public class DialogueManager : MonoBehaviour
         {
             voiceEvent = overrideEvent;
         }
-
+        if (currentAnimator != null)
+        {
+            currentAnimator.SetBool("Talk", true);
+        }
         if (voiceEvent.IsNull || speakerTransform == null) return;
         currentVoiceInstance = RuntimeManager.CreateInstance(voiceEvent);
         RuntimeManager.AttachInstanceToGameObject(currentVoiceInstance, speakerTransform, speakerTransform.GetComponent<Rigidbody>());
